@@ -1,7 +1,7 @@
 ﻿
 
 @model CBS.FrontDesk.Data.Entity.AccountingV2.InterestProductConfig.ProductCalculationConfig
-
+@using Resources
 @using (Html.BeginForm("CreateOrUpdate", "InterestProductConfig", FormMethod.Post,
 new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsubmit = "return SaveInterestProductConfigAjax(this);" }))
 {
@@ -16,12 +16,12 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
             <div class="card-body text-center">
                 <h3 class="card-title btn-text-primary">
                     <i class="mdi mdi-cog-outline me-2"></i>
-                    @(Model.Id == null ? "ADD PRODUCT CALCULATION CONFIG" : "UPDATE PRODUCT CALCULATION CONFIG")
+                    @(Model.Id == null ? ""+ @GlobalInterestProductConfig.ADD_PRODUCT_CALCULATION_CONFIG + "" : ""+ @GlobalInterestProductConfig.UPDATE_PRODUCT_CALCULATION_CONFIG + "")
                 </h3>
                 <p class="card-text">
                     @(Model.Id == null
-                    ? "Fill in the details to create a new product calculation configuration."
-                    : "Modify the details below and update this configuration.")
+                    ? ""+ @GlobalInterestProductConfig.Fill_in_the_details_to_create_a_new_product_calculation_configuration + ""
+                    : ""+ @GlobalInterestProductConfig.Modify_the_details_below_and_update_this_configuration + "")
                 </p>
                 <hr style="border: 2px solid rgba(128,128,128,0.5);" />
             </div>
@@ -32,7 +32,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
             <div class="card-body">
 
                 <!-- BASIC -->
-                <h6 class="mb-3 text-primary">Basic Information</h6>
+                <h6 class="mb-3 text-primary">@GlobalShared.Basic_Information</h6>
                 <div class="row g-3 mb-4">
 
                     <div class="col-md-6 mb-1">
@@ -44,7 +44,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                             @Html.DropDownListFor(
                                 m => m.ProductId,
                                 ViewBag.Products as List<SelectListItem>,
-                                "-- Select Product --",
+                                "-- "+ GlobalShared.Select_product + "--",
                                 new { @class = "form-control  select2" }
                             )
                             @Html.HiddenFor(m => m.ProductName)
@@ -55,10 +55,10 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                     <div class="col-md-6 mb-1">
 
                         <div class="position-relative">
-                            <label class="form-label fw-bold" for="branchId">Branch</label>
+                            <label class="form-label fw-bold" for="branchId">@GlobalShared.Branch</label>
                             @Html.DropDownList("BranchId",
                                 new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                                "--- Select Branch ---",
+                                "---" +GlobalShared.Select_Branch +"---",
                                 new { @class = "form-control select2 mb-1", @id = "branchId" })
                         </div>
                     </div>
@@ -75,7 +75,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="GlobalConfiguration">
                                 <label class="form-check-label" for="GlobalConfiguration">
-                                    Global Configuration
+                                    @GlobalShared.Global_Configuration
                                 </label>
                             </div>
 
@@ -83,28 +83,28 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                 </div>
 
                     <!-- FREQUENCY -->
-                    <h6 class="mb-3 text-primary">Period & Frequency</h6>
+                    <h6 class="mb-3 text-primary">@GlobalInterestProductConfig.Period_And_Frequency</h6>
 
                     <div class="row g-3 mb-4" id="frequencyFields">
                         <div class="col-md-6 mb-1">
                             <div class="position-relative">
-                                <label class="form-label fw-bold">Interest Frequency</label>
+                                <label class="form-label fw-bold">@GlobalInterestProductConfig.Interest_Frequency</label>
                                 @Html.DropDownList("Frequency",
                                     new SelectList(ViewBag.Frequency, "Value", "Text"),
-                                    "------  Select Frequency  ------",
+                                    "------"+  @GlobalShared.Select_Frequency  +"------",
                                     new { @class = "form-control select2 mb-1", @id = "Frequency" })
                             </div>
                         </div>
 
                             <div class="col-md-6 mb-1" id="calcDayMonth">
-                                @Html.LabelFor(m => m.CalculationDayOfMonth, "Calculation Day (Month)",
+                                @Html.LabelFor(m => m.CalculationDayOfMonth, ""+ GlobalShared.Calculation_Day (GlobalShared.Month)+"",
                                     new { @class = "form-label fw-bold" })
                                 @Html.TextBoxFor(m => m.CalculationDayOfMonth,
                                     new { @class = "form-control", type = "number" })
                             </div>
 
                             <div class="col-md-6 mb-1" id="weekField">
-                                @Html.LabelFor(m => m.CalculationDayOfWeek, "Calculation Day (Week)",
+                                @Html.LabelFor(m => m.CalculationDayOfWeek, ""+ GlobalShared.Calculation_Day (GlobalShared.Week)+"",
                                     new { @class = "form-label fw-bold" })
                                 @Html.TextBoxFor(m => m.CalculationDayOfWeek,
                                     new { @class = "form-control" })
@@ -112,7 +112,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
 
 
                             <div class="col-md-6 mb-1" id="firstCalcMonth">
-                                @Html.LabelFor(m => m.FirstCalculationMonth, "First Calculation Month",
+                                @Html.LabelFor(m => m.FirstCalculationMonth, ""+ @GlobalInterestProductConfig.First_Calculation_Month + "",
                                     new { @class = "form-label fw-bold" })
                                 @Html.TextBoxFor(m => m.FirstCalculationMonth,
                                     new { @class = "form-control", type = "number" })
@@ -121,27 +121,27 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                     </div>
 
                         <!-- COMPUTATION -->
-                        <h6 class="mb-3 text-primary">Computation</h6>
+                    <h6 class="mb-3 text-primary">@GlobalInterestProductConfig.Computation</h6>
                         <div class="row g-3 mb-4">
                             <div class="col-md-4 mb-1">
                                 <div class="position-relative">
-                                    <label class="form-label fw-bold">Computation Mode</label>
+                                    <label class="form-label fw-bold">@GlobalInterestProductConfig.Computation_Mode</label>
                                     @Html.DropDownList("ComputationMode",
                                         new SelectList(ViewBag.ComputationMode, "Value", "Text"),
-                                        "------  Select Computation Mode  ------",
+                                        "------"+ @GlobalInterestProductConfig.Select_Computation_Mode + "------",
                                         new { @class = "form-control select2 mb-1", @id = "ComputationMode" })
                                 </div>
                             </div>
                                 <!-- Day fields (only for Average of Points) -->
                                 <div class="col-md-4" id="day1Field">
-                                    @Html.LabelFor(m => m.Day1, "Day 1 (for Average of Points)",
+                                    @Html.LabelFor(m => m.Day1, ""+ GlobalShared.Day +"1"+ (@GlobalInterestProductConfig.for_Average_of_Points) +"",
                                         new { @class = "form-label fw-bold" })
                                     @Html.TextBoxFor(m => m.Day1,
                                         new { @class = "form-control", placeholder = "e.g. 1" })
                                 </div>
 
                                 <div class="col-md-4" id="day2Field">
-                                    @Html.LabelFor(m => m.Day2, "Day 2 (for Average of Points)",
+                                    @Html.LabelFor(m => m.Day2, ""+ GlobalShared.Day +"2"+ (@GlobalInterestProductConfig.for_Average_of_Points) +"",
                                         new { @class = "form-label fw-bold" })
                                     @Html.TextBoxFor(m => m.Day2,
                                         new { @class = "form-control", placeholder = "e.g. 15" })
@@ -149,14 +149,14 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
 
                                 <!-- ShareMonthFactor & CustomDenominator (always visible) -->
                                 <div class="col-md-4" id="shareMonthFactorField">
-                                    @Html.LabelFor(m => m.ShareMonthFactor, "Share Month Factor",
+                                    @Html.LabelFor(m => m.ShareMonthFactor, ""+ @GlobalInterestProductConfig.Share_Month_Factor + "",
                                         new { @class = "form-label fw-bold" })
                                     @Html.TextBoxFor(m => m.ShareMonthFactor,
                                         new { @class = "form-control", type = "number", step = "0.01" })
                                 </div>
 
                                 <div class="col-md-4" id="customDenominatorField">
-                                    @Html.LabelFor(m => m.CustomDenominator, "Custom Denominator",
+                                    @Html.LabelFor(m => m.CustomDenominator, ""+ @GlobalInterestProductConfig.Custom_Denominator + "",
                                         new { @class = "form-label fw-bold" })
                                     @Html.TextBoxFor(m => m.CustomDenominator,
                                         new { @class = "form-control", type = "number" })
@@ -164,7 +164,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
 
                         </div>
 
-                            <h6 class="mb-3 text-primary">Share Month Configuration</h6>
+                        <h6 class="mb-3 text-primary">@GlobalInterestProductConfig.Share_Month_Configuration</h6>
 
                             <div class="row">
 
@@ -186,11 +186,11 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                                 <!-- SHARE MONTH MODE -->
                                 <div class="position-relative">
                                     <div class="col-md-12 mb-1 d-none" id="shareMonthModeWrapper">
-                                        <label class="form-label fw-bold">Share Month Mode</label>
+                                        <label class="form-label fw-bold">@GlobalInterestProductConfig.Share_Month_Mode</label>
                                         @Html.DropDownList(
                                             "ShareMonthMode",
                                             new SelectList(ViewBag.ShareMonthMode, "Value", "Text"),
-                                            "------  Select Share Month Mode  ------",
+                                            "------"+ @GlobalInterestProductConfig.Select_Share_Month_Mode + "------",
                                             new { @class = "form-control select2", id = "ShareMonthMode" }
                                         )
                                     </div>
@@ -199,7 +199,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                                     <div class="col-md-6 d-none" id="shareMonthAverageWrapper">
                                         @Html.LabelFor(
                                             m => m.ShareMonthAverageDaysCsv,
-                                            "Share Month Average Days (CSV)",
+                                            ""+ @GlobalInterestProductConfig.Share_Month_Average_Days + "(CSV)",
                                             new { @class = "form-label fw-bold" }
                                         )
                                         @Html.TextBoxFor(
@@ -212,7 +212,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                                     <div class="col-md-6 d-none" id="shareMonthFactorWrapper">
                                         @Html.LabelFor(
                                             m => m.ShareMonthFactorOverride,
-                                            "Share Month Factor Override",
+                                            ""+ @GlobalInterestProductConfig.Share_Month_Factor_Override + "",
                                             new { @class = "form-label fw-bold" }
                                         )
                                         @Html.TextBoxFor(
@@ -226,14 +226,14 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
 
 
                                 <!-- RATE -->
-                                <h6 class="mb-3 text-primary">Rate Configuration</h6>
+                            <h6 class="mb-3 text-primary">@GlobalShared.Rate_Configuration</h6>
                                 <div class="row g-3 mb-4" id="RateConfigContainer">
                                     <div class="position-relative">
                                         <div class="col-md-12 mb-1">
-                                            <label class="form-label fw-bold">Rate Source</label>
+                                            <label class="form-label fw-bold">@GlobalShared.Rate_Source</label>
                                             @Html.DropDownList("RateSource",
                                                 new SelectList(ViewBag.RateSource, "Value", "Text"),
-                                                "------  Select Rate Source  ------",
+                                                "------"+ @GlobalInterestProductConfig.Select_Rate_Source + "------",
                                                 new { @class = "form-control select2 mb-1", @id = "RateSource" })
                                         </div>
                                     </div>
@@ -243,30 +243,30 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                                         </div>
 
                                         <div class="col-md-6" id="RateProfileDiv">
-                                            @Html.LabelFor(m => m.RateProfileCode, "Rate Profile Code", new { @class = "form-label fw-bold" })
+                                            @Html.LabelFor(m => m.RateProfileCode, ""+ @GlobalInterestProductConfig.Rate_Profile_Code + "", new { @class = "form-label fw-bold" })
                                             @Html.TextBoxFor(m => m.RateProfileCode, new { @class = "form-control" })
                                         </div>
                                 </div>
-                                    <h6 class="mb-3 text-primary">Tax Configuration</h6>
+                                    <h6 class="mb-3 text-primary">@GlobalShared.Tax_Configuration</h6>
                                     <div class="row g-3 mb-4">
                                         <div class="form-check col-md-4">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.ApplyRti, new { @class = "form-check-input", id = "ApplyRti" })
-                                                @Html.LabelFor(m => m.ApplyRti, "Apply RTI (Revenue Tax on Interest)", new { @class = "form-check-label fw-bold" })
+                                                @Html.LabelFor(m => m.ApplyRti, ""+ @GlobalInterestProductConfig.Apply_RTI_Revenue_Tax_on_Interest + "", new { @class = "form-check-label fw-bold" })
                                             </div>
 
 
                                         </div>
 
                                         <div class="col-md-4" id="RtiRateOverrideDiv">
-                                            @Html.LabelFor(m => m.RtiRateOverride, "RTI Rate Override", new { @class = "form-label fw-bold" })
+                                            @Html.LabelFor(m => m.RtiRateOverride, ""+ @GlobalInterestProductConfig.RTI_Rate_Override + "", new { @class = "form-label fw-bold" })
                                             @Html.TextBoxFor(m => m.RtiRateOverride, new { @class = "form-control", placeholder = "e.g 0.165 for 16.5%" })
                                         </div>
                                         <div class="form-check col-md-4">
 
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.ApplyTprcm, new { @class = "form-check-input", id = "ApplyTprcm" })
-                                                @Html.LabelFor(m => m.ApplyTprcm, "Apply Apply TPRCM/IRCM Tax", new { @class = "form-check-label fw-bold" })
+                                                @Html.LabelFor(m => m.ApplyTprcm, ""+ @GlobalInterestProductConfig.Apply_TPRCM_IRCM_Tax + "", new { @class = "form-check-label fw-bold" })
                                             </div>
 
                                         </div>
@@ -276,25 +276,25 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
                                         </div>
 
                                         <div class="col-md-4" id="TaxableThresholdOverrideDiv">
-                                            @Html.LabelFor(m => m.TaxableThresholdOverride, "Taxable Threshold Override", new { @class = "form-label fw-bold" })
+                                            @Html.LabelFor(m => m.TaxableThresholdOverride, ""+ @GlobalInterestProductConfig.Taxable_Threshold_Override + "", new { @class = "form-label fw-bold" })
                                             @Html.TextBoxFor(m => m.TaxableThresholdOverride, new { @class = "form-control", placeholder = "e.g 10000" })
                                         </div>
 
                                     </div>
 
                                     <!-- LIMITS -->
-                                    <h6 class="mb-3 text-primary">Limits Rules</h6>
+                                    <h6 class="mb-3 text-primary">@GlobalInterestProductConfig.Limits_Rules</h6>
                                     <div class="row g-3">
 
                                         <div class="col-md-6">
-                                            @Html.LabelFor(m => m.MinBalanceForInterest, "Minimum Balance for Interest",
+                                            @Html.LabelFor(m => m.MinBalanceForInterest, ""+ @GlobalInterestProductConfig.Minimum_Balance_for_Interest + "",
                                                 new { @class = "form-label fw-bold" })
                                             @Html.TextBoxFor(m => m.MinBalanceForInterest,
                                                 new { @class = "form-control", type = "number", step = "0.01" })
                                         </div>
 
                                         <div class="col-md-6">
-                                            @Html.LabelFor(m => m.MaxBalanceForInterest, "Maximum Balance for Interest",
+                                            @Html.LabelFor(m => m.MaxBalanceForInterest, ""+ @GlobalInterestProductConfig.Maximum_Balance_for_Interest + "",
                                                 new { @class = "form-label fw-bold" })
                                             @Html.TextBoxFor(m => m.MaxBalanceForInterest,
                                                 new { @class = "form-control", type = "number", step = "0.01" })
@@ -310,7 +310,7 @@ new { id = "ProductCalculationConfigForm", enctype = "multipart/form-data", onsu
             <button type="button" class="btn btn-primary btn-save"
                     onclick="SaveInterestProductConfigAjax(this.form)">
                 <i class="mdi mdi-content-save-outline me-1"></i>
-                @(Model.Id == null ? "Save" : "Update")
+                @(Model.Id == null ? ""+ GlobalShared.Save +"" : ""+ GlobalShared.Update +"")
             </button>
         </div>
 

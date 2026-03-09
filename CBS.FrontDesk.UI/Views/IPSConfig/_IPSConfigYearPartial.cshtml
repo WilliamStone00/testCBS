@@ -4,10 +4,10 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-calendar-multiple me-2"></i> IPS Configurations by Year
+            <i class="mdi mdi-calendar-multiple me-2"></i> @GlobalIPSConfig.IPS_Configurations_by_Year
         </h1>
         <p class="card-text text-muted mb-1">
-            Multiple configurations found for the selected year
+            @GlobalIPSConfig.Multiple_configurations_found_for_the_selected_year
         </p>
     </div>
 </div>
@@ -39,7 +39,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">
                             <i class="mdi mdi-shield-check me-2"></i>
-                            Configuration @config.BranchName (@config.BranchCode)
+                            @GlobalShared.Configuration @config.BranchName (@config.BranchCode)
                             -
                             <span class="@(config.IsActive ? "text-success" : "text-secondary")">
                                 @(config.IsActive ? "Active" : "Inactive")
@@ -61,15 +61,15 @@
                             <div class="col-md-6">
                                 <table class="table table-sm table-borderless">
                                     <tr>
-                                        <td class="fw-bold">Age Limit</td>
+                                        <td class="fw-bold">@GlobalShared.Age_Limit</td>
                                         <td>@config.AgeLimit</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Loan Coverage</td>
+                                        <td class="fw-bold">@GlobalShared.Loan_Coverage</td>
                                         <td>@String.Format("{0:N2}", config.LoanCoverageLimit)</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Savings Coverage</td>
+                                        <td class="fw-bold">@GlobalShared.Savings_Coverage</td>
                                         <td>@String.Format("{0:N2}", config.SavingsCoverageLimit)</td>
                                     </tr>
                                 </table>
@@ -78,7 +78,7 @@
                             <div class="col-md-6">
                                 <table class="table table-sm table-borderless">
                                     <tr>
-                                        <td class="fw-bold">Premium Loan</td>
+                                        <td class="fw-bold">@GlobalShared.Premium_Loan</td>
                                         <td>@String.Format("{0:N4}", config.PremiumRateLoan)</td>
                                     </tr>
                                     <tr>
@@ -86,8 +86,8 @@
                                         <td>@String.Format("{0:N4}", config.PremiumRateSavings)</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold">Max Delinquency</td>
-                                        <td>@config.MaxDelinquencyDays days</td>
+                                        <td class="fw-bold">@GlobalShared.Max_Delinquency</td>
+                                        <td>@config.MaxDelinquencyDays @GlobalShared.Days</td>
                                     </tr>
                                 </table>
                             </div>
@@ -105,14 +105,14 @@
     {
         <div class="alert alert-info">
             <i class="mdi mdi-information-outline me-2"></i>
-            No IPS configurations found for the selected year.
+            @GlobalIPSConfig.No_IPS_configurations_found_for_the_selected_year
         </div>
     }
 
     <div class="row mt-3">
         <div class="col-12 text-end">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                <i class="mdi mdi-close me-1"></i> Close
+                <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
             </button>
         </div>
     </div>

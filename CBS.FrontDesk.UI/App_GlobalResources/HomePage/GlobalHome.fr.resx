@@ -120,7 +120,7 @@
   <data name="About" xml:space="preserve">
     <value>À propos</value>
   </data>
-  <data name="AboutInformation" xml:space="preserve">
+  <data name="Use_this_area_to_provide_additional_information" xml:space="preserve">
     <value>Utilisez cette zone pour fournir des informations supplémentaires.</value>
   </data>
   <data name="ContactUs" xml:space="preserve">
@@ -132,19 +132,19 @@
   <data name="NoInternetConnection" xml:space="preserve">
     <value>Pas de connexion Internet</value>
   </data>
-  <data name="PartnerText" xml:space="preserve">
+  <data name="Your_Secure_Reliable_Partner_FLUX" xml:space="preserve">
     <value>Votre partenaire sécurisé et fiable. FLUX !</value>
   </data>
   <data name="RETRY" xml:space="preserve">
     <value>RÉESSAYER</value>
   </data>
-  <data name="SatisfactionText" xml:space="preserve">
+  <data name="Flux_SARL_Empowering_businesses_Enhancing_lives" xml:space="preserve">
     <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
     <value>BIENVENUE À</value>
   </data>
-  <data name="YouAreCurrentlyOffline" xml:space="preserve">
+  <data name="You_are_currently_offline_Please_check_your_internet_connection_and_try_again" xml:space="preserve">
     <value>Vous êtes actuellement hors ligne. Veuillez vérifier votre connexion Internet et réessayer</value>
   </data>
 </root>

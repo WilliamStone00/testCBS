@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonAccountConfiguration.LiaisonAccountConfigurationDto
-
+@using Resources
 @{
     ViewBag.Title = "Liaison Account Configuration";
 }
@@ -10,14 +10,14 @@
         <div class="card bg-light mb-3 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-bank-transfer me-2"></i> Liaison Account Configuration Console
+                    <i class="mdi mdi-bank-transfer me-2"></i> @GlobalLiaisonAccountConfiguration.Liaison_Account_Configuration_Console
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure and manage branch liaison accounts for seamless inter-branch transactions.
+                    @GlobalLiaisonAccountConfiguration.Configure_and_manage_branch_liaison_accounts_for_seamless_inter_branch_transactions
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure each branch is linked to the correct head office liaison account.
+                    @GlobalLiaisonAccountConfiguration.Ensure_each_branch_is_linked_to_the_correct_head_office_liaison_account
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.4);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- 💡 Tips Section -->
 <div class="card mb-4 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using the Liaison Configuration Console</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalLiaisonAccountConfiguration.Tips_for_Using_the_Liaison_Configuration_Console</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,12 +36,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-bank-outline text-primary me-2"></i> <strong>Source Branch:</strong> Select the branch you want to configure.</li>
-                <li><i class="mdi mdi-link-variant text-success me-2"></i> <strong>Liaison Account:</strong> Choose the appropriate head office liaison account linked to this branch.</li>
-                <li><i class="mdi mdi-checkbox-marked-outline text-warning me-2"></i> <strong>Status:</strong> Use the checkbox to activate or deactivate the configuration.</li>
-                <li><i class="mdi mdi-refresh text-info me-2"></i> <strong>Dynamic Accounts:</strong> The liaison account list updates automatically when you change the branch.</li>
-                <li><i class="mdi mdi-content-save-outline text-success me-2"></i> <strong>Save Button:</strong> Click “Save” to apply configuration changes immediately.</li>
-                <li><i class="mdi mdi-view-list text-secondary me-2"></i> <strong>View List:</strong> Use the list button to see all existing liaison configurations.</li>
+                <li><i class="mdi mdi-bank-outline text-primary me-2"></i> <strong>@GlobalShared.Source_branch:</strong> @GlobalLiaisonAccountConfiguration.Select_the_branch_you_want_to_configure</li>
+                <li><i class="mdi mdi-link-variant text-success me-2"></i> <strong>@GlobalShared.Liaison_Account:</strong> @GlobalLiaisonAccountConfiguration.Choose_the_appropriate_head_office_liaison_account_linked_to_this_branch</li>
+                <li><i class="mdi mdi-checkbox-marked-outline text-warning me-2"></i> <strong>@GlobalShared.Status:</strong> @GlobalLiaisonAccountConfiguration.Use_the_checkbox_to_activate_or_deactivate_the_configuration</li>
+                <li><i class="mdi mdi-refresh text-info me-2"></i> <strong>@GlobalShared.Dynamic_Accounts:</strong> @GlobalLiaisonAccountConfiguration.The_liaison_account_list_updates_automatically_when_you_change_the_branch</li>
+                <li><i class="mdi mdi-content-save-outline text-success me-2"></i> <strong>@GlobalShared.Save_Button:</strong> @GlobalLiaisonAccountConfiguration.Click_Save_to_apply_configuration_changes_immediately</li>
+                <li><i class="mdi mdi-view-list text-secondary me-2"></i> <strong>@GlobalShared.View_List:</strong> @GlobalLiaisonAccountConfiguration.Use_the_list_button_to_see_all_existing_liaison_configurations</li>
             </ul>
         </div>
     </div>
@@ -49,17 +49,17 @@
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
         <a type="button" onclick=" LoadDataGen('LiaisonAccountConfiguration', 'myDataTable', '_Data', 0, 'datalistingview', null, 'list')" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="ViewList">
-            <i class="mdi mdi-view-list mdi-18px"></i> ViewList
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Create','new','LiaisonAccountConfiguration')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
-            <i class="mdi mdi-plus mdi-18px"></i> Add New Configuration
+            <i class="mdi mdi-plus mdi-18px"></i>@GlobalShared.Add_New_Configuration
         </a>
     </div>
 </div>
 
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.FILTERS_UC
     </h5>
 
     <form id="journalHeaderFilterForm" method="post" autocomplete="off">
@@ -70,7 +70,7 @@
 
                 <!-- Branch -->
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Branch</label>
+                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
                     @Html.DropDownListFor(m => m.BranchId,
                         new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
                         "--- Select Branch ---",
@@ -79,7 +79,7 @@
 
                 <!-- Liaison Account (Counterparty Branch) -->
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Liaison Account</label>
+                    <label class="form-label fw-bold">@GlobalShared.Liaison_Account</label>
                     @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.Liasons, "Value", "Text"), "--- Select Option ---", new { @class = "form-control select2", id = "LiaisonAccountId" })
                 </div>
 
@@ -90,10 +90,10 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" type="submit" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply
                 </button>
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100" onclick="document.getElementById('journalHeaderFilterForm').reset();">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>

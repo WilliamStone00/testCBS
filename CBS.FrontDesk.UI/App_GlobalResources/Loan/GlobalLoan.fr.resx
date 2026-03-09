@@ -117,83 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccrualInterest" xml:space="preserve">
-    <value>Intérêts courus</value>
-  </data>
-  <data name="AccrualInterests" xml:space="preserve">
-    <value>Intérêts courus</value>
-  </data>
   <data name="AccrualPaid" xml:space="preserve">
     <value>Intérêts payés</value>
   </data>
   <data name="AddDeeperBreakdownsSuchAsAgingGenderAndPurpose" xml:space="preserve">
     <value>Ajouter des ventilations plus approfondies telles que l'âge, le sexe et l'objet</value>
   </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adresse</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>Tous</value>
-  </data>
-  <data name="AllLoans" xml:space="preserve">
-    <value>Tous les prêts</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Montant</value>
-  </data>
   <data name="AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes" xml:space="preserve">
     <value>Analyser et suivre les statistiques du portefeuille de prêts à travers les agences et les périodes. Filtrer par agence, type de prêt, état de délinquance ou zone de rapport</value>
-  </data>
-  <data name="ApplicationDate" xml:space="preserve">
-    <value>Date d'application</value>
-  </data>
-  <data name="ApprovalState" xml:space="preserve">
-    <value>État d'approbation</value>
-  </data>
-  <data name="Approved" xml:space="preserve">
-    <value>Approuvé</value>
   </data>
   <data name="BAL" xml:space="preserve">
     <value>BAL</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Solde</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
   <data name="BranchAndCode" xml:space="preserve">
     <value>Agence et code</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Code de l'agence</value>
-  </data>
-  <data name="Capital" xml:space="preserve">
-    <value>Capital</value>
   </data>
   <data name="ChooseBetweenAFullReportOrAFocusedView" xml:space="preserve">
     <value>Choisissez entre un rapport complet ou une vue ciblée (par exemple, prêts en souffrance)</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Fermé</value>
-  </data>
-  <data name="Current" xml:space="preserve">
-    <value>Actuel</value>
-  </data>
   <data name="CurrentLoanSummary" xml:space="preserve">
     <value>Résumé du prêt actuel</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
-  <data name="DateRange" xml:space="preserve">
-    <value>Plage de dates</value>
-  </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>Date de fin</value>
   </data>
   <data name="DaysAfterMaturityDate" xml:space="preserve">
     <value>jours après la date d'échéance</value>
@@ -231,50 +174,17 @@
   <data name="DelinquentLoanSummary" xml:space="preserve">
     <value>Résumé des prêts en souffrance</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="DownloadAsPDFExcelOrWordForSharingAndCompliance" xml:space="preserve">
     <value>Télécharger au format PDF, Excel ou Word pour le partage et la conformité</value>
-  </data>
-  <data name="DueAmount" xml:space="preserve">
-    <value>Montant dû</value>
   </data>
   <data name="DueAMT" xml:space="preserve">
     <value>Montant dû</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Courriel</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Date de fin</value>
-  </data>
   <data name="EnterCustomerBranchOrReference" xml:space="preserve">
     <value>Entrez le nom du client, l'agence ou la référence</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Exporter</value>
-  </data>
-  <data name="ExportFormat" xml:space="preserve">
-    <value>Format d'exportation</value>
-  </data>
   <data name="ExportMigratedLoans" xml:space="preserve">
     <value>Exporter les prêts migrés</value>
-  </data>
-  <data name="ExportReportType" xml:space="preserve">
-    <value>Type de rapport d'exportation</value>
-  </data>
-  <data name="Fees" xml:space="preserve">
-    <value>Frais</value>
-  </data>
-  <data name="FileName" xml:space="preserve">
-    <value>Nom du fichier</value>
-  </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filtrer par agence</value>
-  </data>
-  <data name="FilterByDateRange" xml:space="preserve">
-    <value>Filtrer par plage de dates</value>
   </data>
   <data name="FilterByMainReportType" xml:space="preserve">
     <value>Filtrer par type de rapport principal</value>
@@ -318,15 +228,6 @@
   <data name="INT" xml:space="preserve">
     <value>INT</value>
   </data>
-  <data name="Interest" xml:space="preserve">
-    <value>Intérêt</value>
-  </data>
-  <data name="InterestCalculated" xml:space="preserve">
-    <value>Intérêt calculé</value>
-  </data>
-  <data name="InterestRate" xml:space="preserve">
-    <value>Taux d'intérêt</value>
-  </data>
   <data name="LastCalculatedInterest" xml:space="preserve">
     <value>Dernier intérêt calculé</value>
   </data>
@@ -354,9 +255,6 @@
   <data name="ListOfPaidLoans" xml:space="preserve">
     <value>Liste des prêts remboursés</value>
   </data>
-  <data name="LoanAmount" xml:space="preserve">
-    <value>Montant du prêt</value>
-  </data>
   <data name="LoanApplicationCode" xml:space="preserve">
     <value>Code de l'application de prêt</value>
   </data>
@@ -369,17 +267,11 @@
   <data name="LoanDataTable" xml:space="preserve">
     <value>Tableau de données de prêt</value>
   </data>
-  <data name="LoanDate" xml:space="preserve">
-    <value>Date du prêt</value>
-  </data>
   <data name="LoanDeliquecyJourney" xml:space="preserve">
     <value>Parcours de délinquance du prêt</value>
   </data>
   <data name="LoanDetails" xml:space="preserve">
     <value>Détails du prêt</value>
-  </data>
-  <data name="LoanDuration" xml:space="preserve">
-    <value>Durée du prêt</value>
   </data>
   <data name="LoanExpiryDate" xml:space="preserve">
     <value>Date d'expiration du prêt</value>
@@ -414,14 +306,8 @@
   <data name="LoanState" xml:space="preserve">
     <value>État du prêt</value>
   </data>
-  <data name="LoanStatus" xml:space="preserve">
-    <value>Statut du prêt</value>
-  </data>
   <data name="LoanTerm" xml:space="preserve">
     <value>Durée du prêt</value>
-  </data>
-  <data name="LoanType" xml:space="preserve">
-    <value>Type de prêt</value>
   </data>
   <data name="LOAN_PORTFOLIO_REPORT" xml:space="preserve">
     <value>RAPPORT SUR LE PORTEFEUILLE DE PRÊTS</value>
@@ -450,12 +336,6 @@
   <data name="MREF" xml:space="preserve">
     <value>M.REF</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="NewBalance" xml:space="preserve">
-    <value>Nouveau solde</value>
-  </data>
   <data name="NoDailyInterestCalculationsGeneratedFor" xml:space="preserve">
     <value>Aucun calcul d'intérêts quotidiens généré pour</value>
   </data>
@@ -471,74 +351,14 @@
   <data name="NotCurrent" xml:space="preserve">
     <value>Non actuel</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Ouvert</value>
-  </data>
-  <data name="Paid" xml:space="preserve">
-    <value>Payé</value>
-  </data>
-  <data name="Penalties" xml:space="preserve">
-    <value>Pénalités</value>
-  </data>
-  <data name="Penalty" xml:space="preserve">
-    <value>Pénalité</value>
-  </data>
-  <data name="Pending" xml:space="preserve">
-    <value>En attente</value>
-  </data>
-  <data name="Phone" xml:space="preserve">
-    <value>Téléphone</value>
-  </data>
-  <data name="Principal" xml:space="preserve">
-    <value>Principal</value>
-  </data>
-  <data name="Rate" xml:space="preserve">
-    <value>Taux</value>
-  </data>
-  <data name="Refinanced" xml:space="preserve">
-    <value>Refinancé</value>
-  </data>
-  <data name="Refunds" xml:space="preserve">
-    <value>Remboursements</value>
-  </data>
   <data name="RepaymentSchedule" xml:space="preserve">
     <value>Échéancier de remboursement</value>
-  </data>
-  <data name="Rescheduled" xml:space="preserve">
-    <value>Rééchelonné</value>
-  </data>
-  <data name="ResetFilters" xml:space="preserve">
-    <value>Réinitialiser les filtres</value>
-  </data>
-  <data name="Restructured" xml:space="preserve">
-    <value>Restructuré</value>
-  </data>
-  <data name="SearchCriteria" xml:space="preserve">
-    <value>Critères de recherche</value>
-  </data>
-  <data name="SelectAll" xml:space="preserve">
-    <value>Sélectionner tout</value>
   </data>
   <data name="SelectAMainReportTypeOrGenerateAFullPortfolioReportWithOptionalSubreportDetails" xml:space="preserve">
     <value>Sélectionner un type de rapport principal ou générer un rapport complet sur le portefeuille avec des détails de sous-rapport facultatifs. Exporter au format PDF, Excel ou Word</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Sélectionner une agence</value>
-  </data>
-  <data name="ShowFilters" xml:space="preserve">
-    <value>Afficher les filtres</value>
-  </data>
-  <data name="Size" xml:space="preserve">
-    <value>Taille</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Date de début</value>
-  </data>
   <data name="SubreportAnalysis" xml:space="preserve">
     <value>Analyse de sous-rapport</value>
-  </data>
-  <data name="Terms" xml:space="preserve">
-    <value>Conditions</value>
   </data>
   <data name="TIPS_FOR_USING_LOAN_PORTFOLIO_REPORT_FILTERS" xml:space="preserve">
     <value>CONSEILS POUR UTILISER LES FILTRES DE RAPPORT SUR LE PORTEFEUILLE DE PRÊTS</value>
@@ -555,9 +375,6 @@
   <data name="TotalInterestCalculated" xml:space="preserve">
     <value>Intérêts totaux calculés</value>
   </data>
-  <data name="TotalPaid" xml:space="preserve">
-    <value>Total payé</value>
-  </data>
   <data name="TotalRefunds" xml:space="preserve">
     <value>Total des remboursements</value>
   </data>
@@ -567,22 +384,10 @@
   <data name="UnCheckedToIncludePaidLoans" xml:space="preserve">
     <value>Non coché pour inclure les prêts payés</value>
   </data>
-  <data name="User" xml:space="preserve">
-    <value>Utilisateur</value>
-  </data>
-  <data name="Vat" xml:space="preserve">
-    <value>TVA</value>
-  </data>
   <data name="VatCalculated" xml:space="preserve">
     <value>TVA calculée</value>
   </data>
-  <data name="VATLc" xml:space="preserve">
-    <value>TVA</value>
-  </data>
   <data name="VatPaid" xml:space="preserve">
     <value>TVA payée</value>
-  </data>
-  <data name="VatRate" xml:space="preserve">
-    <value>Taux de TVA</value>
   </data>
 </root>

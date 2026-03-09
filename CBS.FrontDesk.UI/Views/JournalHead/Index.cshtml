@@ -7,19 +7,19 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> JOURNAL HEAD
+            <i class="mdi mdi-cog-outline me-2"></i> @GlobalJournalHead.JOURNAL_HEAD
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Use the filters below to search and review journal entries efficiently.
+            @GlobalJournalHead.Use_the_filters_below_to_search_and_review_journal_entries_efficiently
         </div>
     </div>
 </div>
 
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> FILTER USAGE GUIDE</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.FILTER_USAGE_GUIDE</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilterTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -28,14 +28,14 @@
     <div id="collapseFilterTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><strong>Branch Filter:</strong> Check the box to enable branch selection. You can show or hide it as needed.</li>
-                <li><strong>Operation Type:</strong> Choose whether to view <em>Cash In</em> or <em>Cash Out</em> operations.</li>
-                <li><strong>Reconciliation Status:</strong> Filter between <em>Temporary</em> or <em>Reconciled</em> journal entries.</li>
-                <li><strong>Reference:</strong> Enter a reference number or keyword to search for specific transactions.</li>
-                <li><strong>Date Filters:</strong> Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</li>
-                <li><strong>Apply Filters:</strong> Click <em>Search</em> to load matching results in the table below.</li>
-                <li><strong>Reset Filters:</strong> Use the reset button to clear all filters and start a new search.</li>
-                <li><strong>Tip:</strong> Combine filters (e.g., Branch + Date) for more precise results.</li>
+                <li><strong>@GlobalShared.Branch_Filter:</strong> @GlobalJournalHead.Check_the_box_to_enable_branch_selection_You_can_show_or_hide_it_as_needed</li>
+                <li><strong>@GlobalShared.Operation_type:</strong> @Html.Raw(@GlobalJournalHead.Choose_whether_to_view_Cash_In_or_Cash_Out_operations)</li>
+                <li><strong>@GlobalShared.Reconciliation_Status:</strong> @Html.Raw(@GlobalJournalHead.Filter_between_Temporary_or_econciled_ournal_ntries)</li>
+                <li><strong>@GlobalShared.Reference:</strong> @GlobalJournalHead.Enter_a_reference_number_or_keyword_to_search_for_specific_transactions</li>
+                <li><strong>@GlobalShared.Date_Filters:</strong> @GlobalJournalHead.Use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_You_can_filter_by_range_for_better_results</li>
+                <li><strong>@GlobalShared.Apply_filters:</strong> @Html.Raw(@GlobalJournalHead.Click_Search_to_load_matching_results_in_the_table_below)</li>
+                <li><strong>@GlobalShared.Reset_Filters:</strong> @GlobalJournalHead.Use_the_reset_button_to_clear_all_filters_and_start_a_new_search</li>
+                <li><strong>@GlobalShared.Tip:</strong> @GlobalJournalHead.Combine_filters_e_g_Branch_Date_for_more_precise_results</li>
             </ul>
         </div>
     </div>
@@ -45,7 +45,7 @@
 
 <div class="card shadow p-3 mb-2">
     <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.ADVANCE_FILTERS
     </h5>
 
     <form id="journalHeaderFilterForm" autocomplete="off" method="post">
@@ -66,7 +66,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleBranch">
-                            Show Branch Filter
+                            @GlobalShared.Show_Branch_Filter
                         </label>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('AccoutingdateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Accounting Date
+                            @GlobalShared.Show_Accounting_Date
                         </label>
                     </div>
                 </div>
@@ -85,14 +85,14 @@
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold" for="toggleDateFilters">
-                            Show Entry Date Filters
+                            @GlobalShared.Show_Entry_Date_Filters
                         </label>
                     </div>
                 </div>
                 <div class="col-md-3 mb-1 d-flex align-items-center mt-4">
                     <div class="form-check">
                         @Html.CheckBox("IsInterbranch", false, new { @class = "form-check-input", id = "IsInterbranch" })
-                        <label class="form-check-label fw-bold" for="IsInterbranch">Is Interbranch</label>
+                        <label class="form-check-label fw-bold" for="IsInterbranch">@GlobalShared.IsInterBranch</label>
                     </div>
                 </div>
 
@@ -103,10 +103,10 @@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-1">
                     <div class="col-md-12 mb-1">
-                        <label class="form-label fw-bold" for="branchId">Branch</label>
+                        <label class="form-label fw-bold" for="branchId">@GlobalShared.Branch</label>
                         @Html.DropDownList("BranchId",
                             new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                            "--- Select Branch ---",
+                            "---"+ GlobalShared.Select_Branch +"---",
                             new { @class = "form-control select2 mb-1", @id = "branchId" })
                     </div>
                 </div>
@@ -123,10 +123,10 @@
 
                 <div class="col-md-6 mb-1">
 
-                    <label class="form-label fw-bold">Journal Status</label>
+                    <label class="form-label fw-bold">@GlobalShared.Journal_Status</label>
                     @Html.DropDownList("JournalStatus",
                         new SelectList(ViewBag.JournalStatus, "Value", "Text"),
-                        "Select Journal Status",
+                        ""+ GlobalShared.Select_Journal_Status + "",
                         new { @class = "form-control select2 mb-1", @id = "JournalStatus" })
                 </div>
 
@@ -138,11 +138,11 @@
                             new { @class = "form-control select2 mb-1", id = "DailyOperator" })
                     </div>*@
                 <div class="col-md-6 mb-1">
-                    <label class="form-label fw-bold">Daily Operator</label>
+                    <label class="form-label fw-bold">@GlobalShared.Daily_Operator</label>
                     @Html.DropDownList(
                         "DailyOperator",
                         ViewBag.DailyOperators as List<SelectListItem>,
-                        "--- Select Operator ---",
+                        "---"+ GlobalShared.Select_Operator +"---",
                         new { @class = "form-control select2 mb-1", id = "DailyOperator" }
                     )
                 </div>
@@ -156,8 +156,8 @@
 
             <div class="row mb-1">
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Reference</label>
-                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="Enter Reference" />
+                    <label class="form-label fw-bold">@GlobalShared.Reference</label>
+                    <input type="text" id="reference" name="Reference" class="form-control mb-1" placeholder="@GlobalShared.Enter_Reference" />
                 </div>
 
                 @*<div class="col-md-4 mb-1">
@@ -170,10 +170,10 @@
 
                 <div class="col-md-4 mb-1">
 
-                    <label class="form-label fw-bold">Data Source</label>
+                    <label class="form-label fw-bold">@GlobalShared.Data_source</label>
                     @Html.DropDownList("Source",
                         new SelectList(ViewBag.Source, "Value", "Text"),
-                        "Select Source ",
+                        ""+ GlobalShared.Select_Source +"",
                         new { @class = "form-control select2 mb-1", @id = "Source" })
                 </div>
 
@@ -187,11 +187,11 @@
                     </div>*@
 
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Operation Code</label>
+                    <label class="form-label fw-bold">@GlobalShared.Operation_Code</label>
                     @Html.DropDownList(
                         "OperationCode",
                         ViewBag.OperationCodes as List<SelectListItem>,
-                        "--- Select Operation Code ---",
+                        "---" + GlobalShared.Select_Operation_Code + "---",
                         new { @class = "form-control select2 mb-1", id = "OperationCode" }
                     )
                 </div>
@@ -205,11 +205,11 @@
             <div id="AccoutingdateFilters" class="d-none">
                 <div class="row mb-1">
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Start Accounting Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Accounting_Date</label>
                         <input type="date" id="startaccountingDate" name="StartAccountingDate" class="form-control mb-1" />
                     </div>
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">End Accounting Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Accounting_Date</label>
                         <input type="date" id="endaccountingDate" name="EndAccountingDate" class="form-control mb-1" />
                     </div>
 
@@ -222,12 +222,12 @@
                 <div class="row mb-1">
 
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="startDate">Start Entry Date</label>
+                        <label class="form-label fw-bold" for="startDate">@GlobalShared.Start_Entry_Date</label>
                         <input type="date" id="startDate" name="StartDate" class="form-control mb-1" />
                     </div>
 
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold" for="endDate">End Entry Date</label>
+                        <label class="form-label fw-bold" for="endDate">@GlobalShared.End_Entry_Date</label>
                         <input type="date" id="endDate" name="EndDate" class="form-control mb-1" />
                     </div>
 
@@ -245,20 +245,20 @@
         <div class="row g-2 mt-2">
             <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit" class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary btn-sm w-100"
                         onclick="document.getElementById('journalHeaderFilterForm').reset();">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button type="button" id="btnExport" class="btn btn-success btn-sm w-100">
-                    <i class="mdi mdi-export me-1"></i> Export
+                    <i class="mdi mdi-export me-1"></i> @GlobalShared.Export
                 </button>
             </div>
         </div>

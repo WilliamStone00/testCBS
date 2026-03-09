@@ -1,7 +1,8 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping
+    @using Resources
 <div class="detail-card p-3">
-    <div class="mb-3"><strong>Branch:</strong> @Model.BranchName (@Model.BranchName)</div>
-    <div class="mb-3"><strong>Counterparty Branch:</strong> @Model.CounterpartyBranchName</div>
-    <div class="mb-3"><strong>Due From Asset Account:</strong> @Model.DueFromAssetAccountName (@Model.DueFromAssetAccountName)</div>
-    <div class="mb-3"><strong>Due To Liability Account:</strong> @Model.DueToLiabilityAccountName (@Model.DueToLiabilityAccountName)</div>
+    <div class="mb-3"><strong>@GlobalShared.Branch:</strong> @Model.BranchName (@Model.BranchName)</div>
+    <div class="mb-3"><strong>@GlobalShared.Counterparty_Branch:</strong> @Model.CounterpartyBranchName</div>
+    <div class="mb-3"><strong>@GlobalShared.Due_From_Asset_Account:</strong> @Model.DueFromAssetAccountName (@Model.DueFromAssetAccountName)</div>
+    <div class="mb-3"><strong>@GlobalShared.Due_To_Liability_Account:</strong> @Model.DueToLiabilityAccountName (@Model.DueToLiabilityAccountName)</div>
 </div>

@@ -117,83 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccrualInterest" xml:space="preserve">
-    <value>Accrual interest</value>
-  </data>
-  <data name="AccrualInterests" xml:space="preserve">
-    <value>Accrual interests</value>
-  </data>
   <data name="AccrualPaid" xml:space="preserve">
     <value>Accrual paid</value>
   </data>
   <data name="AddDeeperBreakdownsSuchAsAgingGenderAndPurpose" xml:space="preserve">
     <value>Add deeper breakdowns such as aging, gender, and purpose</value>
   </data>
-  <data name="Address" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="AllLoans" xml:space="preserve">
-    <value>All loans</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
-  </data>
   <data name="AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes" xml:space="preserve">
     <value>Analyze and track loan portfolio statistics across branches and timeframes. Filter by branch, loan type, delinquency state, or report focus area</value>
-  </data>
-  <data name="ApplicationDate" xml:space="preserve">
-    <value>Application date</value>
-  </data>
-  <data name="ApprovalState" xml:space="preserve">
-    <value>Approval state</value>
-  </data>
-  <data name="Approved" xml:space="preserve">
-    <value>Approved</value>
   </data>
   <data name="BAL" xml:space="preserve">
     <value>BAL</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
   <data name="BranchAndCode" xml:space="preserve">
     <value>Branch and code</value>
-  </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Branch code</value>
-  </data>
-  <data name="Capital" xml:space="preserve">
-    <value>Capital</value>
   </data>
   <data name="ChooseBetweenAFullReportOrAFocusedView" xml:space="preserve">
     <value>Choose between a full report or a focused view (e.g., Delinquent Loans)</value>
   </data>
-  <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
-  </data>
-  <data name="Current" xml:space="preserve">
-    <value>Current</value>
-  </data>
   <data name="CurrentLoanSummary" xml:space="preserve">
     <value>Current loan summary</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date from</value>
-  </data>
-  <data name="DateRange" xml:space="preserve">
-    <value>Date range</value>
-  </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>Date to</value>
   </data>
   <data name="DaysAfterMaturityDate" xml:space="preserve">
     <value>days after maturity date</value>
@@ -231,50 +174,17 @@
   <data name="DelinquentLoanSummary" xml:space="preserve">
     <value>Delinquent loan summary</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="DownloadAsPDFExcelOrWordForSharingAndCompliance" xml:space="preserve">
     <value>Download as PDF, Excel, or Word for sharing and compliance</value>
-  </data>
-  <data name="DueAmount" xml:space="preserve">
-    <value>Due amount</value>
   </data>
   <data name="DueAMT" xml:space="preserve">
     <value>Due. AMT</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>End date</value>
-  </data>
   <data name="EnterCustomerBranchOrReference" xml:space="preserve">
     <value>Enter customer, branch, or reference</value>
   </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="ExportFormat" xml:space="preserve">
-    <value>Export format</value>
-  </data>
   <data name="ExportMigratedLoans" xml:space="preserve">
     <value>Export migrated loans</value>
-  </data>
-  <data name="ExportReportType" xml:space="preserve">
-    <value>Export Report Type</value>
-  </data>
-  <data name="Fees" xml:space="preserve">
-    <value>Fees</value>
-  </data>
-  <data name="FileName" xml:space="preserve">
-    <value>File name</value>
-  </data>
-  <data name="FilterByBranch" xml:space="preserve">
-    <value>Filter by branch</value>
-  </data>
-  <data name="FilterByDateRange" xml:space="preserve">
-    <value>Filter by date range</value>
   </data>
   <data name="FilterByMainReportType" xml:space="preserve">
     <value>Filter by main report type</value>
@@ -318,15 +228,6 @@
   <data name="INT" xml:space="preserve">
     <value>INT</value>
   </data>
-  <data name="Interest" xml:space="preserve">
-    <value>Interest</value>
-  </data>
-  <data name="InterestCalculated" xml:space="preserve">
-    <value>Interest calculated</value>
-  </data>
-  <data name="InterestRate" xml:space="preserve">
-    <value>Interest rate</value>
-  </data>
   <data name="LastCalculatedInterest" xml:space="preserve">
     <value>Last calculated interest</value>
   </data>
@@ -354,9 +255,6 @@
   <data name="ListOfPaidLoans" xml:space="preserve">
     <value>List of paid loans</value>
   </data>
-  <data name="LoanAmount" xml:space="preserve">
-    <value>Loan amount</value>
-  </data>
   <data name="LoanApplicationCode" xml:space="preserve">
     <value>Loan application code</value>
   </data>
@@ -369,17 +267,11 @@
   <data name="LoanDataTable" xml:space="preserve">
     <value>Loan data table</value>
   </data>
-  <data name="LoanDate" xml:space="preserve">
-    <value>Loan date</value>
-  </data>
   <data name="LoanDeliquecyJourney" xml:space="preserve">
     <value>Loan deliquecy journey</value>
   </data>
   <data name="LoanDetails" xml:space="preserve">
     <value>Loan details</value>
-  </data>
-  <data name="LoanDuration" xml:space="preserve">
-    <value>Loan duration</value>
   </data>
   <data name="LoanExpiryDate" xml:space="preserve">
     <value>Loan expiry date</value>
@@ -414,14 +306,8 @@
   <data name="LoanState" xml:space="preserve">
     <value>Loan state</value>
   </data>
-  <data name="LoanStatus" xml:space="preserve">
-    <value>Loan status</value>
-  </data>
   <data name="LoanTerm" xml:space="preserve">
     <value>Loan term</value>
-  </data>
-  <data name="LoanType" xml:space="preserve">
-    <value>Loan type</value>
   </data>
   <data name="LOAN_PORTFOLIO_REPORT" xml:space="preserve">
     <value>LOAN PORTFOLIO REPORT</value>
@@ -450,12 +336,6 @@
   <data name="MREF" xml:space="preserve">
     <value>M.REF</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NewBalance" xml:space="preserve">
-    <value>New balance</value>
-  </data>
   <data name="NoDailyInterestCalculationsGeneratedFor" xml:space="preserve">
     <value>No daily interest calculations generated for</value>
   </data>
@@ -471,74 +351,14 @@
   <data name="NotCurrent" xml:space="preserve">
     <value>Not current</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="Paid" xml:space="preserve">
-    <value>Paid</value>
-  </data>
-  <data name="Penalties" xml:space="preserve">
-    <value>Penalties</value>
-  </data>
-  <data name="Penalty" xml:space="preserve">
-    <value>Penalty</value>
-  </data>
-  <data name="Pending" xml:space="preserve">
-    <value>Pending</value>
-  </data>
-  <data name="Phone" xml:space="preserve">
-    <value>Phone</value>
-  </data>
-  <data name="Principal" xml:space="preserve">
-    <value>Principal</value>
-  </data>
-  <data name="Rate" xml:space="preserve">
-    <value>Rate</value>
-  </data>
-  <data name="Refinanced" xml:space="preserve">
-    <value>Refinanced</value>
-  </data>
-  <data name="Refunds" xml:space="preserve">
-    <value>Refunds</value>
-  </data>
   <data name="RepaymentSchedule" xml:space="preserve">
     <value>Repayment schedule</value>
-  </data>
-  <data name="Rescheduled" xml:space="preserve">
-    <value>Rescheduled</value>
-  </data>
-  <data name="ResetFilters" xml:space="preserve">
-    <value>Reset filters</value>
-  </data>
-  <data name="Restructured" xml:space="preserve">
-    <value>Restructured</value>
-  </data>
-  <data name="SearchCriteria" xml:space="preserve">
-    <value>Search criteria</value>
-  </data>
-  <data name="SelectAll" xml:space="preserve">
-    <value>Select all</value>
   </data>
   <data name="SelectAMainReportTypeOrGenerateAFullPortfolioReportWithOptionalSubreportDetails" xml:space="preserve">
     <value>Select a main report type or generate a full portfolio report with optional subreport details. Export as PDF, Excel, or Word</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
-  <data name="ShowFilters" xml:space="preserve">
-    <value>Show filters</value>
-  </data>
-  <data name="Size" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Start date</value>
-  </data>
   <data name="SubreportAnalysis" xml:space="preserve">
     <value>Sub report analysis</value>
-  </data>
-  <data name="Terms" xml:space="preserve">
-    <value>Terms</value>
   </data>
   <data name="TIPS_FOR_USING_LOAN_PORTFOLIO_REPORT_FILTERS" xml:space="preserve">
     <value>TIPS FOR USING LOAN PORTFOLIO REPORT FILTERS</value>
@@ -555,9 +375,6 @@
   <data name="TotalInterestCalculated" xml:space="preserve">
     <value>Total interest calculated</value>
   </data>
-  <data name="TotalPaid" xml:space="preserve">
-    <value>Total paid</value>
-  </data>
   <data name="TotalRefunds" xml:space="preserve">
     <value>Total refunds</value>
   </data>
@@ -567,22 +384,10 @@
   <data name="UnCheckedToIncludePaidLoans" xml:space="preserve">
     <value>UnChecked to include paid loans</value>
   </data>
-  <data name="User" xml:space="preserve">
-    <value>User</value>
-  </data>
-  <data name="Vat" xml:space="preserve">
-    <value>Vat</value>
-  </data>
   <data name="VatCalculated" xml:space="preserve">
     <value>Vat calculated</value>
   </data>
-  <data name="VATLc" xml:space="preserve">
-    <value>VAT</value>
-  </data>
   <data name="VatPaid" xml:space="preserve">
     <value>Vat paid</value>
-  </data>
-  <data name="VatRate" xml:space="preserve">
-    <value>Vat rate</value>
   </data>
 </root>

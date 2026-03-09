@@ -1,19 +1,19 @@
 ﻿
 @model CBS.FrontDesk.Data.Entity.AccountingV2.JournalHead
-
+@using Resources
 <div class="modal-body">
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-export me-2"></i>Export Journal Header
+                        <i class="mdi mdi-export me-2"></i>@GlobalJournalHead.Export_Journal_Header
                     </h1>
                     <p class="card-text"></p>
 
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Export Journal Header entries with optional date filtering and export format selection.
+                        @GlobalJournalHead.Export_Journal_Header_entries_with_optional_date_filtering_and_export_format_selection
                     </div>
 
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -25,7 +25,7 @@
     <!-- Export Options -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Export Format</label>
+            <label class="form-label fw-semibold">@GlobalShared.Export_Format</label>
             <select class="form-select" id="jhExportFormat">
                 <option value="excel">Excel (.xlsx)</option>
                 @*<option value="csv">CSV (.csv)</option>*@
@@ -34,11 +34,11 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Report Type</label>
+            <label class="form-label fw-semibold">@GlobalShared.Report_Type</label>
             <select class="form-select" id="jhReportType">
-                <option value="full">Full Report</option>
-                <option value="dateRange">Date Range Only</option>
-                <option value="branch">By Branch</option>
+                <option value="full">@GlobalShared.Full_Report</option>
+                <option value="dateRange">@GlobalShared.Date_Range_Only</option>
+                <option value="branch">@GlobalShared.By_Branch</option>
             </select>
         </div>
     </div>
@@ -46,21 +46,21 @@
     <!-- Date Range -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Date Range (Optional)</label>
+            <label class="form-label fw-semibold">@GlobalShared.Date_Range (@GlobalShared.Optional)</label>
             <div class="input-group">
                 <input type="date" class="form-control" id="jhStartDate">
                 <span class="input-group-text">To</span>
                 <input type="date" class="form-control" id="jhEndDate">
             </div>
-            <small class="text-muted">Leave empty to include all dates.</small>
+            <small class="text-muted">@GlobalJournalHead.Leave_empty_to_include_all_dates</small>
         </div>
 
         <!-- File Name -->
         <div class="col-md-6">
-            <label class="form-label fw-semibold">File Name</label>
+            <label class="form-label fw-semibold">@GlobalShared.File_Name</label>
             <input type="text" class="form-control" id="jhFileName"
                    value="Journal_Header_Report"
-                   placeholder="Enter file name">
+                   placeholder="@GlobalShared.Enter_file_name">
         </div>
     </div>
 
@@ -71,11 +71,11 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close me-1"></i>Cancel
+        <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
     </button>
 
     <button type="button" class="btn btn-success" id="btnConfirmJournalExport">
-        <i class="mdi mdi-export me-1"></i>Export
+        <i class="mdi mdi-export me-1"></i>@GlobalShared.Export
     </button>
 </div>
 

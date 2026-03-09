@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Approved_Journal_Entries" xml:space="preserve">
+    <value>Approved Journal Entries</value>
+  </data>
+  <data name="Check_the_box_to_enable_branch_selection_You_can_show_or_hide_it_as_needed" xml:space="preserve">
+    <value>Check the box to enable branch selection. You can show or hide it as needed.</value>
+  </data>
+  <data name="Choose_whether_to_view_Cash_In_or_Cash_Out_operations" xml:space="preserve">
+    <value>Choose whether to view &lt;em&gt;Cash In&lt;/em&gt; or &lt;em&gt;Cash Out&lt;/em&gt; operations.</value>
+  </data>
+  <data name="Click_Search_to_load_matching_results_in_the_table_below" xml:space="preserve">
+    <value>Click &lt;em&gt;Search&lt;/em&gt; to load matching results in the table below.</value>
+  </data>
+  <data name="Combine_filters_e_g_Branch_Date_for_more_precise_results" xml:space="preserve">
+    <value>Combine filters (e.g., Branch + Date) for more precise results.</value>
+  </data>
+  <data name="Detailed_information_for_the_selected_journal_entry" xml:space="preserve">
+    <value>Detailed information for the selected journal entry.</value>
+  </data>
+  <data name="Detailed_information_for_the_selected_journal_entry_Scroll_to_view_line_entries_reconciliations_workflow_tickets_and_receipts" xml:space="preserve">
+    <value>Detailed information for the selected journal entry. Scroll to view line entries, reconciliations, workflow tickets, and receipts.</value>
+  </data>
+  <data name="Enter_a_reference_number_or_keyword_to_search_for_specific_transactions" xml:space="preserve">
+    <value>Enter a reference number or keyword to search for specific transactions.</value>
+  </data>
+  <data name="Export_Journal_Header" xml:space="preserve">
+    <value>Export Journal Header</value>
+  </data>
+  <data name="Export_Journal_Header_entries_with_optional_date_filtering_and_export_format_selection" xml:space="preserve">
+    <value>Export Journal Header entries with optional date filtering and export format selection.</value>
+  </data>
+  <data name="Filter_between_Temporary_or_econciled_ournal_ntries" xml:space="preserve">
+    <value>Filter between &lt;em&gt;Temporary&lt;/em&gt; or &lt;em&gt;Reconciled&lt;/em&gt; journal entries.</value>
+  </data>
+  <data name="Journal_Entries_awaiting_validation" xml:space="preserve">
+    <value>Journal Entries (awaiting validation)</value>
+  </data>
+  <data name="Journal_entry_data_could_not_be_loaded" xml:space="preserve">
+    <value>Journal entry data could not be loaded.</value>
+  </data>
+  <data name="JOURNAL_HEAD" xml:space="preserve">
+    <value>JOURNAL HEAD</value>
+  </data>
+  <data name="Journal_Header" xml:space="preserve">
+    <value>Journal Header</value>
+  </data>
+  <data name="JOURNAL_HEADER_DETAILS" xml:space="preserve">
+    <value>JOURNAL HEADER AND DETAILS</value>
+  </data>
+  <data name="Journal_Line_Entries" xml:space="preserve">
+    <value>Journal Line Entries</value>
+  </data>
+  <data name="JOURNAL_REQUEST_DETAILS" xml:space="preserve">
+    <value>JOURNAL REQUEST &amp; DETAILS</value>
+  </data>
+  <data name="Leave_empty_to_include_all_dates" xml:space="preserve">
+    <value>Leave empty to include all dates.</value>
+  </data>
+  <data name="No_entries_available" xml:space="preserve">
+    <value>No entries available.</value>
+  </data>
+  <data name="No_journal_line_entries_found" xml:space="preserve">
+    <value>No journal line entries found</value>
+  </data>
+  <data name="Posted_Entries" xml:space="preserve">
+    <value>Posted Entries</value>
+  </data>
+  <data name="Reject_Journal_REQUEST" xml:space="preserve">
+    <value>Reject Journal REQUEST</value>
+  </data>
+  <data name="Temp_Journal_Lines_Pending_Destination" xml:space="preserve">
+    <value>Temp Journal Lines (Pending / Destination)</value>
+  </data>
+  <data name="Unposted_Entries" xml:space="preserve">
+    <value>Unposted Entries</value>
+  </data>
+  <data name="Use_the_filters_below_to_search_and_review_journal_entries_efficiently" xml:space="preserve">
+    <value>Use the filters below to search and review journal entries efficiently.</value>
+  </data>
+  <data name="Use_the_reset_button_to_clear_all_filters_and_start_a_new_search" xml:space="preserve">
+    <value>Use the reset button to clear all filters and start a new search.</value>
+  </data>
+  <data name="Use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_You_can_filter_by_range_for_better_results" xml:space="preserve">
+    <value>Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results.</value>
+  </data>
+  <data name="Use_this_page_to_Reject_your_journal_request" xml:space="preserve">
+    <value>Use this page to Reject your journal request.</value>
+  </data>
+  <data name="Workflow_Tickets" xml:space="preserve">
+    <value>Workflow Tickets</value>
+  </data>
+</root>

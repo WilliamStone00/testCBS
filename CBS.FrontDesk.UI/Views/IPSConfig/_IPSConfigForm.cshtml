@@ -11,7 +11,7 @@
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_IPSConfigForm','new','IPSConfig')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
-            <i class="mdi mdi-plus mdi-18px"></i> Add New
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add_New_LC
         </a>
     </div>
 </div>
@@ -24,7 +24,7 @@
 
             <div class="row gy-3">
                 <div class="col-12">
-                    <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-cog-outline me-1"></i> IPS Configuration Details</h6>
+                    <h6 class="text-primary border-bottom pt-2 pb-1"><i class="mdi mdi-cog-outline me-1"></i> @GlobalIPSConfig.IPS_Configuration_Details</h6>
                 </div>
 
                 <div class="col-md-3">
@@ -36,7 +36,7 @@
                                    name="IsCentralized"
                                    value="true" />
                             <label class="form-check-label" for="IsCentralized">
-                                Is Centralized
+                                @GlobalShared.Is_Centralized
                             </label>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                     <div class="col-md-12" id="branchSection">
                         <label>@GlobalUserManagement.Branch</label>
                         <div class="form-floating shadow-sm">
-                            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchId", onchange = "loadBranchAccounts()" })
+                            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---"+ GlobalShared.Select_Branch+"---", new { @class = "form-control select2", id = "BranchId", onchange = "loadBranchAccounts()" })
                             @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -64,54 +64,54 @@
                             required = "required"
                         })
                         @Html.ValidationMessageFor(m => m.Year, "", new { @class = "text-danger" })
-                        <label>Year</label>
+                        <label>@GlobalShared.Year</label>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.AgeLimit, new { @class = "form-control", type = "number", min = "40", required = "required", placeholder = "Age Limit" })
+                        @Html.TextBoxFor(m => m.AgeLimit, new { @class = "form-control", type = "number", min = "40", required = "required", placeholder = ""+ GlobalShared.Age_Limit + "" })
                         @Html.ValidationMessageFor(m => m.AgeLimit, "", new { @class = "text-danger" })
-                        <label>Age Limit</label>
+                        <label>@GlobalShared.Age_Limit</label>
                     </div>
                 </div>
 
                 <!-- Account Configuration Section -->
                 <div class="col-12">
-                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-bank me-1"></i> Account Configuration</h6>
+                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-bank me-1"></i> @GlobalShared.Account_Configuration</h6>
                 </div>
 
 
                 <div id="branchAccountsSection">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            <label>Life Savings Claim Debit Account</label>
+                            <label>@GlobalIPSConfig.Life_Savings_Claim_Debit_Account</label>
                             <div class="form-floating shadow-sm">
-                                @Html.DropDownListFor(m => m.LifeSavingsClaimDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Debit Account ---", new { @class = "form-control select2", id = "LifeSavingsClaimDebitAccountId" })
+                                @Html.DropDownListFor(m => m.LifeSavingsClaimDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "---"+ GlobalShared.Select_Debit_Account +"---", new { @class = "form-control select2", id = "LifeSavingsClaimDebitAccountId" })
                                 @Html.ValidationMessageFor(m => m.LifeSavingsClaimDebitAccountId, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="col-md-6">
-                            <label>Life Savings Claim Credit Account</label>
+                            <label>@GlobalIPSConfig.Life_Savings_Claim_Credit_Account</label>
                             <div class="form-floating shadow-sm">
-                                @Html.DropDownListFor(m => m.LifeSavingsClaimCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Credit Account ---", new { @class = "form-control select2", id = "LifeSavingsClaimCreditAccountId" })
+                                @Html.DropDownListFor(m => m.LifeSavingsClaimCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "---"+ GlobalShared.Select_Credit_Account + "---", new { @class = "form-control select2", id = "LifeSavingsClaimCreditAccountId" })
                                 @Html.ValidationMessageFor(m => m.LifeSavingsClaimCreditAccountId, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="col-md-6">
-                            <label>Loan Protection Debit Account</label>
+                            <label>@GlobalIPSConfig.Loan_Protection_Debit_Account</label>
                             <div class="form-floating shadow-sm">
-                                @Html.DropDownListFor(m => m.LoanProtectionDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Debit Account ---", new { @class = "form-control select2", id = "LoanProtectionDebitAccountId" })
+                                @Html.DropDownListFor(m => m.LoanProtectionDebitAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "---"+ GlobalShared.Select_Debit_Account + "---", new { @class = "form-control select2", id = "LoanProtectionDebitAccountId" })
                                 @Html.ValidationMessageFor(m => m.LoanProtectionDebitAccountId, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="col-md-6">
-                            <label>Loan Protection Credit Account</label>
+                            <label>@GlobalIPSConfig.Loan_Protection_Credit_Account</label>
                             <div class="form-floating shadow-sm">
-                                @Html.DropDownListFor(m => m.LoanProtectionCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "--- Select Credit Account ---", new { @class = "form-control select2", id = "LoanProtectionCreditAccountId" })
+                                @Html.DropDownListFor(m => m.LoanProtectionCreditAccountId, new SelectList(Enumerable.Empty<SelectListItem>()), "---" +@GlobalShared.Select_Credit_Account +"---", new { @class = "form-control select2", id = "LoanProtectionCreditAccountId" })
                                 @Html.ValidationMessageFor(m => m.LoanProtectionCreditAccountId, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -125,33 +125,33 @@
                         <div class="row gy-3">
 
                             <div class="col-md-6">
-                                <label>Life Savings Claim Debit Account</label>
+                                <label>@GlobalIPSConfig.Life_Savings_Claim_Debit_Account</label>
                                 <div class="form-floating shadow-sm">
-                                    @Html.DropDownListFor(m => m.LifeSavingsClaimDebitAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
+                                    @Html.DropDownListFor(m => m.LifeSavingsClaimDebitAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "---" + GlobalShared.Select_Affiliate_Account + "---", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(m => m.LifeSavingsClaimDebitAccountId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label>Life Savings Claim Credit Account</label>
+                                <label>@GlobalIPSConfig.Life_Savings_Claim_Credit_Account</label>
                                 <div class="form-floating shadow-sm">
-                                    @Html.DropDownListFor(m => m.LifeSavingsClaimCreditAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
+                                    @Html.DropDownListFor(m => m.LifeSavingsClaimCreditAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "---"+ GlobalShared.Select_Affiliate_Account +"---", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(m => m.LifeSavingsClaimCreditAccountId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label>Loan Protection Debit Account</label>
+                                <label>@GlobalIPSConfig.Loan_Protection_Debit_Account</label>
                                 <div class="form-floating shadow-sm">
-                                    @Html.DropDownListFor(m => m.LoanProtectionDebitAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
+                                    @Html.DropDownListFor(m => m.LoanProtectionDebitAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "---" + GlobalShared.Select_Affiliate_Account +"---", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(m => m.LoanProtectionDebitAccountId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label>Loan Protection Credit Account</label>
+                                <label>@GlobalIPSConfig.Loan_Protection_Credit_Account</label>
                                 <div class="form-floating shadow-sm">
-                                    @Html.DropDownListFor(m => m.LoanProtectionCreditAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "--- Select Affiliate Account ---", new { @class = "form-control select2" })
+                                    @Html.DropDownListFor(m => m.LoanProtectionCreditAccountId, new SelectList(ViewBag.AffiliateAccounts, "Value", "Text"), "---"+ GlobalShared.Select_Affiliate_Account +"---", new { @class = "form-control select2" })
                                     @Html.ValidationMessageFor(m => m.LoanProtectionCreditAccountId, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -161,52 +161,52 @@
 
                 <!-- Coverage Limits Section -->
                 <div class="col-12">
-                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-currency-usd me-1"></i> Coverage Limits</h6>
+                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-currency-usd me-1"></i> @GlobalShared.Coverage_Limits</h6>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.LoanCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Loan Coverage Limit" })
+                        @Html.TextBoxFor(m => m.LoanCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = ""+ GlobalShared.Loan_Coverage_Limit + "" })
                         @Html.ValidationMessageFor(m => m.LoanCoverageLimit, "", new { @class = "text-danger" })
-                        <label>Loan Coverage Limit</label>
+                        <label>@GlobalShared.Loan_Coverage_Limit</label>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.SavingsCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Savings Coverage Limit" })
+                        @Html.TextBoxFor(m => m.SavingsCoverageLimit, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = ""+ GlobalShared.Savings_Coverage_Limit + "" })
                         @Html.ValidationMessageFor(m => m.SavingsCoverageLimit, "", new { @class = "text-danger" })
-                        <label>Savings Coverage Limit</label>
+                        <label>@GlobalShared.Savings_Coverage_Limit</label>
                     </div>
                 </div>
 
                 <!-- Premium Rates Section -->
                 <div class="col-12">
-                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-percent me-1"></i> Premium Rates</h6>
+                    <h6 class="text-primary border-bottom pt-2 pb-1 mt-4"><i class="mdi mdi-percent me-1"></i> @GlobalShared.Premium_Rates</h6>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.PremiumRateLoan, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Premium Rate Loan" })
+                        @Html.TextBoxFor(m => m.PremiumRateLoan, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = ""+ GlobalShared.Premium_Rate_Loan + "" })
                         @Html.ValidationMessageFor(m => m.PremiumRateLoan, "", new { @class = "text-danger" })
-                        <label>Premium Rate Loan</label>
+                        <label>@GlobalShared.Premium_Rate_Loan</label>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.PremiumRateSavings, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Premium Rate Savings" })
+                        @Html.TextBoxFor(m => m.PremiumRateSavings, new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = ""+GlobalShared.Premium_Rate_Savings + "" })
                         @Html.ValidationMessageFor(m => m.PremiumRateSavings, "", new { @class = "text-danger" })
-                        <label>Premium Rate Savings</label>
+                        <label>@GlobalShared.Premium_Rate_Savings</label>
                     </div>
                 </div>
 
                 <!-- Additional Settings -->
                 <div class="col-md-6">
                     <div class="form-floating shadow-sm">
-                        @Html.TextBoxFor(m => m.MaxDelinquencyDays, new { @class = "form-control", type = "number", min = "0", required = "required", placeholder = "Max Delinquency Days" })
+                        @Html.TextBoxFor(m => m.MaxDelinquencyDays, new { @class = "form-control", type = "number", min = "0", required = "required", placeholder = ""+GlobalShared.Max_Delinquency_Days +"" })
                         @Html.ValidationMessageFor(m => m.MaxDelinquencyDays, "", new { @class = "text-danger" })
-                        <label>Max Delinquency Days</label>
+                        <label>@GlobalShared.Max_Delinquency_Days</label>
                     </div>
                 </div>
 
@@ -214,7 +214,7 @@
                     <div class="form-group ps-2 pt-3">
                         <div class="form-check">
                             @Html.CheckBoxFor(m => m.ExcludeGroups, new { @class = "form-check-input", id = "ExcludeGroups" })
-                            <label class="form-check-label" for="ExcludeGroups">Exclude Groups</label>
+                            <label class="form-check-label" for="ExcludeGroups">@GlobalShared.Exclude_Groups</label>
                         </div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
                     <div class="form-group ps-2 pt-3">
                         <div class="form-check">
                             @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
-                            <label class="form-check-label" for="IsActive">Is Active</label>
+                            <label class="form-check-label" for="IsActive">@GlobalShared.Is_Active</label>
                         </div>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                     @if (string.IsNullOrEmpty(Model.Id))
                     {
                         <button type="submit" class="btn btn-primary shadow-sm px-4">
-                            <i class="fas fa-save me-1"></i>Create Configuration
+                            <i class="fas fa-save me-1"></i>@GlobalShared.Create_Configuration
                         </button>
                         <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
                             @GlobalShared.Reset
@@ -240,7 +240,7 @@
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Update</button>
                         <button type="button" onclick="AddORUpdateGen(null,'datalistingview','_IPSConfigList','list','IPSConfig')" class="btn btn-outline-secondary">
                             @GlobalShared.Cancel
                         </button>

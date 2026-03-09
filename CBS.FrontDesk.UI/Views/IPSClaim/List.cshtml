@@ -12,14 +12,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-shield-account me-2"></i>IPS Claims Management
+                    <i class="mdi mdi-shield-account me-2"></i>@GlobalIPSClaim.IPS_Claims_Management
                 </h1>
                 <p class="card-text">
-                    Browse and filter insurance claims by member, claim type, status, and other criteria.
+                    @GlobalIPSClaim.Browse_and_filter_insurance_claims_by_member_claim_type_status_and_other_criteria
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Use the filters below to narrow down the list of IPS claims.
+                    @GlobalIPSClaim.Use_the_filters_below_to_narrow_down_the_list_of_IPS_claims
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -29,7 +29,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> IPS Claims Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalIPSClaim.IPS_Claims_Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClaimTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -39,31 +39,31 @@
             <ul>
                 <li>
                     <i class="mdi mdi-account-clock text-info me-2"></i>
-                    <strong>Member Verification:</strong> Verify member details and eligibility before processing claims.
+                    <strong>@GlobalShared.Member_Verification:</strong> @GlobalIPSClaim.Verify_member_details_and_eligibility_before_processing_claims
                 </li>
                 <li>
                     <i class="mdi mdi-file-document-outline text-warning me-2"></i>
-                    <strong>Documentation:</strong> Ensure all required documents are uploaded before approval.
+                    <strong>@GlobalShared.Documentation:</strong> @GlobalIPSClaim.Ensure_all_required_documents_are_uploaded_before_approval
                 </li>
                 <li>
                     <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                    <strong>Amount Verification:</strong> Verify claimed amounts against coverage limits and balances.
+                    <strong>@GlobalShared.Amount_Verification:</strong> @GlobalIPSClaim.Verify_claimed_amounts_against_coverage_limits_and_balances
                 </li>
                 <li>
                     <i class="mdi mdi-account-group text-primary me-2"></i>
-                    <strong>Beneficiary Info:</strong> Accurate beneficiary information is crucial for claim settlement.
+                    <strong>@GlobalShared.Beneficiary_Info:</strong> @GlobalIPSClaim.Accurate_beneficiary_information_is_crucial_for_claim_settlement
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-check text-danger me-2"></i>
-                    <strong>Event Date:</strong> Ensure event date is within coverage period and valid.
+                    <strong>@GlobalShared.Event_Date:</strong> @GlobalIPSClaim.Ensure_event_date_is_within_coverage_period_and_valid
                 </li>
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                    <strong>Workflow:</strong> Claims follow: Registered → Pending → Approved/Rejected → Posted.
+                    <strong>@GlobalShared.Workflow:</strong> @GlobalIPSClaim.Claims_follow_Registered_Pending_Approved_Rejected_Posted.
                 </li>
                 <li>
                     <i class="mdi mdi-bank text-info me-2"></i>
-                    <strong>Posting:</strong> After approval, post to accounting for financial settlement.
+                    <strong>@GlobalShared.Posting:</strong> @GlobalIPSClaim.After_approval_post_to_accounting_for_financial_settlement
                 </li>
             </ul>
         </div>
@@ -80,7 +80,7 @@
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'datalistingview2','_Create','new','IPSClaim')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="AddNew">
-            <i class="mdi mdi-plus mdi-18px"></i> Add New
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add_New_LC
         </a>
     </div>
 </div>
@@ -88,7 +88,7 @@
 <div id="datalistingview2">
     <div class="card shadow p-3 mb-1">
         <h5 class="text-primary mb-1">
-            <i class="mdi mdi-filter-outline me-1"></i> IPS Claim Filters
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalIPSClaim.IPS_Claim_Filters
         </h5>
 
         <form id="claimFilterForm" autocomplete="off">
@@ -98,11 +98,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Branch</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Branch</label>
                             @Html.DropDownListFor(
                                 m => m.BranchId,
                                 new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                                "--- Select Branch ---",
+                                "--- "+ GlobalShared.Select_Branch +"---",
                                 new { @class = "form-control select2", id = "filterBranch" }
                             )
                         </div>
@@ -110,10 +110,10 @@
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Member ID</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Member_ID</label>
                             @Html.TextBoxFor(
                                 m => m.MemberId,
-                                new { @class = "form-control", placeholder = "Enter Member ID", id = "filterMemberId" }
+                                new { @class = "form-control", placeholder = ""+ GlobalShared.Enter_Member_ID+"", id = "filterMemberId" }
                             )
                         </div>
                     </div>
@@ -125,42 +125,42 @@
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleClaimType" />
                             <label class="form-check-label fw-semibold" for="toggleClaimType">
-                                <i class="mdi mdi-account-card-details me-1"></i> Claim Type
+                                <i class="mdi mdi-account-card-details me-1"></i> @GlobalShared.Claim_Type
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleStatus" />
                             <label class="form-check-label fw-semibold" for="toggleStatus">
-                                <i class="mdi mdi-toggle-switch me-1"></i> Status
+                                <i class="mdi mdi-toggle-switch me-1"></i> @GlobalShared.Status
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleIsPosted" />
                             <label class="form-check-label fw-semibold" for="toggleIsPosted">
-                                <i class="mdi mdi-bank-check me-1"></i> Posted Status
+                                <i class="mdi mdi-bank-check me-1"></i> @GlobalShared.Posted_Status
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleAmount" />
                             <label class="form-check-label fw-semibold" for="toggleAmount">
-                                <i class="mdi mdi-cash-multiple me-1"></i> Approved Amount
+                                <i class="mdi mdi-cash-multiple me-1"></i> @GlobalShared.Approved_Amount
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleDateRange" />
                             <label class="form-check-label fw-semibold" for="toggleDateRange">
-                                <i class="mdi mdi-calendar-range me-1"></i> Date Range
+                                <i class="mdi mdi-calendar-range me-1"></i> @GlobalShared.Date_Range
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="toggleDeleted" />
                             <label class="form-check-label fw-semibold" for="toggleDeleted">
-                                <i class="mdi mdi-delete me-1"></i> Include Deleted
+                                <i class="mdi mdi-delete me-1"></i> @GlobalShared.Include_Deleted
                             </label>
                         </div>
                     </div>
@@ -171,11 +171,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Claim Type</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Claim_Type</label>
                                 <select class="form-control select2" id="filterClaimType">
-                                    <option value="">--- Select Claim Type ---</option>
-                                    <option value="LoanProtection">Loan Protection</option>
-                                    <option value="LifeSavings">Life Savings</option>
+                                    <option value="">--- @GlobalShared.Select_Claim_Type ---</option>
+                                    <option value="LoanProtection">@GlobalShared.Loan_Protection</option>
+                                    <option value="LifeSavings">@GlobalShared.Life_Savings</option>
                                 </select>
                             </div>
                         </div>
@@ -187,14 +187,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Status</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Status</label>
                                 <select class="form-control select2" id="filterStatus">
-                                    <option value="">--- Select Status ---</option>
-                                    <option value="Registered">Registered</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Rejected">Rejected</option>
-                                    <option value="Posted">Posted</option>
+                                    <option value="">--- @GlobalShared.Select_status ---</option>
+                                    <option value="Registered">@GlobalShared.Registered</option>
+                                    <option value="Pending">@GlobalShared.Pending</option>
+                                    <option value="Approved">@GlobalShared.Approved</option>
+                                    <option value="Rejected">@GlobalShared.Rejected</option>
+                                    <option value="Posted">@GlobalShared.Posted</option>
                                 </select>
                             </div>
                         </div>
@@ -206,11 +206,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Posted Status</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Posted_Status</label>
                                 <select class="form-control select2" id="filterIsPosted">
-                                    <option value="">--- Select Posted Status ---</option>
-                                    <option value="true">Posted</option>
-                                    <option value="false">Not Posted</option>
+                                    <option value="">--- @GlobalShared.Select_Posted_Status ---</option>
+                                    <option value="true">@GlobalShared.Posted</option>
+                                    <option value="false">@GlobalShared.Not_Posted</option>
                                 </select>
                             </div>
                         </div>
@@ -222,7 +222,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Min Approved Amount</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Min_Approved_Amount</label>
                                 @Html.TextBoxFor(
                                     m => m.MinApprovedAmount,
                                     new { @class = "form-control", type = "number", step = "0.01", placeholder = "Minimum", id = "MinApprovedAmount", min = "0" }
@@ -232,7 +232,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Max Approved Amount</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Max_Approved_Amount</label>
                                 @Html.TextBoxFor(
                                     m => m.MaxApprovedAmount,
                                     new { @class = "form-control", type = "number", step = "0.01", placeholder = "Maximum", id = "MaxApprovedAmount", min = "0" }
@@ -247,7 +247,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Event Date From</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Event_Date_From</label>
                                 @Html.TextBoxFor(
                                     m => m.EventFrom,
                                     new { @class = "form-control", type = "date", id = "EventFrom" }
@@ -257,7 +257,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Event Date To</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Event_Date_To</label>
                                 @Html.TextBoxFor(
                                     m => m.EventTo,
                                     new { @class = "form-control", type = "date", id = "EventTo" }
@@ -269,7 +269,7 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Created Date From</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Created_Date_From</label>
                                 @Html.TextBoxFor(
                                     m => m.CreatedFromUtc,
                                     new { @class = "form-control", type = "date", id = "CreatedFromUtc" }
@@ -279,7 +279,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Created Date To</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Created_Date_To</label>
                                 @Html.TextBoxFor(
                                     m => m.CreatedToUtc,
                                     new { @class = "form-control", type = "date", id = "CreatedToUtc" }
@@ -296,7 +296,7 @@
                             <div class="form-check mb-3">
                                 @Html.CheckBoxFor(m => m.IncludeDeleted, new { @class = "form-check-input", id = "IncludeDeleted" })
                                 <label class="form-check-label fw-semibold" for="IncludeDeleted">
-                                    Include Deleted Claims
+                                    @GlobalIPSClaim.Include_Deleted_Claims
                                 </label>
                             </div>
                         </div>
@@ -309,15 +309,15 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex">
                     <button type="button" id="applyFilterBtn" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
 
                     <button type="button" id="resetFilterBtn" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
 
                     <button type="button" id="exportExcelBtn" class="btn btn-success w-100">
-                        <i class="mdi mdi-file-excel me-1"></i> Export Data
+                        <i class="mdi mdi-file-excel me-1"></i> @GlobalShared.Export_Data
                     </button>
                 </div>
             </div>
@@ -341,11 +341,11 @@
                         <div class="card bg-light mb-3">
                             <div class="card-body text-center">
                                 <h4 class="card-title text-primary">
-                                    <i class="mdi mdi-export me-2"></i>Export Options
+                                    <i class="mdi mdi-export me-2"></i>@GlobalShared.Export_Options
                                 </h4>
                                 <div class="alert alert-info mt-3 py-2">
                                     <i class="mdi mdi-information-outline me-1"></i>
-                                    Export filtered IPS claims data to Excel, CSV, or PDF.
+                                    @GlobalIPSClaim.Export_filtered_IPS_claims_data_to Excel, CSV, or PDF.
                                 </div>
                             </div>
                         </div>
@@ -355,7 +355,7 @@
                 <form id="exportForm">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Export Format</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Export_Format</label>
                             <select class="form-select" id="exportFormat" name="exportFormat">
                                 <option value="excel">Excel (.xlsx)</option>
                                 <option value="csv">CSV (.csv)</option>
@@ -363,32 +363,32 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Report Type</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Report_Type</label>
                             <select class="form-select" id="reportType" name="reportType">
-                                <option value="full">Full Report</option>
-                                <option value="dateRange">Date Range Report</option>
-                                <option value="summary">Summary Report</option>
+                                <option value="full">@GlobalShared.Full_Report</option>
+                                <option value="dateRange">@GlobalShared.Date_Range_Report</option>
+                                <option value="summary">@GlobalShared.Summary_Report</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Start Date (Optional)</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Start_Date (Optional)</label>
                             <input type="date" class="form-control" id="startDate" name="startDate">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">End Date (Optional)</label>
+                            <label class="form-label fw-semibold">@GlobalShared.End_Date (Optional)</label>
                             <input type="date" class="form-control" id="endDate" name="endDate">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label class="form-label fw-semibold">File Name</label>
+                            <label class="form-label fw-semibold">@GlobalShared.File_Name</label>
                             <input type="text" class="form-control" id="fileName" name="fileName"
-                                   value="IPS_Claims_Report" placeholder="Enter file name">
-                            <div class="form-text">Default: IPS_Claims_Report_[current_date]</div>
+                                   value="IPS_Claims_Report" placeholder="@GlobalShared.Enter_file_name">
+                            <div class="form-text">@GlobalShared.Default: IPS_Claims_Report_[current_date]</div>
                         </div>
                     </div>
 
@@ -397,7 +397,7 @@
                             <div class="form-check form-switch mb-2">
                                 <input class="form-check-input" type="checkbox" id="includeSummary" name="includeSummary" checked>
                                 <label class="form-check-label fw-semibold" for="includeSummary">
-                                    <i class="mdi mdi-chart-bar me-1"></i> Include Summary Report
+                                    <i class="mdi mdi-chart-bar me-1"></i> @GlobalShared.Include_Summary_Report
                                 </label>
                             </div>
                         </div>
@@ -405,7 +405,7 @@
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="includeAllColumns" name="includeAllColumns" checked>
                                 <label class="form-check-label fw-semibold" for="includeAllColumns">
-                                    <i class="mdi mdi-table-column me-1"></i> Include All Columns
+                                    <i class="mdi mdi-table-column me-1"></i> @GlobalShared.Include_All_Columns
                                 </label>
                             </div>
                         </div>
@@ -415,7 +415,7 @@
                     <div id="exportProgress" class="mt-3 d-none">
                         <div class="alert alert-info">
                             <i class="mdi mdi-sync me-2"></i>
-                            <span id="progressText">Preparing export...</span>
+                            <span id="progressText">@GlobalShared.Preparing_export...</span>
                         </div>
                         <div class="progress mb-2">
                             <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -427,10 +427,10 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Cancel
+                    <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                 </button>
                 <button type="button" class="btn btn-success" id="btnConfirmExport">
-                    <i class="mdi mdi-export me-1"></i>Export
+                    <i class="mdi mdi-export me-1"></i>@GlobalShared.Export
                 </button>
             </div>
         </div>

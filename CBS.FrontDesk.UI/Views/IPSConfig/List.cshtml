@@ -10,14 +10,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-shield-account me-2"></i>IPS Configurations Management
+                    <i class="mdi mdi-shield-account me-2"></i>@GlobalIPSConfig.IPS_Configurations_Management
                 </h1>
                 <p class="card-text">
-                    Browse and filter IPS configurations by year, branch, and other criteria.
+                    @GlobalIPSConfig.Browse_and_filter_IPS_configurations_by_year_branch_and_other_criteria
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Use the filters below to narrow down the list of IPS configurations.
+                    @GlobalIPSConfig.Use_the_filters_below_to_narrow_down_the_list_of_IPS_configurations
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -27,7 +27,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> IPS Configuration Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalIPSConfig.IPS_Configuration_Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIPSTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -37,39 +37,39 @@
             <ul>
                 <li>
                     <i class="mdi mdi-calendar-check text-success me-2"></i>
-                    <strong>Year Selection:</strong> Each configuration is specific to a calendar year. Create separate configurations for different years.
+                    <strong>@GlobalShared.Year_Selection:</strong> @GlobalIPSConfig.Each_configuration_is_specific_to_a_calendar_year_Create_separate_configurations_for_different_years
                 </li>
                 <li>
                     <i class="mdi mdi-account-clock text-info me-2"></i>
-                    <strong>Age Limit:</strong> Set maximum customer age for insurance eligibility. Customers beyond this age won't be covered.
+                    <strong>@GlobalShared.Age_Limit:</strong> @GlobalIPSConfig.Set_maximum_customer_age_for_insurance_eligibility_Customers_beyond_this_age_wont_be_covered
                 </li>
                 <li>
                     <i class="mdi mdi-currency-usd text-warning me-2"></i>
-                    <strong>Coverage Limits:</strong> Define maximum insurance coverage amounts for both loan and savings products.
+                    <strong>@GlobalShared.Coverage_Limits:</strong> @GlobalIPSConfig.Define_maximum_insurance_coverage_amounts_for_both_loan_and_savings_products
                 </li>
                 <li>
                     <i class="mdi mdi-percent-box text-primary me-2"></i>
-                    <strong>Premium Rates:</strong> Configure different premium rates for loans and savings. Rates are applied as percentages.
+                    <strong>@GlobalShared.Premium_Rates:</strong> @GlobalIPSConfig.Configure_different_premium_rates_for_loans_and_savings_Rates_are_applied_as_percentages
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-alert text-danger me-2"></i>
-                    <strong>Delinquency Period:</strong> Set maximum delinquency days allowed before insurance coverage is suspended.
+                    <strong>@GlobalShared.Delinquency_Period:</strong> @GlobalIPSConfig.Set_maximum_delinquency_days_allowed_before_insurance_coverage_is_suspended
                 </li>
                 <li>
                     <i class="mdi mdi-account-group text-secondary me-2"></i>
-                    <strong>Group Exclusion:</strong> Enable this option to exclude group accounts from insurance coverage.
+                    <strong>@GlobalShared.Group_Exclusion:</strong> @GlobalIPSConfig.Enable_this_option_to_exclude_group_accounts_from_insurance_coverage
                 </li>
                 <li>
                     <i class="mdi mdi-toggle-switch text-success me-2"></i>
-                    <strong>Active Status:</strong> Only active configurations are applied to new insurance policies.
+                    <strong>@GlobalShared.Active_Status:</strong> @GlobalIPSConfig.Only_active_configurations_are_applied_to_new_insurance_policies
                 </li>
                 <li>
                     <i class="mdi mdi-home-city text-info me-2"></i>
-                    <strong>Branch Specific:</strong> Create branch-specific configurations or apply the same settings across all branches.
+                    <strong>@GlobalShared.Branch_Specific:</strong> @GlobalIPSConfig.Create_branch_specific_configurations_or_apply_the_same_settings_across_all_branches
                 </li>
                 <li>
                     <i class="mdi mdi-bank text-primary me-2"></i>
-                    <strong>Account Mapping:</strong> Select appropriate debit and credit accounts for life savings claims and loan protection transactions.
+                    <strong>@GlobalShared.Account_Mapping:</strong> @GlobalIPSConfig.Select_appropriate_debit_and_credit_accounts_for_life_savings_claims_and_loan_protection_transactions
                 </li>
             </ul>
         </div>
@@ -90,7 +90,7 @@
                id="btnViewList"
                data-bs-toggle="tooltip"
                title="Add New">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add_New_LC
             </a>
         </div>
     </div>
@@ -98,7 +98,7 @@
 
     <div class="card shadow p-3 mb-1">
         <h5 class="text-primary mb-1">
-            <i class="mdi mdi-filter-outline me-1"></i> IPS Configuration Filters
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalIPSConfig.IPS_Configuration_Filters
         </h5>
 
         <form id="ipsFilterForm" autocomplete="off">
@@ -108,7 +108,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Branch</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Branch</label>
                             @Html.DropDownListFor(
                                 m => m.BranchId,
                                 new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
@@ -120,7 +120,7 @@
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Year</label>
+                            <label class="form-label fw-semibold">@GlobalShared.Year</label>
                             @Html.TextBoxFor(
                                 m => m.Year,
                                 new
@@ -143,28 +143,28 @@
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleAgeLimit" />
                             <label class="form-check-label fw-semibold" for="toggleAgeLimit">
-                                <i class="mdi mdi-account-clock me-1"></i> Age Limit
+                                <i class="mdi mdi-account-clock me-1"></i> @GlobalShared.Age_Limit
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleDelinquency" />
                             <label class="form-check-label fw-semibold" for="toggleDelinquency">
-                                <i class="mdi mdi-calendar-alert me-1"></i> Delinquency Days
+                                <i class="mdi mdi-calendar-alert me-1"></i> @GlobalShared.Delinquency_Days
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline me-3">
                             <input class="form-check-input" type="checkbox" id="toggleDateRange" />
                             <label class="form-check-label fw-semibold" for="toggleDateRange">
-                                <i class="mdi mdi-calendar-range me-1"></i> Created Date
+                                <i class="mdi mdi-calendar-range me-1"></i> @GlobalShared.Created Date
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="toggleStatus" />
                             <label class="form-check-label fw-semibold" for="toggleStatus">
-                                <i class="mdi mdi-toggle-switch me-1"></i> Status Filters
+                                <i class="mdi mdi-toggle-switch me-1"></i> @GlobalShared.Status_Filters
                             </label>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Age Limit From</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Age_Limit_From</label>
                                 @Html.TextBoxFor(
                                     m => m.AgeLimitFrom,
                                     new { @class = "form-control", type = "number", placeholder = "From", id = "AgeLimitFrom", min = "0" }
@@ -185,7 +185,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Age Limit To</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Age_Limit_To</label>
                                 @Html.TextBoxFor(
                                     m => m.AgeLimitTo,
                                     new { @class = "form-control", type = "number", placeholder = "To", id = "AgeLimitTo", min = "0" }
@@ -200,7 +200,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Max Delinquency Days From</label>
+                                <label class="form-label fw-semibold">@GlobalIPSConfig.Max_Delinquency_Days_From</label>
                                 @Html.TextBoxFor(
                                     m => m.MaxDelinquencyDaysFrom,
                                     new { @class = "form-control", type = "number", placeholder = "From", id = "MaxDelinquencyDaysFrom", min = "0" }
@@ -210,7 +210,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Max Delinquency Days To</label>
+                                <label class="form-label fw-semibold">@GlobalIPSConfig.Max_Delinquency_Days_To</label>
                                 @Html.TextBoxFor(
                                     m => m.MaxDelinquencyDaysTo,
                                     new { @class = "form-control", type = "number", placeholder = "To", id = "MaxDelinquencyDaysTo", min = "0" }
@@ -225,7 +225,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Created From</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Created_From</label>
                                 @Html.TextBoxFor(
                                     m => m.CreatedFromUtc,
                                     new { @class = "form-control", type = "date", id = "CreatedFromUtc" }
@@ -235,7 +235,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Created To</label>
+                                <label class="form-label fw-semibold">@GlobalShared.Created_To</label>
                                 @Html.TextBoxFor(
                                     m => m.CreatedToUtc,
                                     new { @class = "form-control", type = "date", id = "CreatedToUtc" }
@@ -256,7 +256,7 @@
                                        name="IsActive"
                                        value="true" />
                                 <label class="form-check-label fw-semibold" for="IsActive">
-                                    Is Active
+                                    @GlobalShared.Is_Active
                                 </label>
                             </div>
                         </div>
@@ -265,7 +265,7 @@
                             <div class="form-check mb-3">
                                 @Html.CheckBoxFor(m => m.IncludeDeleted, new { @class = "form-check-input", id = "IncludeDeleted" })
                                 <label class="form-check-label fw-semibold" for="IncludeDeleted">
-                                    Include Deleted
+                                    @GlobalShared.Include_Deleted
                                 </label>
                             </div>
                         </div>
@@ -278,11 +278,11 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex">
                     <button type="button" id="applyFilterBtn" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
 
                     <button type="button" id="resetFilterBtn" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>

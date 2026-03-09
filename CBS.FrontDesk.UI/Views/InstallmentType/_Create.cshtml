@@ -8,7 +8,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
-                    <label>@GlobalInstallmentType.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
            
@@ -30,7 +30,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                    <label>@GlobalInstallmentType.Description</label>
+                    <label>@GlobalShared.Description</label>
                 </div>
             </div>
         </div>

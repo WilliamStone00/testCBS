@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accident_related" xml:space="preserve">
+    <value>Accident related</value>
+  </data>
+  <data name="Account_Entries_Summary" xml:space="preserve">
+    <value>Account Entries Summary</value>
+  </data>
+  <data name="Account_subject_to_payroll_deduction" xml:space="preserve">
+    <value>Account subject to payroll deduction</value>
+  </data>
+  <data name="Accurate_beneficiary_information_is_crucial_for_claim_settlement" xml:space="preserve">
+    <value>Accurate beneficiary information is crucial for claim settlement.</value>
+  </data>
+  <data name="After_approval_post_the_claim_to_accounting_for_settlement" xml:space="preserve">
+    <value>After approval, post the claim to accounting for settlement.</value>
+  </data>
+  <data name="After_approval_post_to_accounting_for_financial_settlement" xml:space="preserve">
+    <value>After approval, post to accounting for financial settlement.</value>
+  </data>
+  <data name="All_active_accounts" xml:space="preserve">
+    <value>All active accounts</value>
+  </data>
+  <data name="All_outstanding_loans" xml:space="preserve">
+    <value>All outstanding loans</value>
+  </data>
+  <data name="Any_additional_information_or_notes_about_this_claim" xml:space="preserve">
+    <value>Any additional information or notes about this claim</value>
+  </data>
+  <data name="Approve_reject_or_post_insurance_claims_using_this_form" xml:space="preserve">
+    <value>Approve, reject or post insurance claims using this form.</value>
+  </data>
+  <data name="Available_for_claim" xml:space="preserve">
+    <value>Available for claim</value>
+  </data>
+  <data name="awaiting_payment" xml:space="preserve">
+    <value>awaiting payment</value>
+  </data>
+  <data name="Awaiting_posting_and_Processing_for_settlement" xml:space="preserve">
+    <value>Awaiting posting and Processing for settlement</value>
+  </data>
+  <data name="Awaiting_review_and_approval" xml:space="preserve">
+    <value>Awaiting review and approval</value>
+  </data>
+  <data name="Below_we_have_details_of_an_insurance_claim_request" xml:space="preserve">
+    <value>Below we have details of an insurance claim request</value>
+  </data>
+  <data name="Branch_Account_Distribution" xml:space="preserve">
+    <value>Branch Account Distribution</value>
+  </data>
+  <data name="Browse_and_filter_insurance_claims_by_member_claim_type_status_and_other_criteria" xml:space="preserve">
+    <value>Browse and filter insurance claims by member, claim type, status, and other criteria.</value>
+  </data>
+  <data name="Categorize_the_event_type_for_claim_processing" xml:space="preserve">
+    <value>Categorize the event type for claim processing</value>
+  </data>
+  <data name="Check_if_members_contributions_are_deducted_from_salary" xml:space="preserve">
+    <value>Check if member's contributions are deducted from salary</value>
+  </data>
+  <data name="Check_if_the_claim_is_related_to_an_accident" xml:space="preserve">
+    <value>Check if the claim is related to an accident</value>
+  </data>
+  <data name="Check_this_if_you_want_to_force_repost_even_if_already_posted" xml:space="preserve">
+    <value>Check this if you want to force repost even if already posted.</value>
+  </data>
+  <data name="Claims_follow_Registered_Pending_Approved_Rejected_Posted" xml:space="preserve">
+    <value>Claims follow: Registered → Pending → Approved/Rejected → Posted</value>
+  </data>
+  <data name="Claim_Approved_By" xml:space="preserve">
+    <value>Claim Approved By</value>
+  </data>
+  <data name="Claim_Status_Timeline" xml:space="preserve">
+    <value>Claim Status Timeline</value>
+  </data>
+  <data name="Claim_was_Approved_By" xml:space="preserve">
+    <value>Claim was Approved By</value>
+  </data>
+  <data name="Claim_was_posted_and_Processed_for_settlement_By" xml:space="preserve">
+    <value>Claim was posted and Processed for settlement By</value>
+  </data>
+  <data name="Claim_was_registered_by" xml:space="preserve">
+    <value>Claim was registered by</value>
+  </data>
+  <data name="Collect_accurate_beneficiary_information_for_claim_settlement" xml:space="preserve">
+    <value>Collect accurate beneficiary information for claim settlement.</value>
+  </data>
+  <data name="Content_Selection" xml:space="preserve">
+    <value>Content Selection</value>
+  </data>
+  <data name="Create_track_and_process_insurance_claims_for_members" xml:space="preserve">
+    <value>Create, track, and process insurance claims for members.</value>
+  </data>
+  <data name="Date_Last_Fully_Performed_Such_Duties" xml:space="preserve">
+    <value>Date Last Fully Performed Such Duties</value>
+  </data>
+  <data name="Date_of_Last_Principal_Interest_Payment" xml:space="preserve">
+    <value>Date of Last Principal/Interest Payment</value>
+  </data>
+  <data name="Date_when_the_accident_occurred_if_applicable" xml:space="preserve">
+    <value>Date when the accident occurred (if applicable)</value>
+  </data>
+  <data name="Date_when_the_event_death_disability_illness_occurred" xml:space="preserve">
+    <value>Date when the event (death/disability/illness) occurred</value>
+  </data>
+  <data name="Date_when_the_loan_was_originally_granted" xml:space="preserve">
+    <value>Date when the loan was originally granted</value>
+  </data>
+  <data name="Ensure_all_required_documents_are_uploaded_before_approval" xml:space="preserve">
+    <value>Ensure all required documents are uploaded before approval.</value>
+  </data>
+  <data name="Ensure_all_required_documents_are_uploaded_before_processing_claims" xml:space="preserve">
+    <value>Ensure all required documents are uploaded before processing claims.</value>
+  </data>
+  <data name="Ensure_event_date_is_within_coverage_period_and_valid" xml:space="preserve">
+    <value>Ensure event date is within coverage period and valid.</value>
+  </data>
+  <data name="Ensure_the_event_date_is_within_the_coverage_period" xml:space="preserve">
+    <value>Ensure the event date is within the coverage period.</value>
+  </data>
+  <data name="Enter_any_additional_remarks_here" xml:space="preserve">
+    <value>Enter any additional remarks here</value>
+  </data>
+  <data name="Enter_the_amount_to_approve_for_this_claim" xml:space="preserve">
+    <value>Enter the amount to approve for this claim.</value>
+  </data>
+  <data name="Enter_the_total_amount_for_this_claim_posting" xml:space="preserve">
+    <value>Enter the total amount for this claim posting.</value>
+  </data>
+  <data name="Export_filtered_IPS_claims_data_to" xml:space="preserve">
+    <value>Export filtered IPS claims data to</value>
+  </data>
+  <data name="Follow_the_approval_workflow_Registered_Pending_Approved_Posted" xml:space="preserve">
+    <value>Follow the approval workflow: Registered → Pending → Approved → Posted.</value>
+  </data>
+  <data name="Full_name_of_the_person_who_will_receive_the_claim_amount" xml:space="preserve">
+    <value>Full name of the person who will receive the claim amount</value>
+  </data>
+  <data name="Include_Deleted_Claims" xml:space="preserve">
+    <value>Include Deleted Claims</value>
+  </data>
+  <data name="Interest_amount_being_claimed_on_the_loan" xml:space="preserve">
+    <value>Interest amount being claimed on the loan</value>
+  </data>
+  <data name="IPS_Claims_Listing" xml:space="preserve">
+    <value>IPS Claims Listing</value>
+  </data>
+  <data name="IPS_Claims_Management" xml:space="preserve">
+    <value>IPS Claims Management</value>
+  </data>
+  <data name="IPS_Claims_Tips" xml:space="preserve">
+    <value>IPS Claims Tips</value>
+  </data>
+  <data name="IPS_Claim_Filters" xml:space="preserve">
+    <value>IPS Claim Filters</value>
+  </data>
+  <data name="Last_date_any_loan_payment_was_made" xml:space="preserve">
+    <value>Last date any loan payment was made</value>
+  </data>
+  <data name="Last_date_the_member_could_perform_their_regular_duties" xml:space="preserve">
+    <value>Last date the member could perform their regular duties</value>
+  </data>
+  <data name="Last_date_when_payroll_deductions_were_made" xml:space="preserve">
+    <value>Last date when payroll deductions were made</value>
+  </data>
+  <data name="Loan_Interest_Claimed" xml:space="preserve">
+    <value>Loan Interest Claimed</value>
+  </data>
+  <data name="Manage_Insurance_Premium_System_claims_for_loan_protection_and_life_savings" xml:space="preserve">
+    <value>Manage Insurance Premium System claims for loan protection and life savings.</value>
+  </data>
+  <data name="Member_Balance_Distribution" xml:space="preserve">
+    <value>Member Balance Distribution</value>
+  </data>
+  <data name="Member_Claim_Details" xml:space="preserve">
+    <value>Member &amp; Claim Details</value>
+  </data>
+  <data name="Net_Claimable_Amount" xml:space="preserve">
+    <value>Net Claimable Amount</value>
+  </data>
+  <data name="No_accounts_loaded_yet_Search_for_a_member_to_view_their_accounts" xml:space="preserve">
+    <value>No accounts loaded yet. Search for a member to view their accounts.</value>
+  </data>
+  <data name="No_branch_accounts_added_yet_Click_Add_Row_to_add_entries" xml:space="preserve">
+    <value>No branch accounts added yet. Click "Add Row" to add entries.</value>
+  </data>
+  <data name="No_loans_loaded_yet_Search_for_a_member_to_view_their_loans" xml:space="preserve">
+    <value>No loans loaded yet. Search for a member to view their loans.</value>
+  </data>
+  <data name="No_source_accounts_added_yet_Click_Add_Row_to_add_entries" xml:space="preserve">
+    <value>No source accounts added yet. Click "Add Row" to add entries.</value>
+  </data>
+  <data name="Original_loan_amount_that_was_granted" xml:space="preserve">
+    <value>Original loan amount that was granted</value>
+  </data>
+  <data name="Payroll_Last_Posting_Date" xml:space="preserve">
+    <value>Payroll Last Posting Date</value>
+  </data>
+  <data name="Phone_number_or_contact_details_of_the_beneficiary" xml:space="preserve">
+    <value>Phone number or contact details of the beneficiary</value>
+  </data>
+  <data name="Physical_address_of_the_beneficiary" xml:space="preserve">
+    <value>Physical address of the beneficiary</value>
+  </data>
+  <data name="Please_provide_detailed_comments_or_reason_for_this_action" xml:space="preserve">
+    <value>Please provide detailed comments or reason for this action</value>
+  </data>
+  <data name="Please_review_the_posting_details_before_confirming" xml:space="preserve">
+    <value>Please review the posting details before confirming.</value>
+  </data>
+  <data name="Posted_to_Accounting" xml:space="preserve">
+    <value>Posted to Accounting</value>
+  </data>
+  <data name="Print_Claim_Details" xml:space="preserve">
+    <value>Print Claim Details</value>
+  </data>
+  <data name="Reason_For_Stopping" xml:space="preserve">
+    <value>Reason For Stopping</value>
+  </data>
+  <data name="Reason_for_stopping_duties" xml:space="preserve">
+    <value>Reason for stopping duties</value>
+  </data>
+  <data name="Reason_why_the_member_stopped_performing_their_duties" xml:space="preserve">
+    <value>Reason why the member stopped performing their duties</value>
+  </data>
+  <data name="Regular_occupation_or_work_performed_before_the_event" xml:space="preserve">
+    <value>Regular occupation or work performed before the event</value>
+  </data>
+  <data name="Select_the_branch_where_the_member_is_registered" xml:space="preserve">
+    <value>Select the branch where the member is registered</value>
+  </data>
+  <data name="Select_the_reason_cause_for_this_claim" xml:space="preserve">
+    <value>Select the reason/cause for this claim</value>
+  </data>
+  <data name="Select_the_type_of_claim_you_are_submitting" xml:space="preserve">
+    <value>Select the type of claim you are submitting</value>
+  </data>
+  <data name="Source_Account_Entries" xml:space="preserve">
+    <value>Source Account Entries</value>
+  </data>
+  <data name="Suggested_amount_based_on_balances" xml:space="preserve">
+    <value>Suggested amount based on balances</value>
+  </data>
+  <data name="Temporale_Disability" xml:space="preserve">
+    <value>Temporale Disability</value>
+  </data>
+  <data name="Total_Amount_to_Process" xml:space="preserve">
+    <value>Total Amount to Process</value>
+  </data>
+  <data name="Total_Permanent_Disability" xml:space="preserve">
+    <value>Total and Permanent Disability</value>
+  </data>
+  <data name="Total_Premium_Amount" xml:space="preserve">
+    <value>Total Premium Amount</value>
+  </data>
+  <data name="Upload_both_front_and_back_sides_of_valid_ID" xml:space="preserve">
+    <value>Upload both front and back sides of valid ID</value>
+  </data>
+  <data name="Upload_clear_high_resolution_images_of_all_documents" xml:space="preserve">
+    <value>Upload clear, high-resolution images of all documents</value>
+  </data>
+  <data name="Upload_supporting_documents_for_claim_ID" xml:space="preserve">
+    <value>Upload supporting documents for claim ID</value>
+  </data>
+  <data name="Use_the_filters_below_to_narrow_down_the_list_of_IPS_claims" xml:space="preserve">
+    <value>Use the filters below to narrow down the list of IPS claims.</value>
+  </data>
+  <data name="Usual_Duties_of_Livelihood" xml:space="preserve">
+    <value>Usual Duties of Livelihood</value>
+  </data>
+  <data name="Verify_claimed_amounts_against_coverage_limits_and_balances" xml:space="preserve">
+    <value>Verify claimed amounts against coverage limits and balances.</value>
+  </data>
+  <data name="Verify_claimed_amounts_against_member_balances_and_coverage_limits" xml:space="preserve">
+    <value>Verify claimed amounts against member balances and coverage limits.</value>
+  </data>
+  <data name="Verify_member_details_and_eligibility_before_creating_a_claim" xml:space="preserve">
+    <value>Verify member details and eligibility before creating a claim.</value>
+  </data>
+  <data name="Verify_member_details_and_eligibility_before_processing_claims" xml:space="preserve">
+    <value>Verify member details and eligibility before processing claims.</value>
+  </data>
+</root>

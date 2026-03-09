@@ -3,7 +3,7 @@
     ViewBag.Title = "Upload Claim Documents";
     var claimId = ViewBag.ClaimId as string;
 }
-
+@using Resources
 <div class="container-fluid px-0">
 
     <div class="row">
@@ -12,14 +12,14 @@
                 <div class="card-body text-center">
                     <h2 class="h3 mb-1 text-primary">
                         <i class="mdi mdi-shield-account-outline me-2"></i>
-                        Upload Claim Documents
+                        @GlobalShared.Upload_Claim_Documents
                     </h2>
                     <p class="card-text">
-                        Upload supporting documents for claim ID : <span class="fw-bold badge bg-white text-primary">@claimId</span>
+                        @GlobalIPSClaim.Upload_supporting_documents_for_claim_ID : <span class="fw-bold badge bg-white text-primary">@claimId</span>
                     </p>
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Create, track, and process insurance claims for members.
+                        @GlobalIPSClaim.Create_track_and_process_insurance_claims_for_members
                     </div>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -33,7 +33,7 @@
             <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                 <span>
                     <i class="mdi mdi-information-outline me-2"></i>
-                    Tips
+                    @GlobalShared.Tips
                 </span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocTips" aria-expanded="false">
                     <i class="mdi mdi-chevron-down"></i>
@@ -51,8 +51,8 @@
                                 </span>
                             </div>
                             <div>
-                                <h6 class="mb-1">Image Quality</h6>
-                                <p class="text-muted small mb-0">Upload clear, high-resolution images of all documents</p>
+                                <h6 class="mb-1">@GlobalShared.Image_Quality</h6>
+                                <p class="text-muted small mb-0">@GlobalIPSClaim.Upload_clear_high_resolution_images_of_all_documents</p>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                                 </span>
                             </div>
                             <div>
-                                <h6 class="mb-1">File Format</h6>
+                                <h6 class="mb-1">@GlobalShared.File_Format</h6>
                                 <p class="text-muted small mb-0">JPG, PNG, PDF (Max 5MB each)</p>
                             </div>
                         </div>
@@ -77,8 +77,8 @@
                                 </span>
                             </div>
                             <div>
-                                <h6 class="mb-1">ID Cards</h6>
-                                <p class="text-muted small mb-0">Upload both front and back sides of valid ID</p>
+                                <h6 class="mb-1">@GlobalShared.ID_Cards</h6>
+                                <p class="text-muted small mb-0">@GlobalIPSClaim.Upload_both_front_and_back_sides_of_valid_ID</p>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                                 </span>
                             </div>
                             <div>
-                                <h6 class="mb-1">Death Certificate</h6>
+                                <h6 class="mb-1">@GlobalShared.Death_Certificate</h6>
                                 <p class="text-muted small mb-0">Required for death-related claims</p>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
             <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                 <span class="d-flex align-items-center">
                     <i class="mdi mdi-clipboard-check-outline me-2"></i>
-                    Document Requirements
+                    @GlobalShared.Document_Requirements
                 </span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequirements" aria-expanded="false">
                     <i class="mdi mdi-chevron-down"></i>
@@ -121,13 +121,13 @@
                             <i class="mdi mdi-information-outline mdi-24px text-info"></i>
                         </div>
                         <div>
-                            <h6 class="alert-heading text-info mb-2">Upload Guidelines</h6>
+                            <h6 class="alert-heading text-info mb-2">@GlobalShared.Upload_Guidelines</h6>
                             <div class="row">
                                 <div class="col-md-4 mb-2">
                                     <div class="d-flex align-items-center">
                                         <i class="mdi mdi-file-document-outline text-primary me-2"></i>
                                         <div>
-                                            <small class="fw-semibold">File Size</small>
+                                            <small class="fw-semibold">@GlobalShared.File_Size</small>
                                             <div class="text-muted">Max 5MB per file</div>
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@
                                     <div class="d-flex align-items-center">
                                         <i class="mdi mdi-format-list-bulleted-type text-success me-2"></i>
                                         <div>
-                                            <small class="fw-semibold">Supported Formats</small>
+                                            <small class="fw-semibold">@GlobalShared.Supported_Formats</small>
                                             <div class="text-muted">JPG, PNG, PDF</div>
                                         </div>
                                     </div>
@@ -145,8 +145,8 @@
                                     <div class="d-flex align-items-center">
                                         <i class="mdi mdi-shield-check text-warning me-2"></i>
                                         <div>
-                                            <small class="fw-semibold">Security</small>
-                                            <div class="text-muted">Encrypted upload</div>
+                                            <small class="fw-semibold">@GlobalShared.Security</small>
+                                            <div class="text-muted">@GlobalShared.Encrypted_upload</div>
                                         </div>
                                     </div>
                                 </div>

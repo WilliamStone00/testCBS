@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Create IPS Claim";
 }
-
+@using Resources
 <div class="card shadow p-4">
     @using (Html.BeginForm("CreateOrUpdate", "IPSClaim", FormMethod.Post,
         new { id = "claimForm", onsubmit = "return validateForm(this);" }))
@@ -20,11 +20,11 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h5 class="text-primary mb-3">
-                    <i class="mdi mdi-account-search me-2"></i> Member Lookup
+                    <i class="mdi mdi-account-search me-2"></i> @GlobalShared.Member_Lookup
                 </h5>
             </div>
             <div class="col-md-12 mb-3">
-                <label for="MemberReference" class="form-label">Member Reference *</label>
+                <label for="MemberReference" class="form-label">@GlobalShared.Member_reference *</label>
                 <div class="input-group">
                     @Html.TextBox("MemberReference", "",
                         new
@@ -36,10 +36,10 @@
                             required = "required"
                         })
                     <button type="button" class="btn btn-primary" onclick="searchMemberByReference()">
-                        <i class="mdi mdi-magnify me-1"></i> Load Member
+                        <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Load_Member
                     </button>
                 </div>
-                <div class="form-text">Enter member reference number and click Load</div>
+                <div class="form-text">@GlobalShared.Enter_member_reference_number_and_click_Load</div>
             </div>
 
         </div>
@@ -62,7 +62,7 @@
                     <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                         <span class="d-flex align-items-center">
                             <i class="mdi mdi-account-edit me-2"></i>
-                            Customer Information (Editable)
+                            @GlobalShared.Customer_Information (@GlobalShared.Editable)
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCustomerInfo" aria-expanded="true">
                             <i class="mdi mdi-chevron-down"></i>
@@ -76,12 +76,12 @@
                             <div class="col-md-6 mb-3">
                                 <h6 class="border-bottom pb-2 mb-3 text-primary">
                                     <i class="mdi mdi-account-card-details me-2"></i>
-                                    Personal Information
+                                    @GlobalShared.Personal_Information
                                 </h6>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="FirstName" class="form-label">First Name *</label>
+                                        <label for="FirstName" class="form-label">@GlobalShared.First_Name *</label>
                                         @Html.TextBoxFor(m => m.FirstName,
                                             new
                                                  {
@@ -92,7 +92,7 @@
                                             })
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="LastName" class="form-label">Last Name *</label>
+                                        <label for="LastName" class="form-label">@GlobalShared.Last_Name *</label>
                                         @Html.TextBoxFor(m => m.LastName,
                                             new
                                                  {
@@ -105,7 +105,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="Phone" class="form-label">Phone Number *</label>
+                                    <label for="Phone" class="form-label">@GlobalShared.Phone_Number *</label>
                                     @Html.TextBoxFor(m => m.Phone,
                                         new
                                              {
@@ -116,7 +116,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="Email" class="form-label">Email</label>
+                                    <label for="Email" class="form-label">@GlobalShared.Email</label>
                                     @Html.TextBoxFor(m => m.Email,
                                         new
                                              {
@@ -127,7 +127,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="Address" class="form-label">Address *</label>
+                                    <label for="Address" class="form-label">@GlobalShared.Address *</label>
                                     @Html.TextAreaFor(m => m.Address, 2, 10,
                                         new
                                              {
@@ -139,7 +139,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="Gender" class="form-label">Gender</label>
+                                        <label for="Gender" class="form-label">@GlobalShared.Gender</label>
                                         @Html.DropDownListFor(m => m.Gender,
                                             new SelectList(new[] {
                                                 new SelectListItem { Value = "", Text = "Select" },
@@ -149,7 +149,7 @@
                                             new { @class = "form-control select2", id = "Gender" })
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="DateOfBirth" class="form-label">Date of Birth</label>
+                                        <label for="DateOfBirth" class="form-label">@GlobalShared.Date_of_birth</label>
                                         @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}",
                                             new
                                                  {
@@ -165,11 +165,11 @@
                             <div class="col-md-6 mb-3">
                                 <h6 class="border-bottom pb-2 mb-3 text-primary">
                                     <i class="mdi mdi-card-account-details-outline me-2"></i>
-                                    Identification & Employment
+                                    @GlobalShared.Identification & @GlobalShared.Employment
                                 </h6>
 
                                 <div class="mb-3">
-                                    <label for="IdNumber" class="form-label">ID Number</label>
+                                    <label for="IdNumber" class="form-label">@GlobalShared.ID_Number</label>
                                     @Html.TextBoxFor(m => m.IdNumber,
                                         new
                                              {
@@ -179,7 +179,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="PlaceOfBirth" class="form-label">Place of Birth</label>
+                                    <label for="PlaceOfBirth" class="form-label">@GlobalShared.Place_of_Birth</label>
                                     @Html.TextBoxFor(m => m.PlaceOfBirth,
                                         new
                                              {
@@ -189,7 +189,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="Occupation" class="form-label">Occupation</label>
+                                    <label for="Occupation" class="form-label">@GlobalShared.Occupation</label>
                                     @Html.TextBoxFor(m => m.Occupation,
                                         new
                                              {
@@ -199,7 +199,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="EmployerName" class="form-label">Employer Name</label>
+                                    <label for="EmployerName" class="form-label">@GlobalShared.Employer_Name</label>
                                     @Html.TextBoxFor(m => m.EmployerName,
                                         new
                                              {
@@ -209,7 +209,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="EmployerTelephone" class="form-label">Employer Phone</label>
+                                    <label for="EmployerTelephone" class="form-label">@GlobalShared.Employer_Phone</label>
                                     @Html.TextBoxFor(m => m.EmployerTelephone,
                                         new
                                              {
@@ -219,7 +219,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="EmployerAddress" class="form-label">Employer Address</label>
+                                    <label for="EmployerAddress" class="form-label">@GlobalShared.Employer_Address</label>
                                     @Html.TextAreaFor(m => m.EmployerAddress, 2, 10,
                                         new
                                              {
@@ -239,7 +239,7 @@
                     <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                         <span class="d-flex align-items-center">
                             <i class="mdi mdi-bank me-2"></i>
-                            Accounts Summary
+                            @GlobalShared.Accounts_Summary
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccounts" aria-expanded="true">
                             <i class="mdi mdi-chevron-down"></i>
@@ -252,7 +252,7 @@
                             <!-- Accounts table will be loaded here -->
                             <div class="text-center text-muted py-5">
                                 <i class="mdi mdi-database-search mdi-48px mb-3"></i>
-                                <p>No accounts loaded yet. Search for a member to view their accounts.</p>
+                                <p>@GlobalIPSClaim.No_accounts_loaded_yet_Search_for_a_member_to_view_their_accounts</p>
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                     <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                         <span class="d-flex align-items-center">
                             <i class="mdi mdi-cash me-2"></i>
-                            Loan Information
+                            @GlobalShared.Loan_Information
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoans" aria-expanded="true">
                             <i class="mdi mdi-chevron-down"></i>
@@ -278,7 +278,7 @@
                             <!-- Loans table will be loaded here -->
                             <div class="text-center text-muted py-5">
                                 <i class="mdi mdi-cash-search mdi-48px mb-3"></i>
-                                <p>No loans loaded yet. Search for a member to view their loans.</p>
+                                <p>@GlobalIPSClaim.No_loans_loaded_yet_Search_for_a_member_to_view_their_loans</p>
                             </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
                     <h5 class="mb-0 d-flex align-items-center justify-content-between text-white">
                         <span class="d-flex align-items-center">
                             <i class="mdi mdi-calculator-variant me-2"></i>
-                            Financial Summary
+                            @GlobalShared.Financial_Summary
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinancialSummary" aria-expanded="true">
                             <i class="mdi mdi-chevron-down"></i>
@@ -308,9 +308,9 @@
                                         <i class="mdi mdi-cash-multiple fs-4 text-success"></i>
                                     </div>
                                     <div>
-                                        <div class="text-muted small">Total Account Balance</div>
+                                        <div class="text-muted small">@GlobalShared.Total_Account_Balance</div>
                                         <h3 id="totalAccountBalance" class="text-success fw-bold mb-0">0.00 FCFA</h3>
-                                        <div class="text-muted small">All active accounts</div>
+                                        <div class="text-muted small">@GlobalIPSClaim.All_active_accounts</div>
                                     </div>
                                 </div>
                             </div>
@@ -322,9 +322,9 @@
                                         <i class="mdi mdi-cash-usd fs-4 text-white"></i>
                                     </div>
                                     <div>
-                                        <div class="text-muted small">Total Loan Balance</div>
+                                        <div class="text-muted small">@GlobalShared.Total_Loan_Balance</div>
                                         <h3 id="totalLoanBalance" class="text-warning fw-bold mb-0">0.00 FCFA</h3>
-                                        <div class="text-muted small">All outstanding loans</div>
+                                        <div class="text-muted small">@GlobalIPSClaim.All_outstanding_loans</div>
                                     </div>
                                 </div>
                             </div>
@@ -336,9 +336,9 @@
                                         <i class="mdi mdi-calculator fs-4 text-white"></i>
                                     </div>
                                     <div>
-                                        <div class="text-muted small">Net Claimable Amount</div>
+                                        <div class="text-muted small">@GlobalIPSClaim.Net_Claimable_Amount</div>
                                         <h3 id="netClaimableAmount" class="text-primary fw-bold mb-0">0.00 FCFA</h3>
-                                        <div class="text-muted small">Available for claim</div>
+                                        <div class="text-muted small">@GlobalIPSClaim.Available_for_claim</div>
                                     </div>
                                 </div>
                             </div>
@@ -353,7 +353,7 @@
                     <h5 class="mb-0 text-primary d-flex align-items-center justify-content-between">
                         <span class="d-flex align-items-center">
                             <i class="mdi mdi-file-document-edit me-2"></i>
-                            Claim Information
+                            @GlobalShared.Claim_Information
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClaimInfo" aria-expanded="true">
                             <i class="mdi mdi-chevron-down"></i>
@@ -367,11 +367,11 @@
                             <div class="col-md-12" id="branchSection">
                                 <label>Branch</label>
                                 <div class="form-floating shadow-sm">
-                                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "--- Select Branch ---", new { @class = "form-control select2", id = "BranchId" })
+                                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "name"), "---"+ GlobalShared.Select_Branch +"---", new { @class = "form-control select2", id = "BranchId" })
                                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-text text-muted">
-                                    Select the branch where the member is registered
+                                    @GlobalIPSClaim.Select_the_branch_where_the_member_is_registered
                                 </div>
                             </div>
                         </div>
@@ -379,41 +379,41 @@
                         <!-- CLAIM TYPE & EVENT INFO -->
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label for="ClaimType" class="form-label">Claim Type *</label>
+                                <label for="ClaimType" class="form-label">@GlobalShared.Claim_Type *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-file-document-outline"></i>
                                     </span>
                                     @Html.DropDownListFor(m => m.ClaimType,
                                         new SelectList(ViewBag.ClaimTypes, "Value", "Text"),
-                                        "Select Claim Type",
+                                        ""+ GlobalShared.Select_Claim_Type+"",
                                         new { @class = "form-control", required = "required", id = "ClaimType" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.ClaimType, "", new { @class = "text-danger small" })
-                                <div class="form-text">
-                                    Select the type of claim you are submitting
-                                </div>
+                            <div class="form-text">
+                                @GlobalIPSClaim.Select_the_type_of_claim_you_are_submitting
+                            </div>
                             </div>
 
                             <div class="col-md-6 mb-6">
-                                <label for="Cause" class="form-label">Cause *</label>
+                                <label for="Cause" class="form-label">@GlobalShared.Cause *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-alert-circle-outline"></i>
                                     </span>
                                     @Html.DropDownListFor(m => m.Cause,
                                         new SelectList(ViewBag.Causes, "Value", "Text"),
-                                        "Select Cause",
+                                        ""+ GlobalShared.Select_Cause+"",
                                         new { @class = "form-control select2", required = "required", id = "Cause" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.Cause, "", new { @class = "text-danger small" })
-                                <div class="form-text">
-                                    Select the reason/cause for this claim
-                                </div>
+                            <div class="form-text">
+                                @GlobalIPSClaim.Select_the_reason_cause_for_this_claim
+                            </div>
                             </div>
 
                             <div class="col-md-5 mb-3">
-                                <label for="DateOfEvent" class="form-label">Date of Event *</label>
+                                <label for="DateOfEvent" class="form-label">@GlobalShared.Date_of_Event *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-calendar"></i>
@@ -429,13 +429,13 @@
                                              })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.DateOfEvent, "", new { @class = "text-danger small" })
-                                <div class="form-text">
-                                    Date when the event (death/disability/illness) occurred
-                                </div>
+                            <div class="form-text">
+                                @GlobalIPSClaim.Date_when_the_event_death_disability_illness_occurred
+                            </div>
                             </div>
 
                             <div class="col-md-7 mb-3">
-                                <label for="EventCategory" class="form-label">Event Category</label>
+                                <label for="EventCategory" class="form-label">@GlobalShared.Event_Category</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-folder-outline"></i>
@@ -444,22 +444,22 @@
                                         new SelectList(new[] {
                                             new SelectListItem { Value = "", Text = "Select" },
                                             new SelectListItem { Value = "Death", Text = "Death" },
-                                            new SelectListItem { Value = "TemporalDisability", Text = "Temporale Disability" },
-                                            new SelectListItem { Value = "TotalAndPermanentDisability", Text = "Total & Permanent Disability" }
+                                            new SelectListItem { Value = "TemporalDisability", Text = ""+@GlobalIPSClaim.Temporale_Disability+"" },
+                                            new SelectListItem { Value = "TotalAndPermanentDisability", Text = ""+@GlobalIPSClaim.Total_Permanent_Disability+"" }
                                         }, "Value", "Text"),
                                         new { @class = "form-control select2", id = "EventCategory" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.EventCategory, "", new { @class = "text-danger small" })
-                                <div class="form-text">
-                                    Categorize the event type for claim processing
-                                </div>
+                            <div class="form-text">
+                                @GlobalIPSClaim.Categorize_the_event_type_for_claim_processing
+                            </div>
                             </div>
                         </div>
 
                         <!-- CLAIM AMOUNT -->
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label for="ClaimedAmount" class="form-label">Claimed Amount *</label>
+                                <label for="ClaimedAmount" class="form-label">@GlobalShared.Claimed_Amount *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">FCFA</span>
                                     @Html.TextBoxFor(m => m.ClaimedAmount,
@@ -477,7 +477,7 @@
                                 <div class="form-text">
                                     <span id="suggestedAmountInfo" class="text-info">
                                         <i class="mdi mdi-information-outline me-1"></i>
-                                        Suggested amount based on balances: <strong id="suggestedAmount">0.00 FCFA</strong>
+                                        @GlobalIPSClaim.Suggested_amount_based_on_balances: <strong id="suggestedAmount">0.00 FCFA</strong>
                                     </span>
                                 </div>
                             </div>
@@ -487,21 +487,21 @@
                                     <div class="card-body p-3">
                                         <h6 class="mb-2">
                                             <i class="mdi mdi-calculator-variant me-2"></i>
-                                            Balance Summary
+                                            @GlobalShared.Balance_Summary
                                         </h6>
                                         <div class="row">
                                             <div class="col-6">
-                                                <small class="text-muted d-block">Total Balance</small>
+                                                <small class="text-muted d-block">@GlobalShared.Total_balance</small>
                                                 <span class="fw-bold text-success" id="displayTotalBalance">0.00</span>
                                             </div>
                                             <div class="col-6">
-                                                <small class="text-muted d-block">Loan Balance</small>
+                                                <small class="text-muted d-block">@GlobalShared.Loan_Balance</small>
                                                 <span class="fw-bold text-warning" id="displayLoanBalance">0.00</span>
                                             </div>
                                         </div>
                                         <hr class="my-2">
                                         <div class="d-flex justify-content-between">
-                                            <small class="text-muted">Net Available</small>
+                                            <small class="text-muted">@GlobalShared.Net_Available</small>
                                             <span class="fw-bold text-primary" id="displayNetAvailable">0.00</span>
                                         </div>
                                     </div>
@@ -512,7 +512,7 @@
                         <!-- EMPLOYMENT DETAILS -->
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
-                                <label for="UsualDutiesOfLivelihood" class="form-label">Usual Duties of Livelihood</label>
+                                <label for="UsualDutiesOfLivelihood" class="form-label">@GlobalIPSClaim.Usual_Duties_of_Livelihood</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-briefcase-outline"></i>
@@ -527,12 +527,12 @@
                                 </div>
                                 @Html.ValidationMessageFor(m => m.UsualDutiesOfLivelihood, "", new { @class = "text-danger small" })
                                 <div class="form-text">
-                                    Regular occupation or work performed before the event
+                                    @GlobalIPSClaim.Regular_occupation_or_work_performed_before_the_event
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="DateLastFullyPerformedSuchDuties" class="form-label">Date Last Fully Performed Such Duties</label>
+                                <label for="DateLastFullyPerformedSuchDuties" class="form-label">@GlobalIPSClaim.Date_Last_Fully_Performed_Such_Duties</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-calendar-clock"></i>
@@ -542,27 +542,27 @@
                                 </div>
                                 @Html.ValidationMessageFor(m => m.DateLastFullyPerformedSuchDuties, "", new { @class = "text-danger small" })
                                 <div class="form-text">
-                                    Last date the member could perform their regular duties
+                                    @GlobalIPSClaim.Last_date_the_member_could_perform_their_regular_duties
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="ReasonForStopping" class="form-label">Reason For Stopping</label>
+                                <label for="ReasonForStopping" class="form-label">@GlobalIPSClaim.Reason_For_Stopping</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-account-cancel-outline"></i>
                                     </span>
                                     @Html.TextBoxFor(m => m.ReasonForStopping,
                                         new
-                                             {
-                                                 @class = "form-control",
-                                                 id = "ReasonForStopping",
-                                              placeholder = "Reason for stopping duties"
-                                             })
+                                        {
+                                            @class = "form-control",
+                                            id = "ReasonForStopping",
+                                            placeholder = ""+@GlobalIPSClaim.Reason_for_stopping_duties + ""
+                                        })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.ReasonForStopping, "", new { @class = "text-danger small" })
                                 <div class="form-text">
-                                    Reason why the member stopped performing their duties
+                                    @GlobalIPSClaim.Reason_why_the_member_stopped_performing_their_duties
                                 </div>
                             </div>
                         </div>
@@ -570,11 +570,11 @@
                         <!-- BENEFICIARY INFORMATION -->
                         <h6 class="mt-4 text-primary">
                             <i class="mdi mdi-account-heart-outline me-2"></i>
-                            Beneficiary Information
+                            @GlobalShared.Beneficiary Information
                         </h6>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="BeneficiaryName" class="form-label">Beneficiary Name *</label>
+                                <label for="BeneficiaryName" class="form-label">@GlobalShared.Beneficiary_Name *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-account-outline"></i>
@@ -584,12 +584,12 @@
                                 </div>
                                 @Html.ValidationMessageFor(m => m.BeneficiaryName, "", new { @class = "text-danger small" })
                                 <div class="form-text">
-                                    Full name of the person who will receive the claim amount
+                                    @GlobalIPSClaim.Full_name_of_the_person_who_will_receive_the_claim_amount
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="BeneficiaryContact" class="form-label">Beneficiary Contact *</label>
+                                <label for="BeneficiaryContact" class="form-label">@GlobalShared.Beneficiary_Contact *</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-phone"></i>
@@ -598,28 +598,28 @@
                                         new { @class = "form-control", id = "BeneficiaryContact", required = "required" })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.BeneficiaryContact, "", new { @class = "text-danger small" })
-                                <div class="form-text">
-                                    Phone number or contact details of the beneficiary
-                                </div>
+                            <div class="form-text">
+                                @GlobalIPSClaim.Phone_number_or_contact_details_of_the_beneficiary
+                            </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="BeneficiaryAddress" class="form-label">Beneficiary Address</label>
+                                <label for="BeneficiaryAddress" class="form-label">@GlobalShared.Beneficiary_Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-map-marker-outline"></i>
                                     </span>
                                     @Html.TextBoxFor(m => m.BeneficiaryAddress,
                                         new
-                                             {
-                                                 @class = "form-control",
-                                                 id = "BeneficiaryAddress",
-                                              placeholder = "Beneficiary Address"
-                                             })
+                                        {
+                                            @class = "form-control",
+                                            id = "BeneficiaryAddress",
+                                            placeholder = ""+ GlobalShared.Beneficiary_Address+""
+                                        })
                                 </div>
                                 @Html.ValidationMessageFor(m => m.BeneficiaryAddress, "", new { @class = "text-danger small" })
                                 <div class="form-text">
-                                    Physical address of the beneficiary
+                                    @GlobalIPSClaim.Physical_address_of_the_beneficiary
                                 </div>
                             </div>
                         </div>
@@ -631,11 +631,11 @@
                                     @Html.CheckBoxFor(m => m.IsAccountSubjectToPayrollDeduction,
                                         new { @class = "form-check-input", id = "IsAccountSubjectToPayrollDeduction" })
                                     <label class="form-check-label" for="IsAccountSubjectToPayrollDeduction">
-                                        Account subject to payroll deduction
+                                        @GlobalIPSClaim.Account_subject_to_payroll_deduction
                                     </label>
                                 </div>
                                 <div class="form-text">
-                                    Check if member's contributions are deducted from salary
+                                    @GlobalIPSClaim.Check_if_members_contributions_are_deducted_from_salary
                                 </div>
                             </div>
 
@@ -644,11 +644,11 @@
                                     @Html.CheckBoxFor(m => m.IsAccidentRelated,
                                         new { @class = "form-check-input", id = "IsAccidentRelated" })
                                     <label class="form-check-label" for="IsAccidentRelated">
-                                        Accident related
+                                        @GlobalIPSClaim.Accident_related
                                     </label>
                                 </div>
                                 <div class="form-text">
-                                    Check if the claim is related to an accident
+                                    @GlobalIPSClaim.Check_if_the_claim_is_related_to_an_accident
                                 </div>
                             </div>
                         </div>
@@ -656,7 +656,7 @@
                         <!-- CONDITIONAL SECTIONS -->
                         <div class="row">
                             <div class="col-md-6 mb-3 payroll-section" style="display:none;">
-                                <label for="PayrollLastPostingDate" class="form-label">Payroll Last Posting Date</label>
+                                <label for="PayrollLastPostingDate" class="form-label">@GlobalIPSClaim.Payroll_Last_Posting_Date</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-calendar-check"></i>
@@ -665,12 +665,12 @@
                                         new { @class = "form-control", type = "date", id = "PayrollLastPostingDate" })
                                 </div>
                                 <div class="form-text">
-                                    Last date when payroll deductions were made
+                                    @GlobalIPSClaim.Last_date_when_payroll_deductions_were_made
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-3 accident-section" style="display:none;">
-                                <label for="AccidentDate" class="form-label">Accident Date</label>
+                                <label for="AccidentDate" class="form-label">@GlobalShared.Accident_Date</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-alert"></i>
@@ -679,7 +679,7 @@
                                         new { @class = "form-control", type = "date", id = "AccidentDate" })
                                 </div>
                                 <div class="form-text">
-                                    Date when the accident occurred (if applicable)
+                                    @GlobalIPSClaim.Date_when_the_accident_occurred_if_applicable
                                 </div>
                             </div>
                         </div>
@@ -687,7 +687,7 @@
                         <!-- LOAN PROTECTION SECTION -->
                         <div class="row loan-section" style="display:none;">
                             <div class="col-md-4 mb-3">
-                                <label for="LoanGrantedDate" class="form-label">Loan Granted Date</label>
+                                <label for="LoanGrantedDate" class="form-label">@GlobalShared.Loan_Granted_Date</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-calendar"></i>
@@ -696,12 +696,12 @@
                                         new { @class = "form-control", type = "date", id = "LoanGrantedDate" })
                                 </div>
                                 <div class="form-text">
-                                    Date when the loan was originally granted
+                                    @GlobalIPSClaim.Date_when_the_loan_was_originally_granted
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="LoanGrantedAmount" class="form-label">Loan Granted Amount</label>
+                                <label for="LoanGrantedAmount" class="form-label">@GlobalShared.Loan_Granted_Amount</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-cash"></i>
@@ -710,12 +710,12 @@
                                         new { @class = "form-control", type = "number", step = "0.01", id = "LoanGrantedAmount" })
                                 </div>
                                 <div class="form-text">
-                                    Original loan amount that was granted
+                                    @GlobalIPSClaim.Original_loan_amount_that_was_granted
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="DateOfLastPrincipalOrInterestPayment" class="form-label">Date of Last Principal/Interest Payment</label>
+                                <label for="DateOfLastPrincipalOrInterestPayment" class="form-label">@GlobalIPSClaim.Date_of_Last_Principal_Interest_Payment</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-calendar-clock"></i>
@@ -724,12 +724,12 @@
                                         new { @class = "form-control", type = "date", id = "DateOfLastPrincipalOrInterestPayment" })
                                 </div>
                                 <div class="form-text">
-                                    Last date any loan payment was made
+                                    @GlobalIPSClaim.Last_date_any_loan_payment_was_made
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="LoanInterestClaimed" class="form-label">Loan Interest Claimed</label>
+                                <label for="LoanInterestClaimed" class="form-label">@GlobalIPSClaim.Loan_Interest_Claimed</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <i class="mdi mdi-percent"></i>
@@ -738,7 +738,7 @@
                                         new { @class = "form-control", type = "number", step = "0.01", id = "LoanInterestClaimed" })
                                 </div>
                                 <div class="form-text">
-                                    Interest amount being claimed on the loan
+                                    @GlobalIPSClaim.Interest_amount_being_claimed_on_the_loan
                                 </div>
                             </div>
                         </div>
@@ -746,12 +746,12 @@
                         <!-- REMARKS -->
                         <div class="row mt-4">
                             <div class="col-12">
-                                <label for="Remarks" class="form-label">Remarks</label>
+                                <label for="Remarks" class="form-label">@GlobalShared.Remarks</label>
                                 @Html.TextAreaFor(m => m.Remarks, 5, 100,
-                                    new { @class = "form-control", id = "Remarks", placeholder = "Enter any additional remarks here..." })
-                                <div class="form-text">
-                                    Any additional information or notes about this claim
-                                </div>
+                                    new { @class = "form-control", id = "Remarks", placeholder = "" + @GlobalIPSClaim.Enter_any_additional_remarks_here + "..." })
+                            <div class="form-text">
+                                @GlobalIPSClaim.Any_additional_information_or_notes_about_this_claim
+                            </div>
                             </div>
                         </div>
 
@@ -759,10 +759,10 @@
                         <div class="row mt-5">
                             <div class="col-12 text-end">
                                 <button type="submit" class="btn btn-primary btn-lg px-5">
-                                    <i class="mdi mdi-content-save me-2"></i> Submit Claim
+                                    <i class="mdi mdi-content-save me-2"></i> @GlobalShared.Submit_Claim
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-lg" onclick="window.history.back()">
-                                    <i class="mdi mdi-close me-2"></i> Cancel
+                                    <i class="mdi mdi-close me-2"></i> @GlobalShared.Cancel
                                 </button>
                             </div>
                         </div>

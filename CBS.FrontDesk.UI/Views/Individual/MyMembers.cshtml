@@ -34,7 +34,7 @@
         <div class="card-body">
             <ul>
                 <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong> @GlobalIndividual.EasilySegmentMembersByOperationalBranch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalIndividual.RegistrationDates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalShared.Registration_dates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
                 <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalIndividual.GenderMaritalStatus:</strong> @GlobalIndividual.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
                 <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalIndividual.ApprovalLegalStatus:</strong> @GlobalIndividual.FilterApprovedMembersByLegalFormOrType.</li>
                 <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
@@ -45,7 +45,7 @@
 
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalIndividual.MemberFilters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Member_Filters</h5>
     <form id="memberFilterForm">
         <div class="card p-3 mb-3 bg-light">
             <div class="row mb-3">
@@ -58,40 +58,40 @@
                     <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalShared.First_Name" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">@GlobalIndividual.LastName</label>
-                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalIndividual.LastName" />
+                    <label class="form-label fw-bold">@GlobalShared.Last_Name</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalShared.Last_Name" />
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalIndividual.Gender</label>
+                    <label class="form-label fw-bold">@GlobalShared.Gender</label>
                     <select id="gender" name="Gender" class="form-select">
                         <option value="">@GlobalShared.All</option>
-                        <option value="Male">@GlobalIndividual.Male</option>
-                        <option value="Female">@GlobalIndividual.Female</option>
+                        <option value="Male">@GlobalShared.Male</option>
+                        <option value="Female">@GlobalShared.Female</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">@GlobalShared.Marital_Status</label>
                     <select id="maritalStatus" name="MaritalStatus" class="form-select">
                         <option value="">@GlobalShared.All</option>
-                        <option value="Single">@GlobalIndividual.Single</option>
-                        <option value="Married">@GlobalIndividual.Married</option>
-                        <option value="Divorced">@GlobalIndividual.Divorced</option>
-                        <option value="Widowed">@GlobalIndividual.Widowed</option>
+                        <option value="Single">@GlobalShared.Single</option>
+                        <option value="Married">@GlobalShared.Married</option>
+                        <option value="Divorced">@GlobalShared.Divorced</option>
+                        <option value="Widowed">@GlobalShared.Widowed</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalIndividual.WorkingStatus</label>
+                    <label class="form-label fw-bold">@GlobalShared.Working_Status</label>
                     <select id="workingStatus" name="WorkingStatus" class="form-select">
                         <option value="">@GlobalShared.All</option>
-                        <option value="Working">@GlobalIndividual.Working</option>
-                        <option value="Unemployed">@GlobalIndividual.Unemployed</option>
+                        <option value="Working">@GlobalShared.Working</option>
+                        <option value="Unemployed">@GlobalShared.Unemployed</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalIndividual.MembershipApproval</label>
+                    <label class="form-label fw-bold">@GlobalShared.Membership_Approval</label>
                     <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
                         <option value="">@GlobalShared.All</option>
                         <option value="Approved">@GlobalShared.Approved</option>
@@ -115,7 +115,7 @@
                     <input type="text" id="customerType" name="CustomerType" class="form-control" placeholder="Customer Type" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalIndividual.AgeCategory</label>
+                    <label class="form-label fw-bold">@GlobalShared.Age_Category</label>
                     <input type="text" id="ageCategoryStatus" name="AgeCategoryStatus" class="form-control" placeholder="@GlobalIndividual.AgeCategoryStatus" />
                 </div>
                 <div class="col-md-3">

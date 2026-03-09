@@ -10,7 +10,7 @@
         <input type="hidden" name="option" value="ResetPin" id="option" />
         <div class="col-md-9">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = @GlobalIndividual.PhoneNumber })
+                @Html.TextBoxFor(m => m.CustomerList.Phone, new { @class = "form-control", @placeholder = GlobalShared.Phone_Number })
                 @Html.ValidationMessageFor(m => m.CustomerList.Phone, "", new { @class = "text-danger" })
                 <label>@GlobalShared.Phone_Number</label>
             </div>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">@GlobalIndividual.ResetPin</button>
+            <button type="submit" class="btn btn-primary">@GlobalShared.Reset_pin_Lc</button>
         </div>
     }
 </div>

@@ -1447,6 +1447,46 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalInstallmentType.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\InterestProductConfig\GlobalInterestProductConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalInterestProductConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\IPSClaim\GlobalIPSClaim.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIPSClaim.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\IPSConfig\GlobalIPSConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIPSConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\IPSReporting\GlobalIPSReporting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalIPSReporting.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\JournalHead\GlobalJournalHead.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalJournalHead.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LiaisonAccountConfiguration\GlobalLiaisonAccountConfiguration.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLiaisonAccountConfiguration.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LiaisonMappingConfig\GlobalLiaisonMappingConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLiaisonMappingConfig.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\LiaisonMapping\GlobalLiaisonMapping.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLiaisonMapping.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -7931,6 +7971,38 @@
     <Content Include="App_GlobalResources\BranchCashConfig\BranchCashConfigRessource.fr.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>BranchCashConfigRessource.fr1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\InterestProductConfig\GlobalInterestProductConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalInterestProductConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\IPSClaim\GlobalIPSClaim.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIPSClaim.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\IPSConfig\GlobalIPSConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIPSConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\IPSReporting\GlobalIPSReporting.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalIPSReporting.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\JournalHead\GlobalJournalHead.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalJournalHead.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LiaisonAccountConfiguration\GlobalLiaisonAccountConfiguration.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLiaisonAccountConfiguration.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LiaisonMapping\GlobalLiaisonMapping.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLiaisonMapping.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LiaisonMappingConfig\GlobalLiaisonMappingConfig.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLiaisonMappingConfig.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="GlobalCommunication.resx" />
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">

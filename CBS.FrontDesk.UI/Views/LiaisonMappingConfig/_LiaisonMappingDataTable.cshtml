@@ -1,14 +1,15 @@
-﻿<div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>Liaison Mapping</h5>
+﻿@using Resources
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@GlobalShared.Liaison_Mapping</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light text-center">
                 <tr>
-                    <th>Creation Date</th>
-                    <th>Source Branch</th>
-                    <th>Counterparty Branch</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.Creation_Date</th>
+                    <th>@GlobalShared.Source_branch</th>
+                    <th>@GlobalShared.Counterparty_Branch</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>

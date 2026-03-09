@@ -1,14 +1,15 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.LiaisonMappingV2.LiaisonMapping
+    @using Resources
 <!-- Header -->
 <div class="row mb-2">
     <div class="col-12">
         <div class="card bg-light">
             <div class="card-body text-center py-2">
                 <h5 class="card-title text-primary mb-1">
-                    <i class="mdi mdi-bank-outline me-2"></i> Liaison Mapping Configuration
+                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalLiaisonMappingConfig.Liaison_Mapping_Configuration
                 </h5>
                 <p class="small mb-0">
-                    Create or edit a liaison mapping between branches and GL accounts.
+                    @GlobalLiaisonMappingConfig.Create_or_edit_a_liaison_mapping_between_branches_and_GL_accounts
                 </p>
             </div>
         </div>
@@ -18,7 +19,7 @@
 <!-- Tips -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> Tips for Liaison Mapping</span>
+        <span class="small"><i class="mdi mdi-help-circle-outline me-2"></i> @GlobalLiaisonMappingConfig.Tips_for_Liaison_Mapping</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLiaisonTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -26,10 +27,10 @@
     <div id="collapseLiaisonTips" class="collapse">
         <div class="card-body py-2">
             <ul class="mb-0 small">
-                <li><strong>Branch:</strong> Select the main branch for the mapping.</li>
-                <li><strong>Counterparty Branch:</strong> Select the branch to map against.</li>
-                <li><strong>Accounts:</strong> Assign correct asset and liability accounts.</li>
-                <li><strong>Status:</strong> Only authorized users can modify mappings.</li>
+                <li><strong>@GlobalShared.Branch:</strong> @GlobalLiaisonMappingConfig.Select_the_main_branch_for_the_mapping</li>
+                <li><strong>@GlobalShared.Counterparty_Branch:</strong> @GlobalLiaisonMappingConfig.Select_the_branch_to_map_against</li>
+                <li><strong>@GlobalShared.Accounts:</strong> @GlobalLiaisonMappingConfig.Assign_correct_asset_and_liability_accounts</li>
+                <li><strong>@GlobalShared.Status:</strong> @GlobalLiaisonMappingConfig.Only_authorized_users_can_modify_mappings</li>
             </ul>
         </div>
     </div>
@@ -45,7 +46,7 @@
     <div class="row gy-3">
         <!-- Branch -->
         <div class="col-md-6">
-            @Html.LabelFor(m => m.BranchId, "Select Source Branch", htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.BranchId, ""+ GlobalShared.Select_source_branch + "", htmlAttributes: new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(
                 m => m.BranchId,
                 new SelectList(ViewBag.Branches, "Id", "Name"),
@@ -57,7 +58,7 @@
 
         <!-- Counterparty Branch -->
         <div class="col-md-6">
-            @Html.LabelFor(m => m.CounterpartyBranchId, "Select Counterparty Branch", htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.CounterpartyBranchId, ""+ GlobalShared.Select_Counterparty_Branch + "", htmlAttributes: new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(
                 m => m.CounterpartyBranchId,
                 new SelectList(ViewBag.CounterpartyBranches, "Id", "Name"),
@@ -69,7 +70,7 @@
 
         <!-- GL Account (ancien Due From Asset Account) -->
         <div class="col-12">
-            @Html.LabelFor(m => m.DueFromAssetAccountId, "Select destination branch liason", htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.DueFromAssetAccountId, ""+ GlobalShared.Select_destination_branch_liason + "", htmlAttributes: new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(
                 m => m.DueFromAssetAccountId,
                 new SelectList(ViewBag.Accounts, "Value", "Text", Model.DueFromAssetAccountId),
@@ -85,12 +86,12 @@
         <div class="mt-4 d-flex justify-content-end gap-2">
             @if (ViewBag.Key != null)
             {
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">@GlobalShared.Update</button>
             }
             else
             {
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save Mapping</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">@GlobalShared.Save_Mapping</button>
+                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
             }
         </div>
     }

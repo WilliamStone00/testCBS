@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.WorkflowTicket
-
+@using Resources
 <style>
     /* ===================== HEADER VIEWER ===================== */
     .header-viewer {
@@ -81,7 +81,7 @@
 @if (Model == null)
 {
     <div class="alert alert-danger text-center">
-        Journal entry data could not be loaded.
+        @GlobalJournalHead.Journal_entry_data_could_not_be_loaded
     </div>
     return;
 }
@@ -89,10 +89,10 @@
 <!-- ===================== MAIN HEADER ===================== -->
 <div class="header-viewer">
     <h6>
-        <i class="mdi mdi-file-document-outline me-1"></i> JOURNAL REQUEST & DETAILS
+        <i class="mdi mdi-file-document-outline me-1"></i> @GlobalJournalHead.JOURNAL_REQUEST_DETAILS
     </h6>
     <p class="mb-0">
-        Detailed information for the selected journal entry.
+        @GlobalJournalHead.Detailed_information_for_the_selected_journal_entry
     </p>
 </div>
 <input type="hidden" id="sourceBranchId" value="@Model.BranchId" />
@@ -100,13 +100,13 @@
 <!-- ===================== MODAL BODY ===================== -->
 <div class="modal-body">
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-        <i class="mdi mdi-file-document me-1"></i> Journal Header
+        <i class="mdi mdi-file-document me-1"></i> @GlobalJournalHead.Journal_Header
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-label">Reference</th><td>@(Model?.Reference ?? "")</td></tr>
+            <tr><th class="bg-label">@GlobalShared.Reference</th><td>@(Model?.Reference ?? "")</td></tr>
             <tr>
-                <th class="bg-label">State</th>
+                <th class="bg-label">@GlobalShared.State</th>
                 <td>
                     <span class="badge
             @(Model?.State == "APPROVED" ? "bg-success" :
@@ -117,24 +117,24 @@
                 </td>
             </tr>
 
-            <tr><th class="bg-label">Operation Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
-            <tr><th class="bg-label">Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
-            <tr><th class="bg-label">Ticket Type</th><td>@(Model?.TicketType ?? "")</td></tr>
+            <tr><th class="bg-label">@GlobalShared.Operation_Code</th><td>@(Model?.OperationCode ?? "")</td></tr>
+            <tr><th class="bg-label">@GlobalShared.Branch</th><td>@(Model?.BranchName ?? "")</td></tr>
+            <tr><th class="bg-label">@GlobalShared.Ticket_Type</th><td>@(Model?.TicketType ?? "")</td></tr>
             <tr>
-                <th class="bg-label">IsInterBranch</th>
+                <th class="bg-label">@GlobalShared.IsInterBranch</th>
                 <td>@(Model?.IsInterBranch.ToString() ?? "")</td>
             </tr>
 
             <tr>
-                <th class="bg-label">Accounting Date</th>
+                <th class="bg-label">@GlobalShared.Accounting_Date</th>
                 <td>@(Model != null ? Model.AccountingDate.ToString("dd/MM/yyyy HH:mm") : "")</td>
             </tr>
             <tr>
-                <th class="bg-label">Remarks</th>
+                <th class="bg-label">@GlobalShared.Remarks</th>
                 <td colspan="3">@Html.Raw(Model?.Remarks ?? "")</td>
             </tr>
             <tr>
-                <th class="bg-label">Initiated By</th>
+                <th class="bg-label">@GlobalShared.Initiated_By</th>
                 <td>
                     @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.InitiatedBy)
         ? "-"
@@ -143,14 +143,14 @@
             </tr>
 
             <tr>
-                <th class="bg-label">Initiated Date</th>
+                <th class="bg-label">@GlobalShared.Initiated_Date</th>
                 <td>
                     @(Model?.TempJournalHeader?.InitiationDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
 
             <tr>
-                <th class="bg-label">Approved By</th>
+                <th class="bg-label">@GlobalShared.Approved_by</th>
                 <td>
                     @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.ApprovedBy)
         ? "-"
@@ -159,14 +159,14 @@
             </tr>
 
             <tr>
-                <th class="bg-label">Approved Date</th>
+                <th class="bg-label">@GlobalShared.Approved_Date</th>
                 <td>
                     @(Model?.TempJournalHeader?.ApprovalDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
 
             <tr>
-                <th class="bg-label">Rejected By</th>
+                <th class="bg-label">@GlobalShared.Rejected_By</th>
                 <td>
                     @(string.IsNullOrWhiteSpace(Model?.TempJournalHeader?.RejectedBy)
         ? "-"
@@ -175,18 +175,18 @@
             </tr>
 
             <tr>
-                <th class="bg-label">Rejected Date</th>
+                <th class="bg-label">@GlobalShared.Rejected_Date</th>
                 <td>
                     @(Model?.TempJournalHeader?.RejectedDate?.ToString("dd/MM/yyyy HH:mm") ?? "-")
                 </td>
             </tr>
-            <tr><th class="bg-label">Initiated Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
+            <tr><th class="bg-label">@GlobalShared.Initiated_Amount</th><td>@Math.Abs(Model.InitiatedAmount).ToString("N0")</td></tr>
         </tbody>
     </table>
 
     <!-- ===================== MAIN JOURNAL LINES ===================== -->
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-        <i class="mdi mdi-table me-1"></i> Journal Line Entries
+        <i class="mdi mdi-table me-1"></i> @GlobalJournalHead.Journal_Line_Entries
     </h6>
     <div class="card border-0 mb-3">
         <div class="card-body card-body-tight">
@@ -197,11 +197,11 @@
             <table class="table table-hover table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>Account Number</th>
-                        <th>Account Name</th>
-                        <th>Description</th>
-                        <th>Debit (FCFA)</th>
-                        <th>Credit (FCFA)</th>
+                        <th>@GlobalShared.Account_Number</th>
+                        <th>@GlobalShared.Account_Name</th>
+                        <th>@GlobalShared.Description</th>
+                        <th>@GlobalShared.Debit (FCFA)</th>
+                        <th>@GlobalShared.Credit (FCFA)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -231,7 +231,7 @@
                     }
                     else
                     {
-                        <tr><td colspan="5" class="text-center text-muted">No journal line entries found</td></tr>
+                        <tr><td colspan="5" class="text-center text-muted">@GlobalJournalHead.No_journal_line_entries_found</td></tr>
                     }
                 </tbody>
             </table>
@@ -245,24 +245,24 @@
 
 <div class="modal-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close"></i> Close
+        <i class="mdi mdi-close"></i> @GlobalShared.Close
     </button>
     <div>
 
 
         <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
-            <i class="mdi mdi-file-excel-outline"></i> Export Excel
+            <i class="mdi mdi-file-excel-outline"></i> @GlobalShared.Export_Excel
         </button>
 
 
         <button type="button" id="btnApprove" class="btn btn-success">
             <i class="mdi mdi-check-circle-outline"></i>
-            <span class="btn-text">Approve</span>
+            <span class="btn-text">@GlobalShared.Approve</span>
         </button>
 
         <button type="button" id="btnReject" class="btn btn-danger">
             <i class="mdi mdi-check-circle-outline"></i>
-            <span class="btn-text">Reject</span>
+            <span class="btn-text">@GlobalShared.Reject</span>
         </button>
 
     </div>
@@ -280,10 +280,10 @@
             <div class="card bg-light mb-3">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-file-document-outline me-2"></i>Reject Journal REQUEST
+                        <i class="mdi mdi-file-document-outline me-2"></i>@GlobalJournalHead.Reject_Journal_REQUEST
                     </h1>
                     <p class="card-text">
-                        Use this page to Reject your journal request.
+                        @GlobalJournalHead.Use_this_page_to_Reject_your_journal_request
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -294,7 +294,7 @@
                 <input type="hidden" id="RejectId" value="@Model.Reference" />
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Reason</label>
+                    <label class="form-label fw-bold">@GlobalShared.Reason</label>
                     <textarea id="RejectReason" class="form-control" rows="3"
                               placeholder="Enter rejection reason"></textarea>
 
@@ -303,8 +303,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="btnSubmitReject" class="btn btn-danger">Submit Rejection</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Cancel</button>
+                <button id="btnSubmitReject" class="btn btn-danger">@GlobalShared.Submit_Rejection</button>
             </div>
 
         </div>

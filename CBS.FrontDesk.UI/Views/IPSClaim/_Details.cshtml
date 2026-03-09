@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSClaim
 @using System.Linq
 @using System.Text.RegularExpressions
-
+@using Resources
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -9,14 +9,14 @@
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary mb-1">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                        Claim Details
+                        @GlobalShared.Claim_Details
                     </h1>
                     <p class="card-text">
-                        Below we have details of an insurance claim request
+                        @GlobalIPSClaim.Below_we_have_details_of_an_insurance_claim_request
                     </p>
                     <div class="alert alert-info mt-3 py-2">
-                        Claim ID: <strong>@Model.Id</strong> |
-                        Status: <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
+                        @GlobalShared.Claim_ID: <strong>@Model.Id</strong> |
+                        @GlobalShared.Status: <span class="badge @GetStatusBadgeClass(Model.Status)">@Model.Status</span>
                     </div>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -27,10 +27,10 @@
     <div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">
             <a href="@Url.Action("Index", "IPSClaim")" class="btn btn-outline-secondary">
-                <i class="mdi mdi-arrow-left me-1"></i> Back to List
+                <i class="mdi mdi-arrow-left me-1"></i> @GlobalShared.Back_to_List
             </a>
             <button type="button" class="btn btn-outline-info" onclick="showPrintModal()">
-                <i class="mdi mdi-printer-outline me-1"></i> Print Details
+                <i class="mdi mdi-printer-outline me-1"></i> @GlobalShared.Print_Details
             </button>
         </div>
     </div>
@@ -39,28 +39,28 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-light">
-                    <h5 class="mb-0 text-primary"><i class="mdi mdi-timeline-outline me-2"></i>Claim Status Timeline</h5>
+                    <h5 class="mb-0 text-primary"><i class="mdi mdi-timeline-outline me-2"></i>@GlobalIPSClaim.Claim_Status_Timeline</h5>
                 </div>
                 <div class="card-body">
                     <div class="timeline">
                         <div class="timeline-item @(Model.Status == "Registered" ? "active" : "completed")">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
-                                <h6>Registered</h6>
+                                <h6>@GlobalShared.Registered</h6>
                                 <small>@Model.CreatedDate.ToString()</small>
-                                <p>Claim was registered by @Model.CreatedBy</p>
+                                <p>@GlobalIPSClaim.Claim_was_registered_by @Model.CreatedBy</p>
                             </div>
                         </div>
                         <div class="timeline-item @(Model.Status == "Pending" ? "active" : Model.Status == "Registered" ? "" : "completed")">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
-                                <h6>Pending Review</h6>
+                                <h6>@GlobalShared.Pending_Review</h6>
                                 <small>@(Model.ModifiedDate > Model.CreatedDate ? Model.ModifiedDate.ToString() : "Pending")</small>
                                 @if (Model.Status == "Approved" || Model.Status == "Posted")
-                                {<p>Claim was Approved By @Model.CreatedBy</p> }
+                                {<p>@GlobalIPSClaim.Claim_was_Approved_By @Model.CreatedBy</p> }
                             else
                             {
-                                <p>Awaiting review and approval</p>}
+                            <p>@GlobalIPSClaim.Awaiting_review_and_approval</p>}
                             </div>
                         </div>
                         <div class="timeline-item @(Model.Status == "Approved" ? "active" : Model.Status == "Posted" ? "completed" : "")">
@@ -69,22 +69,22 @@
                                 <h6>Approved</h6>
                                 <small>@(Model.Status == "Approved" || Model.Status == "Posted" ? Model.ModifiedDate.ToString() : "Pending")</small>
                                 @if (Model.Status == "Approved" || Model.Status == "Posted")
-                                {<p>Claim Approved By @Model.CreatedBy awaiting payment</p> }
+                                {<p>@GlobalIPSClaim.Claim_Approved_By @Model.CreatedBy @GlobalIPSClaim.awaiting_payment</p> }
                             else
                             {
-                                <p>Awaiting review and approval</p>}
+                            <p>@GlobalIPSClaim.Awaiting_review_and_approval</p>}
                             </div>
                         </div>
                         <div class="timeline-item @(Model.Status == "Posted" ? "active" : "")">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
-                                <h6>Posted to Accounting</h6>
+                                <h6>@GlobalIPSClaim.Posted_to_Accounting</h6>
                                 <small>@(Model.Status == "Posted" ? Model.ModifiedDate.ToString() : "Pending")</small>
                                 @if (Model.Status == "Posted")
-                                {<p>Claim was posted and Processed for settlement By @Model.CreatedBy</p> }
+                                {<p>@GlobalIPSClaim.Claim_was_posted_and_Processed_for_settlement_By @Model.CreatedBy</p> }
                             else
                             {
-                                <p>Awaiting posting and Processing for settlement</p>}
+                            <p>@GlobalIPSClaim.Awaiting_posting_and_Processing_for_settlement</p>}
 
                             </div>
                         </div>
@@ -98,28 +98,28 @@
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header bg-light text-primary">
-                    <h5 class="mb-0"><i class="mdi mdi-account-details me-2 text-primary"></i>Member & Claim Details</h5>
+                    <h5 class="mb-0"><i class="mdi mdi-account-details me-2 text-primary"></i>@GlobalIPSClaim.Member_Claim_Details</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-sm">
                         <tr>
-                            <th width="40%">Member ID:</th>
+                            <th width="40%">@GlobalShared.Member_ID:</th>
                             <td>@Model.MemberId</td>
                         </tr>
                         <tr>
-                            <th>Full Name:</th>
+                            <th>@GlobalShared.Full_Name:</th>
                             <td>@Model.MemberLastName @Model.MemberFirstName @Model.MemberMiddleName</td>
                         </tr>
                         <tr>
-                            <th>Sex:</th>
+                            <th>@GlobalShared.Sex:</th>
                             <td>@Model.Sex</td>
                         </tr>
                         <tr>
-                            <th>Date of Birth:</th>
+                            <th>@GlobalShared.Date of Birth:</th>
                             <td>@Model.DateOfBirth.ToString()</td>
                         </tr>
                         <tr>
-                            <th>Claim Type:</th>
+                            <th>@GlobalShared.Claim_Type:</th>
                             <td>
                                 <span class="badge bg-info">
                                     @(Model.ClaimType == "LoanProtection" ? "Loan Protection" : "Life Savings")
@@ -127,27 +127,27 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Event Category:</th>
+                            <th>@GlobalShared.Event_Category:</th>
                             <td>@Model.EventCategory</td>
                         </tr>
                         <tr>
-                            <th>Date of Event:</th>
+                            <th>@GlobalShared.Date_of_Event:</th>
                             <td>@Model.DateOfDeathOrDisability.ToString()</td>
                         </tr>
                         <tr>
-                            <th>Cause:</th>
+                            <th>@GlobalShared.Cause:</th>
                             <td>@Model.Cause</td>
                         </tr>
                         <tr>
-                            <th>Branch:</th>
+                            <th>@GlobalShared.Branch:</th>
                             <td>@Model.BranchName</td>
                         </tr>
                         <tr>
-                            <th>Created Date:</th>
+                            <th>@GlobalShared.Created_Date:</th>
                             <td>@Model.CreatedDate.ToString()</td>
                         </tr>
                         <tr>
-                            <th>Created By:</th>
+                            <th>@GlobalShared.Created_by:</th>
                             <td>@Model.CreatedBy</td>
                         </tr>
                     </table>
@@ -158,19 +158,19 @@
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header bg-light">
-                    <h5 class="mb-0 text-primary"><i class="mdi mdi-cash-multiple me-2 text-primary"></i>Financial Details</h5>
+                    <h5 class="mb-0 text-primary"><i class="mdi mdi-cash-multiple me-2 text-primary"></i>@GlobalShared.Financial_Details</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-sm">
                         <tr>
-                            <th width="40%">Claimed Amount:</th>
+                            <th width="40%">@GlobalShared.Claimed_Amount:</th>
                             <td class="fw-bold text-primary">
                                 @Model.ClaimedAmount.ToString() XAF
                             </td>
                         </tr>
 
                         <tr>
-                            <th>Approved Amount:</th>
+                            <th>@GlobalShared.Approved_Amount:</th>
                             <td class="fw-bold @(Model.ApprovedAmount.HasValue ? "text-success" : "text-muted")">
                                 @(Model.ApprovedAmount.HasValue
                                 ? Model.ApprovedAmount.Value.ToString("N0") + " XAF"
@@ -179,7 +179,7 @@
                         </tr>
 
                         <tr>
-                            <th>Savings Balance:</th>
+                            <th>@GlobalShared.Savings_Balance:</th>
                             <td>
                                 @(Model.SavingsBalanceAtEvent.HasValue
                                 ? Model.SavingsBalanceAtEvent.Value.ToString("N0") + " XAF"
@@ -188,7 +188,7 @@
                         </tr>
 
                         <tr>
-                            <th>Loan Balance:</th>
+                            <th>@GlobalShared.Loan_Balance:</th>
                             <td>
                                 @(Model.LoanBalanceAtEvent.HasValue
                                 ? Model.LoanBalanceAtEvent.Value.ToString("N0") + " XAF"
@@ -197,19 +197,19 @@
                         </tr>
 
                         <tr>
-                            <th>Beneficiary:</th>
+                            <th>@GlobalShared.Beneficiary:</th>
                             <td>@Model.BeneficiaryName</td>
                         </tr>
                         <tr>
-                            <th>Address:</th>
+                            <th>@GlobalShared.Address:</th>
                             <td>@Model.BeneficiaryAddress</td>
                         </tr>
                         <tr>
-                            <th>Contact:</th>
+                            <th>@GlobalShared.Contact:</th>
                             <td>@Model.BeneficiaryContact</td>
                         </tr>
                         <tr>
-                            <th>Idempotency Key:</th>
+                            <th>@GlobalShared.Idempotency_Key:</th>
                             <td><small>@Model.IdempotencyKey</small></td>
                         </tr>
                     </table>
@@ -224,7 +224,7 @@
             <div class="card">
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 text-primary">
-                        <i class="mdi mdi-file-upload me-2 text-primary"></i>Uploaded Documents
+                        <i class="mdi mdi-file-upload me-2 text-primary"></i>@GlobalShared.Uploaded_Documents
                         <span class="badge bg-secondary ms-2">@(Model.Documents?.Count ?? 0)</span>
                     </h5>
 
@@ -234,7 +234,7 @@
                                 class="btn btn-sm btn-primary"
                                 data-bs-toggle="modal"
                                 data-bs-target="#uploadModal">
-                            <i class="mdi mdi-upload me-1"></i> Upload Document
+                            <i class="mdi mdi-upload me-1"></i> @GlobalShared.Upload_Document
                         </button>
                     }
                 </div>
@@ -250,7 +250,7 @@
                     {
                         <div class="text-center py-4">
                             <i class="mdi mdi-file-remove-outline display-4 text-muted"></i>
-                            <p class="mt-2 text-muted">No documents uploaded yet</p>
+                            <p class="mt-2 text-muted">@GlobalShared.No_documents_uploaded_yet</p>
                         </div>
                     }
                     else
@@ -329,11 +329,11 @@
                                                 {
                                                     <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@safeId" data-bs-slide="prev">
                                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                        <span class="visually-hidden">Previous</span>
+                                                        <span class="visually-hidden">@GlobalShared.Previous</span>
                                                     </button>
                                                     <button class="carousel-control-next" type="button" data-bs-target="#carousel-@safeId" data-bs-slide="next">
                                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                        <span class="visually-hidden">Next</span>
+                                                        <span class="visually-hidden">@GlobalShared.Next</span>
                                                     </button>
                                                 }
                                             </div>
@@ -348,27 +348,27 @@
 
                                                     <button class="btn btn-sm btn-outline-primary"
                                                             onclick="viewDocument('@GetDocumentTypeDisplayName(group.Key)', '@documents.First().UrlPath', '@firstSafeType', '@documents.First().Id', '@firstSafeName')">
-                                                        <i class="mdi mdi-eye me-1"></i> View
+                                                        <i class="mdi mdi-eye me-1"></i> @GlobalShared.View
                                                     </button>
 
                                                     if (documents.Count > 1)
                                                     {
                                                         <button class="btn btn-sm btn-outline-success"
                                                                 onclick="downloadAllDocumentsByType('@firstSafeType', '@GetDocumentTypeDisplayName(group.Key)')">
-                                                            <i class="mdi mdi-download me-1"></i> Download All
+                                                            <i class="mdi mdi-download me-1"></i> @GlobalShared.Download_All
                                                         </button>
                                                     }
                                                     else
                                                     {
                                                         <button class="btn btn-sm btn-outline-success"
                                                                 onclick="downloadSingleDocument('@GetDocumentTypeDisplayName(group.Key)', '@documents.First().UrlPath', '@firstSafeName', '@documents.First().Extension')">
-                                                            <i class="mdi mdi-download me-1"></i> Download
+                                                            <i class="mdi mdi-download me-1"></i> @GlobalShared.Download
                                                         </button>
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    <span class="text-muted">No files uploaded</span>
+                                            <span class="text-muted">@GlobalShared.No_files_uploaded</span>
                                                     <span class="badge @(isRequired ? "bg-danger" : "bg-warning")">
                                                         @(isRequired ? "Required" : "Optional")
                                                     </span>
@@ -379,7 +379,7 @@
                                             @if (documents.Count > 1)
                                             {
                                                 <div class="mt-3">
-                                                    <small class="d-block mb-1">All files:</small>
+                                                    <small class="d-block mb-1">@GlobalShared.All_files:</small>
                                                     <div class="d-flex flex-wrap gap-1">
                                                         @foreach (var doc in documents)
                                                         {
@@ -420,7 +420,7 @@
                     <h5 class="modal-title" id="documentPreviewModalLabel"></h5>
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-primary" onclick="downloadCurrentDocument()" id="downloadBtn">
-                            <i class="mdi mdi-download me-1"></i> Download
+                            <i class="mdi mdi-download me-1"></i> @GlobalShared.Download
                         </button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -430,7 +430,7 @@
                         <img id="documentPreviewImage" src="" alt="Document Preview" class="img-fluid rounded" style="max-height: 70vh;">
                         <div id="documentFallback" class="d-none">
                             <i class="mdi mdi-file-outline display-1 text-muted"></i>
-                            <p class="mt-2" id="documentFallbackText">This document cannot be previewed as an image.</p>
+                            <p class="mt-2" id="documentFallbackText">@GlobalShared.This_document_cannot_be_previewed_as_an_image</p>
                             <p class="text-muted small" id="documentFileName"></p>
                             <div id="documentMetadata"></div>
                         </div>
@@ -440,18 +440,18 @@
                     <div class="me-auto">
                         <div id="documentNavigation" class="d-none">
                             <button class="btn btn-sm btn-outline-secondary" onclick="navigateDocument('prev')">
-                                <i class="mdi mdi-chevron-left"></i> Previous
+                                <i class="mdi mdi-chevron-left"></i> @GlobalShared.Previous
                             </button>
                             <span class="mx-2" id="documentCounter"></span>
                             <button class="btn btn-sm btn-outline-secondary" onclick="navigateDocument('next')">
-                                Next <i class="mdi mdi-chevron-right"></i>
+                                @GlobalShared.Next <i class="mdi mdi-chevron-right"></i>
                             </button>
                         </div>
                     </div>
                     <a id="documentFullViewLink" href="#" target="_blank" class="btn btn-outline-primary">
-                        <i class="mdi mdi-open-in-new me-1"></i> Open in New Tab
+                        <i class="mdi mdi-open-in-new me-1"></i> @GlobalShared.Open_in_New_Tab
                     </a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
                 </div>
             </div>
         </div>
@@ -462,7 +462,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h5 class="modal-title" id="printModalLabel">Print Claim Details</h5>
+                    <h5 class="modal-title" id="printModalLabel">@GlobalIPSClaim.Print_Claim_Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -470,37 +470,37 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header bg-light">
-                                    <h6 class="mb-0">Content Selection</h6>
+                                    <h6 class="mb-0">@GlobalIPSClaim.Content_Selection</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="printMemberDetails" checked>
                                         <label class="form-check-label" for="printMemberDetails">
-                                            Member & Claim Details
+                                            @GlobalIPSClaim.Member_Claim_Details
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="printFinancialDetails" checked>
                                         <label class="form-check-label" for="printFinancialDetails">
-                                            Financial Details
+                                            @GlobalShared.Financial_Details
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="printTimeline" checked>
                                         <label class="form-check-label" for="printTimeline">
-                                            Status Timeline
+                                            @GlobalShared.Status_Timeline
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="printDocuments" checked>
                                         <label class="form-check-label" for="printDocuments">
-                                            Document Summary
+                                            @GlobalShared.Document_Summary
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="printDocumentImages">
                                         <label class="form-check-label" for="printDocumentImages">
-                                            Include Document Images
+                                            @GlobalShared.Include_Document_Images
                                         </label>
                                     </div>
                                 </div>
@@ -509,28 +509,28 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header bg-light">
-                                    <h6 class="mb-0">Print Options</h6>
+                                    <h6 class="mb-0">@GlobalShared.Print_Options</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="printOrientation" class="form-label">Orientation</label>
+                                        <label for="printOrientation" class="form-label">@GlobalShared.Orientation</label>
                                         <select class="form-select" id="printOrientation">
-                                            <option value="portrait">Portrait</option>
-                                            <option value="landscape">Landscape</option>
+                                            <option value="portrait">@GlobalShared.Portrait</option>
+                                            <option value="landscape">@GlobalShared.Landscape</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="printHeader" class="form-label">Header Text</label>
+                                        <label for="printHeader" class="form-label">@GlobalShared.Header_Text</label>
                                         <input type="text" class="form-control" id="printHeader" value="Insurance Claim Details">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="printFooter" class="form-label">Footer Text</label>
+                                        <label for="printFooter" class="form-label">@GlobalShared.Footer_Text</label>
                                         <input type="text" class="form-control" id="printFooter" value="Confidential - Internal Use Only">
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="printTimestamp" checked>
                                         <label class="form-check-label" for="printTimestamp">
-                                            Include timestamp
+                                            @GlobalShared.Include_timestamp
                                         </label>
                                     </div>
                                 </div>
@@ -542,13 +542,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header bg-light">
-                                    <h6 class="mb-0">Preview</h6>
+                                    <h6 class="mb-0">@GlobalShared.Preview</h6>
                                 </div>
                                 <div class="card-body">
                                     <div id="printPreview" class="border p-3" style="min-height: 300px; max-height: 500px; overflow-y: auto; background: white;">
                                         <div class="text-center text-muted">
                                             <i class="mdi mdi-printer-outline display-4 mb-3"></i>
-                                            <p>Print preview will appear here...</p>
+                                            <p>@GlobalShared.Print_preview_will_appear_here...</p>
                                         </div>
                                     </div>
                                 </div>
@@ -558,10 +558,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" onclick="updatePrintPreview()">
-                        <i class="mdi mdi-eye me-1"></i> Update Preview
+                        <i class="mdi mdi-eye me-1"></i> @GlobalShared.Update_Preview
                     </button>
                     <button type="button" class="btn btn-primary" onclick="generatePrint()">
-                        <i class="mdi mdi-printer me-1"></i> Print Now
+                        <i class="mdi mdi-printer me-1"></i> @GlobalShared.Print_Now
                     </button>
                 </div>
             </div>

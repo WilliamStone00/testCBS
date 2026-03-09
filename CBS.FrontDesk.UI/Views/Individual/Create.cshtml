@@ -43,7 +43,7 @@
 
                 <!-- New Tips -->
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.Matricules:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Matricules:</strong>
                     <ul>
                         <li>@GlobalIndividual.MandatoryFor <strong>@GlobalIndividual.CivilServants</strong>. @GlobalIndividual.EnsureThisFieldIsCompletedAccurately.</li>
                         <li>@GlobalIndividual.LeaveBlankForOtherAccountTypesUnlessInstructedOtherwise.</li>
@@ -57,7 +57,7 @@
                             <ul>
                                 <li><strong>@GlobalIndividual.CivilServants</strong></li>
                                 <li><strong>@GlobalIndividual.SalaryEarners</strong></li>
-                                <li><strong>@GlobalIndividual.BranchEmployees</strong></li>
+                                <li><strong>@GlobalShared.Branch_employees</strong></li>
                             </ul>
                         </li>
                         <li>@GlobalIndividual.EnsureSalaryDetailsAreAccurateAndAlignWithTheMembersProfile.</li>
@@ -66,7 +66,7 @@
                 <li>
                     <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Member_reference:</strong>
                     <ul>
-                        <li>@GlobalIndividual.TheSystemWill <strong>@GlobalIndividual.AutoGenerate</strong> @GlobalIndividual.aSerialMemberReferenceNumberIfLeftEmptyWithTheDefaultValueOf <code>0000000</code>.</li>
+                        <li>@GlobalIndividual.TheSystemWill <strong>@GlobalShared.AutoGenerate</strong> @GlobalIndividual.aSerialMemberReferenceNumberIfLeftEmptyWithTheDefaultValueOf <code>0000000</code>.</li>
                         <li>@GlobalIndividual.IfYouEnterACustomValueItWillBeConsideredAsLongAsItIsValid.</li>
                         <li>@GlobalIndividual.MemberReferencesAreAcombinationOfThe <strong>@GlobalShared.Branch_Code</strong> @GlobalIndividual.AndA <strong>@GlobalIndividual.DigitMemberCode</strong>.</li>
                         <ul>
@@ -75,18 +75,18 @@
                     </ul>
                 </li>
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalIndividual.NoneMemberAccounts:</strong>
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.None_Member_Accounts:</strong>
                     <ul>
                         <li>
-                            @GlobalIndividual.CheckThe <strong>@GlobalIndividual.NoneMemberAccount</strong> @GlobalIndividual.buttonForCollectiveAccountsSuchAs:
+                            @GlobalIndividual.CheckThe <strong>@GlobalShared.None_member_account</strong> @GlobalIndividual.buttonForCollectiveAccountsSuchAs:
                             <ul>
-                                <li>@GlobalIndividual.MobileMoney</li>
-                                <li>@GlobalIndividual.Remittance</li>
-                                <li>@GlobalIndividual.OrangeMoney</li>
-                                <li>@GlobalIndividual.DailyCollection</li>
+                                <li>@GlobalShared.Mobile_money</li>
+                                <li>@GlobalShared.Remittance</li>
+                                <li>@GlobalShared.Orange_money</li>
+                                <li>@GlobalShared.Daily_collection</li>
                             </ul>
                         </li>
-                        <li>@GlobalIndividual.IfLeftUncheckedTheSystemConsidersItA <strong>@GlobalIndividual.MemberAccount</strong>.</li>
+                        <li>@GlobalIndividual.IfLeftUncheckedTheSystemConsidersItA <strong>@GlobalShared.Member_account</strong>.</li>
                     </ul>
                 </li>
             </ul>

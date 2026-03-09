@@ -26,14 +26,14 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedOn, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedOn, "", new { @class = "text-danger " })
-                <label>@GlobalIndividual.IssuedOn (yyyy-mm-dd: 2023-01-28)</label>
+                <label>@GlobalShared.Issued_On (yyyy-mm-dd: 2023-01-28)</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.CardSignatureSpecimen.IssuedAt, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.IssuedAt, "", new { @class = "text-danger " })
-                <label>@GlobalIndividual.IssuedAt (yyyy-mm-dd: 2029-01-28)</label>
+                <label>@GlobalShared.Issued_at (yyyy-mm-dd: 2029-01-28)</label>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.CardSignatureSpecimen.Instruction, new { @class = "form-control", @style = "height: 75px;" })
                 @Html.ValidationMessageFor(m => m.CardSignatureSpecimen.Instruction, "", new { @class = "text-danger " })
-                <label>@GlobalIndividual.Instructions</label>
+                <label>@GlobalShared.Instructions</label>
             </div>
         </div>
         @*<div class="col-md-12">

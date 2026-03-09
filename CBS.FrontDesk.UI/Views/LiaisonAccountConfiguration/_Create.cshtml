@@ -6,7 +6,7 @@
     @using (Html.BeginForm("Create", "LiaisonAccountConfiguration", FormMethod.Post, new { onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <fieldset class="fieldset-custom">
-            <legend class="text-primary">Liaison Account Configuration</legend>
+            <legend class="text-primary">@GlobalLiaisonAccountConfiguration.Liaison_Account_Configuration</legend>
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.BranchId)
 
@@ -14,29 +14,29 @@
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Source Branch ---", new { @class = "form-control select2", id = "BranchId", onchange = "LoadAccounts(this.value,'LiaisonAccountId')" })
-                        <label>Source Branch</label>
+                        <label>@GlobalShared.Source_branch</label>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.HeadOfficeLiaisonAccountId, new SelectList(ViewBag.Liasons, "Value", "Text"), "--- Select Option ---", new { @class = "form-control select2", id = "LiaisonAccountId" })
-                        <label>Liaison Account</label>
+                        <label>@GlobalShared.Liaison_Account</label>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="form-check">
                         <label class="form-check-label">
-                            @Html.CheckBoxFor(m => m.Status, new { @class = "form-check-input" }) Active
+                            @Html.CheckBoxFor(m => m.Status, new { @class = "form-check-input" }) @GlobalShared.Active
                         </label>
                     </div>
                 </div>
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary me-2">Save</button>
-                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+                <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
             </div>
         </fieldset>
     }

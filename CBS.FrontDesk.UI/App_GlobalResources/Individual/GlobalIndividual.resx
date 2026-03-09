@@ -126,9 +126,6 @@
   <data name="AccountsOverview" xml:space="preserve">
     <value>Accounts overview</value>
   </data>
-  <data name="AccountStatus" xml:space="preserve">
-    <value>Account status</value>
-  </data>
   <data name="AddNextOfKings" xml:space="preserve">
     <value>Add next of kings</value>
   </data>
@@ -153,29 +150,11 @@
   <data name="AwaitsMembershipApproval" xml:space="preserve">
     <value>Awaits membership approval</value>
   </data>
-  <data name="Awaits_Validation" xml:space="preserve">
-    <value>Awaits validation</value>
-  </data>
-  <data name="BankRelationship" xml:space="preserve">
-    <value>Bank relationship</value>
-  </data>
-  <data name="Both" xml:space="preserve">
-    <value>Both</value>
-  </data>
-  <data name="BranchHeadOffice" xml:space="preserve">
-    <value>Branch head office</value>
-  </data>
   <data name="BRANCHMEMBERS" xml:space="preserve">
     <value>BRANCH MEMBERS</value>
   </data>
-  <data name="BranchOffice" xml:space="preserve">
-    <value>Branch office</value>
-  </data>
   <data name="BuildingContributionFee" xml:space="preserve">
     <value>Building contribution fee</value>
-  </data>
-  <data name="ByDate" xml:space="preserve">
-    <value>By date</value>
   </data>
   <data name="ByeLawsFee" xml:space="preserve">
     <value>Bye laws fee</value>
@@ -192,12 +171,6 @@
   <data name="CivilServantsSalary" xml:space="preserve">
     <value>Civil servants salary</value>
   </data>
-  <data name="CNI" xml:space="preserve">
-    <value>CNI</value>
-  </data>
-  <data name="DailyCollection" xml:space="preserve">
-    <value>Daily collection</value>
-  </data>
   <data name="DailySaver" xml:space="preserve">
     <value>Daily saver</value>
   </data>
@@ -207,35 +180,11 @@
   <data name="DataCommit" xml:space="preserve">
     <value>Data commit</value>
   </data>
-  <data name="DateQuery" xml:space="preserve">
-    <value>Date query</value>
-  </data>
-  <data name="DeactivateAccount" xml:space="preserve">
-    <value>Deactivate account</value>
-  </data>
-  <data name="Divorced" xml:space="preserve">
-    <value>Divorced</value>
-  </data>
   <data name="DoesNotHaveAnyAccountsAssociatedWithHiHerProfile" xml:space="preserve">
     <value>does not have any accounts associated with his/her profile</value>
   </data>
   <data name="EasilySegmentMembersByOperationalBranch" xml:space="preserve">
     <value>Easily segment members by operational branch</value>
-  </data>
-  <data name="EconimicActivity" xml:space="preserve">
-    <value>Econimic activity</value>
-  </data>
-  <data name="EconomicActivity" xml:space="preserve">
-    <value>Economic activity</value>
-  </data>
-  <data name="EmployeerAddress" xml:space="preserve">
-    <value>Employeer address</value>
-  </data>
-  <data name="EmployeerName" xml:space="preserve">
-    <value>Employeer name</value>
-  </data>
-  <data name="EmployeerTelephone" xml:space="preserve">
-    <value>Employeer telephone</value>
   </data>
   <data name="EntranceFee" xml:space="preserve">
     <value>Entrance fee</value>
@@ -258,59 +207,23 @@
   <data name="FathersPhoneNumber" xml:space="preserve">
     <value>Father's phone number</value>
   </data>
-  <data name="FaxNumber" xml:space="preserve">
-    <value>Fax number</value>
-  </data>
-  <data name="Female" xml:space="preserve">
-    <value>Female</value>
-  </data>
   <data name="FilterApprovedMembersByLegalFormOrType" xml:space="preserve">
     <value>Filter approved members by legal form or type</value>
   </data>
   <data name="FilterByCreationDateOrBirthDateToTargetSpecificDemographics" xml:space="preserve">
     <value>Filter by creation date or birth date to target specific demographics</value>
   </data>
-  <data name="FullMember" xml:space="preserve">
-    <value>Full member</value>
-  </data>
-  <data name="Gender" xml:space="preserve">
-    <value>Gender</value>
-  </data>
   <data name="GenderMaritalStatus" xml:space="preserve">
     <value>Gender &amp; marital status</value>
-  </data>
-  <data name="Groups" xml:space="preserve">
-    <value>Groups</value>
   </data>
   <data name="IdentityCardNumber" xml:space="preserve">
     <value>Identity card number</value>
   </data>
-  <data name="Income" xml:space="preserve">
-    <value>Income</value>
-  </data>
   <data name="InGoodStanding" xml:space="preserve">
     <value>In good standing</value>
   </data>
-  <data name="Instruction" xml:space="preserve">
-    <value>Instruction</value>
-  </data>
-  <data name="Instructions" xml:space="preserve">
-    <value>Instructions</value>
-  </data>
   <data name="isNowAfullMember" xml:space="preserve">
     <value>is now a full member. They are eligible for all membership benefits and services</value>
-  </data>
-  <data name="IssuedAt" xml:space="preserve">
-    <value>Issued at</value>
-  </data>
-  <data name="IssuedOn" xml:space="preserve">
-    <value>Issued on</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Last name</value>
   </data>
   <data name="LegalForm" xml:space="preserve">
     <value>Legal form</value>
@@ -330,53 +243,20 @@
   <data name="MakeAnInitialOrMinimumDepositIntoTheFollowingAccounts" xml:space="preserve">
     <value>Make an initial or minimum deposit into the following accounts</value>
   </data>
-  <data name="Male" xml:space="preserve">
-    <value>Male</value>
-  </data>
-  <data name="Married" xml:space="preserve">
-    <value>Married</value>
-  </data>
-  <data name="MemberAccountNumber" xml:space="preserve">
-    <value>Member account number</value>
-  </data>
   <data name="MemberAccountTemporalNumber" xml:space="preserve">
     <value>Member account/temporal number</value>
   </data>
   <data name="MemberFeeSetUp" xml:space="preserve">
     <value>Member fee setup</value>
   </data>
-  <data name="MemberFilters" xml:space="preserve">
-    <value>Member filters</value>
-  </data>
   <data name="MemberOverview" xml:space="preserve">
     <value>Member overview</value>
-  </data>
-  <data name="MemberReferenceNumber" xml:space="preserve">
-    <value>Member reference number</value>
-  </data>
-  <data name="MembersAccount" xml:space="preserve">
-    <value>Member's account</value>
-  </data>
-  <data name="MembershipApproval" xml:space="preserve">
-    <value>Membership approval</value>
-  </data>
-  <data name="MembershipStatus" xml:space="preserve">
-    <value>Membership status</value>
-  </data>
-  <data name="MembersMatriculeNumber" xml:space="preserve">
-    <value>Members matricule number</value>
   </data>
   <data name="MEMBERSOVERVIEW" xml:space="preserve">
     <value>MEMBERS OVERVIEW</value>
   </data>
-  <data name="MembersReferenceNumber" xml:space="preserve">
-    <value>Members reference number</value>
-  </data>
   <data name="MembersReportingWithParameters" xml:space="preserve">
     <value>Members Reporting With Parameters</value>
-  </data>
-  <data name="MemberStatusType" xml:space="preserve">
-    <value>Member status type</value>
   </data>
   <data name="MobileMoneyMTN" xml:space="preserve">
     <value>Mobile money MTN</value>
@@ -402,26 +282,11 @@
   <data name="MTNMoneyCollectiveAccountForNoneRegularizedMembers" xml:space="preserve">
     <value>MTN money collective account for none regularized members</value>
   </data>
-  <data name="NationalIDCard" xml:space="preserve">
-    <value>National id card</value>
-  </data>
-  <data name="NationalIDCardNumber" xml:space="preserve">
-    <value>National id card number</value>
-  </data>
   <data name="NextOfKingName" xml:space="preserve">
     <value>Next of king name</value>
   </data>
-  <data name="NoAccountsFound" xml:space="preserve">
-    <value>No accounts found</value>
-  </data>
   <data name="NumberOfKids" xml:space="preserve">
     <value>Number of kids</value>
-  </data>
-  <data name="Occumation" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="Occupation" xml:space="preserve">
-    <value>Occupation</value>
   </data>
   <data name="OnceTheseRequirementsAreMetTheMembershipStatus" xml:space="preserve">
     <value>Once these requirements are met, the membership status will be updated to "Approved," and the member will become a fully recognized member, eligible for all account benefits and services</value>
@@ -431,9 +296,6 @@
   </data>
   <data name="OShare" xml:space="preserve">
     <value>O.Share (Ordinary Share)</value>
-  </data>
-  <data name="OtherInformations" xml:space="preserve">
-    <value>Other informations</value>
   </data>
   <data name="Overdrawn" xml:space="preserve">
     <value>Overdrawn</value>
@@ -449,9 +311,6 @@
   </data>
   <data name="PleaseAddNewAccountsToStartManagingFinancialTransactions" xml:space="preserve">
     <value>Please add new accounts to start managing financial transactions</value>
-  </data>
-  <data name="PostBoxNumber" xml:space="preserve">
-    <value>Post box number</value>
   </data>
   <data name="PreferenceShareAccount" xml:space="preserve">
     <value>Preference share account (if applicable)</value>
@@ -471,65 +330,14 @@
   <data name="RDate" xml:space="preserve">
     <value>R.Date</value>
   </data>
-  <data name="ReactivateAccount" xml:space="preserve">
-    <value>Reactivate account</value>
-  </data>
-  <data name="RegistrationDates" xml:space="preserve">
-    <value>Registration dates</value>
-  </data>
-  <data name="Relationship" xml:space="preserve">
-    <value>Relationship</value>
-  </data>
   <data name="RemittanceCollectiveAccountForNoneRegularizedMembers" xml:space="preserve">
     <value>Remittance collective account for none regularized members</value>
   </data>
   <data name="SalaryOrIncome" xml:space="preserve">
     <value>Salary or income</value>
   </data>
-  <data name="SavingsAccount" xml:space="preserve">
-    <value>Savings account</value>
-  </data>
-  <data name="Sector" xml:space="preserve">
-    <value>Sector</value>
-  </data>
-  <data name="SelectBranchHeadOffice" xml:space="preserve">
-    <value>Select Branch head office</value>
-  </data>
-  <data name="SelectBranchOffice" xml:space="preserve">
-    <value>Select branch office</value>
-  </data>
-  <data name="SelectCountry" xml:space="preserve">
-    <value>Select country</value>
-  </data>
-  <data name="SelectDivision" xml:space="preserve">
-    <value>Select division</value>
-  </data>
-  <data name="SelectEconomicActivity" xml:space="preserve">
-    <value>Select economic activity</value>
-  </data>
-  <data name="SelectGender" xml:space="preserve">
-    <value>Select gender</value>
-  </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
-  </data>
   <data name="SelectLegalityStatus" xml:space="preserve">
     <value>Select legality status</value>
-  </data>
-  <data name="SelectMaritalStatus" xml:space="preserve">
-    <value>Select marital status</value>
-  </data>
-  <data name="SelectMemberAccountType" xml:space="preserve">
-    <value>Select member account type</value>
-  </data>
-  <data name="SelectMembersCategory" xml:space="preserve">
-    <value>Select member's category</value>
-  </data>
-  <data name="SelectMembershipStatus" xml:space="preserve">
-    <value>Select membership status</value>
-  </data>
-  <data name="SelectProduct" xml:space="preserve">
-    <value>Select product</value>
   </data>
   <data name="SelectRelationshipBetween" xml:space="preserve">
     <value>Select relationship between</value>
@@ -540,14 +348,8 @@
   <data name="SelectSector" xml:space="preserve">
     <value>Select sector</value>
   </data>
-  <data name="SelectSubDivision" xml:space="preserve">
-    <value>Select sub-division</value>
-  </data>
   <data name="SelectTheAccountTypeToOpenRemoveFor" xml:space="preserve">
     <value>Select the account type to Open/Remove for</value>
-  </data>
-  <data name="SelectTown" xml:space="preserve">
-    <value>Select town</value>
   </data>
   <data name="SelectWorkStatus" xml:space="preserve">
     <value>Select work status</value>
@@ -558,17 +360,8 @@
   <data name="ShowApprovalLegalFilters" xml:space="preserve">
     <value>Show approval &amp; legal filters</value>
   </data>
-  <data name="ShowBranchFilter" xml:space="preserve">
-    <value>Show branch filter</value>
-  </data>
-  <data name="ShowDateFilters" xml:space="preserve">
-    <value>Show date filters</value>
-  </data>
   <data name="ShowDemographicFilters" xml:space="preserve">
     <value>Show demographic filters</value>
-  </data>
-  <data name="Single" xml:space="preserve">
-    <value>Single</value>
   </data>
   <data name="SpouseAddress" xml:space="preserve">
     <value>Spouse address</value>
@@ -606,44 +399,17 @@
   <data name="UncheckToDeactivateTheCustomersAccount" xml:space="preserve">
     <value>Uncheck to deactivate the customer's account</value>
   </data>
-  <data name="Unemployed" xml:space="preserve">
-    <value>Unemployed</value>
-  </data>
   <data name="ViewAndManageRegisteredMembersAcrossAllBranches" xml:space="preserve">
     <value>View and manage registered members across all branches. Use advanced filters to analyze member demographics, approval status, and activation records</value>
   </data>
   <data name="VillageOfOrigin" xml:space="preserve">
     <value>Village of origin</value>
   </data>
-  <data name="Widowed" xml:space="preserve">
-    <value>Widowed</value>
-  </data>
   <data name="withThisIndividual" xml:space="preserve">
     <value>with this individual</value>
   </data>
-  <data name="Working" xml:space="preserve">
-    <value>Working</value>
-  </data>
-  <data name="WorkingStatus" xml:space="preserve">
-    <value>Working status</value>
-  </data>
-  <data name="WorkStatus" xml:space="preserve">
-    <value>Work status</value>
-  </data>
-  <data name="DateOfBirthFrom" xml:space="preserve">
-    <value>Date of birth (From)</value>
-  </data>
-  <data name="DateOfBirthTo" xml:space="preserve">
-    <value>Date of birth (To)</value>
-  </data>
-  <data name="AgeCategory" xml:space="preserve">
-    <value>Age category</value>
-  </data>
   <data name="AgeCategoryStatus" xml:space="preserve">
     <value>Age category status</value>
-  </data>
-  <data name="MembersReporting" xml:space="preserve">
-    <value>Members reporting</value>
   </data>
   <data name="MEMBERSREPORTINGUC" xml:space="preserve">
     <value>MEMBERS REPORTING</value>
@@ -651,41 +417,17 @@
   <data name="PrivateInstitutionSalary" xml:space="preserve">
     <value>Private institution salary</value>
   </data>
-  <data name="Remittance" xml:space="preserve">
-    <value>Remittance</value>
-  </data>
   <data name="TemporalAccount" xml:space="preserve">
     <value>Temporal account</value>
   </data>
   <data name="TemporalSalaryForMember" xml:space="preserve">
     <value>Temporal salary for member</value>
   </data>
-  <data name="Major" xml:space="preserve">
-    <value>Major</value>
-  </data>
-  <data name="Minor" xml:space="preserve">
-    <value>Minor</value>
-  </data>
-  <data name="PersonalPhoneNumber" xml:space="preserve">
-    <value>Personal phone number</value>
-  </data>
-  <data name="AddressInfo" xml:space="preserve">
-    <value>Address info</value>
-  </data>
-  <data name="SelectCustomerCategory" xml:space="preserve">
-    <value>Select customer category</value>
-  </data>
   <data name="CheckMeIAmAdailySavingMember" xml:space="preserve">
     <value>Check me. I am a daily saving member</value>
   </data>
   <data name="FilledTabs" xml:space="preserve">
     <value>Filled tabs</value>
-  </data>
-  <data name="Security" xml:space="preserve">
-    <value>Security</value>
-  </data>
-  <data name="Documents" xml:space="preserve">
-    <value>Documents</value>
   </data>
   <data name="MemberProfileManagement" xml:space="preserve">
     <value>Member Profile Management</value>
@@ -698,9 +440,6 @@
   </data>
   <data name="MEMBER_STATUS" xml:space="preserve">
     <value>MEMBER STATUS</value>
-  </data>
-  <data name="RegistrationDate" xml:space="preserve">
-    <value>Registration date</value>
   </data>
   <data name="HELPTIPS" xml:space="preserve">
     <value>HELP TIPS</value>
@@ -729,20 +468,11 @@
   <data name="EnsureProperDocumentationIsUploadedForVerificationPurposes" xml:space="preserve">
     <value>Ensure proper documentation is uploaded for verification purposes</value>
   </data>
-  <data name="AccountView" xml:space="preserve">
-    <value>Account view</value>
-  </data>
-  <data name="DocumentManagement" xml:space="preserve">
-    <value>Document management</value>
-  </data>
   <data name="SignatoryManagement" xml:space="preserve">
     <value>Signatory management</value>
   </data>
   <data name="NextOfKingManagement" xml:space="preserve">
     <value>Next of king management</value>
-  </data>
-  <data name="AccountDetails" xml:space="preserve">
-    <value>Account details</value>
   </data>
   <data name="IndividualAccountCreation" xml:space="preserve">
     <value>Individual account creation</value>
@@ -768,9 +498,6 @@
   <data name="UseDropdownFields" xml:space="preserve">
     <value>Use dropdown fields (e.g., gender, marital status) to ensure accurate categorization</value>
   </data>
-  <data name="Matricules" xml:space="preserve">
-    <value>Matricules</value>
-  </data>
   <data name="MandatoryFor" xml:space="preserve">
     <value>Mandatory for</value>
   </data>
@@ -789,17 +516,11 @@
   <data name="SalaryEarners" xml:space="preserve">
     <value>Salary earners</value>
   </data>
-  <data name="BranchEmployees" xml:space="preserve">
-    <value>Branch employees</value>
-  </data>
   <data name="EnsureSalaryDetailsAreAccurateAndAlignWithTheMembersProfile" xml:space="preserve">
     <value>Ensure salary details are accurate and align with the member's profile</value>
   </data>
   <data name="TheSystemWill" xml:space="preserve">
     <value>The system will</value>
-  </data>
-  <data name="AutoGenerate" xml:space="preserve">
-    <value>auto-generate</value>
   </data>
   <data name="aSerialMemberReferenceNumberIfLeftEmptyWithTheDefaultValueOf" xml:space="preserve">
     <value>a serial member reference number if left empty with the default value of</value>
@@ -810,29 +531,14 @@
   <data name="MemberReferencesAreAcombinationOfThe" xml:space="preserve">
     <value>Member References are a combination of the</value>
   </data>
-  <data name="MobileMoney" xml:space="preserve">
-    <value>Mobile money</value>
-  </data>
-  <data name="OrangeMoney" xml:space="preserve">
-    <value>Orange money</value>
-  </data>
   <data name="CheckThe" xml:space="preserve">
     <value>Check the</value>
-  </data>
-  <data name="NoneMemberAccount" xml:space="preserve">
-    <value>None member account</value>
-  </data>
-  <data name="NoneMemberAccounts" xml:space="preserve">
-    <value>None Member Accounts</value>
   </data>
   <data name="AndA" xml:space="preserve">
     <value>and a</value>
   </data>
   <data name="DigitMemberCode" xml:space="preserve">
     <value>7-digit member code</value>
-  </data>
-  <data name="ForExampleAMemberNumber1InBranch003willAppearAs" xml:space="preserve">
-    <value>For example, a member number 1 in branch 003 will appear as</value>
   </data>
   <data name="buttonForCollectiveAccountsSuchAs" xml:space="preserve">
     <value>button for collective accounts such as</value>
@@ -849,9 +555,6 @@
   <data name="CollectiveAccountsRequireTheNoneMemberAccountOptionToBeChecked" xml:space="preserve">
     <value>Collective accounts require the "None Member Account" option to be checked</value>
   </data>
-  <data name="MemberAccount" xml:space="preserve">
-    <value>Member account</value>
-  </data>
   <data name="IfLeftUncheckedTheSystemConsidersItA" xml:space="preserve">
     <value>If left unchecked, the system considers it a</value>
   </data>
@@ -867,35 +570,11 @@
   <data name="NextOfKingsListing" xml:space="preserve">
     <value>Next of kings listing</value>
   </data>
-  <data name="PhotoAndSignature" xml:space="preserve">
-    <value>Photo And Signature</value>
-  </data>
-  <data name="PersonalInformation" xml:space="preserve">
-    <value>Personal Information</value>
-  </data>
-  <data name="EmploymentStatus" xml:space="preserve">
-    <value>Employment Status</value>
-  </data>
-  <data name="LegalStatus" xml:space="preserve">
-    <value>Legal Status</value>
-  </data>
-  <data name="ResetPin" xml:space="preserve">
-    <value>Reset pin</value>
-  </data>
   <data name="CurrentPin" xml:space="preserve">
     <value>Current pin</value>
   </data>
   <data name="SecurityQuestionAndAnswer" xml:space="preserve">
     <value>Security Question And Answer</value>
-  </data>
-  <data name="PinReset" xml:space="preserve">
-    <value>Pin Reset</value>
-  </data>
-  <data name="SecretQuestion" xml:space="preserve">
-    <value>Secret question</value>
-  </data>
-  <data name="SecretAnswer" xml:space="preserve">
-    <value>Secret answer</value>
   </data>
   <data name="SecretQuestionNotSetBy" xml:space="preserve">
     <value>Secret question not set by</value>
@@ -912,12 +591,6 @@
   <data name="ChooseScannedSignature" xml:space="preserve">
     <value>Choose scanned signature</value>
   </data>
-  <data name="UploadSignature" xml:space="preserve">
-    <value>Upload signature</value>
-  </data>
-  <data name="SelectRelation" xml:space="preserve">
-    <value>Select relation</value>
-  </data>
   <data name="Last_Interest_Posted" xml:space="preserve">
     <value>Last Interest Posted</value>
   </data>
@@ -926,5 +599,77 @@
   </data>
   <data name="Opening_Day_Status" xml:space="preserve">
     <value>Opening Day Status</value>
+  </data>
+  <data name="ForExampleAMemberNumber1InBranch003willAppearAs" xml:space="preserve">
+    <value>For example, a member number 1 in branch 003 will appear as</value>
+  </data>
+  <data name="Private_Institution_Salary_Collection_Account" xml:space="preserve">
+    <value>Private Institution Salary Collection Account (PISCA)</value>
+  </data>
+  <data name="the_member_as_a_Private_Institution_Salary_Collection_Account_profile" xml:space="preserve">
+    <value>the member as a Private Institution Salary Collection Account profile.</value>
+  </data>
+  <data name="You_can_use_the_action_below_to" xml:space="preserve">
+    <value>You can use the action below to</value>
+  </data>
+  <data name="This_member_is_currently" xml:space="preserve">
+    <value>This member is currently</value>
+  </data>
+  <data name="for_the_PISCA_program" xml:space="preserve">
+    <value>for the PISCA program.</value>
+  </data>
+  <data name="LIVE_PREVIEW" xml:space="preserve">
+    <value>LIVE PREVIEW</value>
+  </data>
+  <data name="Description_will_appear_here" xml:space="preserve">
+    <value>Description will appear here</value>
+  </data>
+  <data name="Define_a_new_status_label_for_your_members" xml:space="preserve">
+    <value>Define a new status label for your members.</value>
+  </data>
+  <data name="Preview_how_the_status_will_appear_before_creating_it" xml:space="preserve">
+    <value>Preview how the status will appear before creating it.</value>
+  </data>
+  <data name="Descriptions_can_be_up_to_200_characters" xml:space="preserve">
+    <value>Descriptions can be up to 200 characters.</value>
+  </data>
+  <data name="Provide_a_detailed_description_of_what_the_status_means_for_members" xml:space="preserve">
+    <value>Provide a detailed description of what the status means for members.</value>
+  </data>
+  <data name="Keep_status_names_concise_maximum_50_characters" xml:space="preserve">
+    <value>Keep status names concise - maximum 50 characters.</value>
+  </data>
+  <data name="Use_clear_and_descriptive_status_names" xml:space="preserve">
+    <value>Use clear and descriptive status names (e.g., Active, Premium, Suspended).</value>
+  </data>
+  <data name="Both_fields_are_required_and_must_meet_the_character_limits" xml:space="preserve">
+    <value>Both fields are required and must meet the character limits.</value>
+  </data>
+  <data name="Click_Create_Status_to_save_the_new_member_status" xml:space="preserve">
+    <value>Click &lt;strong&gt;Create Status&lt;/strong&gt; to save the new member status.</value>
+  </data>
+  <data name="Create_Membership_Status" xml:space="preserve">
+    <value>Create Membership Status</value>
+  </data>
+  <data name="Follow_these_tips_to_create_a_meaningful_member_status" xml:space="preserve">
+    <value>Follow these tips to create a meaningful member status</value>
+  </data>
+  <data name="Set_as_Default_Status" xml:space="preserve">
+    <value>Set as Default Status</value>
+  </data>
+  <data name="Modify_the_selected_member_status_information" xml:space="preserve">
+    <value>Modify the selected member status information.</value>
+  </data>
+  <data name="Update_Member_Status" xml:space="preserve">
+    <value>Update Member Status</value>
+  </data>
+  <data name="View_full_information_of_the_selected_member_status" xml:space="preserve">
+    <value>View full information of the selected member status.</value>
+  </data>
+  <data name="Member_Status_Details" xml:space="preserve">
+    <value>Member Status Details</value>
+  </data>
+  <data name="MemberShip_Status_Data_Table" xml:space="preserve">
+    <value>MemberShip Status  Data Table</value>
   </data>
 </root>

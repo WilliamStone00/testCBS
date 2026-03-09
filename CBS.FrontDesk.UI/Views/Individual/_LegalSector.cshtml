@@ -20,14 +20,14 @@
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.FormalOrInformalSector, new SelectList(ViewBag.formalOrInformalSectors, "Text", "Value"), "---"+ @GlobalIndividual.SelectSector +"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.FormalOrInformalSector, "", new { @class = "text-danger " })
-                <label for="formValidationDob">@GlobalIndividual.Sector</label>
+                <label for="formValidationDob">@GlobalShared.Sector</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.BankingRelationship, new SelectList(ViewBag.bankingRelationships, "Text", "Value"), "---" + @GlobalIndividual.SelectRelationShipWithBank+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.BankingRelationship, "", new { @class = "text-danger " })
-                <label for="formValidationDob">@GlobalIndividual.BankRelationship</label>
+                <label for="formValidationDob">@GlobalShared.Bank_relationship</label>
             </div>
         </div>
 

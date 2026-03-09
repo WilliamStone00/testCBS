@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.IndividualCustomerProfile
 @using Resources
 <div class="card-header">
-    <h5 class="card-title">@GlobalIndividual.AccountStatus</h5>
+    <h5 class="card-title">@GlobalShared.Account_Status</h5>
 </div>
 <div class="card-body">
     <div class="mb-3 col-12">
@@ -15,7 +15,7 @@
                     <li>@GlobalIndividual.MakeAnInitialOrMinimumDepositIntoTheFollowingAccounts:</li>
                     <ul>
                         <li>@GlobalIndividual.OShare</li>
-                        <li>@GlobalIndividual.SavingsAccount</li>
+                        <li>@GlobalShared.Savings_account</li>
                         <li>@GlobalIndividual.PreferenceShareAccount</li>
                     </ul>
                 </ul>
@@ -24,7 +24,7 @@
         }
         else
         {
-    <span class="badge bg-success">@GlobalIndividual.FullMember</span>
+    <span class="badge bg-success">@GlobalShared.Full_member</span>
             <div class="alert alert-info mt-2" role="alert">
                 <p>@GlobalIndividual.TheMembershipApprovalProcessIsCompleteAnd @Model.CustomerList.name @GlobalIndividual.isNowAfullMember.</p>
             </div>
@@ -73,11 +73,11 @@
                 <button type="submit" class="btn @(Model.CustomerList.Active ? "btn-danger" : "btn-primary")">
                     @if (Model.CustomerList.Active)
                     {
-                        @:@GlobalIndividual.DeactivateAccount
+                        @:@GlobalShared.Deactivate_account
                     }
                     else
                     {
-                        @:@GlobalIndividual.ReactivateAccount
+                        @:@GlobalShared.Reactivate_account_
                     }
                 </button>
             </div>

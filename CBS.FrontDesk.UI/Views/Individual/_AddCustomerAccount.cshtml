@@ -16,7 +16,7 @@
         <div class="col-md-3">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.CustomerList.CustomerId, new { @class = "form-control", @readonly = true })
-                <label>@GlobalIndividual.MemberReferenceNumber</label>
+                <label>@GlobalShared.Member_reference_number</label>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
         <!-- Account Type Selection -->
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---"+ @GlobalIndividual.SelectProduct+"---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.AddCustomerAccount.productId, new SelectList(ViewBag.Savings, "Id", "Name"), "---"+ GlobalShared.Select_product+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.AddCustomerAccount.productId, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalIndividual.SelectTheAccountTypeToOpenRemoveFor @Model.CustomerList.name</label>
             </div>

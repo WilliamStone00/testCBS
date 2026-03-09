@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bellow_we_have_the_Detail_Description_of_an_IPS_Configuration" xml:space="preserve">
+    <value>bellow we have the Detail Description of an IPS Configuration</value>
+  </data>
+  <data name="Browse_and_filter_IPS_configurations_by_year_branch_and_other_criteria" xml:space="preserve">
+    <value>Browse and filter IPS configurations by year, branch, and other criteria.</value>
+  </data>
+  <data name="Configure_and_manage_Insurance_Premium_System_settings_for_different_years_and_branches" xml:space="preserve">
+    <value>Configure and manage Insurance Premium System settings for different years and branches.</value>
+  </data>
+  <data name="Configure_different_premium_rates_for_loans_and_savings_Rates_are_applied_as_percentages" xml:space="preserve">
+    <value>Configure different premium rates for loans and savings. Rates are applied as percentages.</value>
+  </data>
+  <data name="Create_branch_specific_configurations_or_apply_the_same_settings_across_all_branches" xml:space="preserve">
+    <value>Create branch-specific configurations or apply the same settings across all branches.</value>
+  </data>
+  <data name="Define_maximum_insurance_coverage_amounts_for_both_loan_and_savings_products" xml:space="preserve">
+    <value>Define maximum insurance coverage amounts for both loan and savings products.</value>
+  </data>
+  <data name="Each_configuration_is_specific_to_a_calendar_year_Create_separate_configurations_for_different_years" xml:space="preserve">
+    <value>Each configuration is specific to a calendar year. Create separate configurations for different years.</value>
+  </data>
+  <data name="Enable_this_option_to_exclude_group_accounts_from_insurance_coverage" xml:space="preserve">
+    <value>Enable this option to exclude group accounts from insurance coverage.</value>
+  </data>
+  <data name="IPS_Configurations_by_Year" xml:space="preserve">
+    <value>IPS Configurations by Year</value>
+  </data>
+  <data name="IPS_Configurations_Management" xml:space="preserve">
+    <value>IPS Configurations Management</value>
+  </data>
+  <data name="IPS_Configuration_Details" xml:space="preserve">
+    <value>IPS Configuration Details</value>
+  </data>
+  <data name="IPS_Configuration_Filters" xml:space="preserve">
+    <value>IPS Configuration Filters</value>
+  </data>
+  <data name="IPS_Configuration_Management" xml:space="preserve">
+    <value>IPS Configuration Management</value>
+  </data>
+  <data name="IPS_Configuration_Tips" xml:space="preserve">
+    <value>IPS Configuration Tips</value>
+  </data>
+  <data name="IPS_Config_Details" xml:space="preserve">
+    <value>IPS Config Details</value>
+  </data>
+  <data name="Life_Savings_Claim_Credit_Account" xml:space="preserve">
+    <value>Life Savings Claim Credit Account</value>
+  </data>
+  <data name="Life_Savings_Claim_Debit_Account" xml:space="preserve">
+    <value>Life Savings Claim Debit Account</value>
+  </data>
+  <data name="Loan_Protection_Credit_Account" xml:space="preserve">
+    <value>Loan Protection Credit Account</value>
+  </data>
+  <data name="Loan_Protection_Debit_Account" xml:space="preserve">
+    <value>Loan Protection Debit Account</value>
+  </data>
+  <data name="Max_Delinquency_Days_From" xml:space="preserve">
+    <value>Max Delinquency Days From</value>
+  </data>
+  <data name="Max_Delinquency_Days_To" xml:space="preserve">
+    <value>Max Delinquency Days To</value>
+  </data>
+  <data name="Multiple_configurations_found_for_the_selected_year" xml:space="preserve">
+    <value>Multiple configurations found for the selected year</value>
+  </data>
+  <data name="No_IPS_configurations_found_for_the_selected_year" xml:space="preserve">
+    <value>No IPS configurations found for the selected year.</value>
+  </data>
+  <data name="Only_active_configurations_are_applied_to_new_insurance_policies" xml:space="preserve">
+    <value>Only active configurations are applied to new insurance policies.</value>
+  </data>
+  <data name="Select_appropriate_debit_and_credit_accounts_for_life_savings_claims_and_loan_protection_transactions" xml:space="preserve">
+    <value>Select appropriate debit and credit accounts for life savings claims and loan protection transactions.</value>
+  </data>
+  <data name="Set_coverage_limits_premium_rates_and_eligibility_criteria_for_loan_and_savings_insurance_products" xml:space="preserve">
+    <value>Set coverage limits, premium rates, and eligibility criteria for loan and savings insurance products.</value>
+  </data>
+  <data name="Set_maximum_customer_age_for_insurance_eligibility_Customers_beyond_this_age_wont_be_covered" xml:space="preserve">
+    <value>Set maximum customer age for insurance eligibility. Customers beyond this age won't be covered.</value>
+  </data>
+  <data name="Set_maximum_delinquency_days_allowed_before_insurance_coverage_is_suspended" xml:space="preserve">
+    <value>Set maximum delinquency days allowed before insurance coverage is suspended.</value>
+  </data>
+  <data name="Use_the_filters_below_to_narrow_down_the_list_of_IPS_configurations" xml:space="preserve">
+    <value>Use the filters below to narrow down the list of IPS configurations.</value>
+  </data>
+</root>

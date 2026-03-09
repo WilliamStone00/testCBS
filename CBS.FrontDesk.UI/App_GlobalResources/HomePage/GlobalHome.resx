@@ -121,7 +121,7 @@
     <value>About</value>
     <comment>About TSC</comment>
   </data>
-  <data name="AboutInformation" xml:space="preserve">
+  <data name="Use_this_area_to_provide_additional_information" xml:space="preserve">
     <value>Use this area to provide additional information.</value>
     <comment>Use this area to provide additional information.</comment>
   </data>
@@ -135,14 +135,14 @@
   <data name="NoInternetConnection" xml:space="preserve">
     <value>No internet connection</value>
   </data>
-  <data name="PartnerText" xml:space="preserve">
+  <data name="Your_Secure_Reliable_Partner_FLUX" xml:space="preserve">
     <value>Your Secure &amp; Reliable Partner. FLUX!</value>
     <comment>Slogan line under the heading</comment>
   </data>
   <data name="RETRY" xml:space="preserve">
     <value>RETRY</value>
   </data>
-  <data name="SatisfactionText" xml:space="preserve">
+  <data name="Flux_SARL_Empowering_businesses_Enhancing_lives" xml:space="preserve">
     <value>Flux SARL! : Empowering businesses. Enhancing lives.</value>
     <comment>Mission statement under the slogan</comment>
   </data>
@@ -150,7 +150,7 @@
     <value>WELCOME TO</value>
     <comment>Main welcome heading for the home page</comment>
   </data>
-  <data name="YouAreCurrentlyOffline" xml:space="preserve">
+  <data name="You_are_currently_offline_Please_check_your_internet_connection_and_try_again" xml:space="preserve">
     <value>You are currently offline. Please check your internet connection and try again</value>
   </data>
 </root>

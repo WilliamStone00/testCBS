@@ -1,5 +1,6 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.IPS.IPSClaim
 <!-- Action Modal -->
+@using Resources
 <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -9,11 +10,11 @@
                     <div class="card-body text-center">
                         <h5 class="modal-title">
                             <i class="mdi mdi-cog-outline me-2"></i>
-                            <span id="actionModalTitle">Process Claim</span>
+                            <span id="actionModalTitle">@GlobalShared.Process_Claim</span>
                         </h5>
                         <div class="alert alert-info mt-3 py-2">
                             <i class="mdi mdi-information-outline me-1"></i>
-                            <span id="actionModalDescription">Approve, reject or post insurance claims using this form.</span>
+                            <span id="actionModalDescription">@GlobalIPSClaim.Approve_reject_or_post_insurance_claims_using_this_form</span>
                         </div>
                         <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
                     </div>
@@ -24,29 +25,29 @@
                     <div class="card-body py-3">
                         <div class="row">
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Claim ID</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Claim_ID</label>
                                 <p class="fw-bold text-dark mb-0" id="actionClaimId">-</p>
                             </div>
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Member Reference</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Member_reference</label>
                                 <p class="fw-bold text-dark mb-0" id="actionMemberId">-</p>
                             </div>
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Branch</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Branch</label>
                                 <p class="fw-bold text-dark mb-0" id="actionBranch">-</p>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Claim Type</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Claim_Type</label>
                                 <p class="fw-bold text-dark mb-0" id="actionClaimType">-</p>
                             </div>
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Approved Amount</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Approved_Amount</label>
                                 <p class="fw-bold text-dark mb-0" id="actionApprovedAmount">-</p>
                             </div>
                             <div class="col-4">
-                                <label class="form-label small text-muted mb-1">Current Status</label>
+                                <label class="form-label small text-muted mb-1">@GlobalShared.Current_Status</label>
                                 <p class="fw-bold mb-0">
                                     <span id="actionCurrentStatus" class="badge bg-warning">-</span>
                                 </p>
@@ -69,7 +70,7 @@
                             <div class="col-md-6">
                                 <label for="accountingDate" class="form-label fw-bold text-dark">
                                     <i class="mdi mdi-calendar me-1"></i>
-                                    Accounting Date
+                                    @GlobalShared.Accounting_Date
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" id="accountingDate" name="accountingDate" class="form-control" required>
@@ -77,7 +78,7 @@
                             <div class="col-md-6">
                                 <label for="externalApplicationName" class="form-label fw-bold text-dark">
                                     <i class="mdi mdi-application me-1"></i>
-                                    External Application
+                                    @GlobalShared.External_Application
                                 </label>
                                 <input type="text" id="externalApplicationName" name="externalApplicationName"
                                        class="form-control" value="IPS Claim System">
@@ -89,13 +90,13 @@
                                     <input type="checkbox" id="forceRepost" name="forceRepost" class="form-check-input">
                                     <label for="forceRepost" class="form-check-label text-dark">
                                         <i class="mdi mdi-refresh me-1"></i>
-                                        Force Repost
+                                        @GlobalShared.Force_Repost
                                     </label>
                                 </div>
                                 <div class="form-text text-muted">
                                     <small>
                                         <i class="mdi mdi-information-outline me-1"></i>
-                                        Check this if you want to force repost even if already posted.
+                                        @GlobalIPSClaim.Check_this_if_you_want_to_force_repost_even_if_already_posted
                                     </small>
                                 </div>
                             </div>
@@ -106,7 +107,7 @@
                     <div class="mb-3" id="approveAmountSection" style="display: none;">
                         <label for="actionAmount" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-cash-multiple me-1"></i>
-                            Approved Amount
+                            @GlobalShared.Approved_Amount
                             <span class="text-danger">*</span>
                         </label>
                         <input type="number" id="actionAmount" name="amount" class="form-control"
@@ -114,7 +115,7 @@
                         <div class="form-text text-muted">
                             <small>
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Enter the amount to approve for this claim.
+                                @GlobalIPSClaim.Enter_the_amount_to_approve_for_this_claim
                             </small>
                         </div>
                     </div>
@@ -128,10 +129,10 @@
                                  data-bs-target="#customerCardBody"
                                  role="button"
                                  aria-expanded="true">
-                                <span><i class="mdi mdi-account me-1"></i> Customer Information</span>
+                                <span><i class="mdi mdi-account me-1"></i> @GlobalShared.Customer_Information</span>
                                 <div>
                                     <button type="button" class="btn btn-info btn-sm" id="refreshCustomerBtn" onclick="event.stopPropagation();">
-                                        <i class="mdi mdi-refresh"></i> Refresh
+                                        <i class="mdi mdi-refresh"></i> @GlobalShared.Refresh
                                     </button>
                                     <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
                                         <i class="mdi mdi-chevron-up"></i>
@@ -142,9 +143,9 @@
                                 <div class="card-body" id="customerInfoSection">
                                     <div class="text-center py-4">
                                         <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading customer data...</span>
+                                            <span class="visually-hidden">@GlobalShared.Loading_customer_data...</span>
                                         </div>
-                                        <p class="mt-2 text-muted">Loading customer information...</p>
+                                        <p class="mt-2 text-muted">@GlobalShared.Loading_customer_information...</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +158,7 @@
                                  data-bs-target="#totalAmountCardBody"
                                  role="button"
                                  aria-expanded="false">
-                                <span><i class="mdi mdi-cash-multiple me-1"></i> Total Premium Amount</span>
+                                <span><i class="mdi mdi-cash-multiple me-1"></i> @GlobalIPSClaim.Total_Premium_Amount</span>
                                 <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
                                     <i class="mdi mdi-chevron-down"></i>
                                 </button>
@@ -167,8 +168,8 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="totalAmount" class="form-label fw-bold text-dark">
-                                                Total Amount to Process
+                                            <label for="totalAmount" class=Total_Amount_to_Process"form-label fw-bold text-dark">
+                                                @GlobalIPSClaim.Total_Amount_to_Process
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <input type="number" id="totalAmount" name="totalAmount" class="form-control"
@@ -176,7 +177,7 @@
                                             <div class="form-text text-muted">
                                                 <small>
                                                     <i class="mdi mdi-information-outline me-1"></i>
-                                                    Enter the total amount for this claim posting.
+                                                    @GlobalIPSClaim.Enter_the_total_amount_for_this_claim_posting
                                                 </small>
                                             </div>
                                         </div>
@@ -184,20 +185,20 @@
                                             <div class="mt-4 pt-2">
                                                 <div class="alert alert-light border">
                                                     <div class="d-flex justify-content-between">
-                                                        <span class="fw-bold">Total Amount:</span>
+                                                        <span class="fw-bold">@GlobalShared.Total_amount:</span>
                                                         <span id="displayTotalAmount" class="fw-bold text-primary">0.00</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between mt-2">
-                                                        <span>Source Balance:</span>
+                                                        <span>@GlobalShared.Source_balance:</span>
                                                         <span id="sourceBalance" class="fw-bold text-info">0.00</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between mt-2">
-                                                        <span>Member/Branch Balance:</span>
+                                                        <span>@GlobalShared.Member/ @GlobalShared.Branch_Balance:</span>
                                                         <span id="memberBranchBalance" class="fw-bold text-success">0.00</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between mt-2">
-                                                        <span>Validation:</span>
-                                                        <span id="amountValidation" class="badge bg-warning">Not Calculated</span>
+                                                        <span>@GlobalShared.Validation:</span>
+                                                        <span id="amountValidation" class="badge bg-warning">@GlobalShared.Not_Calculated</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -214,7 +215,7 @@
                                  data-bs-target="#sourceAccountsCardBody"
                                  role="button"
                                  aria-expanded="false">
-                                <span><i class="mdi mdi-bank-transfer me-1"></i> Source Account Entries</span>
+                                <span><i class="mdi mdi-bank-transfer me-1"></i> @GlobalIPSClaim.Source_Account_Entries</span>
                                 <div>
                                     <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
                                         <i class="mdi mdi-chevron-down"></i>
@@ -238,23 +239,23 @@
                                         <table class="table table-sm table-hover mb-0" id="sourceAccountsTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="40%">Source GL Account</th>
-                                                    <th width="25%">Amount</th>
-                                                    <th width="25%">Description</th>
-                                                    <th width="10%" class="text-center">Action</th>
+                                                    <th width="40%">@GlobalShared.Source_GL_Account</th>
+                                                    <th width="25%">@GlobalShared.Amount</th>
+                                                    <th width="25%">@GlobalShared.Description</th>
+                                                    <th width="10%" class="text-center">@GlobalShared.Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="sourceAccountsTableBody">
                                                 <tr id="noSourceRows">
                                                     <td colspan="4" class="text-center text-muted py-4">
                                                         <i class="mdi mdi-information-outline me-1"></i>
-                                                        No source accounts added yet. Click "Add Row" to add entries.
+                                                        @GlobalIPSClaim.No_source_accounts_added_yet_Click_Add_Row_to_add_entries
                                                     </td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="table-light">
                                                 <tr>
-                                                    <td colspan="1" class="text-end fw-bold">Source Total:</td>
+                                                    <td colspan="1" class="text-end fw-bold">@GlobalShared.Source_Total:</td>
                                                     <td id="sourceTotalAmount" class="fw-bold text-info">0.00</td>
                                                     <td colspan="2" class="text-end fw-bold text-muted">Max: <span id="sourceMaxAmount">0.00</span></td>
                                                 </tr>
@@ -272,7 +273,7 @@
                                  data-bs-target="#memberAccountsCardBody"
                                  role="button"
                                  aria-expanded="false">
-                                <span><i class="mdi mdi-account-cash me-1"></i> Member Balance Distribution</span>
+                                <span><i class="mdi mdi-account-cash me-1"></i> @GlobalIPSClaim.Member_Balance_Distribution</span>
                                 <div>
                                     <span class="badge bg-light text-dark" id="memberAccountsCount">0 accounts</span>
                                     <button type="button" class="btn btn-light btn-sm" onclick="event.stopPropagation();">
@@ -286,11 +287,11 @@
                                         <table class="table table-sm table-hover mb-0" id="memberAccountsTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="25%">Account</th>
-                                                    <th width="15%">Type</th>
-                                                    <th width="15%">Balance</th>
-                                                    <th width="20%">Amount</th>
-                                                    <th width="15%">Description</th>
+                                                    <th width="25%">@GlobalShared.Account</th>
+                                                    <th width="15%">@GlobalShared.Type</th>
+                                                    <th width="15%">@GlobalShared.Balance</th>
+                                                    <th width="20%">@GlobalShared.Amount</th>
+                                                    <th width="15%">@GlobalShared.Description</th>
                                                     <th width="10%" class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -298,15 +299,15 @@
                                                 <tr id="noMemberRows">
                                                     <td colspan="5" class="text-center text-muted py-4">
                                                         <i class="mdi mdi-information-outline me-1"></i>
-                                                        No member accounts available
+                                                        @GlobalShared.No_member_accounts_available
                                                     </td>
                                                 </tr>
                                             </tbody>
                                             <tfoot class="table-light">
                                                 <tr>
-                                                    <td colspan="2" class="text-end fw-bold">Member Total:</td>
+                                                    <td colspan="2" class="text-end fw-bold">@GlobalShared.Member_Total:</td>
                                                     <td id="memberTotalAmount" class="fw-bold text-warning">0.00</td>
-                                                    <td colspan="2" class="text-end fw-bold text-muted">Available: <span id="memberAvailableBalance">0.00</span></td>
+                                                    <td colspan="2" class="text-end fw-bold text-muted">@GlobalShared.Available: <span id="memberAvailableBalance">0.00</span></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -322,7 +323,7 @@
                             <div class="card-header bg-light text-primary d-flex justify-content-between align-items-center">
 
                                 <span>
-                                    <i class="mdi mdi-bank me-1"></i> Branch Account Distribution
+                                    <i class="mdi mdi-bank me-1"></i> @GlobalIPSClaim.Branch_Account_Distribution
                                 </span>
 
                                 <!-- Collapse Button Only -->
@@ -345,7 +346,7 @@
                                         <button type="button"
                                                 class="btn btn-primary btn-sm"
                                                 id="addBranchRowBtn">
-                                            <i class="mdi mdi-plus"></i> Add Row
+                                            <i class="mdi mdi-plus"></i> @GlobalShared.Add_Row
                                         </button>
                                     </div>
 
@@ -355,10 +356,10 @@
 
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="40%">Destination Branch Account</th>
-                                                    <th width="25%">Amount</th>
-                                                    <th width="25%">Description</th>
-                                                    <th width="10%" class="text-center">Action</th>
+                                                    <th width="40%">@GlobalShared.Destination_Branch_Account</th>
+                                                    <th width="25%">@GlobalShared.Amount</th>
+                                                    <th width="25%">@GlobalShared.Description</th>
+                                                    <th width="10%" class="text-center">@GlobalShared.Action</th>
                                                 </tr>
                                             </thead>
 
@@ -366,7 +367,7 @@
                                                 <tr id="noBranchRows">
                                                     <td colspan="4" class="text-center text-muted py-4">
                                                         <i class="mdi mdi-information-outline me-1"></i>
-                                                        No branch accounts added yet. Click "Add Row" to add entries.
+                                                        @GlobalIPSClaim.No_branch_accounts_added_yet_Click_Add_Row_to_add_entries
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -376,7 +377,7 @@
                                                     <td class="text-end fw-bold">Branch Total:</td>
                                                     <td id="branchTotalAmount" class="fw-bold text-danger">0.00</td>
                                                     <td colspan="2" class="text-end fw-bold text-muted">
-                                                        Available: <span id="branchAvailableBalance">0.00</span>
+                                                        @GlobalShared.Available: <span id="branchAvailableBalance">0.00</span>
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -395,16 +396,16 @@
                     <div class="mb-3">
                         <label for="actionNote" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-text-box-edit-outline me-1"></i>
-                            <span id="actionNoteLabel">Comments / Reason</span>
+                            <span id="actionNoteLabel">@GlobalShared.Comments / @GlobalShared.Reason</span>
                             <span class="text-danger">*</span>
                         </label>
                         <textarea id="actionNote" name="note" class="form-control" rows="3"
-                                  placeholder="Please provide detailed comments or reason for this action..."
+                                  placeholder="@GlobalIPSClaim.Please_provide_detailed_comments_or_reason_for_this_action..."
                                   required minlength="10"></textarea>
                         <div class="form-text text-muted">
                             <small>
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Required field. Minimum 10 characters.
+                                @GlobalShared.Required_field_Minimum_10_characters.
                             </small>
                         </div>
                     </div>
@@ -412,11 +413,11 @@
             </div>
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Cancel
+                    <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Cancel
                 </button>
                 <button type="button" class="btn btn-primary" id="actionSubmitBtn">
                     <i class="mdi mdi-check-circle-outline me-1"></i>
-                    <span id="submitButtonText">Submit</span>
+                    <span id="submitButtonText">@GlobalShared.Submit</span>
                 </button>
             </div>
         </div>
@@ -430,48 +431,48 @@
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">
                     <i class="mdi mdi-check-circle-outline me-2"></i>
-                    Confirm Posting
+                    @GlobalShared.Confirm_Posting
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Please review the posting details before confirming.
+                    @GlobalIPSClaim.Please_review_the_posting_details_before_confirming
                 </div>
 
                 <div class="card mb-3">
                     <div class="card-header bg-light">
-                        <h6 class="mb-0">Transaction Summary</h6>
+                        <h6 class="mb-0">@GlobalShared.Transaction_Summary</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-2">
-                                    <span class="text-muted">Claim ID:</span>
+                                    <span class="text-muted">@GlobalShared.Claim_ID:</span>
                                     <span id="confirmClaimId" class="fw-bold ms-2">-</span>
                                 </div>
                                 <div class="mb-2">
-                                    <span class="text-muted">Member ID:</span>
+                                    <span class="text-muted">@GlobalShared.Member_ID:</span>
                                     <span id="confirmMemberId" class="fw-bold ms-2">-</span>
                                 </div>
                                 <div class="mb-2">
-                                    <span class="text-muted">Total Amount:</span>
+                                    <span class="text-muted">@GlobalShared.Total_amount:</span>
                                     <span id="confirmTotalAmount" class="fw-bold ms-2">0.00</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-2">
-                                    <span class="text-muted">Accounting Date:</span>
+                                    <span class="text-muted">@GlobalShared.Accounting_Date:</span>
                                     <span id="confirmAccountingDate" class="fw-bold ms-2">-</span>
                                 </div>
                                 <div class="mb-2">
-                                    <span class="text-muted">External App:</span>
+                                    <span class="text-muted">@GlobalShared.External_App:</span>
                                     <span id="confirmExternalApp" class="fw-bold ms-2">-</span>
                                 </div>
                                 <div class="mb-2">
-                                    <span class="text-muted">Force Repost:</span>
-                                    <span id="confirmForceRepost" class="fw-bold ms-2">No</span>
+                                    <span class="text-muted">@GlobalShared.Force_Repost:</span>
+                                    <span id="confirmForceRepost" class="fw-bold ms-2">@GlobalShared.No</span>
                                 </div>
                             </div>
                         </div>
@@ -480,7 +481,7 @@
 
                 <div class="card">
                     <div class="card-header bg-light">
-                        <h6 class="mb-0">Account Entries Summary</h6>
+                        <h6 class="mb-0">@GlobalIPSClaim.Account Entries Summary</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -488,11 +489,11 @@
                                 <thead>
                                     <tr>
                                         <th>SN</th>
-                                        <th>Type</th>
-                                        <th>Account</th>
-                                        <th class="text-end">Amount</th>
-                                        <th>Description</th>
-                                        <th>Account Reference</th>
+                                        <th>@GlobalShared.Type</th>
+                                        <th>@GlobalShared.Account</th>
+                                        <th class="text-end">@GlobalShared.Amount</th>
+                                        <th>@GlobalShared.Description</th>
+                                        <th>@GlobalShared.Account_Reference</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -500,7 +501,7 @@
                                 </tbody>
                                 <tfoot class="table-light">
                                     <tr>
-                                        <td colspan="2" class="text-end fw-bold">Total:</td>
+                                        <td colspan="2" class="text-end fw-bold">@GlobalShared.Total:</td>
                                         <td id="confirmEntriesTotal" class="text-end fw-bold text-success">0.00</td>
                                         <td></td>
                                     </tr>
@@ -512,10 +513,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i> Cancel
+                    <i class="mdi mdi-close me-1"></i> @GlobalShared.Cancel
                 </button>
                 <button type="button" class="btn btn-primary" id="confirmPostBtn">
-                    <i class="mdi mdi-check me-1"></i> Confirm & Post
+                    <i class="mdi mdi-check me-1"></i> @GlobalShared.Confirm & @GlobalShared.Post
                 </button>
             </div>
         </div>

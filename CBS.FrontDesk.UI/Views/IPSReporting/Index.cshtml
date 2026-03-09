@@ -1,18 +1,18 @@
 ﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.API.IPSReporting.InsurancePremiumDto
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-chart-areaspline me-2"></i>IPS Insurance Premium Reporting
+                    <i class="mdi mdi-chart-areaspline me-2"></i>@GlobalIPSReporting.IPS_Insurance_Premium_Reporting
                 </h1>
                 <p class="card-text">
-                    Generate and analyze insurance premium reports for Loan Protection (LP) and Life Savings (LS) across branches.
+                    @GlobalIPSReporting.Generate_and_analyze_insurance_premium_reports_for_Loan_Protection_LP_and_Life_Savings_LS_across_branches
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Select branch, date range, and report type to generate comprehensive insurance premium reports.
+                    @GlobalIPSReporting.Select_branch_date_range_and_report_type_to_generate_comprehensive_insurance_premium_reports
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,7 +22,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips</span>
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePremiumTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,21 +34,21 @@
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="mdi mdi-calendar-range text-info me-2"></i>
-                            <strong>Reporting Period:</strong> Default dates are set to Jan 1 (current year) to current date. Adjust as needed for historical reports.
+                            <strong>@GlobalShared.Reporting_Period:</strong> @GlobalIPSReporting.Default_dates_are_set_to_Jan_1_current_year_to_current_date_Adjust_as_needed_for_historical_reports
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-bank text-success me-2"></i>
-                            <strong>Branch Selection:</strong> Select a specific branch for branch-level reports or leave empty for consolidated institution-wide report.
+                            <strong>@GlobalShared.Branch_Selection:</strong> @GlobalIPSReporting.Select_a_specific_branch_for_branch_level_reports_or_leave_empty_for_consolidated_institution_wide_report
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-file-pdf-box text-danger me-2"></i>
-                            <strong>Print Options:</strong>
-                            <span class="badge bg-danger ms-1">PDF</span> Recommended for Insurance Premium reports (only option available)
-                            <span class="badge bg-success ms-2">Excel</span> Available for other report types
+                            <strong>@GlobalShared.Print_Options:</strong>
+                            <span class="badge bg-danger ms-1">PDF</span> @GlobalIPSReporting.Recommended_for_Insurance_Premium_reports_only_option_available
+                            <span class="badge bg-success ms-2">Excel</span> @GlobalIPSReporting.Available_for_other_report_types
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-chart-pie text-warning me-2"></i>
-                            <strong>Report Components:</strong> Includes Loan Protection (LP) and Life Savings (LS) calculations with detailed deduction breakdowns.
+                            <strong>@GlobalShared.Components:</strong> @GlobalIPSReporting.Includes_Loan_Protection_LP_and_Life_Savings_LS_calculations_with_detailed_deduction_breakdowns
                         </li>
                     </ul>
                 </div>
@@ -56,30 +56,30 @@
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="mdi mdi-calculator text-primary me-2"></i>
-                            <strong>Premium Calculation:</strong>
+                            <strong>@GlobalShared.Premium_Calculation:</strong>
                             <ul class="mt-1 ms-4">
-                                <li>LP Premium = (Insurable Loans × LP Rate) - Deductions</li>
-                                <li>LS Premium = (Insurable Savings × LS Rate) - Deductions</li>
+                                <li>@GlobalIPSReporting.LP_Premium_Insurable_Loans_LP_Rate_Deductions</li>
+                                <li>@GlobalIPSReporting.LS_Premium_Insurable_Savings_LS_Rate_Deductions</li>
                             </ul>
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-close-octagon text-danger me-2"></i>
-                            <strong>Deductions Include:</strong> Excess balances, age threshold exceedances, organizational loans, and other specified deductions.
+                            <strong>@GlobalIPSReporting.Deductions_Include:</strong> @GlobalIPSReporting.Excess_balances_age_threshold_exceedances_organizational_loans_and_other_specified_deductions
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-file-document-multiple text-secondary me-2"></i>
-                            <strong>Report Sections:</strong> Front side (gross amounts) and reverse side (deductions) for both LP and LS.
+                            <strong>@GlobalShared.Report_Sections:</strong> @GlobalIPSReporting.Front_side_gross_amounts_and_reverse_side_deductions_for_both_LP_and_LS
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-clock-outline text-muted me-2"></i>
-                            <strong>Generation Time:</strong> Reports are generated in real-time; large datasets may take a few moments to process.
+                            <strong>@GlobalShared.Generation_Time:</strong> @GlobalIPSReporting.Reports_are_generated_in_real_time_large_datasets_may_take_a_few_moments_to_process
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="alert alert-warning mt-2 mb-0 py-2">
                 <i class="mdi mdi-alert-circle-outline me-1"></i>
-                <strong>Note:</strong> Ensure the IPS configuration (rates, maximum amounts, age limits) is properly set up before generating premium reports.
+                <strong>@GlobalShared.Note:</strong> @GlobalIPSReporting.Ensure_the_IPS_configuration_rates_maximum_amounts_age_limits_is_properly_set_up_before_generating_premium_reports
             </div>
         </div>
     </div>
@@ -95,7 +95,7 @@
                 <!-- Header Section -->
                 <div class="col-12">
                     <h6 class="text-primary border-bottom pt-2 pb-1">
-                        <i class="mdi mdi-file-chart-outline me-1"></i> Insurance Premium Report
+                        <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalIPSReporting.Insurance_Premium_Report
                     </h6>
                 </div>
 
@@ -105,7 +105,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.BranchId,
                             new SelectList(ViewBag.Branches, "Id", "name"),
-                            "--- Select Branch ---",
+                            "---"+ GlobalShared.Select_Branch +"---",
                             new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
 
@@ -119,7 +119,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.ReportType,
                             new SelectList(ViewBag.ReportType, "Value", "Text"),
-                            "--- Select Report Type ---",
+                            "---"+ GlobalShared.Select_Report_Type + "---",
                             new { @class = "form-control select2" })
                         @Html.ValidationMessageFor(m => m.ReportType, "", new { @class = "text-danger" })
 
@@ -132,7 +132,7 @@
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(m => m.PrintOption,
                              new SelectList(ViewBag.PrintType, "Value", "Text"),
-                               "--- Select Print Option ---",
+                               "---"+ GlobalShared.Select_Print_Option +"---",
                                new { @class = "form-control select2", id = "PrintOption" })
                         @Html.ValidationMessageFor(m => m.PrintOption, "", new { @class = "text-danger" })
 
@@ -177,10 +177,10 @@
                 <!-- Submit Button -->
                 <div class="col-12 text-end mt-3">
                     <button type="submit" class="btn btn-primary shadow-sm px-4" id="btnGenerate">
-                        <i class="fas fa-file-export me-1"></i> Generate Report
+                        <i class="fas fa-file-export me-1"></i> @GlobalShared.Generate_Report
                     </button>
                     <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">
-                        Reset
+                        @GlobalShared.Reset
                     </button>
                 </div>
             </div>

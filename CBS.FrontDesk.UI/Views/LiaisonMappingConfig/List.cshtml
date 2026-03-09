@@ -7,10 +7,10 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank me-2"></i> Liaison Mapping Configuration
+                    <i class="mdi mdi-bank me-2"></i> @GlobalLiaisonMappingConfig.Liaison_Mapping_Configuration
                 </h1>
                 <p class="card-text text-muted">
-                    Manage liaison mappings between branches and GL accounts efficiently.
+                    @GlobalLiaisonMappingConfig.Manage_liaison_mappings_between_branches_and_GL_accounts_efficiently
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -29,10 +29,10 @@
     <div id="collapseLiaisonTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Ensure branch and account details are correct before saving.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Prevent duplicate mappings between the same branches.</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> Only authorized staff can modify mappings.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Use the status checkbox to enable or disable a mapping.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLiaisonMappingConfig.Ensure_branch_and_account_details_are_correct_before_saving</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLiaisonMappingConfig.Prevent_duplicate_mappings_between_the_same_branches</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLiaisonMappingConfig.Only_authorized_staff_can_modify_mappings</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalLiaisonMappingConfig.Use_the_status_checkbox_to_enable_or_disable_a_mapping</li>
             </ul>
         </div>
     </div>
@@ -40,7 +40,7 @@
 
 <!-- Filters -->
 <div class="card shadow p-3 mb-4" id="filtersSection">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Liaison Mapping Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@GlobalShared.Liaison_Mapping_Filters</h5>
 
     <form id="liaisonFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
@@ -50,14 +50,14 @@
                 <div class="col-md-6">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleBranch">Show Branch Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.Show_Branch_Filter</label>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                        <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.Show_Date_Filters</label>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
                         @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
                     </div>
                 </div>
@@ -76,11 +76,11 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-2">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Created From</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                         <input type="date" id="CreatedFromUtc" name="CreatedFromUtc" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Created To</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_To</label>
                         <input type="date" id="CreatedToUtc" name="CreatedToUtc" class="form-control" />
                     </div>
                 </div>
@@ -91,10 +91,10 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>
@@ -106,7 +106,7 @@
 <!-- Add Button above DataTable -->
 <div class="d-flex justify-content-end mb-2">
     <button type="button" class="btn btn-success" onclick="openLiaisonModalAdd()">
-        <i class="mdi mdi-plus me-1"></i> Add Mapping
+        <i class="mdi mdi-plus me-1"></i> @GlobalShared.Add_Mapping
     </button>
 </div>
 
@@ -121,7 +121,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-primary">
-                    <i class="mdi mdi-bank-outline me-1"></i> Liaison Mapping
+                    <i class="mdi mdi-bank-outline me-1"></i> @GlobalShared.Liaison_Mapping
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -129,16 +129,16 @@
             <div class="modal-body" id="liaisonModalBody">
                 <div class="text-center p-3">
                     <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2 text-muted">Loading...</p>
+                    <p class="mt-2 text-muted">@GlobalShared.Loading...</p>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="openLiaisonModalAdd()" data-bs-dismiss="modal">
-                    <i class="mdi mdi-content-save me-1"></i> Add New Mapping
+                    <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Add_New_Mapping
                 </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                    <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Close
                 </button>
             </div>
         </div>

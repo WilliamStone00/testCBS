@@ -2,17 +2,17 @@
 
 @{ ViewBag.Title = "Member Status"; }
 
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <!-- Page Header -->
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-flag-variant me-2"></i> Create Membership Status
+                    <i class="mdi mdi-flag-variant me-2"></i> @GlobalIndividual.Create_Membership_Status
                 </h1>
                 <p class="card-text text-muted">
-                    Define a new status label for your members.
+                    @GlobalIndividual.Define_a_new_status_label_for_your_members
                 </p>
             </div>
         </div>
@@ -23,7 +23,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> HELPTIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalIndividual.HELPTIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -32,19 +32,19 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                Follow these tips to create a meaningful member status:
+                @GlobalIndividual.Follow_these_tips_to_create_a_meaningful_member_status:
             </p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use clear and descriptive status names (e.g., Active, Premium, Suspended).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Keep status names concise - maximum 50 characters.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Provide a detailed description of what the status means for members.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Descriptions can be up to 200 characters.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Preview how the status will appear before creating it.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.Use_clear_and_descriptive_status_names</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.Keep_status_names_concise_maximum_50_characters</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.Provide_a_detailed_description_of_what_the_status_means_for_members</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.Descriptions_can_be_up_to_200_characters</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalIndividual.Preview_how_the_status_will_appear_before_creating_it</li>
             </ul>
             <p class="text-muted">Note:</p>
             <ul>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> Click <strong>Create Status</strong> to save the new member status.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> Both fields are required and must meet the character limits.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @Html.Raw(@GlobalIndividual.Click_Create_Status_to_save_the_new_member_status)</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalIndividual.Both_fields_are_required_and_must_meet_the_character_limits</li>
             </ul>
         </div>
     </div>
@@ -65,7 +65,7 @@
                             <!-- Status Name Field -->
                             <div class="mb-4">
                                 <label for="StatusName" class="form-label fw-bold">
-                                    Status Name <span class="text-danger">*</span>
+                                    @GlobalShared.Status_Name <span class="text-danger">*</span>
                                 </label>
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBox("name", null, new
@@ -77,10 +77,10 @@
                                         @id = "StatusName",
                                         onkeyup = "updatePreview()"
                                     })
-                                    <label for="StatusName">Status Name</label>
+                                    <label for="StatusName">@GlobalShared.Status_Name</label>
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
-                                    <small class="text-muted">Maximum 50 characters</small>
+                                    <small class="text-muted">@GlobalShared.Maximum_50_characters</small>
                                     <small class="text-muted" id="nameCounter">0 / 50</small>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                             <!-- Description Field -->
                             <div class="mb-4">
                                 <label for="Description" class="form-label fw-bold">
-                                    Description <span class="text-danger">*</span>
+                                    @GlobalShared.Description <span class="text-danger">*</span>
                                 </label>
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextArea("description", null, new
@@ -102,10 +102,10 @@
                                         @style = "height: 100px;",
                                         onkeyup = "updatePreview()"
                                     })
-                                    <label for="Description">Description</label>
+                                    <label for="Description">@GlobalShared.Description</label>
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
-                                    <small class="text-muted">Maximum 200 characters</small>
+                                    <small class="text-muted">@GlobalShared.Maximum_200_characters</small>
                                     <small class="text-muted" id="descriptionCounter">0 / 200</small>
                                 </div>
                             </div>
@@ -116,13 +116,13 @@
                             <div class="card bg-light h-100">
                                 <div class="card-header bg-transparent">
                                     <h5 class="mb-0 text-primary">
-                                        <i class="mdi mdi-eye me-2"></i>LIVE PREVIEW
+                                        <i class="mdi mdi-eye me-2"></i>@GlobalIndividual.LIVE_PREVIEW
                                     </h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="border rounded p-3 bg-white">
-                                        <h6 class="fw-bold mb-2" id="previewName">Status Name</h6>
-                                        <p class="text-muted mb-0" id="previewDescription">Description will appear here</p>
+                                        <h6 class="fw-bold mb-2" id="previewName">@GlobalShared.Status_Name</h6>
+                                        <p class="text-muted mb-0" id="previewDescription">@GlobalIndividual.Description_will_appear_here</p>
                                     </div>
                                 </div>
                             </div>
@@ -133,10 +133,10 @@
             <div class="row mt-4">
                 <div class="col-12 d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                        <i class="mdi mdi-refresh me-2"></i>Reset
+                        <i class="mdi mdi-refresh me-2"></i>@GlobalShared.Reset
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="mdi mdi-plus-circle me-2"></i>Create Status
+                    <button type="submit" class="btn btn-primary"
+                        <i class="mdi mdi-plus-circle me-2"></i>@GlobalShared.Create_Status
                     </button>
                 </div>
             </div>

@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
-                @Html.DropDownListFor(m => m.MembershipNextOfKingsMember.Relation, new SelectList(ViewBag.relationships, "Value", "Text"), "---"+ @GlobalIndividual.SelectRelation+"---", new { @class = "form-control select2", @search = "true" })
+                @Html.DropDownListFor(m => m.MembershipNextOfKingsMember.Relation, new SelectList(ViewBag.relationships, "Value", "Text"), "---"+ GlobalShared.Select_relation+"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.MembershipNextOfKingsMember.Relation, "", new { @class = "text-danger " })
                 <label for="formValidationDob">@GlobalIndividual.SelectRelationshipBetween @Model.CustomerList.name @GlobalIndividual.withThisIndividual</label>
             </div>

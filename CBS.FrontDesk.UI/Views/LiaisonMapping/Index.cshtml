@@ -1,20 +1,20 @@
 ﻿@{
     ViewBag.Title = "Liaison Mapping Management";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-vector-link me-2"></i> Liaison Mapping Management
+                    <i class="mdi mdi-vector-link me-2"></i> @GlobalLiaisonMapping.Liaison_Mapping_Management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure and manage inter-branch financial relationships and account mappings.
+                    @GlobalLiaisonMapping.Configure_and_manage_inter_branch_financial_relationships_and_account_mappings
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure proper mapping between branches for automated transaction processing.
+                    @GlobalLiaisonMapping.Ensure_proper_mapping_between_branches_for_automated_transaction_processing
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Understanding Liaison Mapping</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalLiaisonMapping.Understanding_Liaison_Mapping</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,10 +33,10 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-bank-transfer text-primary me-2"></i> <strong>Inter-branch Transactions:</strong> Automates fund transfers between branches.</li>
-                <li><i class="mdi mdi-account-switch text-success me-2"></i> <strong>Due From/Due To:</strong> Maps asset and liability accounts for proper accounting.</li>
-                <li><i class="mdi mdi-shuffle-variant text-warning me-2"></i> <strong>Bidirectional Mapping:</strong> Each branch pair requires mappings in both directions.</li>
-                <li><i class="mdi mdi-file-check-outline text-info me-2"></i> <strong>Reconciliation:</strong> Ensures proper tracking and reconciliation of inter-branch transactions.</li>
+                <li><i class="mdi mdi-bank-transfer text-primary me-2"></i> <strong>@GlobalLiaisonMapping.Inter_branch_Transactions:</strong> @GlobalLiaisonMapping.Automates_fund_transfers_between_branches</li>
+                <li><i class="mdi mdi-account-switch text-success me-2"></i> <strong>@GlobalShared.Due_From_Due_To:</strong> @GlobalLiaisonMapping.Maps_asset_and_liability_accounts_for_proper_accounting</li>
+                <li><i class="mdi mdi-shuffle-variant text-warning me-2"></i> <strong>@GlobalShared.Bidirectional_Mapping:</strong> @GlobalLiaisonMapping.Each_branch_pair_requires_mappings_in_both_directions</li>
+                <li><i class="mdi mdi-file-check-outline text-info me-2"></i> <strong>@GlobalShared.Reconciliation:</strong> @GlobalLiaisonMapping.Ensures_proper_tracking_and_reconciliation_of_inter_branch_transactions</li>
             </ul>
         </div>
     </div>
@@ -45,13 +45,13 @@
 <!-- Action Buttons -->
 <div class="card shadow p-3 mb-4">
     <div class="card-body d-flex justify-content-between align-items-center">
-        <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i> Liaison Mapping Configuration</h5>
+        <h5 class="text-primary mb-0"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLiaisonMapping.Liaison_Mapping_Configuration</h5>
         <div>
             <button type="button" class="btn btn-primary" onclick="openLiaisonMappingForm()">
-                <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Mapping
+                <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.Add_New_Mapping
             </button>
             <button type="button" class="btn btn-outline-secondary" onclick="loadLiaisonMappings()">
-                <i class="mdi mdi-refresh me-1"></i> Refresh
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -60,7 +60,7 @@
 <!-- FILTERS: use distinct IDs prefixed with "filter" -->
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Liaison Mapping Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalLiaisonMapping.Liaison_Mapping_Filters
     </h5>
 
     <form id="liaisonFilterForm" autocomplete="off" method="post">
@@ -81,7 +81,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleBranchFilters"
                                onclick="document.getElementById('branchFilters').classList.toggle('d-none')" checked />
                         <label class="form-check-label fw-bold" for="toggleBranchFilters">
-                            Show Branch Filters
+                            @GlobalShared.Show_Branch_Filters
                         </label>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleAccountFilters"
                                onclick="document.getElementById('accountFilters').classList.toggle('d-none')" checked />
                         <label class="form-check-label fw-bold" for="toggleAccountFilters">
-                            Show Account Filters
+                            @GlobalShared.Show_Account_Filters
                         </label>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
             <div id="branchFilters">
                 <div class="row mb-1">
                     <div class="col-md-4 mb-1">
-                        <label class="form-label fw-bold">Source Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Source_branch</label>
                         @Html.DropDownList("sourceBranchId", new SelectList(ViewBag.Branches, "Id", "Name"),
                             "--- Select Source Branch ---",
                             new { @class = "form-control select2", id = "sourceBranchId" })
@@ -114,7 +114,7 @@
                     </div>*@
 
                     <div class="col-md-4 mb-1">
-                        <label class="form-label fw-bold">Target Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Target_Branch</label>
                         @Html.DropDownList("targetBranchId", new SelectList(ViewBag.Branches, "Id", "Name"),
                             "--- Select Target ---", new { @class = "form-control select2", id = "targetBranchId" })
                     </div>
@@ -125,14 +125,14 @@
             <div id="accountFilters">
                 <div class="row mb-1">
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Due From Asset Account</label>
+                        <label class="form-label fw-bold">@GlobalShared.Due_From_Asset_Account</label>
                         <select id="dueFromAssetAccountId" class="form-control select2">
                             <option value="">--- Select ---</option>
                         </select>
                     </div>
 
                     <div class="col-md-6 mb-1">
-                        <label class="form-label fw-bold">Due To Liability Account</label>
+                        <label class="form-label fw-bold">@GlobalShared.Due_To_Liability_Account</label>
                         <select id="dueToLiabilityAccountId" class="form-control select2">
                             <option value="">--- Select ---</option>
                         </select>
@@ -143,20 +143,20 @@
             <!-- 🔹 Additional Filters (always visible) -->
             <div class="row mb-1">
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Include Deleted</label>
+                    <label class="form-label fw-bold">@GlobalShared.Include_Deleted</label>
                     <select id="includeDeleted" class="form-select">
-                        <option value="false" selected>No</option>
-                        <option value="true">Yes</option>
+                        <option value="false" selected>@GlobalShared.No</option>
+                        <option value="true">@GlobalShared.Yes</option>
                     </select>
                 </div>
 
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Created From</label>
+                    <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                     <input type="date" id="createdFromUtc" class="form-control" />
                 </div>
 
                 <div class="col-md-4 mb-1">
-                    <label class="form-label fw-bold">Created To</label>
+                    <label class="form-label fw-bold">@GlobalShared.Created To</label>
                     <input type="date" id="createdToUtc" class="form-control" />
                 </div>
             </div>
@@ -166,10 +166,10 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" class="btn btn-primary me-2 w-100" type="button">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
                 <button id="resetFilterBtn" type="reset" class="btn btn-secondary w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>
@@ -189,14 +189,14 @@
             <div id="liaisonMappingLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Loading, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalShared.Loading_please_wait...</p>
                 </div>
             </div>
 
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title text-primary" id="liaisonMappingModalLabel">
-                    <i class="mdi mdi-vector-link me-2"></i> Liaison Mapping
+                    <i class="mdi mdi-vector-link me-2"></i> @GlobalShared.Liaison_Mapping
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

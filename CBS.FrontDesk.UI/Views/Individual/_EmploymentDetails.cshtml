@@ -12,33 +12,33 @@
             <div class="form-floating form-floating-outline">
                 @Html.DropDownListFor(m => m.CustomerList.WorkingStatus, new SelectList(ViewBag.workingStatuses, "Text", "Value"), "---"+ @GlobalIndividual.SelectWorkStatus +"---", new { @class = "form-control select2", @search = "true" })
                 @Html.ValidationMessageFor(m => m.CustomerList.WorkingStatus, "", new { @class = "text-danger " })
-                <label for="formValidationDob">@GlobalIndividual.WorkStatus</label>
+                <label for="formValidationDob">@GlobalShared.Work_status</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.EmployerName, new { @class = "form-control", @placeholder = @GlobalIndividual.EmployeerName })
+                @Html.TextBoxFor(m => m.CustomerList.EmployerName, new { @class = "form-control", @placeholder = GlobalShared.Employeer_name })
                 @Html.ValidationMessageFor(m => m.CustomerList.EmployerName, "", new { @class = "text-danger" })
-                <label>@GlobalIndividual.EmployeerName</label>
+                <label>@GlobalShared.Employeer_name</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.EmployerTelephone, new { @class = "form-control", @placeholder = @GlobalIndividual.EmployeerTelephone })
+                @Html.TextBoxFor(m => m.CustomerList.EmployerTelephone, new { @class = "form-control", @placeholder = GlobalShared.Employeer_telephone })
                 @Html.ValidationMessageFor(m => m.CustomerList.EmployerTelephone, "", new { @class = "text-danger" })
-                <label>@GlobalIndividual.EmployeerTelephone</label>
+                <label>@GlobalShared.Employeer_telephone</label>
             </div>
         </div>
         <div class="col-md-8">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.EmployerAddress, new { @class = "form-control", @placeholder = @GlobalIndividual.EmployeerAddress })
+                @Html.TextBoxFor(m => m.CustomerList.EmployerAddress, new { @class = "form-control", @placeholder = GlobalShared.Employeer_address })
                 @Html.ValidationMessageFor(m => m.CustomerList.EmployerAddress, "", new { @class = "text-danger" })
-                <label>@GlobalIndividual.EmployeerAddress</label>
+                <label>@GlobalShared.Employeer_address</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating form-floating-outline">
-                @Html.TextBoxFor(m => m.CustomerList.Income, new { @class = "form-control", @placeholder = @GlobalIndividual.Income })
+                @Html.TextBoxFor(m => m.CustomerList.Income, new { @class = "form-control", @placeholder = GlobalShared.Income })
                 @Html.ValidationMessageFor(m => m.CustomerList.Income, "", new { @class = "text-danger" })
                 <label>@GlobalIndividual.SalaryOrIncome</label>
             </div>

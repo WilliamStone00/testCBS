@@ -61,24 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accrual interest.
-        /// </summary>
-        internal static string AccrualInterest {
-            get {
-                return ResourceManager.GetString("AccrualInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accrual interests.
-        /// </summary>
-        internal static string AccrualInterests {
-            get {
-                return ResourceManager.GetString("AccrualInterests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Accrual paid.
         /// </summary>
         internal static string AccrualPaid {
@@ -97,74 +79,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address.
-        /// </summary>
-        internal static string Address {
-            get {
-                return ResourceManager.GetString("Address", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        internal static string All {
-            get {
-                return ResourceManager.GetString("All", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All loans.
-        /// </summary>
-        internal static string AllLoans {
-            get {
-                return ResourceManager.GetString("AllLoans", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Analyze and track loan portfolio statistics across branches and timeframes. Filter by branch, loan type, delinquency state, or report focus area.
         /// </summary>
         internal static string AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes {
             get {
                 return ResourceManager.GetString("AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Application date.
-        /// </summary>
-        internal static string ApplicationDate {
-            get {
-                return ResourceManager.GetString("ApplicationDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval state.
-        /// </summary>
-        internal static string ApprovalState {
-            get {
-                return ResourceManager.GetString("ApprovalState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved.
-        /// </summary>
-        internal static string Approved {
-            get {
-                return ResourceManager.GetString("Approved", resourceCulture);
             }
         }
         
@@ -178,47 +97,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Branch and code.
         /// </summary>
         internal static string BranchAndCode {
             get {
                 return ResourceManager.GetString("BranchAndCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Capital.
-        /// </summary>
-        internal static string Capital {
-            get {
-                return ResourceManager.GetString("Capital", resourceCulture);
             }
         }
         
@@ -232,65 +115,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Closed.
-        /// </summary>
-        internal static string Closed {
-            get {
-                return ResourceManager.GetString("Closed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current.
-        /// </summary>
-        internal static string Current {
-            get {
-                return ResourceManager.GetString("Current", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Current loan summary.
         /// </summary>
         internal static string CurrentLoanSummary {
             get {
                 return ResourceManager.GetString("CurrentLoanSummary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date from.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date range.
-        /// </summary>
-        internal static string DateRange {
-            get {
-                return ResourceManager.GetString("DateRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
             }
         }
         
@@ -403,29 +232,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download as PDF, Excel, or Word for sharing and compliance.
         /// </summary>
         internal static string DownloadAsPDFExcelOrWordForSharingAndCompliance {
             get {
                 return ResourceManager.GetString("DownloadAsPDFExcelOrWordForSharingAndCompliance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Due amount.
-        /// </summary>
-        internal static string DueAmount {
-            get {
-                return ResourceManager.GetString("DueAmount", resourceCulture);
             }
         }
         
@@ -439,24 +250,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End date.
-        /// </summary>
-        internal static string EndDate {
-            get {
-                return ResourceManager.GetString("EndDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter customer, branch, or reference.
         /// </summary>
         internal static string EnterCustomerBranchOrReference {
@@ -466,74 +259,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export.
-        /// </summary>
-        internal static string Export {
-            get {
-                return ResourceManager.GetString("Export", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export format.
-        /// </summary>
-        internal static string ExportFormat {
-            get {
-                return ResourceManager.GetString("ExportFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Export migrated loans.
         /// </summary>
         internal static string ExportMigratedLoans {
             get {
                 return ResourceManager.GetString("ExportMigratedLoans", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export Report Type.
-        /// </summary>
-        internal static string ExportReportType {
-            get {
-                return ResourceManager.GetString("ExportReportType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fees.
-        /// </summary>
-        internal static string Fees {
-            get {
-                return ResourceManager.GetString("Fees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File name.
-        /// </summary>
-        internal static string FileName {
-            get {
-                return ResourceManager.GetString("FileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by branch.
-        /// </summary>
-        internal static string FilterByBranch {
-            get {
-                return ResourceManager.GetString("FilterByBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by date range.
-        /// </summary>
-        internal static string FilterByDateRange {
-            get {
-                return ResourceManager.GetString("FilterByDateRange", resourceCulture);
             }
         }
         
@@ -664,33 +394,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interest.
-        /// </summary>
-        internal static string Interest {
-            get {
-                return ResourceManager.GetString("Interest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interest calculated.
-        /// </summary>
-        internal static string InterestCalculated {
-            get {
-                return ResourceManager.GetString("InterestCalculated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interest rate.
-        /// </summary>
-        internal static string InterestRate {
-            get {
-                return ResourceManager.GetString("InterestRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Last calculated interest.
         /// </summary>
         internal static string LastCalculatedInterest {
@@ -772,15 +475,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loan amount.
-        /// </summary>
-        internal static string LoanAmount {
-            get {
-                return ResourceManager.GetString("LoanAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loan application code.
         /// </summary>
         internal static string LoanApplicationCode {
@@ -817,15 +511,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loan date.
-        /// </summary>
-        internal static string LoanDate {
-            get {
-                return ResourceManager.GetString("LoanDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loan deliquecy journey.
         /// </summary>
         internal static string LoanDeliquecyJourney {
@@ -840,15 +525,6 @@ namespace Resources {
         internal static string LoanDetails {
             get {
                 return ResourceManager.GetString("LoanDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan duration.
-        /// </summary>
-        internal static string LoanDuration {
-            get {
-                return ResourceManager.GetString("LoanDuration", resourceCulture);
             }
         }
         
@@ -952,29 +628,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loan status.
-        /// </summary>
-        internal static string LoanStatus {
-            get {
-                return ResourceManager.GetString("LoanStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loan term.
         /// </summary>
         internal static string LoanTerm {
             get {
                 return ResourceManager.GetString("LoanTerm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan type.
-        /// </summary>
-        internal static string LoanType {
-            get {
-                return ResourceManager.GetString("LoanType", resourceCulture);
             }
         }
         
@@ -1060,24 +718,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New balance.
-        /// </summary>
-        internal static string NewBalance {
-            get {
-                return ResourceManager.GetString("NewBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No daily interest calculations generated for.
         /// </summary>
         internal static string NoDailyInterestCalculationsGeneratedFor {
@@ -1123,146 +763,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
-        /// </summary>
-        internal static string Open {
-            get {
-                return ResourceManager.GetString("Open", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paid.
-        /// </summary>
-        internal static string Paid {
-            get {
-                return ResourceManager.GetString("Paid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Penalties.
-        /// </summary>
-        internal static string Penalties {
-            get {
-                return ResourceManager.GetString("Penalties", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Penalty.
-        /// </summary>
-        internal static string Penalty {
-            get {
-                return ResourceManager.GetString("Penalty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pending.
-        /// </summary>
-        internal static string Pending {
-            get {
-                return ResourceManager.GetString("Pending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone.
-        /// </summary>
-        internal static string Phone {
-            get {
-                return ResourceManager.GetString("Phone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Principal.
-        /// </summary>
-        internal static string Principal {
-            get {
-                return ResourceManager.GetString("Principal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rate.
-        /// </summary>
-        internal static string Rate {
-            get {
-                return ResourceManager.GetString("Rate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refinanced.
-        /// </summary>
-        internal static string Refinanced {
-            get {
-                return ResourceManager.GetString("Refinanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refunds.
-        /// </summary>
-        internal static string Refunds {
-            get {
-                return ResourceManager.GetString("Refunds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Repayment schedule.
         /// </summary>
         internal static string RepaymentSchedule {
             get {
                 return ResourceManager.GetString("RepaymentSchedule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rescheduled.
-        /// </summary>
-        internal static string Rescheduled {
-            get {
-                return ResourceManager.GetString("Rescheduled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset filters.
-        /// </summary>
-        internal static string ResetFilters {
-            get {
-                return ResourceManager.GetString("ResetFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restructured.
-        /// </summary>
-        internal static string Restructured {
-            get {
-                return ResourceManager.GetString("Restructured", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search criteria.
-        /// </summary>
-        internal static string SearchCriteria {
-            get {
-                return ResourceManager.GetString("SearchCriteria", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select all.
-        /// </summary>
-        internal static string SelectAll {
-            get {
-                return ResourceManager.GetString("SelectAll", resourceCulture);
             }
         }
         
@@ -1276,56 +781,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show filters.
-        /// </summary>
-        internal static string ShowFilters {
-            get {
-                return ResourceManager.GetString("ShowFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size.
-        /// </summary>
-        internal static string Size {
-            get {
-                return ResourceManager.GetString("Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start date.
-        /// </summary>
-        internal static string StartDate {
-            get {
-                return ResourceManager.GetString("StartDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sub report analysis.
         /// </summary>
         internal static string SubreportAnalysis {
             get {
                 return ResourceManager.GetString("SubreportAnalysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Terms.
-        /// </summary>
-        internal static string Terms {
-            get {
-                return ResourceManager.GetString("Terms", resourceCulture);
             }
         }
         
@@ -1375,15 +835,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total paid.
-        /// </summary>
-        internal static string TotalPaid {
-            get {
-                return ResourceManager.GetString("TotalPaid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total refunds.
         /// </summary>
         internal static string TotalRefunds {
@@ -1411,24 +862,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User.
-        /// </summary>
-        internal static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vat.
-        /// </summary>
-        internal static string Vat {
-            get {
-                return ResourceManager.GetString("Vat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Vat calculated.
         /// </summary>
         internal static string VatCalculated {
@@ -1438,29 +871,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VAT.
-        /// </summary>
-        internal static string VATLc {
-            get {
-                return ResourceManager.GetString("VATLc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Vat paid.
         /// </summary>
         internal static string VatPaid {
             get {
                 return ResourceManager.GetString("VatPaid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vat rate.
-        /// </summary>
-        internal static string VatRate {
-            get {
-                return ResourceManager.GetString("VatRate", resourceCulture);
             }
         }
     }
