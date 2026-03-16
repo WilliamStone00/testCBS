@@ -52,21 +52,21 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <label for="branchInput">Branch</label>
-                @Html.DropDownListFor(m => m.InitiateLoanDownloadCommand.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalLoan.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
+                @Html.DropDownListFor(m => m.InitiateLoanDownloadCommand.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalShared.SelectBranch+"---", new { @class = "form-control shadow-box select2", @id = "branchInput" })
             </div>
             <div class="col-md-8">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label for="dateFromInput">@GlobalLoan.DateFrom</label>
+                        <label for="dateFromInput">@GlobalShared.DateFrom</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalLoan.DateFrom })
+                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrStartDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalShared.DateFrom })
                             @*<input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="Date From">*@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dateToInput">@GlobalLoan.DateTo</label>
+                        <label for="dateToInput">@GlobalShared.DateTo</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalLoan.DateTo })
+                            @Html.TextBoxFor(m => m.InitiateLoanDownloadCommand.StrEndDate, new { @class = "form-control shadow-box date-picker", @placeholder = @GlobalShared.DateTo })
                             @*<input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="Date To">*@
                             @*<button class="btn btn-primary btn-sm" onclick="SearchByDates('_Data','datalistingview')">Search</button>*@
                             <button type="submit" class="btn btn-default btn-sm">Initiate Download</button>

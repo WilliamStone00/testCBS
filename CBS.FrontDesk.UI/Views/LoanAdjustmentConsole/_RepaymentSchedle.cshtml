@@ -109,25 +109,25 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 5%">SN</th>
-                        <th style="width: 10%">@GlobalLoan.Date</th>
-                        <th style="width: 15%">@GlobalLoan.Description</th>
-                        <th style="width: 10%">@GlobalLoan.Principal</th>
-                        <th style="width: 10%">@GlobalLoan.Interest</th>
-                        <th style="width: 10%">@GlobalLoan.VATLc</th>
-                        <th style="width: 10%">@GlobalLoan.Penalty</th>
-                        <th style="width: 10%">@GlobalLoan.Paid</th>
-                        <th style="width: 10%">@GlobalLoan.Balance</th>
+                        <th style="width: 10%">@GlobalShared.Date</th>
+                        <th style="width: 15%">@GlobalShared.Description</th>
+                        <th style="width: 10%">@GlobalShared.Principal</th>
+                        <th style="width: 10%">@GlobalShared.Interest</th>
+                        <th style="width: 10%">@GlobalShared.VAT</th>
+                        <th style="width: 10%">@GlobalShared.Penalty</th>
+                        <th style="width: 10%">@GlobalShared.Paid</th>
+                        <th style="width: 10%">@GlobalShared.Balance</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- First Additional Row -->
                     <tr>
-                        <td colspan="3" class="text-end fw-bold">@GlobalLoan.Principal:</td>
+                        <td colspan="3" class="text-end fw-bold">@GlobalShared.Principal:</td>
                         <td colspan="6">@Model.Principal.ToString("#,##0.0")</td>
                     </tr>
                     <!-- Second Additional Row -->
                     <tr>
-                        <td colspan="3" class="text-end fw-bold">@GlobalLoan.Date:</td>
+                        <td colspan="3" class="text-end fw-bold">@GlobalShared.Date:</td>
                         <td colspan="6">@DateTime.Now.ToShortDateString()</td>
                     </tr>
                     @foreach (var d in Model.LoanAmortizations.OrderBy(app => app.Sno))

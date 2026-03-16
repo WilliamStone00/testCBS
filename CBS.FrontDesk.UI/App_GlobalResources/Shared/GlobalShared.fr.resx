@@ -4441,4 +4441,277 @@
   <data name="New_Balance" xml:space="preserve">
     <value />
   </data>
+  <data name="Total_Amount_Paid" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_Refunds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vat_Calculated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_VAT_Calculated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vat_Paid" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_Interest_Calculated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_Fee_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Members_Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Term" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_State" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Reporting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Expiry_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accrual_Paid" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delinquency_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delinquent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Refunds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Accrual_Interests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Duration_Category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Duration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_an_option" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_History" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Unpaid_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Doubtful_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Irrepayable_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Irrecoverable_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Query_Parameter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Value" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Parameter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Breakdown_Analysis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Query_Parameter_Value" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Main_Report_Configuration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Main_Reports" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Reports" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uploaded_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Document_Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Read_Content" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No_Documents_Attached" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Guarantors" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Additional_Details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Disbursement_Status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="New_Loan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Total_Loan_Amount" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Attached_Documents" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No_Fee_Added" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Penalties" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Principal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Portfolio" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Initiate_Download" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Filter_by_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="More_Filters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Filter_by_PAR_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All_Delinquency" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Migrated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Advanced_Options" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delinquency" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PAR_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Inter_Branch_Only" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_PAR_ID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Main_Loan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Overdraft" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select_Loan_Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Micro_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Project_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Exceptional_Loan" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Staff_Car_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Special_Loans" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Advance_Salaries" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Type_Category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delinquent_Days" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Loan_Results" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_category" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_delinquency_config" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_duration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_gender" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_legal_form" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_product" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_status" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_target" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_by_types" xml:space="preserve">
+    <value />
+  </data>
+  <data name="filter_parameter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="filter_value" xml:space="preserve">
+    <value />
+  </data>
+  <data name="generate_loan_portfolio_report" xml:space="preserve">
+    <value>Générer un rapport sur le portefeuille de prêts</value>
+  </data>
+  <data name="hold_ctrl_to_select_multiple" xml:space="preserve">
+    <value>Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs</value>
+  </data>
+  <data name="subreport_type" xml:space="preserve">
+    <value />
+  </data>
 </root>

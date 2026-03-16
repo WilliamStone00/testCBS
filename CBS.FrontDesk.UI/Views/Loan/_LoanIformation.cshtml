@@ -1,117 +1,117 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend>@GlobalLoan.Terms</legend>
+    <legend>@GlobalShared.Terms</legend>
     <hr style="border: 2px solid green;" />
     <table class="table">
         <tr>
-            <td><strong>@GlobalLoan.LoanCode:</strong></td>
+            <td><strong>@GlobalShared.Loan_Code:</strong></td>
             <td>@Model.Id</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.BranchCode:</strong></td>
+            <td><strong>@GlobalShared.Branch_Code:</strong></td>
             <td>@Model.BranchCode</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanDate:</strong></td>
+            <td><strong>@GlobalShared.Loan_Date:</strong></td>
             <td>@Model.LoanDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanExpiryDate:</strong></td>
+            <td><strong>@GlobalShared.Loan_Expiry_Date:</strong></td>
             <td>@Model.MaturityDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanType:</strong></td>
+            <td><strong>@GlobalShared.Loan_Type:</strong></td>
             <td>@Model.LoanType</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanAmount:</strong></td>
+            <td><strong>@GlobalShared.LoanAmount:</strong></td>
             <td>@Model.LoanAmount.ToString("#,##0.0")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.InterestRate:</strong></td>
+            <td><strong>@GlobalShared.Interest_Rate:</strong></td>
             <td>@Model.InterestRate.ToString("#,##0.0")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.AccrualInterest:</strong></td>
+            <td><strong>@GlobalShared.Accrual_Interest:</strong></td>
             <td>@Model.AccrualInterest.ToString("#,##0.0")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.AccrualPaid:</strong></td>
+            <td><strong>@GlobalShared.Accrual_Paid:</strong></td>
             <td>@Model.AccrualInterestPaid.ToString("#,##0.0")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.InterestRate:</strong></td>
+            <td><strong>@GlobalShared.Interest_Rate:</strong></td>
             <td>@Model.InterestRate.ToString("#,##0.00")%</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastCalculatedInterestDate:</strong></td>
+            <td><strong>@GlobalLoan.last_calculated_interest_date:</strong></td>
             <td>@Model.LastInterestCalculatedDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastCalculatedInterest:</strong></td>
+            <td><strong>@GlobalLoan.last_calculated_interest:</strong></td>
             <td>@Model.LastCalculatedInterest.ToString("#,##0.0")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.VatRate:</strong></td>
+            <td><strong>@GlobalShared.Vat_rate:</strong></td>
             <td>@Model.VatRate.ToString("#,##0.00")%</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.Vat:</strong></td>
+            <td><strong>@GlobalShared.VAT:</strong></td>
             <td>@Model.Tax.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.VatPaid:</strong></td>
+            <td><strong>@GlobalShared.Vat_Paid:</strong></td>
             <td>@Model.TaxPaid.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.Fine:</strong></td>
+            <td><strong>@GlobalLoan.fine:</strong></td>
             <td>@Model.Penalty.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.FinePaid:</strong></td>
+            <td><strong>@GlobalLoan.fine_paid:</strong></td>
             <td>@Model.PenaltyPaid.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.TotalPaid:</strong></td>
+            <td><strong>@GlobalShared.Total_Paid:</strong></td>
             <td>@Model.Paid.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.Balance:</strong></td>
+            <td><strong>@GlobalShared.Balance:</strong></td>
             <td>@Model.Balance.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastRepaymentDate:</strong></td>
+            <td><strong>@GlobalLoan.last_repayment_date:</strong></td>
             <td>@Model.LastRefundDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastRepayment:</strong></td>
+            <td><strong>@GlobalLoan.last_repayment:</strong></td>
             <td>@Model.LastPayment.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanStatus:</strong></td>
+            <td><strong>@GlobalShared.Loan_Status:</strong></td>
             <td>@Model.LoanStatus</td>
         </tr>
 
         <tr>
-            <td><strong>@GlobalLoan.LoanDeliquecyJourney:</strong></td>
+            <td><strong>@GlobalLoan.loan_deliquecy_journey:</strong></td>
             <td>@Model.LoanJourneyStatus</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanState</strong></td>
+            <td><strong>@GlobalShared.Loan_State</strong></td>
             <td>
                 @if (@Model.IsCurrentLoan)
                 {
-                    <span class="badge bg-info">@GlobalLoan.Current</span>
+                    <span class="badge bg-info">@GlobalShared.Current</span>
                 }
                 else
                 {
-            <span class="badge bg-dark">@GlobalLoan.NotCurrent</span>
+            <span class="badge bg-dark">@GlobalLoan.not_current</span>
                 }
             </td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanManager:</strong></td>
+            <td><strong>@GlobalLoan.loan_manager:</strong></td>
             <td>@Model.LoanManager</td>
         </tr>
     </table>

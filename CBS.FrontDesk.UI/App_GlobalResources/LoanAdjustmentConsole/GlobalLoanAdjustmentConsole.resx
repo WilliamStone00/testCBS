@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="delinquent_loans_with_aging_breakdown" xml:space="preserve">
+    <value>Delinquent Loans with Aging Breakdown</value>
+  </data>
+  <data name="loan_delinquency_summary_by_par_gender_and_loan_type" xml:space="preserve">
+    <value>Loan Delinquency Summary by PAR, Gender, and Loan Type</value>
+  </data>
+  <data name="loan_portfolio_with_delinquency_insight" xml:space="preserve">
+    <value>Loan Portfolio with Delinquency Insight</value>
+  </data>
+  <data name="loan_situation_report_current_performing_loans" xml:space="preserve">
+    <value>Loan Situation Report (Current Performing Loans)</value>
+  </data>
 </root>

@@ -1,17 +1,17 @@
-﻿@{
+@{
     ViewBag.Title = "Loan Management Overview";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-bank-outline me-2"></i> Loan Management Console
+                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalLoan.loan_management_console
                 </h1>
-                <p class="card-text text-muted mb-1">Easily track, filter, and manage loans across all branches.</p>
+                <p class="card-text text-muted mb-1">@GlobalLoan.easily_track_filter_and_manage_loans_across_all_branches</p>
                 <p class="card-text text-warning fw-semibold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use advanced filters to customize your loan search.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLoan.use_advanced_filters_to_customize_your_loan_search
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -22,7 +22,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalLoan.tips_for_using_filters_effectively</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -30,14 +30,14 @@
     <div id="collapseLoanTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>Branch Filter:</strong> Enable and select a branch to view location-specific loans.</li>
-                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>Date Filter:</strong> Limit loans based on their creation date.</li>
-                <li><i class="mdi mdi-account-card-details-outline text-dark me-2"></i> <strong>Loan/Member:</strong> Search by specific Loan ID or Member ID for quick lookup.</li>
-                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>Status Filters:</strong> View by loan status (Open, Closed, etc.) or disbursement phase.</li>
-                <li><i class="mdi mdi-shield-alert-outline text-danger me-2"></i> <strong>Delinquency:</strong> Highlight delinquent vs current loan records.</li>
-                <li><i class="mdi mdi-cog-outline text-secondary me-2"></i> <strong>Advanced Options:</strong> Use loan category, type, target, and migration status for deeper filtering.</li>
-                <li><i class="mdi mdi-alert-decagram-outline text-warning me-2"></i> <strong>PAR ID:</strong> Toggle and use PAR ID filters to refine risk-specific analysis.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Use the export button to download your current filtered view to Excel.</li>
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>@GlobalShared.Branch_Filter:</strong> @GlobalLoan.enable_and_select_a_branch_to_view_location_specific_loans.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>@GlobalShared.Date_Filters:</strong> @GlobalLoan.limit_loans_based_on_their_creation_date.</li>
+                <li><i class="mdi mdi-account-card-details-outline text-dark me-2"></i> <strong>@GlobalShared.Loan/@GlobalShared.Member:</strong> @GlobalLoan.search_by_specific_loan_id_or_member_id_for_quick_lookup</li>
+                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>@GlobalShared.Status_Filters:</strong> @GlobalLoan.view_by_loan_status_open_closed_etc_or_disbursement_phase</li>
+                <li><i class="mdi mdi-shield-alert-outline text-danger me-2"></i> <strong>@GlobalShared.Delinquency:</strong> @GlobalLoan.highlight_delinquent_vs_current_loan_records</li>
+                <li><i class="mdi mdi-cog-outline text-secondary me-2"></i> <strong>@GlobalShared.Advanced_Options:</strong> @GlobalLoan.use_loan_category_type_target_and_migration_status_for_deeper_filtering.</li>
+                <li><i class="mdi mdi-alert-decagram-outline text-warning me-2"></i> <strong>@GlobalShared.PAR_ID:</strong> @GlobalLoan.toggle_and_use_par_id_filters_to_refine_risk_specific_analysis.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalLoan.use_the_export_button_to_download_your_current_filtered_view_to_excel</li>
             </ul>
         </div>
     </div>
@@ -47,26 +47,26 @@
 
 <!-- Filters Section -->
 <div class="card shadow p-3 mb-2">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Advanced Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Advanced_filters</h5>
 
     <div class="card p-3 mb-3 bg-light">
         <!-- Toggle Controls -->
         <div class="row mb-3">
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.Filter_by_Branch</label>
             </div>
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date</label>
             </div>
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="moreOptions" />
-                <label class="form-check-label fw-bold" for="moreOptions">More Filters</label>
+                <label class="form-check-label fw-bold" for="moreOptions">@GlobalShared.More_Filters</label>
             </div>
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byPar" />
-                <label class="form-check-label fw-bold" for="byPar">Filter by PAR ID</label>
+                <label class="form-check-label fw-bold" for="byPar">@GlobalShared.Filter_by_PAR_ID</label>
             </div>
 
             @*<div class="col-md-3 form-check mt-2">
@@ -80,37 +80,37 @@
         <!-- Branch Filter -->
         <div id="branchFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Select Branch</label>
+                <label class="form-label fw-bold">@GlobalShared.Select_Branch</label>
                 @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
             </div>
         </div>
 
         <!-- Date Range Filter -->
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
-            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="Start Date" /></div>
-            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="End Date" /></div>
+            <div class="col-md-6"><input type="date" id="startDate" class="form-control" placeholder="@GlobalShared.Start_Date" /></div>
+            <div class="col-md-6"><input type="date" id="endDate" class="form-control" placeholder="@GlobalShared.End_Date" /></div>
         </div>
 
         <!-- PAR Filter -->
         <div id="parFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Select PAR ID</label>
+                <label class="form-label fw-bold">@GlobalShared.Select_PAR_ID</label>
                 @Html.DropDownList("parId", new SelectList(ViewBag.ParIds, "Id", "Name"), "--- Select PAR ID ---", new { @class = "form-control shadow-sm select2", @id = "parId" })
             </div>
         </div>
 
         <!-- Base Filters -->
         <div class="row">
-            <div class="col-md-4 mb-2"><input type="text" id="loanId" class="form-control" placeholder="Loan ID" /></div>
-            <div class="col-md-4 mb-2"><input type="text" id="memberId" class="form-control" placeholder="Member ID" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="loanId" class="form-control" placeholder="@GlobalShared.Loan_ID" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="memberId" class="form-control" placeholder="@GlobalShared.Member_ID" /></div>
             <div class="col-md-4 mb-2">
                 <select id="status" class="form-select shadow-sm">
-                    <option value="">All Status</option>
-                    <option value="Open">Open</option>
-                    <option value="Closed">Closed</option>
-                    <option value="Restructured">Restructured</option>
-                    <option value="Rescheduled">Rescheduled</option>
-                    <option value="Refinanced">Refinanced</option>
+                    <option value="">@GlobalShared.All_status</option>
+                    <option value="Open">@GlobalShared.Open</option>
+                    <option value="Closed">@GlobalShared.Closed</option>
+                    <option value="Restructured">@GlobalShared.Restructured</option>
+                    <option value="Rescheduled">@GlobalShared.Rescheduled</option>
+                    <option value="Refinanced">@GlobalShared.Refinanced</option>
                 </select>
             </div>
         </div>
@@ -118,24 +118,24 @@
         <div class="row">
             <div class="col-md-4 mb-2">
                 <select id="disburmentStatus" class="form-select shadow-sm">
-                    <option value="">Disbursement Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="">@GlobalShared.Disbursement_Status</option>
+                    <option value="Pending">@GlobalShared.Pending</option>
+                    <option value="Completed">@GlobalShared.Completed</option>
+                    <option value="Rejected">@GlobalShared.Rejected</option>
                 </select>
             </div>
             <div class="col-md-4 mb-2">
                 <select id="deliquentStatus" class="form-select shadow-sm">
-                    <option value="">All Delinquency</option>
-                    <option value="Current">Current</option>
-                    <option value="Delinquent">Delinquent</option>
+                    <option value="">@GlobalShared.All_Delinquency</option>
+                    <option value="Current">@GlobalShared.Current</option>
+                    <option value="Delinquent">@GlobalShared.Delinquent</option>
                 </select>
             </div>
 
             <div class="col-md-4 form-check mt-2">
                 <input type="checkbox" class="form-check-input" id="isInterbranch" />
                 <label class="form-check-label fw-bold" for="isInterbranch">
-                    Inter-Branch Only
+                    @GlobalShared.Inter_Branch_Only
                 </label>
             </div>
         </div>
@@ -145,43 +145,43 @@
             <hr />
             <div class="row">
                 <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">Loan Category</label>
+                    <label class="form-label fw-bold">@GlobalShared.Loan_Category</label>
                     <select id="loanCategory" class="form-select shadow-sm">
-                        <option value="">--- Select Category ---</option>
-                        <option value="Main_Loan">Main Loan</option>
-                        <option value="Special_Saving_Facility_Loan">Special Saving Facility Loan</option>
-                        <option value="Overdraft">Overdraft</option>
-                        <option value="Line_of_Credit">Line of Credit</option>
+                        <option value="">--- @GlobalShared.Select_Category ---</option>
+                        <option value="Main_Loan">@GlobalShared.Main_Loan</option>
+                        <option value="Special_Saving_Facility_Loan">@GlobalLoan.special_saving_facility_loan</option>
+                        <option value="Overdraft">@GlobalShared.Overdraft</option>
+                        <option value="Line_of_Credit">@GlobalLoan.line_of_credit</option>
                     </select>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">Loan Type</label>
+                    <label class="form-label fw-bold">@GlobalShared.Loan_Type</label>
                     <select id="loanTypes" class="form-select shadow-sm">
-                        <option value="">--- Select Loan Type ---</option>
-                        <option value="Special_Loans_Or_Advance_Salaries">Special Loans / Advance Salaries</option>
-                        <option value="Micro_Loans">Micro Loans</option>
-                        <option value="Project_Loans">Project Loans</option>
-                        <option value="Exceptional_Loan">Exceptional Loan</option>
-                        <option value="Staff_Or_Elected_Official_Loan">Staff / Elected Official Loan</option>
-                        <option value="Special_Savings_Facility">Special Savings Facility</option>
-                        <option value="Staff_Car_Loans">Staff Car Loans</option>
-                        <option value="Main_Loan">Main Loan</option>
+                        <option value="">--- @GlobalShared.Select_Loan_Type ---</option>
+                        <option value="Special_Loans_Or_Advance_Salaries">@GlobalShared.Special_Loans / @GlobalShared.Advance_Salaries</option>
+                        <option value="Micro_Loans">@GlobalShared.Micro_Loans</option>
+                        <option value="Project_Loans">@GlobalShared.Project_Loans</option>
+                        <option value="Exceptional_Loan">@GlobalShared.Exceptional_Loan</option>
+                        <option value="Staff_Or_Elected_Official_Loan">@GlobalShared.Staff / @GlobalLoan.elected_official_loan</option>
+                        <option value="Special_Savings_Facility">@GlobalLoan.special_savings_facility</option>
+                        <option value="Staff_Car_Loans">@GlobalShared.Staff_Car_Loans</option>
+                        <option value="Main_Loan">@GlobalShared.Main_Loan</option>
                     </select>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <label class="form-label fw-bold">Migrated?</label>
+                    <label class="form-label fw-bold">@GlobalShared.Migrated?</label>
                     <select id="isMigratedLoan" class="form-select shadow-sm">
-                        <option value="">All</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option value="Yes">@GlobalShared.Yes</option>
+                        <option value="No">@GlobalShared.No</option>
                     </select>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-2"><input type="text" id="loanTarget" class="form-control" placeholder="Loan Target" /></div>
-                <div class="col-md-4 mb-2"><input type="text" id="loanTypeCategory" class="form-control" placeholder="Loan Type Category" /></div>
-                <div class="col-md-4 mb-2"><input type="number" min="0" id="delinquentDays" class="form-control" placeholder="Delinquent Days ≥" /></div>
+                <div class="col-md-4 mb-2"><input type="text" id="loanTarget" class="form-control" placeholder="@GlobalShared.Loan_Target" /></div>
+                <div class="col-md-4 mb-2"><input type="text" id="loanTypeCategory" class="form-control" placeholder="@GlobalShared.Loan_Type_Category" /></div>
+                <div class="col-md-4 mb-2"><input type="number" min="0" id="delinquentDays" class="form-control" placeholder="@GlobalShared.Delinquent_Days ≥" /></div>
             </div>
         </div>
     </div>
@@ -189,15 +189,15 @@
     <!-- Action Buttons -->
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
-            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
+            <button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> @GlobalShared.Export</button>
         </div>
     </div>
 </div>
 
 <div id="loanDataCard" class="card p-3 shadow mb-4" style="display: none;">
-    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> Loan Results</h5>
+    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> @GlobalShared.Loan_Results</h5>
     <div class="table-responsive">
         <div class="card-body" id="datalistingview">
             @Html.Partial("_LoanData")

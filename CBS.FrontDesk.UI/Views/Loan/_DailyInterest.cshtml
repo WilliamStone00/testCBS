@@ -1,12 +1,12 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend>Accrual Interest Listing</legend>
+    <legend>@GlobalLoan.accrual_interest_listing</legend>
     <hr style="border: 2px solid green;" />
     @if (Model.DailyInterestCalculations.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalLoan.NoDailyInterestCalculationsGeneratedFor @Model.IndividualCustomer.CustomerList.name</p>
+            <p>@GlobalLoan.no_daily_interest_calculations_generated_for @Model.IndividualCustomer.CustomerList.name</p>
         </div>
     }
     else
@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalInterestCalculated.ToString("#,##0.0")</h4>
-                    <small>@GlobalLoan.TotalAccrualInterestCalculated</small>
+                    <small>@GlobalLoan.total_accrual_interest_calculated</small>
                 </div>
             </div>
             <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@totalvat.ToString("#,##0.0")</h4>
-                    <small>@GlobalLoan.TotalVATCalculated</small>
+                    <small>@GlobalShared.Total_VAT_Calculated</small>
                 </div>
             </div>
             <div class="d-flex gap-3" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-info">
                     <h4 class="mb-0">@Model.Balance.ToString("#,##0.0")</h4>
-                    <small>@GlobalLoan.Balance</small>
+                    <small>@GlobalShared.Balance</small>
                 </div>
             </div>
             <!-- Add additional totals here as needed -->
@@ -61,11 +61,11 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th> <!-- Serial number column -->
-                        <th>@GlobalLoan.Date</th>
-                        <th>@GlobalLoan.Balance</th>
-                        <th>@GlobalLoan.InterestCalculated</th>
-                        <th>@GlobalLoan.VatCalculated</th>
-                        <th>@GlobalLoan.NewBalance</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.Balance</th>
+                        <th>@GlobalShared.Interest_Calculated</th>
+                        <th>@GlobalShared.Vat_Calculated</th>
+                        <th>@GlobalShared.New_Balance</th>
                         <!-- Add additional headers here -->
                     </tr>
                 </thead>
@@ -86,7 +86,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3">@GlobalLoan.TotalInterestCalculated:</td> <!-- Colspan to merge cells -->
+                        <td colspan="3">@GlobalShared.Total_Interest_Calculated:</td> <!-- Colspan to merge cells -->
                         <td><strong>@totalInterestCalculated.ToString("#,##0.0")</strong></td>
                         <td></td>
                         <td></td> <!-- Empty cell for alignment -->

@@ -3,7 +3,7 @@
 
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.generate_loan_portfolio_report
     </h5>
 
     <!-- 🔘 Main Toggle and Shared Filters -->
@@ -12,38 +12,38 @@
             <!-- Shared Branch Filter -->
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">@GlobalLoan.FilterByBranch</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.FilterByBranch</label>
             </div>
 
             <!-- Master Report Type Toggle -->
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="toggleReportType" checked />
-                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">Main Reports</label>
+                <label class="form-check-label fw-bold text-primary" id="toggleReportLabel" for="toggleReportType">@GlobalShared.Main_Reports</label>
             </div>
 
             <!-- Shared Date Range Filter -->
             <div class="col-md-3 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">@GlobalLoan.FilterByDateRange</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date_Range</label>
             </div>
         </div>
 
         <!-- Shared Branch Dropdown -->
         <div class="row mb-3" id="branchFilterSection" style="display: none;">
             <div class="col-md-12">
-                <label for="BranchId" class="form-label fw-bold">@GlobalLoan.SelectBranch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch + "---", new { @class = "form-control select2" })
+                <label for="BranchId" class="form-label fw-bold">@GlobalShared.SelectBranch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalShared.SelectBranch + "---", new { @class = "form-control select2" })
             </div>
         </div>
 
         <!-- Shared Date Range Inputs -->
         <div class="row mb-3" id="dateRangeSection" style="display: none;">
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.StartDate</label>
+                <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                 <input type="date" id="StartDate" class="form-control" />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.EndDate</label>
+                <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                 <input type="date" id="EndDate" class="form-control" />
             </div>
         </div>
@@ -53,19 +53,19 @@
     <div id="mainFilterSection" class="card p-3 mb-3 bg-light">
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalLoan.MainReportType</label>
+                <label class="form-label fw-bold">@GlobalShared.Main_Report_Type</label>
                 <select id="MainReportType" class="form-select">
                     @*<option value="CurrentLoan">@GlobalLoan.CurrentLoanSummary</option>*@
-                    <option value="DelinquentLoan">Loan Portfolio with Delinquency Insight</option>
-                    <option value="delinquentloansummary">Loan Delinquency Summary by PAR, Gender, and Loan Type</option>
-                    <option value="delinquentloanslistingwithaging">Delinquent Loans with Aging Breakdown</option>
-                    <option value="loansituations">Loan Situation Report (Current Performing Loans)</option>
+                    <option value="DelinquentLoan">@GlobalLoanAdjustmentConsole.loan_portfolio_with_delinquency_insight</option>
+                    <option value="delinquentloansummary">@GlobalLoanAdjustmentConsole.loan_delinquency_summary_by_par_gender_and_loan_type</option>
+                    <option value="delinquentloanslistingwithaging">@GlobalLoanAdjustmentConsole.delinquent_loans_with_aging_breakdown</option>
+                    <option value="loansituations">@GlobalLoanAdjustmentConsole.loan_situation_report_current_performing_loans</option>
                     @*<option value="LoanByPurpose">@GlobalLoan.LoanByPurpose</option>*@
                 </select>
                 
             </div>
             <div class="col-md-6" id="subreportSection" style="display: none;">
-                <label class="form-label fw-bold">Subreport Type(s)</label>
+                <label class="form-label fw-bold">@GlobalShared.subreport_type</label>
                 <select id="SubReportType" class="form-select select2" multiple>
                     <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
                     <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
@@ -74,7 +74,7 @@
                     <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
                     <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
                 </select>
-                <small class="text">@GlobalLoan.HoldCtrlToSelectMultiple</small>
+                <small class="text">@GlobalShared.hold_ctrl_to_select_multiple</small>
             </div>
         </div>
     </div>
@@ -83,23 +83,23 @@
     <div id="queryFilterSection" class="card p-3 mb-3 bg-light" style="display: none;">
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Parameter</label>
+                <label class="form-label fw-bold">@GlobalShared.filter_parameter</label>
                 <select id="QueryParam" class="form-select">
-                    <option value="">-- Select Parameter --</option>
-                    <option value="loanbygender">Loan by Gender</option>
-                    <option value="loanbytypes">Loan by Types</option>
-                    <option value="loanbytarget">Loan by Target</option>
-                    <option value="loanbystatus">Loan by Status</option>
-                    <option value="loanbyproduct">Loan by Product</option>
-                    <option value="loanbycategory">Loan by Category</option>
-                    <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
-                    <option value="loanbylegalform">Loan by Legal Form</option>
+                    <option value="">-- @GlobalShared.Select_Parameter --</option>
+                    <option value="loanbygender">@GlobalShared.loan_by_gender</option>
+                    <option value="loanbytypes">@GlobalShared.loan_by_types</option>
+                    <option value="loanbytarget">@GlobalShared.loan_by_target</option>
+                    <option value="loanbystatus">@GlobalShared.loan_by_status</option>
+                    <option value="loanbyproduct">@GlobalShared.loan_by_product</option>
+                    <option value="loanbycategory">@GlobalShared.loan_by_category</option>
+                    <option value="loanbydelinquencyconfig">@GlobalShared.loan_by_delinquency_config</option>
+                    <option value="loanbylegalform">@GlobalShared.loan_by_legal_form</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">Filter Value</label>
+                <label class="form-label fw-bold">@GlobalShared.filter_value</label>
                 <select id="QueryParamValue" class="form-select">
-                    <option value="">-- Select Value --</option>
+                    <option value="">-- @GlobalShared.Select_Value --</option>
                 </select>
             </div>
         </div>
@@ -108,7 +108,7 @@
     <!-- Export Format -->
     <div class="row mb-3" style="display:none">
         <div class="col-md-12">
-            <label class="form-label fw-bold">@GlobalLoan.ExportFormat</label>
+            <label class="form-label fw-bold">@GlobalShared.Export_Format</label>
             <select id="ReportDownloadType" class="form-select">
                 <option value="PDF">PDF</option>
                 <option value="Excel">Excel</option>
@@ -121,12 +121,12 @@
     <div class="row mb-3">
         <div class="col-md-6 d-flex align-items-end">
             <button id="generateReportBtn" class="btn btn-primary w-100">
-                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
+                <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalShared.Generate_Report
             </button>
         </div>
         <div class="col-md-6 d-flex align-items-end">
             <button id="resetReportBtn" class="btn btn-dark w-100">
-                <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
             </button>
         </div>
     </div>

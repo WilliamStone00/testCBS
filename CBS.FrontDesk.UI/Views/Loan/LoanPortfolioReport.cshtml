@@ -1,6 +1,6 @@
-﻿´@using Resources
+´@using Resources
 @{
-    ViewBag.Title = @GlobalLoan.LoanPortfolioReportOverview;
+    ViewBag.Title = @GlobalLoan.loan_portfolio_report_overview;
 }
 
 <div class="row">
@@ -8,13 +8,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-finance me-2"></i> @GlobalLoan.LOAN_PORTFOLIO_REPORT
+                    <i class="mdi mdi-finance me-2"></i> @GlobalLoan.loan_portfolio_report
                 </h1>
                 <p class="card-text">
-                    @GlobalLoan.AnalyzeAndTrackLoanPortfolioStatisticsAcrossBranchesAndTimeframes.
+                    @GlobalLoan.analyze_and_track_loan_portfolio_statistics_across_branches_and_timeframes.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLoan.SelectAMainReportTypeOrGenerateAFullPortfolioReportWithOptionalSubreportDetails.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLoan.select_amain_report_type_or_generate_afull_portfolio_report_with_optional_subreport_details.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoan.TIPS_FOR_USING_LOAN_PORTFOLIO_REPORT_FILTERS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoan.tips_for_using_loan_portfolio_report_filters</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>@GlobalLoan.FilterByBranch:</strong> @GlobalLoan.FocusOnAspecificCreditUnionBranch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalLoan.DateRange:</strong> @GlobalLoan.DefineTheLoanDisbursementOrReportPeriod.</li>
-                <li><i class="mdi mdi-table-large text-info me-2"></i> <strong>@GlobalLoan.MainReportType:</strong> @GlobalLoan.ChooseBetweenAFullReportOrAFocusedView.</li>
-                <li><i class="mdi mdi-layers-triple-outline text-info me-2"></i> <strong>@GlobalLoan.SubreportAnalysis:</strong> @GlobalLoan.AddDeeperBreakdownsSuchAsAgingGenderAndPurpose.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalLoan.Export:</strong> @GlobalLoan.DownloadAsPDFExcelOrWordForSharingAndCompliance.</li>
+                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>@GlobalShared.FilterByBranch:</strong> @GlobalLoan.focus_on_aspecific_credit_union_branch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalShared.DateRange:</strong> @GlobalLoan.define_the_loan_disbursement_or_report_period.</li>
+                <li><i class="mdi mdi-table-large text-info me-2"></i> <strong>@GlobalShared.Main_Report_Type:</strong> @GlobalLoan.choose_between_afull_report_or_afocused_view.</li>
+                <li><i class="mdi mdi-layers-triple-outline text-info me-2"></i> <strong>@GlobalLoan.subreport_analysis:</strong> @GlobalLoan.add_deeper_breakdowns_such_as_aging_gender_and_purpose.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalLoan.download_as_pdfexcel_or_word_for_sharing_and_compliance.</li>
             </ul>
         </div>
     </div>

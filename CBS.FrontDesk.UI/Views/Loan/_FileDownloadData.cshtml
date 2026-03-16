@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 @using Resources
 <fieldset class="fieldset-custom">
     <legend id="select_base">Downloaded files</legend>
@@ -14,10 +14,10 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalLoan.Date</th>
-                        <th>@GlobalLoan.FileName</th>
-                        <th>@GlobalLoan.Size</th>
-                        <th>@GlobalLoan.User</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.File_Name</th>
+                        <th>@GlobalShared.Size</th>
+                        <th>@GlobalShared.User</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>

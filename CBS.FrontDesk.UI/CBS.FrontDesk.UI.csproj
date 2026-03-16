@@ -1487,6 +1487,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GlobalLiaisonMapping.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\LoanAdjustmentConsole\GlobalLoanAdjustmentConsole.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalLoanAdjustmentConsole.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\LoanApplication\GlobalLoanApplication.fr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -8003,6 +8008,10 @@
     <Content Include="App_GlobalResources\LiaisonMappingConfig\GlobalLiaisonMappingConfig.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GlobalLiaisonMappingConfig.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\LoanAdjustmentConsole\GlobalLoanAdjustmentConsole.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>GlobalLoanAdjustmentConsole.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="GlobalCommunication.resx" />
     <None Include="AppFiles\Accountingv2Reporting\DataSets\AccountingV2DS.xsd">

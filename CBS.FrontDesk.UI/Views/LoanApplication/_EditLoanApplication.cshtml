@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.UpdateLoanApplicationCommand
+@model CBS.FrontDesk.Data.Entity.MemberOperation.UpdateLoanApplicationCommand
 @using Resources
 @using (Html.BeginForm("UpdateLoanApplication", "LoanApplication", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -12,7 +12,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="headingLoanDetails">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#loanDetails" aria-expanded="true" aria-controls="loanDetails">
-                    <i class="mdi mdi-bank me-2"></i> @GlobalLoanApplication.LoanDetails
+                    <i class="mdi mdi-bank me-2"></i> @GlobalShared.Loan_Details
                 </button>
             </h2>
             <div id="loanDetails" class="accordion-collapse collapse show" aria-labelledby="headingLoanDetails">
@@ -23,21 +23,21 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
-                                <label id="amount">@GlobalLoanApplication.Amount</label>
+                                <label id="amount">@GlobalShared.Amount</label>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.InterestRate, "", new { @class = "text-danger" })
-                                <label id="interest">@GlobalLoanApplication.InterestInRate</label>
+                                <label id="interest">@GlobalLoanApplication.interest_in_rate</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.LoanDuration, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.LoanDuration, "", new { @class = "text-danger" })
-                                <label id="loanduration">@GlobalLoanApplication.LoanDuration</label>
+                                <label id="loanduration">@GlobalShared.Loan_Duration</label>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="headingCoverage">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#coverageDetails" aria-expanded="false" aria-controls="coverageDetails">
-                    <i class="mdi mdi-shield-check-outline me-2"></i> @GlobalLoanApplication.LoanCoverageGuarantees
+                    <i class="mdi mdi-shield-check-outline me-2"></i> @GlobalLoanApplication.loan_coverage_guarantees
                 </button>
             </h2>
             <div id="coverageDetails" class="accordion-collapse collapse" aria-labelledby="headingCoverage">
@@ -60,20 +60,20 @@
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.RequiredDownPaymentCoverageRate,
                                          new { @class = "form-check-input", @id = "downPaymentCheckbox" })
-                                <label id="downPaymentCheckbox" class="form-check-label" for="downPaymentCheckbox">@GlobalLoanApplication.DoesThisApplicationRequireDownPayment?</label>
+                                <label id="downPaymentCheckbox" class="form-check-label" for="downPaymentCheckbox">@GlobalLoanApplication.does_this_application_require_down_payment?</label>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.IsThereGuarantor, new { @class = "form-check-input", @id = "IsThereGuarantor" })
-                                <label class="form-check-label" for="IsThereGuarantor">@GlobalLoanApplication.HasTheMemberProvidedAGuarantorOrCoObligator ?</label>
+                                <label class="form-check-label" for="IsThereGuarantor">@GlobalLoanApplication.has_the_member_provided_aguarantor_or_co_obligator ?</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.IsThereCollateral, new { @class = "form-check-input", @id = "IsThereCollateral" })
-                                <label class="form-check-label" for="IsThereCollateral">@GlobalLoanApplication.HasMemberProvidedCollateral?</label>
+                                <label class="form-check-label" for="IsThereCollateral">@GlobalLoanApplication.has_member_provided_collateral?</label>
                             </div>
                         </div>
 
@@ -81,14 +81,14 @@
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.ShareAccountCoverageAmount, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.ShareAccountCoverageAmount, "", new { @class = "text-danger" })
-                                <label id="share">@GlobalLoanApplication.OrdinaryShareAccountCoverageAmount</label>
+                                <label id="share">@GlobalLoanApplication.ordinary_share_account_coverage_amount</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.SavingAccountCoverageRate, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.SavingAccountCoverageRate, "", new { @class = "text-danger" })
-                                <label id="saving">@GlobalLoanApplication.SavingAccountCoverageRate (%)</label>
+                                <label id="saving">@GlobalLoanApplication.saving_account_coverage_rate (%)</label>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
         <div class="accordion-item mb-2">
             <h2 class="accordion-header" id="headingLoanFees">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#loanFees" aria-expanded="false" aria-controls="loanFees">
-                    <i class="mdi mdi-cash-check me-2"></i> @GlobalLoanApplication.LoanFees
+                    <i class="mdi mdi-cash-check me-2"></i> @GlobalShared.loan_fees
                 </button>
             </h2>
             <div id="loanFees" class="accordion-collapse collapse" aria-labelledby="headingLoanFees">
@@ -110,7 +110,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.ListBoxFor(m => m.FeeIds, (MultiSelectList)ViewBag.LoanFees, new { @class = "form-control select2", multiple = "multiple" })
                             @Html.ValidationMessageFor(m => m.FeeIds, "", new { @class = "text-danger" })
-                            <label>@GlobalLoanApplication.SelectLoanFees</label>
+                            <label>@GlobalShared.select_loan_fees</label>
                         </div>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
     <div class="row g-4 mt-4">
         <div class="col-md-12 d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                <i class="mdi mdi-content-save me-1"></i> @GlobalLoanApplication.SaveChanges
+                <i class="mdi mdi-content-save me-1"></i> @GlobalShared.Save_Changes
             </button>
         </div>
     </div>

@@ -61,1721 +61,677 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accrual interest.
-        /// </summary>
-        internal static string AccrualInterest {
-            get {
-                return ResourceManager.GetString("AccrualInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accrual paid.
-        /// </summary>
-        internal static string AccrualPaid {
-            get {
-                return ResourceManager.GetString("AccrualPaid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Additional details.
-        /// </summary>
-        internal static string AdditionalDetails {
-            get {
-                return ResourceManager.GetString("AdditionalDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A.Interest.
-        /// </summary>
-        internal static string AInterest {
-            get {
-                return ResourceManager.GetString("AInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        internal static string All {
-            get {
-                return ResourceManager.GetString("All", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any incorrect information may cause delays in approval.
         /// </summary>
-        internal static string AnyIncorrectInformationMayCauseDelaysInApproval {
+        internal static string any_incorrect_information_may_cause_delays_in_approval {
             get {
-                return ResourceManager.GetString("AnyIncorrectInformationMayCauseDelaysInApproval", resourceCulture);
+                return ResourceManager.GetString("any_incorrect_information_may_cause_delays_in_approval", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Applicable **loan fees &amp; charges**.
         /// </summary>
-        internal static string ApplicableLoanFeesCharges {
+        internal static string applicable_loan_fees_charges {
             get {
-                return ResourceManager.GetString("ApplicableLoanFeesCharges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Application date.
-        /// </summary>
-        internal static string ApplicationDate {
-            get {
-                return ResourceManager.GetString("ApplicationDate", resourceCulture);
+                return ResourceManager.GetString("applicable_loan_fees_charges", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Application details.
         /// </summary>
-        internal static string ApplicationDetails {
+        internal static string application_details {
             get {
-                return ResourceManager.GetString("ApplicationDetails", resourceCulture);
+                return ResourceManager.GetString("application_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Application manage.
         /// </summary>
-        internal static string ApplicationManage {
+        internal static string application_manage {
             get {
-                return ResourceManager.GetString("ApplicationManage", resourceCulture);
+                return ResourceManager.GetString("application_manage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Approval date.
+        ///   Looks up a localized string similar to A.Interest.
         /// </summary>
-        internal static string ApprovalDate {
+        internal static string a_interest {
             get {
-                return ResourceManager.GetString("ApprovalDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval status.
-        /// </summary>
-        internal static string ApprovalStatus {
-            get {
-                return ResourceManager.GetString("ApprovalStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved.
-        /// </summary>
-        internal static string Approved {
-            get {
-                return ResourceManager.GetString("Approved", resourceCulture);
+                return ResourceManager.GetString("a_interest", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to A.Status.
         /// </summary>
-        internal static string AStatus {
+        internal static string a_status {
             get {
-                return ResourceManager.GetString("AStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Attached documents.
-        /// </summary>
-        internal static string AttachedDocuments {
-            get {
-                return ResourceManager.GetString("AttachedDocuments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Back to loan application details.
-        /// </summary>
-        internal static string BackToLoanApplicationDetails {
-            get {
-                return ResourceManager.GetString("BackToLoanApplicationDetails", resourceCulture);
+                return ResourceManager.GetString("a_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Back to loan applications.
         /// </summary>
-        internal static string BackToLoanApplications {
+        internal static string back_to_loan_applications {
             get {
-                return ResourceManager.GetString("BackToLoanApplications", resourceCulture);
+                return ResourceManager.GetString("back_to_loan_applications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back to loan application details.
+        /// </summary>
+        internal static string back_to_loan_application_details {
+            get {
+                return ResourceManager.GetString("back_to_loan_application_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Back to loan list.
         /// </summary>
-        internal static string BackToLoanList {
+        internal static string back_to_loan_list {
             get {
-                return ResourceManager.GetString("BackToLoanList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank code.
-        /// </summary>
-        internal static string BankCode {
-            get {
-                return ResourceManager.GetString("BankCode", resourceCulture);
+                return ResourceManager.GetString("back_to_loan_list", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Before submission:**.
         /// </summary>
-        internal static string BeforeSubmission {
+        internal static string before_submission {
             get {
-                return ResourceManager.GetString("BeforeSubmission", resourceCulture);
+                return ResourceManager.GetString("before_submission", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Below are the specific terms and conditions of this loan application, including repayment structure and collateral details.
         /// </summary>
-        internal static string BelowAreTheSpecificTermsAndConditionsOfThisLoanApplication {
+        internal static string below_are_the_specific_terms_and_conditions_of_this_loan_application {
             get {
-                return ResourceManager.GetString("BelowAreTheSpecificTermsAndConditionsOfThisLoanApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Collateral.
-        /// </summary>
-        internal static string Collateral {
-            get {
-                return ResourceManager.GetString("Collateral", resourceCulture);
+                return ResourceManager.GetString("below_are_the_specific_terms_and_conditions_of_this_loan_application", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Collateral type.
         /// </summary>
-        internal static string CollateralType {
+        internal static string collateral_type {
             get {
-                return ResourceManager.GetString("CollateralType", resourceCulture);
+                return ResourceManager.GetString("collateral_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Collateral value.
         /// </summary>
-        internal static string CollateralValue {
+        internal static string collateral_value {
             get {
-                return ResourceManager.GetString("CollateralValue", resourceCulture);
+                return ResourceManager.GetString("collateral_value", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Coverage details (Savings, Shares, Deposits, Salary, etc.).
         /// </summary>
-        internal static string CoverageDetails {
+        internal static string coverage_details {
             get {
-                return ResourceManager.GetString("CoverageDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current.
-        /// </summary>
-        internal static string Current {
-            get {
-                return ResourceManager.GetString("Current", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date from.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
+                return ResourceManager.GetString("coverage_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to days after maturity date.
         /// </summary>
-        internal static string daysAfterMaturityDate {
+        internal static string days_after_maturity_date {
             get {
-                return ResourceManager.GetString("daysAfterMaturityDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disbursement date.
-        /// </summary>
-        internal static string DisbursementDate {
-            get {
-                return ResourceManager.GetString("DisbursementDate", resourceCulture);
+                return ResourceManager.GetString("days_after_maturity_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Disbursement information.
         /// </summary>
-        internal static string DisbursementInformation {
+        internal static string disbursement_information {
             get {
-                return ResourceManager.GetString("DisbursementInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disbursement status.
-        /// </summary>
-        internal static string DisbursementStatus {
-            get {
-                return ResourceManager.GetString("DisbursementStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Document name.
-        /// </summary>
-        internal static string DocumentName {
-            get {
-                return ResourceManager.GetString("DocumentName", resourceCulture);
+                return ResourceManager.GetString("disbursement_information", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Does this application require down payment.
         /// </summary>
-        internal static string DoesThisApplicationRequireDownPayment {
+        internal static string does_this_application_require_down_payment {
             get {
-                return ResourceManager.GetString("DoesThisApplicationRequireDownPayment", resourceCulture);
+                return ResourceManager.GetString("does_this_application_require_down_payment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Downpayments and coverage.
         /// </summary>
-        internal static string DownpaymentsAndCoverage {
+        internal static string downpayments_and_coverage {
             get {
-                return ResourceManager.GetString("DownpaymentsAndCoverage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration.
-        /// </summary>
-        internal static string Duration {
-            get {
-                return ResourceManager.GetString("Duration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit loan application.
-        /// </summary>
-        internal static string EditLoanApplication {
-            get {
-                return ResourceManager.GetString("EditLoanApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Employee.
-        /// </summary>
-        internal static string Employee {
-            get {
-                return ResourceManager.GetString("Employee", resourceCulture);
+                return ResourceManager.GetString("downpayments_and_coverage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure that the total coverage amount (savings, deposits, shares, or salary) meets the loan security requirements.
         /// </summary>
-        internal static string EnsureThatTheTotalCoverageAmountMeetTheLoanReq {
+        internal static string ensure_that_the_total_coverage_amount_meet_the_loan_req {
             get {
-                return ResourceManager.GetString("EnsureThatTheTotalCoverageAmountMeetTheLoanReq", resourceCulture);
+                return ResourceManager.GetString("ensure_that_the_total_coverage_amount_meet_the_loan_req", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter customer name, branch, or reference.
         /// </summary>
-        internal static string EnterCustomerNameBranchOrReference {
+        internal static string enter_customer_name_branch_or_reference {
             get {
-                return ResourceManager.GetString("EnterCustomerNameBranchOrReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fees.
-        /// </summary>
-        internal static string Fees {
-            get {
-                return ResourceManager.GetString("Fees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fine.
-        /// </summary>
-        internal static string Fine {
-            get {
-                return ResourceManager.GetString("Fine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fine paid.
-        /// </summary>
-        internal static string FinePaid {
-            get {
-                return ResourceManager.GetString("FinePaid", resourceCulture);
+                return ResourceManager.GetString("enter_customer_name_branch_or_reference", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to For any further assistance, reach out to your loan officer.
         /// </summary>
-        internal static string ForAnyFurtherAssistanceReachOutToYourLoanOfficer {
+        internal static string for_any_further_assistance_reach_out_to_your_loan_officer {
             get {
-                return ResourceManager.GetString("ForAnyFurtherAssistanceReachOutToYourLoanOfficer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to General information.
-        /// </summary>
-        internal static string GeneralInformation {
-            get {
-                return ResourceManager.GetString("GeneralInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Government.
-        /// </summary>
-        internal static string Government {
-            get {
-                return ResourceManager.GetString("Government", resourceCulture);
+                return ResourceManager.GetString("for_any_further_assistance_reach_out_to_your_loan_officer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Grace period after loan due date.
         /// </summary>
-        internal static string GracePeriodAfterLoanDueDate {
+        internal static string grace_period_after_loan_due_date {
             get {
-                return ResourceManager.GetString("GracePeriodAfterLoanDueDate", resourceCulture);
+                return ResourceManager.GetString("grace_period_after_loan_due_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Grace period before first installment.
         /// </summary>
-        internal static string GracePeriodBeforeFirstInstallment {
+        internal static string grace_period_before_first_installment {
             get {
-                return ResourceManager.GetString("GracePeriodBeforeFirstInstallment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Groups.
-        /// </summary>
-        internal static string Groups {
-            get {
-                return ResourceManager.GetString("Groups", resourceCulture);
+                return ResourceManager.GetString("grace_period_before_first_installment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Guarantor &amp; collateral information.
         /// </summary>
-        internal static string GuarantorCollateralInformation {
+        internal static string guarantor_collateral_information {
             get {
-                return ResourceManager.GetString("GuarantorCollateralInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guarantor name.
-        /// </summary>
-        internal static string GuarantorName {
-            get {
-                return ResourceManager.GetString("GuarantorName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guarantor relationship.
-        /// </summary>
-        internal static string GuarantorRelationship {
-            get {
-                return ResourceManager.GetString("GuarantorRelationship", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Guarantors.
-        /// </summary>
-        internal static string Guarantors {
-            get {
-                return ResourceManager.GetString("Guarantors", resourceCulture);
+                return ResourceManager.GetString("guarantor_collateral_information", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Has member provided collateral.
         /// </summary>
-        internal static string HasMemberProvidedCollateral {
+        internal static string has_member_provided_collateral {
             get {
-                return ResourceManager.GetString("HasMemberProvidedCollateral", resourceCulture);
+                return ResourceManager.GetString("has_member_provided_collateral", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Has the loan been approved.
         /// </summary>
-        internal static string HasTheLoanBeenApproved {
+        internal static string has_the_loan_been_approved {
             get {
-                return ResourceManager.GetString("HasTheLoanBeenApproved", resourceCulture);
+                return ResourceManager.GetString("has_the_loan_been_approved", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Has the member provided a guarantor or co-obligator.
         /// </summary>
-        internal static string HasTheMemberProvidedAGuarantorOrCoObligator {
+        internal static string has_the_member_provided_aguarantor_or_co_obligator {
             get {
-                return ResourceManager.GetString("HasTheMemberProvidedAGuarantorOrCoObligator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ID.
-        /// </summary>
-        internal static string ID {
-            get {
-                return ResourceManager.GetString("ID", resourceCulture);
+                return ResourceManager.GetString("has_the_member_provided_aguarantor_or_co_obligator", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If a **down payment is required**, make sure it is correctly recorded.
         /// </summary>
-        internal static string IfADownPaymentIsRequiredMakeSureItIsCorrectlyRecorded {
+        internal static string if_adown_payment_is_required_make_sure_it_is_correctly_recorded {
             get {
-                return ResourceManager.GetString("IfADownPaymentIsRequiredMakeSureItIsCorrectlyRecorded", resourceCulture);
+                return ResourceManager.GetString("if_adown_payment_is_required_make_sure_it_is_correctly_recorded", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If your loan application is taking too long for approval, contact the loan department for assistance.
         /// </summary>
-        internal static string IfYourLoanApplicationIsTakingTooLongForApprovalContactTheLoanDep {
+        internal static string if_your_loan_application_is_taking_too_long_for_approval_contact_the_loan_dep {
             get {
-                return ResourceManager.GetString("IfYourLoanApplicationIsTakingTooLongForApprovalContactTheLoanDep", resourceCulture);
+                return ResourceManager.GetString("if_your_loan_application_is_taking_too_long_for_approval_contact_the_loan_dep", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Important guidelines for loan application modifications.
         /// </summary>
-        internal static string ImportantGuidelinesForLoanApplicationModifications {
+        internal static string important_guidelines_for_loan_application_modifications {
             get {
-                return ResourceManager.GetString("ImportantGuidelinesForLoanApplicationModifications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interest.
-        /// </summary>
-        internal static string Interest {
-            get {
-                return ResourceManager.GetString("Interest", resourceCulture);
+                return ResourceManager.GetString("important_guidelines_for_loan_application_modifications", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Interest in rate.
         /// </summary>
-        internal static string InterestInRate {
+        internal static string interest_in_rate {
             get {
-                return ResourceManager.GetString("InterestInRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interest rate.
-        /// </summary>
-        internal static string InterestRate {
-            get {
-                return ResourceManager.GetString("InterestRate", resourceCulture);
+                return ResourceManager.GetString("interest_in_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Interest rate &amp; loan duration.
         /// </summary>
-        internal static string InterestRateLoanDuration {
+        internal static string interest_rate_loan_duration {
             get {
-                return ResourceManager.GetString("InterestRateLoanDuration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to I.Rate.
-        /// </summary>
-        internal static string IRate {
-            get {
-                return ResourceManager.GetString("IRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to l.amount.
-        /// </summary>
-        internal static string lAmount {
-            get {
-                return ResourceManager.GetString("lAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last calculated interest.
-        /// </summary>
-        internal static string LastCalculatedInterest {
-            get {
-                return ResourceManager.GetString("LastCalculatedInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last calculated interest date.
-        /// </summary>
-        internal static string LastCalculatedInterestDate {
-            get {
-                return ResourceManager.GetString("LastCalculatedInterestDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last repayment.
-        /// </summary>
-        internal static string LastRepayment {
-            get {
-                return ResourceManager.GetString("LastRepayment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last repayment date.
-        /// </summary>
-        internal static string LastRepaymentDate {
-            get {
-                return ResourceManager.GetString("LastRepaymentDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to L.Date.
-        /// </summary>
-        internal static string LDate {
-            get {
-                return ResourceManager.GetString("LDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan amount.
-        /// </summary>
-        internal static string LoanAmount {
-            get {
-                return ResourceManager.GetString("LoanAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application code.
-        /// </summary>
-        internal static string LoanApplicationCode {
-            get {
-                return ResourceManager.GetString("LoanApplicationCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application data table.
-        /// </summary>
-        internal static string LoanApplicationDataTable {
-            get {
-                return ResourceManager.GetString("LoanApplicationDataTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application date.
-        /// </summary>
-        internal static string LoanApplicationDate {
-            get {
-                return ResourceManager.GetString("LoanApplicationDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application details.
-        /// </summary>
-        internal static string LoanApplicationDetails {
-            get {
-                return ResourceManager.GetString("LoanApplicationDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan Application Modification.
-        /// </summary>
-        internal static string LoanApplicationModification {
-            get {
-                return ResourceManager.GetString("LoanApplicationModification", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application not found.
-        /// </summary>
-        internal static string LoanApplicationNotFound {
-            get {
-                return ResourceManager.GetString("LoanApplicationNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application query overview.
-        /// </summary>
-        internal static string LoanApplicationQueryOverview {
-            get {
-                return ResourceManager.GetString("LoanApplicationQueryOverview", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application search and filters.
-        /// </summary>
-        internal static string LoanApplicationSearchAndFilters {
-            get {
-                return ResourceManager.GetString("LoanApplicationSearchAndFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan application type.
-        /// </summary>
-        internal static string LoanApplicationType {
-            get {
-                return ResourceManager.GetString("LoanApplicationType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan category.
-        /// </summary>
-        internal static string LoanCategory {
-            get {
-                return ResourceManager.GetString("LoanCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan code.
-        /// </summary>
-        internal static string LoanCode {
-            get {
-                return ResourceManager.GetString("LoanCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan coverage &amp; guarantees.
-        /// </summary>
-        internal static string LoanCoverageGuarantees {
-            get {
-                return ResourceManager.GetString("LoanCoverageGuarantees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to **Loan coverage requirements:**.
-        /// </summary>
-        internal static string LoanCoverageRequirements {
-            get {
-                return ResourceManager.GetString("LoanCoverageRequirements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan date.
-        /// </summary>
-        internal static string LoanDate {
-            get {
-                return ResourceManager.GetString("LoanDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan deliquecy journey.
-        /// </summary>
-        internal static string LoanDeliquecyJourney {
-            get {
-                return ResourceManager.GetString("LoanDeliquecyJourney", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan details.
-        /// </summary>
-        internal static string LoanDetails {
-            get {
-                return ResourceManager.GetString("LoanDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan duration (Months Or Base on thr Repayment Schedule.).
-        /// </summary>
-        internal static string LoanDuration {
-            get {
-                return ResourceManager.GetString("LoanDuration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan expiry date.
-        /// </summary>
-        internal static string LoanExpiryDate {
-            get {
-                return ResourceManager.GetString("LoanExpiryDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan fees.
-        /// </summary>
-        internal static string LoanFees {
-            get {
-                return ResourceManager.GetString("LoanFees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan manager.
-        /// </summary>
-        internal static string LoanManager {
-            get {
-                return ResourceManager.GetString("LoanManager", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan not yet approved.
-        /// </summary>
-        internal static string LoanNotYetApproved {
-            get {
-                return ResourceManager.GetString("LoanNotYetApproved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan product id.
-        /// </summary>
-        internal static string LoanProductID {
-            get {
-                return ResourceManager.GetString("LoanProductID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan state.
-        /// </summary>
-        internal static string LoanState {
-            get {
-                return ResourceManager.GetString("LoanState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan status.
-        /// </summary>
-        internal static string LoanStatus {
-            get {
-                return ResourceManager.GetString("LoanStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to LoanStatus (Once Approved, it is Locked).
-        /// </summary>
-        internal static string LoanStatusOnceApproved {
-            get {
-                return ResourceManager.GetString("LoanStatusOnceApproved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan target.
-        /// </summary>
-        internal static string LoanTarget {
-            get {
-                return ResourceManager.GetString("LoanTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan type.
-        /// </summary>
-        internal static string LoanType {
-            get {
-                return ResourceManager.GetString("LoanType", resourceCulture);
+                return ResourceManager.GetString("interest_rate_loan_duration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN APPLICATION QUERY LOGS.
         /// </summary>
-        internal static string LOAN_APPLICATION_QUERY_LOGS {
+        internal static string loan_application_query_logs {
             get {
-                return ResourceManager.GetString("LOAN_APPLICATION_QUERY_LOGS", resourceCulture);
+                return ResourceManager.GetString("loan_application_query_logs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan application query overview.
+        /// </summary>
+        internal static string loan_application_query_overview {
+            get {
+                return ResourceManager.GetString("loan_application_query_overview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan application search and filters.
+        /// </summary>
+        internal static string loan_application_search_and_filters {
+            get {
+                return ResourceManager.GetString("loan_application_search_and_filters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN APPLICATION TERMS DETAILS.
         /// </summary>
-        internal static string LOAN_APPLICATION_TERMS_DETAILS {
+        internal static string loan_application_terms_details {
             get {
-                return ResourceManager.GetString("LOAN_APPLICATION_TERMS_DETAILS", resourceCulture);
+                return ResourceManager.GetString("loan_application_terms_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN APPROVAL STATUS.
         /// </summary>
-        internal static string LOAN_APPROVAL_STATUS {
+        internal static string loan_approval_status {
             get {
-                return ResourceManager.GetString("LOAN_APPROVAL_STATUS", resourceCulture);
+                return ResourceManager.GetString("loan_approval_status", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main loans.
+        ///   Looks up a localized string similar to Loan coverage &amp; guarantees.
         /// </summary>
-        internal static string MainLoans {
+        internal static string loan_coverage_guarantees {
             get {
-                return ResourceManager.GetString("MainLoans", resourceCulture);
+                return ResourceManager.GetString("loan_coverage_guarantees", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M.Date.
+        ///   Looks up a localized string similar to **Loan coverage requirements:**.
         /// </summary>
-        internal static string MDate {
+        internal static string loan_coverage_requirements {
             get {
-                return ResourceManager.GetString("MDate", resourceCulture);
+                return ResourceManager.GetString("loan_coverage_requirements", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to member.
+        ///   Looks up a localized string similar to Loan not yet approved.
         /// </summary>
-        internal static string Member {
+        internal static string loan_not_yet_approved {
             get {
-                return ResourceManager.GetString("Member", resourceCulture);
+                return ResourceManager.GetString("loan_not_yet_approved", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Member&apos;s Code.
+        ///   Looks up a localized string similar to LoanStatus (Once Approved, it is Locked).
         /// </summary>
-        internal static string MembersCode {
+        internal static string loan_status_once_approved {
             get {
-                return ResourceManager.GetString("MembersCode", resourceCulture);
+                return ResourceManager.GetString("loan_status_once_approved", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MEMBERREFERENCE.
+        ///   Looks up a localized string similar to l.amount.
         /// </summary>
-        internal static string MEMBER_REFERENCE {
+        internal static string l_amount {
             get {
-                return ResourceManager.GetString("MEMBER_REFERENCE", resourceCulture);
+                return ResourceManager.GetString("l_amount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Migrated loan.
+        ///   Looks up a localized string similar to L.Date.
         /// </summary>
-        internal static string MigratedLoan {
+        internal static string l_date {
             get {
-                return ResourceManager.GetString("MigratedLoan", resourceCulture);
+                return ResourceManager.GetString("l_date", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Migration status.
+        ///   Looks up a localized string similar to I.Rate.
         /// </summary>
-        internal static string MigrationStatus {
+        internal static string l_rate {
             get {
-                return ResourceManager.GetString("MigrationStatus", resourceCulture);
+                return ResourceManager.GetString("l_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Modifiable Details:**.
         /// </summary>
-        internal static string ModifiableDetails {
+        internal static string modifiable_details {
             get {
-                return ResourceManager.GetString("ModifiableDetails", resourceCulture);
+                return ResourceManager.GetString("modifiable_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MODIFY LOAN APPLICATION.
         /// </summary>
-        internal static string MODIFY_LOAN_APPLICATION {
+        internal static string modify_loan_application {
             get {
-                return ResourceManager.GetString("MODIFY_LOAN_APPLICATION", resourceCulture);
+                return ResourceManager.GetString("modify_loan_application", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Monitor and analyze loan applications, track approvals, and view repayment schedules. This interface allows you to efficiently manage loan applications through dynamic search filters and exportable reports.
         /// </summary>
-        internal static string MonitorAndAnalyzeLoanApplications {
+        internal static string monitor_and_analyze_loan_applications {
             get {
-                return ResourceManager.GetString("MonitorAndAnalyzeLoanApplications", resourceCulture);
+                return ResourceManager.GetString("monitor_and_analyze_loan_applications", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to months before first installment.
         /// </summary>
-        internal static string monthsBeforeFirstInstallment {
+        internal static string months_before_first_installment {
             get {
-                return ResourceManager.GetString("monthsBeforeFirstInstallment", resourceCulture);
+                return ResourceManager.GetString("months_before_first_installment", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to M.Date.
         /// </summary>
-        internal static string Name {
+        internal static string m_date {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New loan.
-        /// </summary>
-        internal static string NewLoan {
-            get {
-                return ResourceManager.GetString("NewLoan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to N.Installment.
-        /// </summary>
-        internal static string NInstallment {
-            get {
-                return ResourceManager.GetString("NInstallment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No collateral provided.
-        /// </summary>
-        internal static string NoCollateralProvided {
-            get {
-                return ResourceManager.GetString("NoCollateralProvided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No documents attached.
-        /// </summary>
-        internal static string NoDocumentsAttached {
-            get {
-                return ResourceManager.GetString("NoDocumentsAttached", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No fee added.
-        /// </summary>
-        internal static string NoFeeAdded {
-            get {
-                return ResourceManager.GetString("NoFeeAdded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No guarantors provided.
-        /// </summary>
-        internal static string NoGuarantorsProvided {
-            get {
-                return ResourceManager.GetString("NoGuarantorsProvided", resourceCulture);
+                return ResourceManager.GetString("m_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Non-Modifiable Details:**.
         /// </summary>
-        internal static string NonModifiableDetails {
+        internal static string non_modifiable_details {
             get {
-                return ResourceManager.GetString("NonModifiableDetails", resourceCulture);
+                return ResourceManager.GetString("non_modifiable_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No repayment schedule generated for.
         /// </summary>
-        internal static string NoRepaymentScheduleGeneratedFor {
+        internal static string no_repayment_schedule_generated_for {
             get {
-                return ResourceManager.GetString("NoRepaymentScheduleGeneratedFor", resourceCulture);
+                return ResourceManager.GetString("no_repayment_schedule_generated_for", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not current.
+        ///   Looks up a localized string similar to N.Installment.
         /// </summary>
-        internal static string NotCurrent {
+        internal static string n_installment {
             get {
-                return ResourceManager.GetString("NotCurrent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan amount.
-        /// </summary>
-        internal static string OldLoanAmount {
-            get {
-                return ResourceManager.GetString("OldLoanAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan capital.
-        /// </summary>
-        internal static string OldLoanCapital {
-            get {
-                return ResourceManager.GetString("OldLoanCapital", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan information.
-        /// </summary>
-        internal static string OldLoanInformation {
-            get {
-                return ResourceManager.GetString("OldLoanInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan interest.
-        /// </summary>
-        internal static string OldLoanInterest {
-            get {
-                return ResourceManager.GetString("OldLoanInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan penalty.
-        /// </summary>
-        internal static string OldLoanPenalty {
-            get {
-                return ResourceManager.GetString("OldLoanPenalty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old loan VAT.
-        /// </summary>
-        internal static string OldLoanVAT {
-            get {
-                return ResourceManager.GetString("OldLoanVAT", resourceCulture);
+                return ResourceManager.GetString("n_installment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Once a loan is approved or disbursed, it cannot be modified.** If there is an issue with an approved loan, please contact your administrator.
         /// </summary>
-        internal static string OnceAloanIsApprovedOrDisbursedItCannotBeModified {
+        internal static string once_aloan_is_approved_or_disbursed_it_cannot_be_modified {
             get {
-                return ResourceManager.GetString("OnceAloanIsApprovedOrDisbursedItCannotBeModified", resourceCulture);
+                return ResourceManager.GetString("once_aloan_is_approved_or_disbursed_it_cannot_be_modified", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Oops! loan application not found.
         /// </summary>
-        internal static string OopsLoanApplicationNotFound {
+        internal static string oops_loan_application_not_found {
             get {
-                return ResourceManager.GetString("OopsLoanApplicationNotFound", resourceCulture);
+                return ResourceManager.GetString("oops_loan_application_not_found", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ordinary share account coverage amount.
         /// </summary>
-        internal static string OrdinaryShareAccountCoverageAmount {
+        internal static string ordinary_share_account_coverage_amount {
             get {
-                return ResourceManager.GetString("OrdinaryShareAccountCoverageAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paid.
-        /// </summary>
-        internal static string Paid {
-            get {
-                return ResourceManager.GetString("Paid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Penalty.
-        /// </summary>
-        internal static string Penalty {
-            get {
-                return ResourceManager.GetString("Penalty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pending.
-        /// </summary>
-        internal static string Pending {
-            get {
-                return ResourceManager.GetString("Pending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pending approval.
-        /// </summary>
-        internal static string PendingApproval {
-            get {
-                return ResourceManager.GetString("PendingApproval", resourceCulture);
+                return ResourceManager.GetString("ordinary_share_account_coverage_amount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Please ensure all details are correctly updated before submitting for approval.
         /// </summary>
-        internal static string PleaseEnsureAllDetailsAreCorrectlyUpdated {
+        internal static string please_ensure_all_details_are_correctly_updated {
             get {
-                return ResourceManager.GetString("PleaseEnsureAllDetailsAreCorrectlyUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Principal.
-        /// </summary>
-        internal static string Principal {
-            get {
-                return ResourceManager.GetString("Principal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product code.
-        /// </summary>
-        internal static string ProductCode {
-            get {
-                return ResourceManager.GetString("ProductCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product information.
-        /// </summary>
-        internal static string ProductInformation {
-            get {
-                return ResourceManager.GetString("ProductInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product name.
-        /// </summary>
-        internal static string ProductName {
-            get {
-                return ResourceManager.GetString("ProductName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Read content.
-        /// </summary>
-        internal static string ReadContent {
-            get {
-                return ResourceManager.GetString("ReadContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference.
-        /// </summary>
-        internal static string Reference {
-            get {
-                return ResourceManager.GetString("Reference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refinanced amount.
-        /// </summary>
-        internal static string RefinancedAmount {
-            get {
-                return ResourceManager.GetString("RefinancedAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refinancing details.
-        /// </summary>
-        internal static string RefinancingDetails {
-            get {
-                return ResourceManager.GetString("RefinancingDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rejected.
-        /// </summary>
-        internal static string Rejected {
-            get {
-                return ResourceManager.GetString("Rejected", resourceCulture);
+                return ResourceManager.GetString("please_ensure_all_details_are_correctly_updated", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Repayment terms &amp; grace period.
         /// </summary>
-        internal static string RepaymentTermsGracePeriod {
+        internal static string repayment_terms_grace_period {
             get {
-                return ResourceManager.GetString("RepaymentTermsGracePeriod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Requested amount.
-        /// </summary>
-        internal static string RequestedAmount {
-            get {
-                return ResourceManager.GetString("RequestedAmount", resourceCulture);
+                return ResourceManager.GetString("repayment_terms_grace_period", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Requested **Loan Amount**.
         /// </summary>
-        internal static string RequestedLoanAmount {
+        internal static string requested_loan_amount {
             get {
-                return ResourceManager.GetString("RequestedLoanAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restructured balance.
-        /// </summary>
-        internal static string RestructuredBalance {
-            get {
-                return ResourceManager.GetString("RestructuredBalance", resourceCulture);
+                return ResourceManager.GetString("requested_loan_amount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Review all entered details to ensure accuracy.
         /// </summary>
-        internal static string ReviewAllEnteredDetailsToEnsureAccuracy {
+        internal static string review_all_entered_details_to_ensure_accuracy {
             get {
-                return ResourceManager.GetString("ReviewAllEnteredDetailsToEnsureAccuracy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save changes.
-        /// </summary>
-        internal static string SaveChanges {
-            get {
-                return ResourceManager.GetString("SaveChanges", resourceCulture);
+                return ResourceManager.GetString("review_all_entered_details_to_ensure_accuracy", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Saving account coverage rate.
         /// </summary>
-        internal static string SavingAccountCoverageRate {
+        internal static string saving_account_coverage_rate {
             get {
-                return ResourceManager.GetString("SavingAccountCoverageRate", resourceCulture);
+                return ResourceManager.GetString("saving_account_coverage_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Saving coverage provided.
         /// </summary>
-        internal static string SavingCoverageProvided {
+        internal static string saving_coverage_provided {
             get {
-                return ResourceManager.GetString("SavingCoverageProvided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search criteria.
-        /// </summary>
-        internal static string SearchCriteria {
-            get {
-                return ResourceManager.GetString("SearchCriteria", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select all.
-        /// </summary>
-        internal static string SelectAll {
-            get {
-                return ResourceManager.GetString("SelectAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select loan fees.
-        /// </summary>
-        internal static string SelectLoanFees {
-            get {
-                return ResourceManager.GetString("SelectLoanFees", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Share covered amount.
-        /// </summary>
-        internal static string ShareCoveredAmount {
-            get {
-                return ResourceManager.GetString("ShareCoveredAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show filters.
-        /// </summary>
-        internal static string ShowFilters {
-            get {
-                return ResourceManager.GetString("ShowFilters", resourceCulture);
+                return ResourceManager.GetString("saving_coverage_provided", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to SN.
         /// </summary>
-        internal static string SN {
+        internal static string sn {
             get {
-                return ResourceManager.GetString("SN", resourceCulture);
+                return ResourceManager.GetString("sn", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Special saving facilities.
         /// </summary>
-        internal static string SpecialSavingFacilities {
+        internal static string special_saving_facilities {
             get {
-                return ResourceManager.GetString("SpecialSavingFacilities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Targeted population.
-        /// </summary>
-        internal static string TargetedPopulation {
-            get {
-                return ResourceManager.GetString("TargetedPopulation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Terms.
-        /// </summary>
-        internal static string Terms {
-            get {
-                return ResourceManager.GetString("Terms", resourceCulture);
+                return ResourceManager.GetString("special_saving_facilities", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The loan application you are looking for does not exist, may have been removed, or you may have entered an incorrect Loan ID.
         /// </summary>
-        internal static string TheLoanApplicationYouAreLookingForDoesNotExist {
+        internal static string the_loan_application_you_are_looking_for_does_not_exist {
             get {
-                return ResourceManager.GetString("TheLoanApplicationYouAreLookingForDoesNotExist", resourceCulture);
+                return ResourceManager.GetString("the_loan_application_you_are_looking_for_does_not_exist", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to This loan application is still under review. Once approved, all loan details will be updated here.
         /// </summary>
-        internal static string ThisLoanApplicationIsStillUnderReview {
+        internal static string this_loan_application_is_still_under_review {
             get {
-                return ResourceManager.GetString("ThisLoanApplicationIsStillUnderReview", resourceCulture);
+                return ResourceManager.GetString("this_loan_application_is_still_under_review", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to This page allows you to modify **loan applications that have not yet been approved or disbursed**.
         /// </summary>
-        internal static string ThisPageAllowsYouToModifyLoanApplications {
+        internal static string this_page_allows_you_to_modify_loan_applications {
             get {
-                return ResourceManager.GetString("ThisPageAllowsYouToModifyLoanApplications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tip.
-        /// </summary>
-        internal static string Tip {
-            get {
-                return ResourceManager.GetString("Tip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total.
-        /// </summary>
-        internal static string Total {
-            get {
-                return ResourceManager.GetString("Total", resourceCulture);
+                return ResourceManager.GetString("this_page_allows_you_to_modify_loan_applications", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total down payment provided.
         /// </summary>
-        internal static string TotalDownPaymentProvided {
+        internal static string total_down_payment_provided {
             get {
-                return ResourceManager.GetString("TotalDownPaymentProvided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total due.
-        /// </summary>
-        internal static string TotalDue {
-            get {
-                return ResourceManager.GetString("TotalDue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total loan amount.
-        /// </summary>
-        internal static string TotalLoanAmount {
-            get {
-                return ResourceManager.GetString("TotalLoanAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total paid.
-        /// </summary>
-        internal static string TotalPaid {
-            get {
-                return ResourceManager.GetString("TotalPaid", resourceCulture);
+                return ResourceManager.GetString("total_down_payment_provided", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Tracking Loan Applications:**.
         /// </summary>
-        internal static string TrackingLoanApplications {
+        internal static string tracking_loan_applications {
             get {
-                return ResourceManager.GetString("TrackingLoanApplications", resourceCulture);
+                return ResourceManager.GetString("tracking_loan_applications", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Try searching for another loan application.
         /// </summary>
-        internal static string TrySearchingForAnotherLoanApplication {
+        internal static string try_searching_for_another_loan_application {
             get {
-                return ResourceManager.GetString("TrySearchingForAnotherLoanApplication", resourceCulture);
+                return ResourceManager.GetString("try_searching_for_another_loan_application", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to TSC-Loan.
         /// </summary>
-        internal static string TSCLoan {
+        internal static string tsc_loan {
             get {
-                return ResourceManager.GetString("TSCLoan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploaded date.
-        /// </summary>
-        internal static string UploadedDate {
-            get {
-                return ResourceManager.GetString("UploadedDate", resourceCulture);
+                return ResourceManager.GetString("tsc_loan", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use the **Loan Query Panel** to check application status and approvals.
         /// </summary>
-        internal static string UseTheLoanQueryPanel {
+        internal static string use_the_loan_query_panel {
             get {
-                return ResourceManager.GetString("UseTheLoanQueryPanel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vat.
-        /// </summary>
-        internal static string Vat {
-            get {
-                return ResourceManager.GetString("Vat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vat paid.
-        /// </summary>
-        internal static string VatPaid {
-            get {
-                return ResourceManager.GetString("VatPaid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to VAT rate.
-        /// </summary>
-        internal static string VATRate {
-            get {
-                return ResourceManager.GetString("VATRate", resourceCulture);
+                return ResourceManager.GetString("use_the_loan_query_panel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View and manage loan application details, repayment schedule, and loan tracking. This section provides all necessary information related to the loan, approvals, repayments, and associated financial calculations.
         /// </summary>
-        internal static string ViewAndManageLoanApplicationDetails {
+        internal static string view_and_manage_loan_application_details {
             get {
-                return ResourceManager.GetString("ViewAndManageLoanApplicationDetails", resourceCulture);
+                return ResourceManager.GetString("view_and_manage_loan_application_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Was deposit account used as coverage.
         /// </summary>
-        internal static string WasDepositAccountUsedAsCoverage {
+        internal static string was_deposit_account_used_as_coverage {
             get {
-                return ResourceManager.GetString("WasDepositAccountUsedAsCoverage", resourceCulture);
+                return ResourceManager.GetString("was_deposit_account_used_as_coverage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Was preference share account used as coverage.
         /// </summary>
-        internal static string WasPreferenceShareAccountUsedAsCoverage {
+        internal static string was_preference_share_account_used_as_coverage {
             get {
-                return ResourceManager.GetString("WasPreferenceShareAccountUsedAsCoverage", resourceCulture);
+                return ResourceManager.GetString("was_preference_share_account_used_as_coverage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to YES, coverage amount.
         /// </summary>
-        internal static string YESCoverageAmount {
+        internal static string yes_coverage_amount {
             get {
-                return ResourceManager.GetString("YESCoverageAmount", resourceCulture);
+                return ResourceManager.GetString("yes_coverage_amount", resourceCulture);
             }
         }
     }

@@ -1,16 +1,16 @@
-﻿@using Resources
+@using Resources
 @{
-    ViewBag.Title = @GlobalLoanApplication.LoanApplicationNotFound;
+    ViewBag.Title = @GlobalShared.loan_application_not_found;
 }
 
 <!-- Page Header -->
 <div class="card bg-light mb-2 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-danger">
-            <i class="mdi mdi-alert-circle-outline me-2"></i> @GlobalLoanApplication.OopsLoanApplicationNotFound
+            <i class="mdi mdi-alert-circle-outline me-2"></i> @GlobalLoanApplication.oops_loan_application_not_found
         </h1>
         <p class="lead text-muted">
-            @GlobalLoanApplication.TheLoanApplicationYouAreLookingForDoesNotExist.
+            @GlobalLoanApplication.the_loan_application_you_are_looking_for_does_not_exist.
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -20,7 +20,7 @@
 <div class="card mb-3 shadow-sm">
     <div class="card-header bg-light text-dark fw-bold d-flex justify-content-between align-items-center">
         <span>
-            <i class="mdi mdi-filter-outline me-2"></i> @GlobalLoanApplication.TrySearchingForAnotherLoanApplication
+            <i class="mdi mdi-filter-outline me-2"></i> @GlobalLoanApplication.try_searching_for_another_loan_application
         </span>
     </div>
     <div class="card-body">
@@ -28,27 +28,27 @@
             <!-- Search Criteria -->
             <div class="col-md-4">
                 <label for="searchCriteria" class="form-label fw-bold">Search Criteria:</label>
-                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="@GlobalLoanApplication.EnterCustomerNameBranchOrReference..." />
+                <input type="text" id="searchCriteria" class="form-control shadow-sm" placeholder="@GlobalLoanApplication.enter_customer_name_branch_or_reference..." />
             </div>
 
             <!-- Loan Category -->
             <div class="col-md-4">
-                <label for="loanCategory" class="form-label fw-bold">@GlobalLoanApplication.LoanCategory:</label>
+                <label for="loanCategory" class="form-label fw-bold">@GlobalShared.Loan_Category:</label>
                 <select id="loanCategory" class="form-select shadow-sm">
-                    <option value="all">@GlobalLoanApplication.All</option>
-                    <option value="Main_loan">@GlobalLoanApplication.MainLoans</option>
-                    <option value="SSF">@GlobalLoanApplication.SpecialSavingFacilities</option>
+                    <option value="all">@GlobalShared.All</option>
+                    <option value="Main_loan">@GlobalShared.main_loans</option>
+                    <option value="SSF">@GlobalLoanApplication.special_saving_facilities</option>
                 </select>
             </div>
 
             <!-- Approval Status -->
             <div class="col-md-4">
-                <label for="approvalStatus" class="form-label fw-bold">@GlobalLoanApplication.ApprovalStatus:</label>
+                <label for="approvalStatus" class="form-label fw-bold">@GlobalShared.Approval_status:</label>
                 <select id="approvalStatus" class="form-select shadow-sm">
-                    <option value="all">@GlobalLoanApplication.All</option>
-                    <option value="Approved">@GlobalLoanApplication.Approved</option>
-                    <option value="Pending">@GlobalLoanApplication.PendingApproval</option>
-                    <option value="Rejected">@GlobalLoanApplication.Rejected</option>
+                    <option value="all">@GlobalShared.All</option>
+                    <option value="Approved">@GlobalShared.Approved</option>
+                    <option value="Pending">@GlobalShared.pending_approval</option>
+                    <option value="Rejected">@GlobalShared.Rejected</option>
                 </select>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Search
                 </button>
                 <a href="@Url.Action("Index", "LoanApplication")" class="btn btn-secondary">
-                    <i class="mdi mdi-arrow-left me-1"></i> @GlobalLoanApplication.BackToLoanApplications
+                    <i class="mdi mdi-arrow-left me-1"></i> @GlobalLoanApplication.back_to_loan_applications
                 </a>
             </div>
         </div>

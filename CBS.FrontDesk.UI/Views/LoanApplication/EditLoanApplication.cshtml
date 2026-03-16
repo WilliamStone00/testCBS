@@ -1,18 +1,18 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberOperation.UpdateLoanApplicationCommand
+@model CBS.FrontDesk.Data.Entity.MemberOperation.UpdateLoanApplicationCommand
     @using Resources
 @{
-    ViewBag.Title = @GlobalLoanApplication.EditLoanApplication;
+    ViewBag.Title = @GlobalShared.edit_loan_application;
 }
 
 <!-- Page Header -->
 <div class="card bg-light mb-4">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-bank-outline me-2"></i> @GlobalLoanApplication.LoanApplicationModification
+            <i class="mdi mdi-bank-outline me-2"></i> @GlobalShared.loan_application_modification
         </h1>
         <p class="card-text">
-            @GlobalLoanApplication.ThisPageAllowsYouToModifyLoanApplications.
-            @GlobalLoanApplication.PleaseEnsureAllDetailsAreCorrectlyUpdated.
+            @GlobalLoanApplication.this_page_allows_you_to_modify_loan_applications.
+            @GlobalLoanApplication.please_ensure_all_details_are_correctly_updated.
         </p>
         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
     </div>
@@ -21,7 +21,7 @@
 <!-- Loan Application Help Tips -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplication.ImportantGuidelinesForLoanApplicationModifications</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanApplication.important_guidelines_for_loan_application_modifications</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanEditTips" aria-expanded="false" aria-controls="collapseLoanEditTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -29,50 +29,50 @@
     <div id="collapseLoanEditTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalLoanApplication.OnceAloanIsApprovedOrDisbursedItCannotBeModified.</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalLoanApplication.once_aloan_is_approved_or_disbursed_it_cannot_be_modified.</li>
 
                 <li>
-                    <i class="mdi mdi-pencil-outline text-primary me-2"></i> @GlobalLoanApplication.ModifiableDetails
+                    <i class="mdi mdi-pencil-outline text-primary me-2"></i> @GlobalLoanApplication.modifiable_details
                     <ul>
-                        <li>@GlobalLoanApplication.RequestedLoanAmount</li>
-                        <li>@GlobalLoanApplication.InterestRateLoanDuration</li>
-                        <li>@GlobalLoanApplication.RepaymentTermsGracePeriod</li>
-                        <li>@GlobalLoanApplication.GuarantorCollateralInformation</li>
-                        <li>@GlobalLoanApplication.CoverageDetails</li>
-                        <li>@GlobalLoanApplication.ApplicableLoanFeesCharges*</li>
+                        <li>@GlobalLoanApplication.requested_loan_amount</li>
+                        <li>@GlobalLoanApplication.interest_rate_loan_duration</li>
+                        <li>@GlobalLoanApplication.repayment_terms_grace_period</li>
+                        <li>@GlobalLoanApplication.guarantor_collateral_information</li>
+                        <li>@GlobalLoanApplication.coverage_details</li>
+                        <li>@GlobalLoanApplication.applicable_loan_fees_charges*</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLoanApplication.NonModifiableDetails
+                    <i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalLoanApplication.non_modifiable_details
                     <ul>
-                        <li>@GlobalLoanApplication.LoanApplicationDate</li>
-                        <li>@GlobalLoanApplication.LoanStatusOnceApproved</li>
-                        <li>@GlobalLoanApplication.DisbursementInformation</li>
+                        <li>@GlobalShared.loan_application_date</li>
+                        <li>@GlobalLoanApplication.loan_status_once_approved</li>
+                        <li>@GlobalLoanApplication.disbursement_information</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-bank-transfer text-success me-2"></i> @GlobalLoanApplication.LoanCoverageRequirements
+                    <i class="mdi mdi-bank-transfer text-success me-2"></i> @GlobalLoanApplication.loan_coverage_requirements
                     <ul>
-                        <li>@GlobalLoanApplication.EnsureThatTheTotalCoverageAmountMeetTheLoanReq.</li>
-                        <li>@GlobalLoanApplication.IfADownPaymentIsRequiredMakeSureItIsCorrectlyRecorded.</li>
+                        <li>@GlobalLoanApplication.ensure_that_the_total_coverage_amount_meet_the_loan_req.</li>
+                        <li>@GlobalLoanApplication.if_adown_payment_is_required_make_sure_it_is_correctly_recorded.</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplication.BeforeSubmission
+                    <i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalLoanApplication.before_submission
                     <ul>
-                        <li>@GlobalLoanApplication.ReviewAllEnteredDetailsToEnsureAccuracy.</li>
-                        <li>@GlobalLoanApplication.AnyIncorrectInformationMayCauseDelaysInApproval.</li>
+                        <li>@GlobalLoanApplication.review_all_entered_details_to_ensure_accuracy.</li>
+                        <li>@GlobalLoanApplication.any_incorrect_information_may_cause_delays_in_approval.</li>
                     </ul>
                 </li>
 
                 <li>
-                    <i class="mdi mdi-history text-info me-2"></i> @GlobalLoanApplication.TrackingLoanApplications
+                    <i class="mdi mdi-history text-info me-2"></i> @GlobalLoanApplication.tracking_loan_applications
                     <ul>
-                        <li>@GlobalLoanApplication.UseTheLoanQueryPanel.</li>
-                        <li>@GlobalLoanApplication.ForAnyFurtherAssistanceReachOutToYourLoanOfficer.</li>
+                        <li>@GlobalLoanApplication.use_the_loan_query_panel.</li>
+                        <li>@GlobalLoanApplication.for_any_further_assistance_reach_out_to_your_loan_officer.</li>
                     </ul>
                 </li>
             </ul>
@@ -91,7 +91,7 @@
                 aria-controls="accordionPopoutIcon-3">
             <i class="mdi mdi-file-edit-outline me-2"></i>
             <div class="d-flex justify-content-center">
-                <div class="fw-bold fs-4" id="panelTitle">@GlobalLoanApplication.MODIFY_LOAN_APPLICATION</div>
+                <div class="fw-bold fs-4" id="panelTitle">@GlobalLoanApplication.modify_loan_application</div>
             </div>
         </button>
     </h2>
@@ -104,17 +104,17 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="group-title">
-                        @GlobalLoanApplication.MEMBER_REFERENCE # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
+                        @GlobalShared.Member_reference # <span class="highlight-text">@Model.Customer.CustomerId</span><br />
                         <hr />
-                        <small>@GlobalLoanApplication.BankCode: @Session["BankCode"].ToString()</small><br />
-                        <small>@GlobalLoanApplication.BranchCode: @Session["BranchCode"].ToString()</small>
+                        <small>@GlobalShared.Bank_Code: @Session["BankCode"].ToString()</small><br />
+                        <small>@GlobalShared.Branch_Code: @Session["BranchCode"].ToString()</small>
                     </h4>
                 </div>
             </div>
             <br />
             <div class="card mt-3">
                 <div class="card-body">
-                    <h5 class="card-title text-left mb-0">@GlobalLoanApplication.Member: @Model.Customer.name</h5>
+                    <h5 class="card-title text-left mb-0">@GlobalShared.Member: @Model.Customer.name</h5>
                     <hr />
                     @if (Model.Customer.photoUrl != null)
                     {
@@ -138,7 +138,7 @@
                 <div class="card-body text-center">
                     <a href="@Url.Action("Details", "LoanApplication", new { KEY = Model.Id })"
                        class="btn btn-outline-primary btn-sm w-100">
-                        <i class="mdi mdi-arrow-left-circle-outline me-1"></i> @GlobalLoanApplication.BackToLoanApplicationDetails
+                        <i class="mdi mdi-arrow-left-circle-outline me-1"></i> @GlobalLoanApplication.back_to_loan_application_details
                     </a>
                 </div>
             </div>

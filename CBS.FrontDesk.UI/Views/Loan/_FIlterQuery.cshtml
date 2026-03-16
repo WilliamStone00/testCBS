@@ -1,10 +1,10 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
+@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 @using Resources
 
 <div class="card shadow p-3 mb-4">
     <div class="card-header bg-white border-0 pb-0">
         <h5 class="text-primary mb-0">
-            <i class="mdi mdi-filter-outline me-1"></i> @GlobalLoan.GenerateLoanPortfolioReport
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.generate_loan_portfolio_report
         </h5>
     </div>
 
@@ -15,7 +15,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input report-type-toggle" id="toggleReportType" checked role="switch" />
                     <label class="form-check-label fw-semibold" for="toggleReportType">
-                        <i class="mdi mdi-chart-box text-primary me-1"></i>Main Reports
+                        <i class="mdi mdi-chart-box text-primary me-1"></i>@GlobalShared.Main_Reports
                     </label>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input report-type-toggle" id="toggleloanreports" role="switch" />
                     <label class="form-check-label fw-semibold" for="toggleloanreports">
-                        <i class="mdi mdi-format-list-bulleted text-success me-1"></i>Loan Reports
+                        <i class="mdi mdi-format-list-bulleted text-success me-1"></i>@GlobalShared.Loan_Reports
                     </label>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input report-type-toggle" id="toggleSSF" role="switch" />
                     <label class="form-check-label fw-semibold" for="toggleSSF">
-                        <i class="mdi mdi-bank text-info me-1"></i>SSF Loan Reports
+                        <i class="mdi mdi-bank text-info me-1"></i>@GlobalLoan.ssf_loan_reports
                     </label>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input report-type-toggle" id="toggleDuration" role="switch" />
                     <label class="form-check-label fw-semibold" for="toggleDuration">
-                        <i class="mdi mdi-timer-sand text-warning me-1"></i>Loan by Duration
+                        <i class="mdi mdi-timer-sand text-warning me-1"></i>@GlobalShared.loan_by_duration
                     </label>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input report-type-toggle" id="togglePAR" role="switch" />
                     <label class="form-check-label fw-semibold" for="togglePAR">
-                        <i class="mdi mdi-alert-circle text-danger me-1"></i>PAR Loan Reports
+                        <i class="mdi mdi-alert-circle text-danger me-1"></i>@GlobalLoan.par_loan_reports
                     </label>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input filter-toggle" id="byBranch" role="switch" />
                     <label class="form-check-label fw-semibold" for="byBranch">
-                        <i class="mdi mdi-domain me-1"></i>@GlobalLoan.FilterByBranch
+                        <i class="mdi mdi-domain me-1"></i>@GlobalShared.FilterByBranch
                     </label>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <div class="form-check form-switch">
                     <input type="checkbox" class="form-check-input filter-toggle" id="byDate" role="switch" />
                     <label class="form-check-label fw-semibold" for="byDate">
-                        <i class="mdi mdi-calendar-range me-1"></i>@GlobalLoan.FilterByDateRange
+                        <i class="mdi mdi-calendar-range me-1"></i>@GlobalShared.Filter_by_Date_Range
                     </label>
                 </div>
             </div>
@@ -79,9 +79,9 @@
                 <div class="row mb-3" id="branchFilterSection" style="display: none;">
                     <div class="col-md-12">
                         <label for="BranchId" class="form-label fw-semibold">
-                            <i class="mdi mdi-domain me-1"></i>@GlobalLoan.SelectBranch
+                            <i class="mdi mdi-domain me-1"></i>@GlobalShared.SelectBranch
                         </label>
-                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalLoan.SelectBranch + "---", new { @class = "form-control select2", @placeholder = "Select branch..." })
+                        @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + GlobalShared.SelectBranch + "---", new { @class = "form-control select2", @placeholder = "Select branch..." })
                     </div>
                 </div>
 
@@ -89,13 +89,13 @@
                 <div class="row" id="dateRangeSection" style="display: none;">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">
-                            <i class="mdi mdi-calendar-start me-1"></i>@GlobalLoan.StartDate
+                            <i class="mdi mdi-calendar-start me-1"></i>@GlobalShared.Start_Date
                         </label>
                         <input type="date" id="StartDate" class="form-control" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">
-                            <i class="mdi mdi-calendar-end me-1"></i>@GlobalLoan.EndDate
+                            <i class="mdi mdi-calendar-end me-1"></i>@GlobalShared.End_Date
                         </label>
                         <input type="date" id="EndDate" class="form-control" />
                     </div>
@@ -107,29 +107,29 @@
         <div id="mainFilterSection" class="card border-0 bg-light mb-3">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-primary">
-                    <i class="mdi mdi-chart-box me-1"></i>Main Report Configuration
+                    <i class="mdi mdi-chart-box me-1"></i>@GlobalShared.Main_Report_Configuration
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">@GlobalLoan.MainReportType</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Main_Report_Type</label>
                         <select id="MainReportType" class="form-select">
-                            <option value="DelinquentLoan">Loan Portfolio with Delinquency Insight</option>
-                            <option value="delinquentloansummary">Loan Delinquency Summary by PAR, Gender, and Loan Type</option>
-                            <option value="delinquentloanslistingwithaging">Delinquent Loans with Aging Breakdown</option>
-                            <option value="loansituations">Loan Situation Report (Current Performing Loans)</option>
+                            <option value="DelinquentLoan">@GlobalLoan.loan_portfolio_with_delinquency_insight</option>
+                            <option value="delinquentloansummary">@GlobalLoan.loan_delinquency_summary_by_par_gender_and_loan_type</option>
+                            <option value="delinquentloanslistingwithaging">@GlobalLoan.delinquent_loans_with_aging_breakdown</option>
+                            <option value="loansituations">@GlobalLoan.loan_situation_report_current_performing_loans</option>
                         </select>
                     </div>
                     <div class="col-md-6" id="subreportSection" style="display: none;">
                         <label class="form-label fw-semibold">Subreport Type(s)</label>
                         <select id="SubReportType" class="form-select select2" multiple>
-                            <option value="Flat_AgeAndGender">@GlobalLoan.DelinquencyAccordingToAgesAndGender</option>
-                            <option value="Flat_AgeAndLoanType">@GlobalLoan.DelinquencyAccordingToAgesAndLoanTypes</option>
-                            <option value="Flat_ByZone">@GlobalLoan.DelinquencyAccordingToZones</option>
-                            <option value="Flat_ByLoanTerm">@GlobalLoan.DelinquencyAccordingToLoanTerms</option>
-                            <option value="Flat_ByTargetGroup">@GlobalLoan.DelinquencyAccordingToTargetGroups</option>
-                            <option value="Flat_ByCategory">@GlobalLoan.DelinquencyAccordingToCategories</option>
+                            <option value="Flat_AgeAndGender">@GlobalLoan.delinquency_according_to_ages_and_gender</option>
+                            <option value="Flat_AgeAndLoanType">@GlobalLoan.delinquency_according_to_ages_and_loan_types</option>
+                            <option value="Flat_ByZone">@GlobalLoan.delinquency_according_to_zones</option>
+                            <option value="Flat_ByLoanTerm">@GlobalLoan.delinquency_according_to_loan_terms</option>
+                            <option value="Flat_ByTargetGroup">@GlobalLoan.delinquency_according_to_target_groups</option>
+                            <option value="Flat_ByCategory">@GlobalLoan.delinquency_according_to_categories</option>
                         </select>
-                        <small class="text-muted"><i class="mdi mdi-information-outline me-1"></i>@GlobalLoan.HoldCtrlToSelectMultiple</small>
+                        <small class="text-muted"><i class="mdi mdi-information-outline me-1"></i>@GlobalShared.hold_ctrl_to_select_multiple</small>
                     </div>
                 </div>
             </div>
@@ -139,27 +139,27 @@
         <div id="queryFilterSection" class="card border-0 bg-light mb-3" style="display: none;">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-success">
-                    <i class="mdi mdi-chart-pie me-1"></i>Breakdown Analysis
+                    <i class="mdi mdi-chart-pie me-1"></i>@GlobalShared.Breakdown_Analysis
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Query Parameter</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Query_Parameter</label>
                         <select id="QueryParam" class="form-select">
-                            <option value="">-- Select Parameter --</option>
-                            <option value="loanbygender">Loan by Gender</option>
-                            <option value="loanbytypes">Loan by Types</option>
-                            <option value="loanbytarget">Loan by Target</option>
-                            <option value="loanbystatus">Loan by Status</option>
-                            <option value="loanbyproduct">Loan by Product</option>
-                            <option value="loanbycategory">Loan by Category</option>
-                            <option value="loanbydelinquencyconfig">Loan by Delinquency Config</option>
-                            <option value="loanbylegalform">Loan by Legal Form</option>
+                            <option value="">-- @GlobalShared.Select_Parameter --</option>
+                            <option value="loanbygender">@GlobalShared.loan_by_gender</option>
+                            <option value="loanbytypes">@GlobalShared.loan_by_types</option>
+                            <option value="loanbytarget">@GlobalShared.loan_by_target</option>
+                            <option value="loanbystatus">@GlobalShared.loan_by_status</option>
+                            <option value="loanbyproduct">@GlobalShared.loan_by_product</option>
+                            <option value="loanbycategory">@GlobalShared.loan_by_category</option>
+                            <option value="loanbydelinquencyconfig">@GlobalShared.loan_by_delinquency_config</option>
+                            <option value="loanbylegalform">@GlobalShared.loan_by_legal_form</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Query Parameter Value</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Query_Parameter_Value</label>
                         <select id="QueryParamValue" class="form-select">
-                            <option value="">-- Select Value --</option>
+                            <option value="">-- @GlobalShared.Select_Value --</option>
                         </select>
                     </div>
                 </div>
@@ -170,19 +170,19 @@
         <div id="LoanReportsSection" class="card border-0 bg-light mb-3" style="display: none;">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-success">
-                    <i class="mdi mdi-format-list-bulleted me-1"></i>Loan Report Selection
+                    <i class="mdi mdi-format-list-bulleted me-1"></i>@GlobalLoan.loan_report_selection
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Report Type</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Report_Type</label>
                         <select id="ReportType" name="ReportType" class="form-select">
-                            <option value="">-- Select an option --</option>
-                            <option value="loanListing">Loan History</option>
-                            <option value="current">Current Performing Loans</option>
-                            <option value="unpaid">Unpaid Loans</option>
-                            <option value="doubtful">Doubtful Loans</option>
-                            <option value="irrepayable">Irrepayable Loans</option>
-                            <option value="irrecoverable">Irrecoverable Loans</option>
+                            <option value="">-- @GlobalShared.Select_an_option --</option>
+                            <option value="loanListing">@GlobalShared.Loan_History</option>
+                            <option value="current">@GlobalLoan.current_performing_loans</option>
+                            <option value="unpaid">@GlobalShared.Unpaid_Loans</option>
+                            <option value="doubtful">@GlobalShared.Doubtful_Loans</option>
+                            <option value="irrepayable">@GlobalShared.Irrepayable_Loans</option>
+                            <option value="irrecoverable">@GlobalShared.Irrecoverable_Loans</option>
                         </select>
                     </div>
                 </div>
@@ -193,18 +193,18 @@
         <div id="SSFLoanSection" class="card border-0 bg-light mb-3" style="display: none;">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-info">
-                    <i class="mdi mdi-bank me-1"></i>SSF Loan Reports
+                    <i class="mdi mdi-bank me-1"></i>@GlobalLoan.ssf_loan_reports
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">SSF Report Type</label>
+                        <label class="form-label fw-semibold">@GlobalLoan.ssf_report_type</label>
                         <select id="SSFReportType" class="form-select">
-                            <option value="">-- Select SSF Report --</option>
-                            <option value="ssf_current">Current SSF Loans</option>
-                            <option value="ssf_unpaid">Unpaid SSF Loans</option>
-                            <option value="ssf_doubtful">Doubtful SSF Loans</option>
-                            <option value="ssf_irrecoverable">Irrecoverable SSF Loans</option>
-                            <option value="ssf_portfolio">Complete SSF Portfolio</option>
+                            <option value="">-- @GlobalLoan.select_ssf_report --</option>
+                            <option value="ssf_current">@GlobalLoan.current_ssf_loans</option>
+                            <option value="ssf_unpaid">@GlobalLoan.unpaid_ssf_loans</option>
+                            <option value="ssf_doubtful">@GlobalLoan.doubtful_ssf_loans</option>
+                            <option value="ssf_irrecoverable">@GlobalLoan.irrecoverable_ssf_loans</option>
+                            <option value="ssf_portfolio">@GlobalLoan.complete_ssf_portfolio</option>
                         </select>
                     </div>
                 </div>
@@ -215,16 +215,16 @@
         <div id="DurationSection" class="card border-0 bg-light mb-3" style="display: none;">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-warning">
-                    <i class="mdi mdi-timer-sand me-1"></i>Loan Duration Analysis
+                    <i class="mdi mdi-timer-sand me-1"></i>@GlobalLoan.loan_duration_analysis
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Duration Category</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Duration_Category</label>
                         <select id="DurationType" class="form-select">
-                            <option value="">-- Select Duration --</option>
-                            <option value="longterm">Long Term Current Loans (Duration > 24 months)</option>
-                            <option value="mediumterm">Medium Term Current Loans (12 - 24 months)</option>
-                            <option value="shortterm">Short Term Current Loans (< 12 months)</option>
+                            <option value="">-- @GlobalShared.Select_Duration --</option>
+                            <option value="longterm">@GlobalLoan.long_term_current_loans_duration_24_months</option>
+                            <option value="mediumterm">@GlobalLoan.medium_term_current_loans_12_24_months</option>
+                            <option value="shortterm">@GlobalLoan.short_term_current_loans_12_months</option>
                         </select>
                     </div>
                 </div>
@@ -235,18 +235,18 @@
         <div id="PARSection" class="card border-0 bg-light mb-3" style="display: none;">
             <div class="card-body">
                 <h6 class="card-subtitle mb-3 text-danger">
-                    <i class="mdi mdi-alert-circle me-1"></i>PAR Loan Analysis
+                    <i class="mdi mdi-alert-circle me-1"></i>@GlobalLoan.par_loan_analysis
                 </h6>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">PAR Category</label>
+                        <label class="form-label fw-semibold">@GlobalLoan.par_category</label>
                         <select id="PARType" class="form-select">
-                            <option value="">-- Select PAR Category --</option>
-                            <option value="longterm_unpaid">Long Term Unpaid Loans (Delinquent 1-44 days)</option>
-                            <option value="doubtful_loans">Doubtful Loans (Delinquent 45-360+ days)</option>
-                            <option value="irrecoverable_loans">Irrecoverable Loans (Delinquent > 3 years, fully provisioned)</option>
-                            <option value="all_loans">All Loans (Without discrimination)</option>
-                            <option value="loans_granted_period">Loans Granted for a Specific Period</option>
+                            <option value="">-- @GlobalLoan.select_par_category --</option>
+                            <option value="longterm_unpaid">@GlobalLoan.long_term_unpaid_loans_delinquent_1_44_days</option>
+                            <option value="doubtful_loans">@GlobalLoan.doubtful_loans_delinquent_45_360_days</option>
+                            <option value="irrecoverable_loans">@GlobalLoan.irrecoverable_loans_delinquent_3years_fully_provisioned</option>
+                            <option value="all_loans">@GlobalLoan.all_loans_without_discrimination</option>
+                            <option value="loans_granted_period">@GlobalLoan.loans_granted_for_a_specific_period</option>
                         </select>
                     </div>
                 </div>
@@ -260,12 +260,12 @@
         <div class="row g-3 mt-3">
             <div class="col-md-6">
                 <button id="generateReportBtn" class="btn btn-primary w-100">
-                    <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalLoan.GenerateReport
+                    <i class="mdi mdi-file-chart-outline me-1"></i> @GlobalShared.Generate_Report
                 </button>
             </div>
             <div class="col-md-6">
                 <button id="resetReportBtn" class="btn btn-outline-secondary w-100">
-                    <i class="mdi mdi-refresh me-1"></i> @GlobalLoan.ResetFilters
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                 </button>
             </div>
         </div>
