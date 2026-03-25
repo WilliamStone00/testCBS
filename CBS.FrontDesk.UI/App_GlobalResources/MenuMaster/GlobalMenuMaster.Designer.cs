@@ -63,135 +63,99 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Action name.
         /// </summary>
-        internal static string ActionName {
+        internal static string action_name {
             get {
-                return ResourceManager.GetString("ActionName", resourceCulture);
+                return ResourceManager.GetString("action_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check to set in-visibile.
         /// </summary>
-        internal static string CheckToSetInVisibile {
+        internal static string check_to_set_in_visibile {
             get {
-                return ResourceManager.GetString("CheckToSetInVisibile", resourceCulture);
+                return ResourceManager.GetString("check_to_set_in_visibile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Controller.
         /// </summary>
-        internal static string Controller {
+        internal static string controller {
             get {
-                return ResourceManager.GetString("Controller", resourceCulture);
+                return ResourceManager.GetString("controller", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Controller name.
         /// </summary>
-        internal static string ControllerName {
+        internal static string controller_name {
             get {
-                return ResourceManager.GetString("ControllerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("controller_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Group name.
         /// </summary>
-        internal static string GroupName {
+        internal static string group_name {
             get {
-                return ResourceManager.GetString("GroupName", resourceCulture);
+                return ResourceManager.GetString("group_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Icon class.
         /// </summary>
-        internal static string IconClass {
+        internal static string icon_class {
             get {
-                return ResourceManager.GetString("IconClass", resourceCulture);
+                return ResourceManager.GetString("icon_class", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MENU MANAGEMENT.
         /// </summary>
-        internal static string MENUMANAGEMENT {
+        internal static string menu_management {
             get {
-                return ResourceManager.GetString("MENUMANAGEMENT", resourceCulture);
+                return ResourceManager.GetString("menu_management", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Menu order.
         /// </summary>
-        internal static string MenuOrder {
+        internal static string menu_order {
             get {
-                return ResourceManager.GetString("MenuOrder", resourceCulture);
+                return ResourceManager.GetString("menu_order", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Menu text.
         /// </summary>
-        internal static string MenuText {
+        internal static string menu_text {
             get {
-                return ResourceManager.GetString("MenuText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        internal static string None {
-            get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("menu_text", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select parent menu.
         /// </summary>
-        internal static string SelectParentMenu {
+        internal static string select_parent_menu {
             get {
-                return ResourceManager.GetString("SelectParentMenu", resourceCulture);
+                return ResourceManager.GetString("select_parent_menu", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Tooltips.
         /// </summary>
-        internal static string Tooltips {
+        internal static string tooltips {
             get {
-                return ResourceManager.GetString("Tooltips", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Visible.
-        /// </summary>
-        internal static string Visible {
-            get {
-                return ResourceManager.GetString("Visible", resourceCulture);
+                return ResourceManager.GetString("tooltips", resourceCulture);
             }
         }
     }

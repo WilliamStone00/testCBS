@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
+@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
 @{
     ViewBag.Title = "Manual Daily Collection";
 }
@@ -10,11 +10,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-bank-outline me-2"></i> Manual Daily Collection Management
+                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalManualDailyCollection.manual_daily_collection_management
                 </h1>
-                <p class="card-text text-muted mb-1">Manage and track daily cheque collections efficiently</p>
+                <p class="card-text text-muted mb-1">@GlobalManualDailyCollection.manage_and_track_daily_cheque_collections_efficiently</p>
                 <p class="card-text text-warning fw-semibold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i>Please ensure all uploaded files follow the required format and guidelines
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>@GlobalManualDailyCollection.please_ensure_all_uploaded_files_follow_the_required_format_and_guidelines
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,7 +26,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalManualDailyCollection.tips_for_using_filters_effectively</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -35,44 +35,44 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <strong>📂 Upload New File</strong>
-                    Use this option to upload a new cheque collection file in the required format.
-                    <em>Tip:</em> Ensure your file follows the prescribed template structure before uploading.
+                    <strong>📂 @GlobalShared.upload_new_file</strong>
+                    @GlobalManualDailyCollection.use_this_option_to_upload_a_new_cheque_collection_file_in_the_required_format.
+                    <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.ensure_your_file_follows_the_prescribed_template_structure_before_uploading.
                 </li>
                 <li class="list-group-item">
-                    <strong>📜 View All Files</strong>
-                    Access and review all previously uploaded cheque collection files.
-                    <em>Tip:</em> Use the date filters to narrow down your search for specific periods.
+                    <strong>📜 @GlobalShared.view_all_files</strong>
+                    @GlobalManualDailyCollection.access_and_review_all_previously_uploaded_cheque_collection_files.
+                    <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.use_the_date_filters_to_narrow_down_your_search_for_specific_periods.
                 </li>
                 <li class="list-group-item">
-                    <strong>🔎 File Details</strong>
-                    Click on any file to view its detailed contents and transaction records.
-                    <em>Tip:</em> You can verify individual cheque details from this view.
+                    <strong>🔎 @GlobalShared.File_Details</strong>
+                    @GlobalManualDailyCollection.click_on_any_file_to_view_its_detailed_contents_and_transaction_records.
+                <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.you_can_verify_individual_cheque_details_from_this_view.
                 </li>
                 <li class="list-group-item">
-                    <strong>📥 Download Template:</strong>
-                    Download the standardized Excel template for cheque collection uploads.
-                    <em>Tip:</em> Always use the latest template version to avoid formatting errors.
+                    <strong>📥 @GlobalShared.Download_Template:</strong>
+                    @GlobalManualDailyCollection.download_the_standardized_excel_template_for_cheque_collection_uploads.
+                    <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.always_use_the_latest_template_version_to_avoid_formatting_errors.
                 </li>
                 <li class="list-group-item">
-                    <strong>🗑️ Delete Invalid File:</strong>
-                    Remove files that were uploaded with errors or incorrect data.
-                    <em>Tip:</em> Review error messages before deleting to understand what went wrong.
+                    <strong>🗑️ @GlobalShared.delete_invalid_file:</strong>
+                    @GlobalManualDailyCollection.remove_files_that_were_uploaded_with_errors_or_incorrect_data.
+                    <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.review_error_messages_before_deleting_to_understand_what_went_wrong.
                 </li>
                 <li class="list-group-item">
-                    <strong>👤 User Roles & Permissions</strong>
-                    Different users have varying access levels for upload, view, and delete actions.
-                    <em>Tip:</em> Contact your administrator if you need additional permissions.
+                    <strong>👤 @GlobalManualDailyCollection.user_roles_permissions</strong>
+                    @GlobalManualDailyCollection.different_users_have_varying_access_levels_for_upload_view_and_delete_actions.
+                <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.contact_your_administrator_if_you_need_additional_permissions.
                 </li>
                 <li class="list-group-item">
-                    <strong>⏳ Processing Time</strong>
-                    File processing may take a few moments depending on file size and system load.
-                    <em>Tip:</em> Avoid uploading during peak hours for faster processing.
+                    <strong>⏳ @GlobalShared.processing_time</strong>
+                    @GlobalManualDailyCollection.file_processing_may_take_a_few_moments_depending_on_file_size_and_system_load.
+                    <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.avoid_uploading_during_peak_hours_for_faster_processing.
                 </li>
                 <li class="list-group-item">
-                    <strong>❓ Need Help?</strong>
-                    Look for the help icon (<i class="mdi mdi-help-circle-outline text-info"></i>) throughout the interface for context-specific guidance.
-                    <em>Tip:</em> Hover over icons to see tooltips with additional information.
+                    <strong>❓ @GlobalShared.need_help?</strong>
+                    @GlobalManualDailyCollection.look_for_the_help_icon (<i class="mdi mdi-help-circle-outline text-info"></i>) @GlobalManualDailyCollection.throughout_the_interface_for_contextspecific_guidance.
+                <em>@GlobalShared.Tip:</em> @GlobalManualDailyCollection.hover_over_icons_to_see_tooltips_with_additional_information.
                 </li>
             </ul>
         </div>
@@ -84,10 +84,10 @@
     <div class="card-body d-flex justify-content-end align-items-center">
         <!-- CORRECTED: The onclick functions now target 'mainWorkspace' -->
         <a type="button" onclick="LoadDataGen('ManualDailyCollection', 'myDataTable', '_FileList', 0, 'mainWorkspace', null, 'list')" class="btn btn-label-primary btn-sm me-2">
-            <i class="mdi mdi-view-list mdi-18px"></i> View All Files
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.view_all_files
         </a>
         <a type="button" onclick="AddORUpdateGen(null,'mainWorkspace','_UploadForm','new','ManualDailyCollection')" class="btn btn-label-secondary btn-sm">
-            <i class="mdi mdi-plus mdi-18px"></i> Upload File
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.upload_file
         </a>
     </div>
 </div>
@@ -191,7 +191,7 @@
     <div class="card-footer bg-light text-muted text-end">
         <small>
             <i class="mdi mdi-information-outline me-1 text-info"></i>
-            Please ensure Branch, Collector and Accounting Date are correctly set before uploading.
+            @GlobalManualDailyCollection.please_ensure_branch_collector_and_accounting_date_are_correctly_set_before_uploading.
         </small>
     </div>
 </div>
@@ -202,7 +202,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="mdi mdi-file-document-outline me-2"></i>
-                    File Upload Details
+                    @GlobalShared.file_upload_details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -210,16 +210,16 @@
             <div id="fileDetailsModalBody" class="modal-body">
                 <!-- loader placeholder -->
                 <div class="d-flex align-items-center py-5 justify-content-center text-muted">
-                    <div class="spinner-border me-2" role="status"></div> Loading…
+                    <div class="spinner-border me-2" role="status"></div> @GlobalShared.Loading…
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
                 <button type="button" class="btn btn-primary" onclick="printFileDetailsModal()">
-                    <i class="mdi mdi-printer"></i> Print
+                    <i class="mdi mdi-printer"></i> @GlobalShared.Print
                 </button>
             </div>
         </div>
@@ -231,16 +231,16 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="mdi mdi-database-import-outline me-2"></i> Extraction Result</h5>
+                <h5 class="modal-title"><i class="mdi mdi-database-import-outline me-2"></i> @GlobalShared.extraction_result</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="extractionModalBody" class="modal-body"><!-- injected after success/error --></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
                 <button type="button" class="btn btn-primary" onclick="printExtractionModal()">
-                    <i class="mdi mdi-printer"></i> Print
+                    <i class="mdi mdi-printer"></i>@GlobalShared.Print
                 </button>
             </div>
         </div>

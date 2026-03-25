@@ -1,9 +1,9 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 @using Resources
 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
 {
     {
-        ViewBag.Error = @GlobalManuallyJournalEntry.Journal_Entry_at_this_level_can_only _be_passed_from_branch_office_terminal;
+        ViewBag.Error = @GlobalManuallyJournalEntry.journal_entry_at_this_level_can_only_be_passed_from_branch_office_terminal;
     }
 
     @Html.Partial("_GeneralErrorDiv");
@@ -20,7 +20,7 @@ else
                     <div class="card-header">
 
                         <h5 class="card-title">
-                            @GlobalManuallyJournalEntry.ReferenceId: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })
+                            @GlobalShared.reference_id: @Html.TextBoxFor(m => m.EntryTempData.Reference, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.EntryTempData.Reference, "", new { @class = "text-danger" })
 
                         </h5>
@@ -32,9 +32,9 @@ else
 
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+ @GlobalManuallyJournalEntry.SelectAccount+"---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---"+ @GlobalShared.Select_account+"---", new { @class = "form-control select2", @search = "true" })
                                     @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
-                                    <label>@GlobalManuallyJournalEntry.AccountName</label>
+                                    <label>@GlobalShared.Account_Name</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -42,15 +42,15 @@ else
                                     @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control account_balance" })SelectBookingDirection
                                     @Html.HiddenFor(m => m.EntryTempData.AccountName, new { @class = "form-control account_name" })
                                     @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control account_number" })
-                                    <label>@GlobalManuallyJournalEntry.AccountBalance</label>
+                                    <label>@GlobalShared.Account_balance</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
 
-                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+ @GlobalManuallyJournalEntry.SelectBookingDirection + "---", new { @class = "form-control select2",@id= "EntryBookingDirection", @search = "true" })
+                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---"+ @GlobalManuallyJournalEntry.select_booking_direction + "---", new { @class = "form-control select2",@id= "EntryBookingDirection", @search = "true" })
                                     @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
-                                    <label>@GlobalManuallyJournalEntry.BookingDirection</label>
+                                    <label>@GlobalManuallyJournalEntry.booking_direction</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -58,14 +58,14 @@ else
                                     @Html.HiddenFor(m => m.EntryTempData.Description, new { @class = "form-control booking_direction" })
                                     @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
-                                    <label>@GlobalManuallyJournalEntry.Amount</label>
+                                    <label>@GlobalShared.Amount</label>
                                 </div>
                             </div>
 
                         </div>
                         <div class="mt-4">
                             <button type="button" onclick="collectEntryData()" class="btn btn-primary">
-                                @GlobalManuallyJournalEntry.AddEntry&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                @GlobalShared.add_entry&nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
                             </button>
                             <input type="hidden" name="Action" value="insert" id="Action" />
 

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
+@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
     @using Resources
 @{
     ViewBag.Title = "OPEN OF DAY P.T.";
@@ -9,14 +9,14 @@
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalOpenningOfDay.OpeningOfMainTill
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalOpenningOfDay.opening_of_main_till
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalOpenningOfDay.ManageTheOpeningProcessOfTheMainTillEfficiently.
+                    @GlobalOpenningOfDay.manage_the_opening_process_of_the_main_till_efficiently.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    @GlobalOpenningOfDay.PleaseNoteTheMainTillMustBeOpenedBeforeAnySubTillsCanBeOpened.
+                    @GlobalOpenningOfDay.please_note_the_main_till_must_be_opened_before_any_sub_tills_can_be_opened.
                 </p>
             </div>
         </div>
@@ -27,7 +27,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> @GlobalOpenningOfDay.HELP_TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.HELP_TIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -36,18 +36,18 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                @GlobalOpenningOfDay.TheMainTillServesAsTheMainControlTillForSubTillsFollowTheseTips:
+                @GlobalOpenningOfDay.the_main_till_serves_as_the_main_control_till_for_sub_tills_follow_these_tips:
             </p>
             <ul>            
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.EnsureAllDenominationsAreAccuratelyEntered.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.VerifyThatTotalsMatchTheExpectedAmountsForSubTillOperations.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalOpenningOfDay.IfThe <strong>@GlobalOpenningOfDay.OpenOfDayButtonIsGreyedOut</strong>, @GlobalOpenningOfDay.itIndicatesMismatchedValuesOrMissingInformation.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.TheMainTillDoesNotDirectlyInteract.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.ensure_all_denominations_are_accurately_entered.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.verify_that_totals_match_the_expected_amounts_for_sub_till_operations.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalOpenningOfDay.if_the <strong>@GlobalOpenningOfDay.open_of_day_button_is_greyed_out</strong>, @GlobalOpenningOfDay.it_indicates_mismatched_values_or_missing_information.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.the_main_till_does_not_directly_interact.</li>
             </ul>
-            <p class="text-muted">@GlobalOpenningOfDay.ForExample:</p>
+            <p class="text-muted">@GlobalOpenningOfDay.for_example:</p>
             <ul class="list-unstyled">
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.IfYouHave3NotesOfN10000Enter3.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.TheSystemWillAutomaticallyCalculateTheTotal.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.if_you_have3_notes_of_n10000_enter3.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.the_system_will_automatically_calculate_the_total.</li>
             </ul>
         </div>
     </div>
@@ -67,7 +67,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            @GlobalOpenningOfDay.PrimaryTillOpening
+                            @GlobalOpenningOfDay.primary_till_opening
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

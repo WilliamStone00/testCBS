@@ -117,109 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddNewTranslations" xml:space="preserve">
+  <data name="add_new_translations" xml:space="preserve">
     <value>Add new translations</value>
   </data>
-  <data name="AllEditableTranslationsWillAppearInTheGrid" xml:space="preserve">
+  <data name="all_editable_translations_will_appear_in_the_grid" xml:space="preserve">
     <value>All editable translations will appear in the grid. Ensure accuracy when updating tooltips and descriptions</value>
   </data>
-  <data name="ChangesTakeEffectImmediately" xml:space="preserve">
+  <data name="changes_take_effect_immediately" xml:space="preserve">
     <value>Changes take effect immediately</value>
   </data>
-  <data name="EDITMENUTRANSLATIONS" xml:space="preserve">
+  <data name="edit_menu_translations" xml:space="preserve">
     <value>EDIT MENU TRANSLATIONS</value>
   </data>
-  <data name="EditTranslations" xml:space="preserve">
+  <data name="edit_translations" xml:space="preserve">
     <value>Edit translations</value>
   </data>
-  <data name="EnsureAllTranslatedTextAccuratelyReflectsTheOriginalMeaning" xml:space="preserve">
+  <data name="ensure_all_translated_text_accurately_reflects_the_original_meaning" xml:space="preserve">
     <value>Ensure all translated text accurately reflects the original meaning</value>
   </data>
-  <data name="ExistingTranslations" xml:space="preserve">
+  <data name="existing_translations" xml:space="preserve">
     <value>Existing translations</value>
   </data>
-  <data name="ExistingTranslationsCanAlsoBeEditedFromTheGrid" xml:space="preserve">
+  <data name="existing_translations_can_also_be_edited_from_the_grid" xml:space="preserve">
     <value>Existing translations can also be edited from the grid</value>
   </data>
-  <data name="ExportOption" xml:space="preserve">
-    <value>Export option</value>
-  </data>
-  <data name="LanguageFilter" xml:space="preserve">
-    <value>Language filter</value>
-  </data>
-  <data name="LanguageSelection" xml:space="preserve">
+  <data name="language_selection" xml:space="preserve">
     <value>Language selection</value>
   </data>
-  <data name="LoadTranslations" xml:space="preserve">
+  <data name="load_translations" xml:space="preserve">
     <value>Load translations</value>
   </data>
-  <data name="MakeEditsWhereNecessaryThenClick" xml:space="preserve">
+  <data name="make_edits_where_necessary_then_click" xml:space="preserve">
     <value>Make edits where necessary, then click</value>
   </data>
-  <data name="Menu" xml:space="preserve">
-    <value>Menu</value>
-  </data>
-  <data name="MENU_TRANSLATION_OVERVIEW" xml:space="preserve">
+  <data name="menu_translation_overview" xml:space="preserve">
     <value>MENU TRANSLATION OVERVIEW</value>
   </data>
-  <data name="OnlyUntranslatedMenuItemsForThatLanguageWillBeShown" xml:space="preserve">
+  <data name="only_untranslated_menu_items_for_that_language_will_be_shown" xml:space="preserve">
     <value>Only untranslated menu items for that language will be shown</value>
   </data>
-  <data name="OriginalDescription" xml:space="preserve">
-    <value>Original description</value>
-  </data>
-  <data name="PartialUpdatesAllowed" xml:space="preserve">
+  <data name="partial_updates_allowed" xml:space="preserve">
     <value>Partial updates allowed</value>
   </data>
-  <data name="ReviewEachEntry" xml:space="preserve">
+  <data name="review_each_entry" xml:space="preserve">
     <value>Review each entry</value>
   </data>
-  <data name="SavedTranslationsUpdateTheMenuSystemInRealTime" xml:space="preserve">
+  <data name="saved_translations_update_the_menu_system_in_real_time" xml:space="preserve">
     <value>Saved translations update the menu system in real-time</value>
   </data>
-  <data name="SelectALanguage" xml:space="preserve">
+  <data name="select_alanguage" xml:space="preserve">
     <value>Select a language</value>
   </data>
-  <data name="SelectLanguage" xml:space="preserve">
-    <value>Select language</value>
-  </data>
-  <data name="StartBySelectingTheLanguageYouWantToTranslateInto" xml:space="preserve">
+  <data name="start_by_selecting_the_language_you_want_to_translate_into" xml:space="preserve">
     <value>Start by selecting the language you want to translate into</value>
   </data>
-  <data name="SubmitTranslations" xml:space="preserve">
+  <data name="submit_translations" xml:space="preserve">
     <value>Submit translations</value>
   </data>
-  <data name="TIPS_FOR_USING_MENU_TRANSLATIONS" xml:space="preserve">
+  <data name="tips_for_using_menu_translations" xml:space="preserve">
     <value>TIPS FOR USING MENU TRANSLATIONS</value>
   </data>
-  <data name="TranslatedDescription" xml:space="preserve">
+  <data name="translated_description" xml:space="preserve">
     <value>Translated description</value>
   </data>
-  <data name="TranslatedText" xml:space="preserve">
+  <data name="translated_text" xml:space="preserve">
     <value>Translated text</value>
   </data>
-  <data name="TranslateMissingMenus" xml:space="preserve">
+  <data name="translate_missing_menus" xml:space="preserve">
     <value>Translate missing menus</value>
   </data>
-  <data name="UpdateCarefully" xml:space="preserve">
+  <data name="update_carefully" xml:space="preserve">
     <value>Update carefully</value>
   </data>
-  <data name="UpdateTranslations" xml:space="preserve">
+  <data name="update_translations" xml:space="preserve">
     <value>Update translations</value>
   </data>
-  <data name="UseTheLanguageSelectorBelowToView" xml:space="preserve">
+  <data name="use_the_language_selector_below_to_view" xml:space="preserve">
     <value>Use the language selector below to view untranslated menu items and existing translations for the selected language</value>
   </data>
-  <data name="ViewAndManageTranslationRecordsForSystemMenus" xml:space="preserve">
+  <data name="view_and_manage_translation_records_for_system_menus" xml:space="preserve">
     <value>View and manage translation records for system menus. Select a language to identify untranslated menus and initiate translation updates</value>
   </data>
-  <data name="ViewAndUpdateExistingMenuTranslations" xml:space="preserve">
+  <data name="view_and_update_existing_menu_translations" xml:space="preserve">
     <value>View and update existing menu translations. Use the language selector to load translated menus for the selected language</value>
   </data>
-  <data name="YouCanExportTranslationData" xml:space="preserve">
+  <data name="you_can_export_translation_data" xml:space="preserve">
     <value>You can export translation data if needed for audit or batch work</value>
   </data>
-  <data name="YouDontNeedToEditAllRowsAtOnce" xml:space="preserve">
+  <data name="you_dont_need_to_edit_all_rows_at_once" xml:space="preserve">
     <value>You don't need to edit all rows at once</value>
   </data>
 </root>

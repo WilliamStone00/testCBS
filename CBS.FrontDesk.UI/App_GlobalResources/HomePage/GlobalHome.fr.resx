@@ -117,34 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="about" xml:space="preserve">
     <value>À propos</value>
   </data>
-  <data name="Use_this_area_to_provide_additional_information" xml:space="preserve">
+  <data name="use_this_area_to_provide_additional_information" xml:space="preserve">
     <value>Utilisez cette zone pour fournir des informations supplémentaires.</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
+  <data name="contact_us" xml:space="preserve">
     <value>Contactez Nous</value>
   </data>
-  <data name="Home" xml:space="preserve">
+  <data name="home" xml:space="preserve">
     <value>Accueil</value>
   </data>
-  <data name="NoInternetConnection" xml:space="preserve">
+  <data name="no_internet_connection" xml:space="preserve">
     <value>Pas de connexion Internet</value>
   </data>
-  <data name="Your_Secure_Reliable_Partner_FLUX" xml:space="preserve">
+  <data name="your_secure_reliable_partner_flux" xml:space="preserve">
     <value>Votre partenaire sécurisé et fiable. FLUX !</value>
   </data>
-  <data name="RETRY" xml:space="preserve">
+  <data name="retry" xml:space="preserve">
     <value>RÉESSAYER</value>
   </data>
-  <data name="Flux_SARL_Empowering_businesses_Enhancing_lives" xml:space="preserve">
+  <data name="empowering_businesses_enhancing_lives" xml:space="preserve">
     <value>Flux SARL ! : Autonomiser les entreprises. Améliorer les vies.</value>
   </data>
-  <data name="WelcomeTitle" xml:space="preserve">
+  <data name="welcome_to" xml:space="preserve">
     <value>BIENVENUE À</value>
   </data>
-  <data name="You_are_currently_offline_Please_check_your_internet_connection_and_try_again" xml:space="preserve">
+  <data name="you_are_currently_offline_please_check_your_internet_connection_and_try_again" xml:space="preserve">
     <value>Vous êtes actuellement hors ligne. Veuillez vérifier votre connexion Internet et réessayer</value>
   </data>
 </root>

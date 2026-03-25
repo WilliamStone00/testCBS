@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
     @using Resources
 @{
     ViewBag.Title = "Salary Summary";
@@ -10,10 +10,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryExecution.SALARY_SUMMARY
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryExecution.salary_summary
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalSalaryExecution.ViewAnalyzeAndManageEmployeeSalary.
+                    @GlobalSalaryExecution.view_analyze_and_manage_employee_salary.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -21,7 +21,7 @@
             <!-- Tips Section -->
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalSalaryExecution.TIPS</span>
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -29,14 +29,14 @@
                 <div id="collapseSalarySummaryTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalSalaryExecution.UseThe <strong>"RunSalaryAnalysis"</strong> @GlobalSalaryExecution.buttonToAnalyzeUploadedSalaryData.</li>
-                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalSalaryExecution.ClickThe <strong>"@GlobalSalaryExecution.ViewResultOfAnalyzedSalary"</strong> @GlobalSalaryExecution.buttonToCheckPreviouslyAnalyzedResults.</li>
-                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryExecution.EnsureAllUploadedSalaryFilesAreAccurate (e.g., Excel, CSV).</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryExecution.RegularlyVerifyAnalyzedResults.</li>
-                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryExecution.UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords.</li>
-                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryExecution.AddressAnomaliesLikeOverpayments.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryExecution.EditAnalyzedSalaryRecordsForCorrections.</li>
-                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryExecution.DeleteInvalidUploadsToMaintainClean.</li>
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalShared.use_the <strong>"RunSalaryAnalysis"</strong> @GlobalSalaryExecution.button_to_analyze_uploaded_salary_data.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalShared.click_the <strong>"@GlobalSalaryExecution.view_result_of_analyzed_salary"</strong> @GlobalSalaryExecution.button_to_check_previously_analyzed_results.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryExecution.ensure_all_uploaded_salary_files_are_accurate (e.g., Excel, CSV).</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryExecution.regularly_verify_analyzed_results.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryExecution.use_search_filters_to_quickly_locate_specific_employee_salary_records.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryExecution.address_anomalies_like_overpayments.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryExecution.edit_analyzed_salary_records_for_corrections.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryExecution.delete_invalid_uploads_to_maintain_clean.</li>
                         </ul>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryExecution.SalaryAnalysis
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalShared.salary_analysis
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -70,8 +70,8 @@
                                             </a>
 
                                             <!-- Execute Salary Button -->
-                                            <button type="button" class="btn btn-label-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#executeSalaryModal" title="@GlobalSalaryExecution.ExecuteSalary">
-                                                <i class="mdi mdi-check-circle mdi-18px"></i> @GlobalSalaryExecution.ExecuteSalary
+                                            <button type="button" class="btn btn-label-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#executeSalaryModal" title="@GlobalShared.execute_salary">
+                                                <i class="mdi mdi-check-circle mdi-18px"></i> @GlobalShared.execute_salary
                                             </button>
 
                                             <!-- Download Salary Details Button -->
@@ -111,10 +111,10 @@
                         <div class="card bg-light mb-2">
                             <div class="card-body text-center">
                                 <h1 class="card-title text-primary">
-                                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalSalaryExecution.SALARY_EXECUTION [@Session["BranchName"].ToString()]
+                                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalSalaryExecution.salary_execution [@Session["BranchName"].ToString()]
                                 </h1>
                                 <p class="card-text">
-                                    @GlobalSalaryExecution.YouAreAboutToExecuteSalaryPayments.
+                                    @GlobalSalaryExecution.you_are_about_to_execute_salary_payments.
                                 </p>
                                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                             </div>
@@ -128,7 +128,7 @@
                 <!-- Tips Section -->
                 <div class="card mb-2">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryExecution.IMPORTANT_TIPS</span>
+                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.important_tips</span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
@@ -136,10 +136,10 @@
                     <div id="collapseTips" class="collapse">
                         <div class="card-body">
                             <ul class="mb-0">
-                                <li><i class="mdi mdi-account-cash text-primary me-2"></i><strong>@GlobalSalaryExecution.SalaryProcessing:</strong> @GlobalSalaryExecution.DebitsTheTotalSalaryAmountFromTheSelectedSourceAccount.</li>
-                                <li><i class="mdi mdi-account-multiple text-primary me-2"></i><strong>@GlobalSalaryExecution.StandingOrders:</strong> @GlobalSalaryExecution.ProcessesAutomaticTransfersForMembersWithLinkedStandingOrders.</li>
-                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalSalaryExecution.Warning:</strong> @GlobalSalaryExecution.ThisActionCannotBeUndone.</li>
-                                <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i><strong>@GlobalSalaryExecution.Risks:</strong> @GlobalSalaryExecution.EnsureSufficientFundsAreAvailable.</li>
+                                <li><i class="mdi mdi-account-cash text-primary me-2"></i><strong>@GlobalSalaryExecution.salary_processing:</strong> @GlobalSalaryExecution.debits_the_total_salary_amount_from_the_selected_source_account.</li>
+                                <li><i class="mdi mdi-account-multiple text-primary me-2"></i><strong>@GlobalSalaryExecution.standing_orders:</strong> @GlobalSalaryExecution.processes_automatic_transfers_for_members_with_linked_standing_orders.</li>
+                                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i><strong>@GlobalShared.Warning:</strong> @GlobalShared.This_action_cannot_be_undone.</li>
+                                <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i><strong>@GlobalShared.risks:</strong> @GlobalSalaryExecution.ensure_sufficient_funds_are_available.</li>
                             </ul>
                         </div>
                     </div>
@@ -149,23 +149,23 @@
                 <form id="executeSalaryForm">
                     <!-- File Upload Details -->
                     <div class="mb-3">
-                        <label for="fileUploadId" class="form-label">@GlobalSalaryExecution.FileUploadReference</label>
+                        <label for="fileUploadId" class="form-label">@GlobalSalaryExecution.file_upload_reference</label>
                         <input type="text" id="fileUploadId" class="form-control" value="@Model.FileUpload.Id" readonly />
                     </div>
 
                     <div class="mb-3">
-                        <label for="fileUploadFileName" class="form-label">@GlobalSalaryExecution.FileName</label>
+                        <label for="fileUploadFileName" class="form-label">@GlobalShared.File_Name</label>
                         <input type="text" id="fileUploadFileName" class="form-control" value="@Model.FileUpload.FileName" readonly />
                     </div>
 
                     <div class="mb-3">
-                        <label for="fileUploadCategory" class="form-label">@GlobalSalaryExecution.FileCategory</label>
+                        <label for="fileUploadCategory" class="form-label">@GlobalShared.file_category</label>
                         <input type="text" id="fileUploadCategory" class="form-control" value="@Model.FileUpload.FileCategory" readonly />
                     </div>
 
                     <!-- Execution Reason -->
                     @*<div class="mb-3">
-                        <label for="executeReason" class="form-label">@GlobalSalaryExecution.ExecutionReason</label>
+                        <label for="executeReason" class="form-label">@GlobalShared.execution_reason</label>
                         <textarea class="form-control" id="executeReason" rows="3" required></textarea>
                     </div>*@
                     <textarea id="executeReason" class="form-control" rows="3" required minlength="10"

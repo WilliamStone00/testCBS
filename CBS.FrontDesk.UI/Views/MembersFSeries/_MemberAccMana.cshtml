@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
 @using Resources
 
 <div class="card shadow-lg border-0">
@@ -17,18 +17,18 @@
                 <div class="card bg-light mb-2 shadow-sm">
                     <div class="card-body text-center">
                         <h1 class="card-title text-primary fw-bold">
-                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> Account Management Request
+                            <i class="mdi mdi-format-list-bulleted-type me-2"></i> @GlobalMembersFSeries.account_management_request
                         </h1>
                         <p class="card-text">
-                            Memeber account management request form
+                            @GlobalMembersFSeries.memeber_account_management_request_form
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
-                    </div>
+</div>
                 </div>
             </div>
 
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-account-cog me-2"></i> Tips</span>
+                    <span><i class="mdi mdi-account-cog me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button"
                             data-bs-toggle="collapse" data-bs-target="#collapseAccountActions"
                             aria-expanded="false" aria-controls="collapseAccountActions">
@@ -38,15 +38,15 @@
                 <div id="collapseAccountActions" class="collapse">
                     <div class="card-body">
                         <p class="mb-3">
-                            The Account Management Actions provide <strong>granular control</strong> over account status and operations.
-                            These actions help maintain security, ensure compliance, and manage customer accounts effectively.
+                            @Html.Raw(@GlobalMembersFSeries.the_account_management_actions_provide_granular_control_over_account_status_and_operations).
+                            @GlobalMembersFSeries.these_actions_help_maintain_security_ensure_compliance_and_manage_customer_accounts_effectively.
                         </p>
 
                         <!-- Account Status Management -->
                         <div class="row">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-account-switch me-1"></i> Account Status Controls
+                                    <i class="mdi mdi-account-switch me-1"></i> @GlobalMembersFSeries.account_status_controls
                                 </h6>
                             </div>
                         </div>
@@ -55,14 +55,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card bg-light border-0">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-2"><span class="badge bg-success me-2">Activate</span> Initial Setup</h6>
-                                        <p class="small mb-2">Enable a newly created account for normal operations. All operations become available to the customer.</p>
+                                        <h6 class="mb-2">@Html.Raw(@GlobalMembersFSeries.activate_initial_setup)</h6>
+                                        <p class="small mb-2">@GlobalMembersFSeries.enable_a_newly_created_account_for_normal_operations_all_operations_become_available_to_the_customer.</p>
 
-                                        <h6 class="mb-2 mt-3"><span class="badge bg-warning me-2">Freeze</span> Temporary Hold</h6>
-                                        <p class="small mb-2">Temporarily restrict all operations. Used for suspicious activity or customer requests. <span class="badge bg-info">Use Unfreeze to restore</span></p>
+                                        <h6 class="mb-2 mt-3">@Html.Raw(@GlobalMembersFSeries.freeze_temporary_hold)</h6>
+                                        <p class="small mb-2">@GlobalMembersFSeries.temporarily_restrict_all_operations_used_for_suspicious_activity_or_customer_requests. <span class="badge bg-info">@GlobalMembersFSeries.use_unfreeze_to_restore</span></p>
 
-                                        <h6 class="mb-2 mt-3"><span class="badge bg-secondary me-2">Unfreeze</span> Restore Access</h6>
-                                        <p class="small mb-0">Remove temporary hold and return account to normal operating status.</p>
+                                        <h6 class="mb-2 mt-3">@Html.Raw(@GlobalMembersFSeries.unfreeze_restore_access)</h6>
+                                        <p class="small mb-0">@GlobalMembersFSeries.remove_temporary_hold_and_return_account_to_normal_operating_status.</p>
                                     </div>
                                 </div>
                             </div>
@@ -70,14 +70,14 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card bg-light border-0">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-2"><span class="badge bg-danger me-2">Close</span> Account Termination</h6>
-                                        <p class="small mb-2">Permanently close an account. No further operations allowed. Requires zero balance and no pending transactions.</p>
+                                        <h6 class="mb-2"><span class="badge bg-danger me-2">@GlobalShared.Close</span> @GlobalMembersFSeries.account_termination</h6>
+                                        <p class="small mb-2">@GlobalMembersFSeries.permanently_close_an_account_no_further_operations_allowed_requires_zero_balance_and_no_pending_transactions.</p>
 
-                                        <h6 class="mb-2 mt-3"><span class="badge bg-success me-2">Reopen</span> Reactivate Closed</h6>
-                                        <p class="small mb-2">Reopen a previously closed account. All account data and history preserved.</p>
+                                        <h6 class="mb-2 mt-3"><span class="badge bg-success me-2">@GlobalShared.Reopen</span> @GlobalShared.reactivate_closed</h6>
+                                        <p class="small mb-2">@GlobalMembersFSeries.reopen_a_previously_closed_account_all_account_data_and_history_preserved.</p>
 
-                                        <h6 class="mb-2 mt-3"><span class="badge bg-warning me-2">Mark Dormant</span> Inactivity Status</h6>
-                                        <p class="small mb-0">Flag accounts with prolonged inactivity. <span class="badge bg-info">Reactivate Dormant</span> to restore normal status.</p>
+                                        <h6 class="mb-2 mt-3">@Html.Raw(@GlobalMembersFSeries.mark_dormant_inactivity_status)</h6>
+                                        <p class="small mb-0">@Html.Raw(@GlobalMembersFSeries.flag_accounts_with_prolonged_inactivity_reactivate_dormant_to_restore_normal_status).</p>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                         <div class="row mt-2">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-shield-lock me-1"></i> Account Blocking Controls
+                                    <i class="mdi mdi-shield-lock me-1"></i> @GlobalMembersFSeries.account_blocking_controls
                                 </h6>
                             </div>
                         </div>
@@ -96,19 +96,19 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-3 text-danger"><i class="mdi mdi-cancel me-1"></i> Full Account Access</h6>
+                                        <h6 class="mb-3 text-danger"><i class="mdi mdi-cancel me-1"></i> @GlobalShared.full_account_access</h6>
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div>
-                                                <span class="badge bg-danger me-2">Block Full</span>
-                                                <strong>Complete Restriction</strong>
+                                                <span class="badge bg-danger me-2">@GlobalShared.block_full</span>
+                                                <strong>@GlobalShared.complete_restriction</strong>
                                             </div>
-                                            <span class="badge bg-success">Unblock Full</span>
+                                            <span class="badge bg-success">@GlobalShared.unblock_full</span>
                                         </div>
                                         <p class="small mb-0">
                                             <i class="mdi mdi-alert-circle text-danger me-1"></i>
-                                            <strong>Block Full:</strong> Immediately suspend ALL account operations. Used for fraud, legal holds, or security breaches.<br>
+                                            <strong>@GlobalShared.block_full:</strong> @GlobalMembersFSeries.immediately_suspend_all_account_operations_used_for_fraud_legal_holds_or_security_breaches.<br>
                                             <i class="mdi mdi-check-circle text-success me-1 mt-2"></i>
-                                            <strong>Unblock Full:</strong> Remove all restrictions and restore full account access.
+                                            <strong>@GlobalShared.unblock_full:</strong> @GlobalMembersFSeries.remove_all_restrictions_and_restore_full_account_access.
                                         </p>
                                     </div>
                                 </div>
@@ -117,19 +117,19 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-3 text-warning"><i class="mdi mdi-lock-clock me-1"></i> Partial Account Access</h6>
+                                        <h6 class="mb-3 text-warning"><i class="mdi mdi-lock-clock me-1"></i> @GlobalMembersFSeries.partial_account_access</h6>
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div>
-                                                <span class="badge bg-warning me-2">Block Partial</span>
-                                                <strong>Limited Restriction</strong>
+                                                <span class="badge bg-warning me-2">@GlobalShared.block_partial</span>
+                                                <strong>@GlobalMembersFSeries.limited_restriction</strong>
                                             </div>
-                                            <span class="badge bg-success">Unblock Partial</span>
+                                            <span class="badge bg-success">@GlobalShared.unblock_partial</span>
                                         </div>
                                         <p class="small mb-0">
                                             <i class="mdi mdi-alert-circle text-warning me-1"></i>
-                                            <strong>Block Partial:</strong> Restrict the withdrawal of a specific amount ofmoney in that account while allowing the rest .<br>
+                                            <strong>@GlobalShared.block_partial:</strong> @GlobalMembersFSeries.restrict_the_withdrawal_of_a_specific_amount_ofmoney_in_that_account_while_allowing_the_rest .<br>
                                             <i class="mdi mdi-check-circle text-success me-1 mt-2"></i>
-                                            <strong>Unblock Partial:</strong> Remove  restrictions on that money who was blocked.
+                                            <strong>@GlobalShared.unblock_partial:</strong> @GlobalMembersFSeries.remove_restrictions_on_that_money_who_was_blocked.
                                         </p>
                                     </div>
                                 </div>
@@ -140,9 +140,9 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-cash-multiple me-1"></i> Transaction Operation Controls
+                                    <i class="mdi mdi-cash-multiple me-1"></i> @GlobalMembersFSeries.transaction_operation_controls
                                 </h6>
-                                <p class="small text-muted mb-3">Fine-grained control over specific transaction types without affecting overall account status</p>
+                                <p class="small text-muted mb-3">@GlobalMembersFSeries.finegrained_control_over_specific_transaction_types_without_affecting_overall_account_status</p>
                             </div>
                         </div>
 
@@ -151,26 +151,26 @@
                             <div class="col-md-4 mb-3">
                                 <div class="card h-100 border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-3"><i class="mdi mdi-cash text-success me-1"></i> Cash Operations</h6>
+                                        <h6 class="mb-3"><i class="mdi mdi-cash text-success me-1"></i> @GlobalShared.cash_operations</h6>
 
                                         <div class="mb-2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <span class="badge bg-danger me-1">Block Cash In</span>
+                                                    <span class="badge bg-danger me-1">@GlobalMembersFSeries.block_cash_in</span>
                                                 </div>
-                                                <span class="badge bg-success">Open Cash In</span>
+                                                <span class="badge bg-success">@GlobalShared.open_cash_in</span>
                                             </div>
-                                            <p class="small mt-1 mb-0">Control deposit capabilities. Block prevents incoming cash, Open allows deposits.</p>
+                                            <p class="small mt-1 mb-0">@GlobalMembersFSeries.control_deposit_capabilities_block_prevents_incoming_cash_open_allows_deposits.</p>
                                         </div>
 
                                         <div class="mb-0 mt-3">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <span class="badge bg-danger me-1">Block Withdrawal</span>
+                                                    <span class="badge bg-danger me-1">@GlobalMembersFSeries.block_withdrawal</span>
                                                 </div>
-                                                <span class="badge bg-success">Open Withdrawal</span>
+                                                <span class="badge bg-success">@GlobalMembersFSeries.open_withdrawal</span>
                                             </div>
-                                            <p class="small mt-1 mb-0">Control withdrawal capabilities. Block prevents outgoing cash, Open allows withdrawals.</p>
+                                            <p class="small mt-1 mb-0">@GlobalMembersFSeries.control_withdrawal_capabilities_block_prevents_outgoing_cash_open_allows_withdrawals.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -180,21 +180,21 @@
                             <div class="col-md-4 mb-3">
                                 <div class="card h-100 border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-3"><i class="mdi mdi-swap-horizontal text-info me-1"></i> Transfer Operations</h6>
+                                        <h6 class="mb-3"><i class="mdi mdi-swap-horizontal text-info me-1"></i> @GlobalShared.transfer_operations</h6>
 
                                         <div class="mb-2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <span class="badge bg-danger me-1">Block Transfer</span>
+                                                    <span class="badge bg-danger me-1">@GlobalMembersFSeries.block_transfer</span>
                                                 </div>
-                                                <span class="badge bg-success">Open Transfer</span>
+                                                <span class="badge bg-success">@GlobalShared.open_transfer</span>
                                             </div>
-                                            <p class="small mt-1 mb-0">Master control for all transfers. Block prevents ALL transfer types, Open allows transfers.</p>
+                                            <p class="small mt-1 mb-0">@GlobalMembersFSeries.master_control_for_all_transfers_block_prevents_all_transfer_types_open_allows_transfers.</p>
                                         </div>
 
                                         <p class="small text-warning mt-2 mb-0">
                                             <i class="mdi mdi-information-outline me-1"></i>
-                                            Note: Individual transfer types (internal, external, etc.) inherit from this master control
+                                            @GlobalShared.Note: @GlobalMembersFSeries.individual_transfer_types_internal_external_etc_inherit_from_this_master_control
                                         </p>
                                     </div>
                                 </div>
@@ -204,26 +204,26 @@
                             <div class="col-md-4 mb-3">
                                 <div class="card h-100 border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <h6 class="mb-3"><i class="mdi mdi-lightning-bolt text-primary me-1"></i> Quick Reference</h6>
+                                        <h6 class="mb-3"><i class="mdi mdi-lightning-bolt text-primary me-1"></i> @GlobalShared.quick_reference</h6>
                                         <table class="table table-sm small mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Action Pair</th>
-                                                    <th>Use Case</th>
+                                                    <th>@GlobalMembersFSeries.action_pair</th>
+                                                    <th>@GlobalShared.use_case</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><span class="badge bg-danger">Block</span> / <span class="badge bg-success">Open</span></td>
-                                                    <td>Toggle specific operations</td>
+                                                    <td><span class="badge bg-danger">@GlobalShared.block</span> / <span class="badge bg-success">@GlobalShared.Open</span></td>
+                                                    <td>@GlobalMembersFSeries.toggle_specific_operations</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span class="badge bg-danger">Block Full</span> / <span class="badge bg-success">Unblock Full</span></td>
-                                                    <td>Complete account lockdown</td>
+                                                    <td><span class="badge bg-danger">@GlobalShared.block_full</span> / <span class="badge bg-success">@GlobalShared.unblock_full</span></td>
+                                                    <td>@GlobalMembersFSeries.complete_account_lockdown</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span class="badge bg-warning">Freeze</span> / <span class="bg-info badge">Unfreeze</span></td>
-                                                    <td>Temporary investigation holds</td>
+                                                    <td><span class="badge bg-warning">@GlobalShared.freeze</span> / <span class="bg-info badge">@GlobalShared.unfreeze</span></td>
+                                                    <td>@GlobalMembersFSeries.temporary_investigation_holds</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -238,24 +238,24 @@
                                 <div class="card border-0 bg-light">
                                     <div class="card-body p-3">
                                         <h6 class="text-primary mb-2">
-                                            <i class="mdi mdi-check-circle me-1"></i> Best Practices
+                                            <i class="mdi mdi-check-circle me-1"></i> @GlobalShared.Best_Practices
                                         </h6>
                                         <ul class="small mb-0">
                                             <li class="mb-2">
                                                 <i class="mdi mdi-file-document text-success me-1"></i>
-                                                <strong>Document reasons:</strong> Always note why an action was taken
+                                                <strong>@GlobalShared.document_reasons:</strong> @GlobalMembersFSeries.always_note_why_an_action_was_taken
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-timer text-success me-1"></i>
-                                                <strong>Review frozen accounts:</strong> Regularly check and resolve frozen status
+                                                <strong>@GlobalMembersFSeries.review_frozen_accounts:</strong> @GlobalMembersFSeries.regularly_check_and_resolve_frozen_status
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-layers text-success me-1"></i>
-                                                <strong>Check hierarchy:</strong> Full blocks override partial blocks
+                                                <strong>@GlobalMembersFSeries.check_hierarchy:</strong> @GlobalMembersFSeries.full_blocks_override_partial_blocks
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-bell text-success me-1"></i>
-                                                <strong>Notify customers:</strong> Inform customers when their account status changes
+                                                <strong>@GlobalShared.notify_customers:</strong> @GlobalMembersFSeries.inform_customers_when_their_account_status_changes
                                             </li>
                                         </ul>
                                     </div>
@@ -266,24 +266,24 @@
                                 <div class="card border-0 bg-light">
                                     <div class="card-body p-3">
                                         <h6 class="text-primary mb-2">
-                                            <i class="mdi mdi-alert-circle me-1"></i> Important Notes
+                                            <i class="mdi mdi-alert-circle me-1"></i> @GlobalShared.important_notes
                                         </h6>
                                         <ul class="small mb-0">
                                             <li class="mb-2">
                                                 <i class="mdi mdi-lock text-warning me-1"></i>
-                                                <strong>Block hierarchy:</strong> Full Block > Partial Block > Operation Block
+                                                <strong>@GlobalMembersFSeries.block_hierarchy:</strong> @GlobalMembersFSeries.full_block_partial_block_operation_block
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-history text-warning me-1"></i>
-                                                <strong>Audit trail:</strong> All actions are logged for compliance
+                                                <strong>@GlobalShared.Audit_Trail:</strong> @GlobalMembersFSeries.all_actions_are_logged_for_compliance
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-scale-balance text-warning me-1"></i>
-                                                <strong>Regulatory holds:</strong> Some blocks may be legally required
+                                                <strong>@GlobalShared.regulatory_holds:</strong> @GlobalMembersFSeries.some_blocks_may_be_legally_required
                                             </li>
                                             <li class="mb-2">
                                                 <i class="mdi mdi-cash-100 text-warning me-1"></i>
-                                                <strong>Balance requirements:</strong> Closed accounts must have zero balance
+                                                <strong>@GlobalMembersFSeries.balance_requirements:</strong> @GlobalMembersFSeries.closed_accounts_must_have_zero_balance
                                             </li>
                                         </ul>
                                     </div>
@@ -295,68 +295,68 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-matrix me-1"></i> Action Impact Matrix
+                                    <i class="mdi mdi-matrix me-1"></i> @GlobalMembersFSeries.action_impact_matrix
                                 </h6>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered small">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Action</th>
-                                                <th>Deposits</th>
-                                                <th>Withdrawals</th>
-                                                <th>Transfers</th>
-                                                <th>View Balance</th>
-                                                <th>Account Details</th>
+                                                <th>@GlobalShared.Action</th>
+                                                <th>@GlobalShared.Deposits</th>
+                                                <th>@GlobalShared.Withdrawals</th>
+                                                <th>@GlobalShared.transfers</th>
+                                                <th>@GlobalShared.view_balance</th>
+                                                <th>@GlobalShared.Account_details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><strong>Active/Normal</strong></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Visible</span></td>
+                                                <td><strong>@GlobalShared.Active/@GlobalShared.Normal</strong></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.visible</span></td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Frozen</strong></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Visible</span></td>
+                                                <td><strong>@GlobalShared.frozen</strong></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.visible</span></td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Block Full</strong></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-warning">⚠ Limited</span></td>
+                                                <td><strong>@GlobalShared.block_full</strong></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.limited</span></td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Block Partial</strong></td>
-                                                <td><span class="text-warning">↺ Varies</span></td>
-                                                <td><span class="text-warning">↺ Varies</span></td>
-                                                <td><span class="text-warning">↺ Varies</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Visible</span></td>
+                                                <td><strong>@GlobalShared.block_partial</strong></td>
+                                                <td><span class="text-warning">↺ @GlobalShared.varies</span></td>
+                                                <td><span class="text-warning">↺ @GlobalShared.varies</span></td>
+                                                <td><span class="text-warning">↺ @GlobalShared.varies</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.visible</span></td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Closed</strong></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-danger">✗ Blocked</span></td>
-                                                <td><span class="text-warning">⚠ Archive</span></td>
-                                                <td><span class="text-warning">⚠ Archive</span></td>
+                                                <td><strong>@GlobalShared.Closed</strong></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-danger">✗ @GlobalShared.Blocked</span></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.archive</span></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.archive</span></td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Dormant</strong></td>
-                                                <td><span class="text-warning">⚠ Restricted</span></td>
-                                                <td><span class="text-warning">⚠ Restricted</span></td>
-                                                <td><span class="text-warning">⚠ Restricted</span></td>
-                                                <td><span class="text-success">✓ Allowed</span></td>
-                                                <td><span class="text-success">✓ Visible</span></td>
+                                                <td><strong>@GlobalShared.dormant</strong></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.restricted</span></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.restricted</span></td>
+                                                <td><span class="text-warning">⚠ @GlobalShared.restricted</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.allowed</span></td>
+                                                <td><span class="text-success">✓ @GlobalShared.visible</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -368,25 +368,25 @@
                         <div class="row mt-4">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-chart-line me-1"></i> Common Scenarios
+                                    <i class="mdi mdi-chart-line me-1"></i> @GlobalShared.common_scenarios
                                 </h6>
                                 <div class="row">
                                     <div class="col-md-4 mb-2">
                                         <div class="border-start border-4 border-danger ps-3">
-                                            <strong class="text-danger">Fraud Investigation</strong>
-                                            <p class="small mb-0">Use <span class="badge bg-danger">Block Full</span> immediately, then investigate. <span class="badge bg-success">Unblock Full</span> if cleared.</p>
+                                            <strong class="text-danger">@GlobalMembersFSeries.fraud_investigation</strong>
+                                            <p class="small mb-0">@Html.Raw(@GlobalMembersFSeries.use_block_full_immediately_then_investigate_unblock_full_if_cleared).</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-2">
                                         <div class="border-start border-4 border-warning ps-3">
-                                            <strong class="text-warning">Customer Request</strong>
-                                            <p class="small mb-0"><span class="badge bg-warning">Freeze</span> account while customer resolves issues. <span class="badge bg-info">Unfreeze</span> when resolved.</p>
+                                            <strong class="text-warning">@GlobalMembersFSeries.customer_request</strong>
+                                            <p class="small mb-0">@Html.Raw(@GlobalMembersFSeries.freeze_account_while_customer_resolves_issues_unfreeze_when_resolved).</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-2">
                                         <div class="border-start border-4 border-info ps-3">
-                                            <strong class="text-info">Operational Limit</strong>
-                                            <p class="small mb-0"><span class="badge bg-danger">Block Withdrawal</span> for savings accounts, keep <span class="badge bg-success">Open Cash In</span> active.</p>
+                                            <strong class="text-info">@GlobalShared.operational_limit</strong>
+                                            <p class="small mb-0">@Html.Raw(@GlobalMembersFSeries.block_withdrawal_for_savings_accounts_keep_open_cash_in_active).</p>
                                         </div>
                                     </div>
                                 </div>
@@ -399,24 +399,24 @@
                         <div class="row">
                             <div class="col-12">
                                 <h6 class="text-primary mb-2">
-                                    <i class="mdi mdi-gesture-tap-button me-1"></i> Action Selection Guide
+                                    <i class="mdi mdi-gesture-tap-button me-1"></i> @GlobalShared.action_selection_guide
                                 </h6>
                                 <div class="row small">
                                     <div class="col-md-3 mb-2">
                                         <i class="mdi mdi-play text-success me-1"></i>
-                                        <strong>Activate/Open:</strong> Enable operations
+                                        <strong>@GlobalShared.Activate/@GlobalShared.Open:</strong> @GlobalShared.enable_operations
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <i class="mdi mdi-pause text-warning me-1"></i>
-                                        <strong>Freeze/Block:</strong> Temporary restrictions
+                                        <strong>@GlobalShared.freeze/@GlobalShared.block:</strong> @GlobalMembersFSeries.temporary_restrictions
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <i class="mdi mdi-stop text-danger me-1"></i>
-                                        <strong>Close/Block Full:</strong> Permanent/Terminal actions
+                                        <strong>@GlobalShared.Close/@GlobalShared.block_full:</strong> @GlobalMembersFSeries.permanentterminal_actions
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <i class="mdi mdi-refresh text-info me-1"></i>
-                                        <strong>Reopen/Unblock:</strong> Restore previous state
+                                        <strong>@GlobalShared.Reopen/@GlobalShared.unblock:</strong> @GlobalMembersFSeries.restore_previous_state
                                     </div>
                                 </div>
                             </div>
@@ -424,7 +424,7 @@
 
                         <p class="text-muted mt-3 mb-0 small">
                             <i class="mdi mdi-information-outline me-1"></i>
-                            <strong>Note:</strong> All account management actions are logged for audit purposes. Some actions may require additional approvals based on your security profile. Blocked operations will show appropriate error messages to customers.
+                            <strong>@GlobalShared.Note:</strong> @GlobalMembersFSeries.all_account_management_actions_are_logged_for_audit_purposes_some_actions_may_require_additional_approvals_based_on_your_security_profile_blocked_operations_will_show_appropriate_error_messages_to_customers.
                         </p>
                     </div>
                 </div>
@@ -448,7 +448,7 @@
             <fieldset class="fieldset-custom mb-4">
 
                 <h5 class="text-primary fw-bold">
-                    <i class="mdi mdi-cog-outline me-1"></i> Action Selection
+                    <i class="mdi mdi-cog-outline me-1"></i> @GlobalShared.action_selection
                 </h5>
 
                 <div class="row gy-3">
@@ -461,9 +461,9 @@
                             @Html.DropDownListFor(
                                 m => m.AccountId,
                                 new SelectList(ViewBag.Account, "Value", "Text"),
-                                "--- Select Account ---",
+                                $"--- {@GlobalShared.Select_account} ---",
                                 new { @class = "form-control select2" })
-                            <label>Member Account</label>
+                            <label>@GlobalShared.Member_account</label>
                             @Html.ValidationMessageFor(m => m.AccountId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -476,14 +476,14 @@
                             @Html.DropDownListFor(
                                 m => m.Action,
                                 (IEnumerable<SelectListItem>)ViewBag.AccountActions,
-                                "--- Select Action ---",
+                                $"--- {@GlobalShared.Select_Action} ---",
                                 new
                                      {
                                     @class = "form-control select2",
                                     @id = "ActionType",
                                     onchange = "handleActionChange(this.value)"
                                 })
-                            <label for="ActionType">Actions</label>
+                            <label for="ActionType">@GlobalShared.Actions</label>
                             @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -499,10 +499,10 @@
                             {
                                 @class = "form-control",
                                 type = "number",
-                                placeholder = "Enter blocked amount",
+                                placeholder = $"{@GlobalMembersFSeries.enter_blocked_amount}",
                                 @id = "BlockedAmount"  // 👈 ADD THIS LINE
                             })
-                            <label>Amount</label>
+                            <label>@GlobalShared.Amount</label>
                             @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -513,7 +513,7 @@
                         <div class="col-md-6">
                             <div class="form-floating">
                                 @Html.TextBoxFor(m => m.BlockReason,
-                                    new { @class = "form-control", placeholder = "Enter block reason" })
+                                    new { @class = "form-control", placeholder = $"{@GlobalShared.enter_block_reason}" })
                                 @Html.LabelFor(m => m.BlockReason)
                                 @Html.ValidationMessageFor(m => m.BlockReason, "", new { @class = "text-danger" })
                             </div>
@@ -545,11 +545,11 @@
                             @Html.TextBoxFor(m => m.RequestReason, new
                             {
                                 @class = "form-control",
-                                placeholder = "Enter Request Reason",
+                                placeholder = $"{@GlobalShared.enter_request_reason}",
                                 maxlength = "250",
                                 @required = "required"
                             })
-                            <label>Request Reason</label>
+                            <label>@GlobalShared.request_reason</label>
                             @Html.ValidationMessageFor(m => m.RequestReason, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -563,7 +563,7 @@
             <!-- ============================== -->
             <div class="text-end mt-4">
                 <button type="submit" class="btn btn-primary me-2">
-                    <i class="mdi mdi-check-circle-outline me-1"></i> Create Request
+                    <i class="mdi mdi-check-circle-outline me-1"></i> @GlobalShared.create_request
                 </button>
                 <button type="reset" class="btn btn-outline-secondary">
                     @GlobalShared.Reset

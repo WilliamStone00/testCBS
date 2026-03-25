@@ -8,10 +8,10 @@
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold">
-                    <i class="mdi mdi-bank-transfer me-2"></i> @GlobalLoanTerm.header
+                    <i class="mdi mdi-bank-transfer me-2"></i> @GlobalLoanTerm.loan_term_management
                 </h1>
                 <p class="card-text">
-                    Manage loan terms configurations here
+                    @GlobalLoanTerm.manage_loan_terms_configurations_here
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -24,7 +24,7 @@
                 <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.AddNew
             </button>
             <button type="button" onclick="refreshTable()" class="btn btn-label-secondary btn-info">
-                <i class="mdi mdi-refresh mdi-18px"></i>Refresh
+                <i class="mdi mdi-refresh mdi-18px"></i>@GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -38,7 +38,7 @@
             <!-- DataTable -->
             <div class="card p-3 shadow mb-1">
                 <h5 class="text-primary mb-3">
-                    <i class="mdi mdi-table"></i> @GlobalLoanTerm.Loan_Term_Settings
+                    <i class="mdi mdi-table"></i> @GlobalLoanTerm.loan_term_settings
                     <small class="text-muted ms-2">
                         <span id="recordCount" class="badge bg-info">@GlobalShared.Loading</span>
                     </small>
@@ -47,10 +47,10 @@
                     <table id="loanTermDataTable" class="table table-bordered table-striped">
                         <thead class="table-light">
                             <tr>
-                                <th>@GlobalLoanTerm.Name En</th>
-                                <th>@GlobalLoanTerm.Name FR</th>
-                                <th>@GlobalLoanTerm.TermKind</th>
-                                <th>@GlobalLoanTerm.Min_Max</th>
+                                <th>@GlobalShared.Name En</th>
+                                <th>@GlobalShared.Name FR</th>
+                                <th>@GlobalLoanTerm.term_kind</th>
+                                <th>@GlobalLoanTerm.min_max</th>
                                 <th>@GlobalShared.Action</th>
                             </tr>
                         </thead>

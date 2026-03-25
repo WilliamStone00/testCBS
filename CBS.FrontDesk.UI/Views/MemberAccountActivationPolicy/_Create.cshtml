@@ -1,95 +1,95 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy
+@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy
     @using Resources
 <div class="card-body">
     @using (Html.BeginForm("AddOrUpdate", "MemberAccountActivationPolicy", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {<fieldset class="fieldset-custom">
-            <legend>@GlobalMemberAccountActivationPolicy.ActivationPolicy</legend>
+            <legend>@GlobalShared.activation_policy</legend>
             <br />
 
             <div class="row mt-2 gy-4">
                 <div class="col-12">
                     <div class="form-check form-check-inline" id="accountType">
                         @Html.RadioButtonFor(m => m.LegalForm, "Moral_Person", new { @class = "form-check-input", id = "moralPersonOption" })
-                        <label class="form-check-label" for="moralPersonOption">@GlobalMemberAccountActivationPolicy.MoralPerson</label>
+                        <label class="form-check-label" for="moralPersonOption">@GlobalShared.Moral_Person</label>
                     </div>
                     <div class="form-check form-check-inline">
                         @Html.RadioButtonFor(m => m.LegalForm, "Physical_Person", new { @class = "form-check-input", id = "physicalPersonOption" })
-                        <label class="form-check-label" for="physicalPersonOption">@GlobalMemberAccountActivationPolicy.PhysicalPerson</label>
+                        <label class="form-check-label" for="physicalPersonOption">@GlobalShared.Physical_Person</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.PolicyName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.PolicyName, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.PolicyName</label>
+                        <label>@GlobalShared.policy_name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MinimumEntranceFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MinimumEntranceFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MinimumEntranceFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.minimum_entrance_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumEntrancenFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumEntrancenFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MaximumEntranceFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.maximum_entrance_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MinimumByeLawsFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MinimumByeLawsFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MinimumByelawsFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.minimum_byelaws_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumByeLawsFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumByeLawsFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MaximumByelawsFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.maximum_byelaws_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MinimumLoanPolicyFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MinimumLoanPolicyFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MinimumLoanPolicyFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.minimum_loan_policy_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumLoanPolicyFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumLoanPolicyFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MaximumLoanPolicyFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.maximum_loan_policy_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MinimumBuildingContributionFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MinimumBuildingContributionFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MinimumBuildingContributionFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.minimum_building_contribution_fee</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumBuildingContribution, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumBuildingContribution, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.MaximumBuildingContributionFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.maximum_building_contribution_fee</label>
                     </div>
                 </div>
                 <div class="col-12 mb-3">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">@GlobalMemberAccountActivationPolicy.CheckToKeepThisPolicyActive</label>
+                        <label class="form-check-label" for="isActive">@GlobalMemberAccountActivationPolicy.check_to_keep_this_policy_active</label>
                     </div>
                 </div>
             </div>
         </fieldset>
         <fieldset class="fieldset-custom">
-            <legend>@GlobalMemberAccountActivationPolicy.AnnualBehaviour</legend>
+            <legend>@GlobalShared.annual_behaviour</legend>
             <br />
             <br />
 
@@ -99,22 +99,22 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.YearBuildingContributionFee, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.YearBuildingContributionFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.AnnualBuildingContributionFee</label>
+                        <label>@GlobalMemberAccountActivationPolicy.annual_building_contribution_fee</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="mb-3">
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Saving", new { @class = "form-check-input", id = "savingOption" })
-                            <label class="form-check-label" for="savingOption">@GlobalMemberAccountActivationPolicy.DebitSavingAnnually</label>
+                            <label class="form-check-label" for="savingOption">@GlobalMemberAccountActivationPolicy.debit_saving_annually</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Share", new { @class = "form-check-input", id = "shareOption" })
-                            <label class="form-check-label" for="shareOption">@GlobalMemberAccountActivationPolicy.DebitShareAnnually</label>
+                            <label class="form-check-label" for="shareOption">@GlobalMemberAccountActivationPolicy.debit_share_annually</label>
                         </div>
                         <div class="form-check">
                             @Html.RadioButtonFor(m => m.AccountTypeForYearyDeductionOfBuildingContribution, "Deposit", new { @class = "form-check-input", id = "depositOption" })
-                            <label class="form-check-label" for="depositOption">@GlobalMemberAccountActivationPolicy.DebitDepositAnnually</label>
+                            <label class="form-check-label" for="depositOption">@GlobalMemberAccountActivationPolicy.debit_deposit_annually</label>
                         </div>
                     </div>
                 </div>
@@ -128,30 +128,30 @@
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.EventCodeEntranceFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalMemberAccountActivationPolicy.SelectEventName + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.EventCodeEntranceFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalShared.select_event_name + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.EventCodeEntranceFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.SelectEnteringFeeEventName</label>
+                        <label>@GlobalMemberAccountActivationPolicy.select_entering_fee_event_name</label>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.EventCodeByeLawsFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalMemberAccountActivationPolicy.SelectEventName + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.EventCodeByeLawsFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalShared.select_event_name + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.EventCodeByeLawsFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.SelectByeLawFeeEventName</label>
+                        <label>@GlobalMemberAccountActivationPolicy.select_bye_law_fee_event_name</label>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.EventCodeLoanPolicyFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalMemberAccountActivationPolicy.SelectEventName + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.EventCodeLoanPolicyFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalShared.select_event_name + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.EventCodeLoanPolicyFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.SelectLoanPolicyFeeEventName</label>
+                        <label>@GlobalMemberAccountActivationPolicy.select_loan_policy_fee_event_name</label>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.EventCodeBuildingContributionFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalMemberAccountActivationPolicy.SelectEventName + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.EventCodeBuildingContributionFee, new SelectList(ViewBag.EventCodes, "Text", "Value"), "---"+ @GlobalShared.select_event_name + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.EventCodeBuildingContributionFee, "", new { @class = "text-danger" })
-                        <label>@GlobalMemberAccountActivationPolicy.SelectBuildingContributionFeeEventName</label>
+                        <label>@GlobalMemberAccountActivationPolicy.select_building_contribution_fee_event_name</label>
                     </div>
                 </div>
             </div>

@@ -117,28 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackToLogin" xml:space="preserve">
-    <value>Back to login</value>
+  <data name="cancel_return_to_login" xml:space="preserve">
+    <value>Cancel &amp; Return to Login</value>
   </data>
-  <data name="EnterTheCurrentCodeDisplayedInTheApp" xml:space="preserve">
+  <data name="enter_the_current_code_displayed_in_the_app" xml:space="preserve">
     <value>Enter the current code displayed in the app into the "MFA Code" input box above</value>
   </data>
-  <data name="HowToValidateTheMFACode" xml:space="preserve">
+  <data name="enter_totp_code" xml:space="preserve">
+    <value>Enter TOTP Code</value>
+  </data>
+  <data name="find_the_6digit_code_associated_with_your_tsc_account_it_refreshes_every_30_seconds" xml:space="preserve">
+    <value>Find the 6-digit code associated with your TSC account. It refreshes every 30 seconds</value>
+  </data>
+  <data name="how_to_use_totp" xml:space="preserve">
+    <value>How to Use TOTP</value>
+  </data>
+  <data name="how_to_validate_the_mfacode" xml:space="preserve">
     <value>How to validate the MFA code</value>
   </data>
-  <data name="IfTheCodeIsCorrectYouWillBeRedirectedOrReceiveConfirmation" xml:space="preserve">
+  <data name="if_the_code_is_correct_you_will_be_redirected_or_receive_confirmation" xml:space="preserve">
     <value>If the code is correct, you will be redirected or receive confirmation. If not, check the code on your app and try again</value>
   </data>
-  <data name="LocateTheCodeAssociatedWithYourAccount" xml:space="preserve">
+  <data name="locate_the_code_associated_with_your_account" xml:space="preserve">
     <value>Locate the code associated with your account. This code refreshes every 30 seconds</value>
   </data>
-  <data name="MFACode" xml:space="preserve">
+  <data name="mfa_code" xml:space="preserve">
     <value>MFA code</value>
   </data>
-  <data name="MFAVerification" xml:space="preserve">
+  <data name="mfa_verification" xml:space="preserve">
     <value>MFA verification</value>
   </data>
-  <data name="OpenTheGoogleAuthenticatorAppOnYourPhone" xml:space="preserve">
+  <data name="open_the_google_authenticator_app_on_your_phone" xml:space="preserve">
     <value>Open the Google Authenticator app on your phone</value>
+  </data>
+  <data name="open_the_google_authenticator_or_microsoft_authenticator_app_on_your_phone" xml:space="preserve">
+    <value>Open the &lt;strong&gt;Google Authenticator&lt;/strong&gt; or &lt;strong&gt;Microsoft Authenticator&lt;/strong&gt; app on your phone</value>
+  </data>
+  <data name="please_enter_your_current_code_to_continue" xml:space="preserve">
+    <value>please enter your current code to continue</value>
+  </data>
+  <data name="totp_timebased_onetime_password" xml:space="preserve">
+    <value>TOTP (Time-based One-Time Password)</value>
+  </data>
+  <data name="type_the_current_code_above_and_click_verify_code" xml:space="preserve">
+    <value>Type the current code above and click &lt;strong&gt;Verify Code&lt;/strong&gt;</value>
+  </data>
+  <data name="verify_code" xml:space="preserve">
+    <value>Verify Code</value>
   </data>
 </root>

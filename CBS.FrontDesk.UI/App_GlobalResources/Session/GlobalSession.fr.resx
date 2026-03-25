@@ -117,22 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PleaseEnterYourSessionRecoveryCodeToContinue" xml:space="preserve">
-    <value>Veuillez entrer votre code de récupération de session pour continuer</value>
-  </data>
-  <data name="RecoverMySession" xml:space="preserve">
-    <value>Récupérer ma session</value>
-  </data>
-  <data name="RecoveryCode" xml:space="preserve">
-    <value>Code de récupération</value>
-  </data>
-  <data name="ReturnToLoginPage" xml:space="preserve">
-    <value>Retourner à la page de connexion</value>
-  </data>
-  <data name="SessionLockEnterRecoveryCode" xml:space="preserve">
-    <value>Verrouillage de session : Entrez le code de récupération</value>
-  </data>
-  <data name="YourSessionWasLockedDueToInactivity" xml:space="preserve">
-    <value>Votre session a été verrouillée en raison d'inactivité</value>
-  </data>
 </root>

@@ -117,70 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BCode" xml:space="preserve">
+  <data name="after_applying_filters_click_export_to_excel" xml:space="preserve">
+    <value>After applying filters, click &lt;strong&gt;Export to Excel&lt;/strong&gt;</value>
+  </data>
+  <data name="b_code" xml:space="preserve">
     <value>B.Code</value>
   </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
+  <data name="choose_one_or_more_product_types_eg_saving_deposit_shares_to_refine_your_search" xml:space="preserve">
+    <value>Choose one or more product types (e.g., Saving, Deposit, Shares) to refine your search</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
+  <data name="export_members_account_balances" xml:space="preserve">
+    <value>Export Members Account Balances</value>
   </data>
-  <data name="Deposit" xml:space="preserve">
-    <value>Deposit</value>
+  <data name="if_the_grid_becomes_too_heavy_or_you_no_longer_need_old_exports_use_the_delete_all_button_to_clear_all_your_downloaded_files" xml:space="preserve">
+    <value>If the grid becomes too heavy or you no longer need old exports, use the &lt;strong&gt;Delete All&lt;/strong&gt; button to clear all your downloaded files</value>
   </data>
-  <data name="DownloadedFiles" xml:space="preserve">
-    <value>Downloaded files</value>
-  </data>
-  <data name="EnterSearchCriteria" xml:space="preserve">
-    <value>Enter search criteria</value>
-  </data>
-  <data name="ExportToExcel" xml:space="preserve">
-    <value>Export to excel</value>
-  </data>
-  <data name="FileName" xml:space="preserve">
-    <value>File name</value>
-  </data>
-  <data name="InitiateDownload" xml:space="preserve">
-    <value>Initiate download</value>
-  </data>
-  <data name="Loan" xml:space="preserve">
-    <value>Loan</value>
-  </data>
-  <data name="MembersAccountsF8" xml:space="preserve">
+  <data name="members_accounts_f8" xml:space="preserve">
     <value>Members accounts F8</value>
   </data>
-  <data name="MembersOrdinaryAccountF8" xml:space="preserve">
+  <data name="members_account_balances" xml:space="preserve">
+    <value>Members Account Balances</value>
+  </data>
+  <data name="members_ordinary_account_f8" xml:space="preserve">
     <value>Members ordinary account F8</value>
   </data>
-  <data name="Names" xml:space="preserve">
-    <value>Names</value>
+  <data name="once_filtered_you_can_export_the_results_to_a_structured_excel_file_all_your_generated_downloads_will_appear_below_and_remain_available_until_you_delete_them_manually" xml:space="preserve">
+    <value>Once filtered, you can &lt;strong&gt;export the results&lt;/strong&gt; to a structured Excel file. All your generated downloads will appear below and remain available until you delete them manually</value>
   </data>
-  <data name="NoFileFound" xml:space="preserve">
-    <value>No file found</value>
+  <data name="once_prepared_your_export_file_will_appear_in_the_grid_view_click_on_it_to_download" xml:space="preserve">
+    <value>Once prepared, your export file will appear in the grid view. Click on it to download</value>
   </data>
-  <data name="OShare" xml:space="preserve">
+  <data name="o_share" xml:space="preserve">
     <value>O.Share</value>
   </data>
-  <data name="PShare" xml:space="preserve">
+  <data name="p_share" xml:space="preserve">
     <value>P.Share</value>
   </data>
-  <data name="References" xml:space="preserve">
-    <value>References</value>
+  <data name="select_a_branch_to_filter_results_for_members_registered_at_that_location" xml:space="preserve">
+    <value>Select a branch to filter results for members registered at that location</value>
   </data>
-  <data name="Saving" xml:space="preserve">
-    <value>Saving</value>
+  <data name="the_system_will_prepare_your_file_and_list_it_in_the_downloaded_files_section_below" xml:space="preserve">
+    <value>The system will prepare your file and list it in the downloaded files section below</value>
   </data>
-  <data name="SearchCriterial" xml:space="preserve">
-    <value>Search criterial</value>
+  <data name="the_tool_is_optimized_for_backoffice_teams_accountants_auditors_and_compliance_officers_who_need_to_track_member_balances_and_perform_reconciliation_or_analysis" xml:space="preserve">
+    <value>The tool is optimized for &lt;strong&gt;back-office teams, accountants, auditors, and compliance officers&lt;/strong&gt; who need to track member balances and perform reconciliation or analysis</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
+  <data name="this_interface_allows_users_to_view_filter_and_export_detailed_account_balance_information_for_registered_members_across_various_product_types_such_as_savings_deposits_and_shares" xml:space="preserve">
+    <value>This interface allows users to &lt;strong&gt;view, filter, and export&lt;/strong&gt; detailed account balance information for registered members across various product types such as &lt;span class="text-success"&gt;Savings&lt;/span&gt;, &lt;span class="text-info"&gt;Deposits&lt;/span&gt;, and &lt;span class="text-warning"&gt;Shares&lt;/span&gt;</value>
   </data>
-  <data name="Size" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>User</value>
+  <data name="tips_for_filtering_and_export" xml:space="preserve">
+    <value>Tips for Filtering and Export</value>
   </data>
 </root>

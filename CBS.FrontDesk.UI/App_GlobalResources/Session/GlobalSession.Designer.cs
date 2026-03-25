@@ -63,54 +63,54 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Please enter your session recovery code to continue.
         /// </summary>
-        internal static string PleaseEnterYourSessionRecoveryCodeToContinue {
+        internal static string please_enter_your_session_recovery_code_to_continue {
             get {
-                return ResourceManager.GetString("PleaseEnterYourSessionRecoveryCodeToContinue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recover my session.
-        /// </summary>
-        internal static string RecoverMySession {
-            get {
-                return ResourceManager.GetString("RecoverMySession", resourceCulture);
+                return ResourceManager.GetString("please_enter_your_session_recovery_code_to_continue", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Recovery code.
         /// </summary>
-        internal static string RecoveryCode {
+        internal static string recovery_code {
             get {
-                return ResourceManager.GetString("RecoveryCode", resourceCulture);
+                return ResourceManager.GetString("recovery_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recover my session.
+        /// </summary>
+        internal static string recover_my_session {
+            get {
+                return ResourceManager.GetString("recover_my_session", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Return to login page.
         /// </summary>
-        internal static string ReturnToLoginPage {
+        internal static string return_to_login_page {
             get {
-                return ResourceManager.GetString("ReturnToLoginPage", resourceCulture);
+                return ResourceManager.GetString("return_to_login_page", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Session Lock: Enter Recovery Code.
         /// </summary>
-        internal static string SessionLockEnterRecoveryCode {
+        internal static string session_lock_enter_recovery_code {
             get {
-                return ResourceManager.GetString("SessionLockEnterRecoveryCode", resourceCulture);
+                return ResourceManager.GetString("session_lock_enter_recovery_code", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Your session was locked due to inactivity.
         /// </summary>
-        internal static string YourSessionWasLockedDueToInactivity {
+        internal static string your_session_was_locked_due_to_inactivity {
             get {
-                return ResourceManager.GetString("YourSessionWasLockedDueToInactivity", resourceCulture);
+                return ResourceManager.GetString("your_session_was_locked_due_to_inactivity", resourceCulture);
             }
         }
     }

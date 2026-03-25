@@ -1,4 +1,5 @@
-﻿<!-- ======================= MODAL: Processed Salary – Details / Register ======================= -->
+<!-- ======================= MODAL: Processed Salary – Details / Register ======================= -->
+@using Resources
 <div class="modal fade" id="salaryDetailModal" tabindex="-1" aria-labelledby="salaryDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content position-relative" id="salaryDetailModalContent" data-mode="detail">
@@ -9,7 +10,7 @@
                         <div class="card-body text-center">
                             <h1 class="card-title text-tsc m-0" id="salaryDetailModalLabel">
                                 <i class="mdi mdi-file-document-outline me-2"></i>
-                                <span id="salaryDetailTitleText">Processed Salary – Detail</span>
+                                <span id="salaryDetailTitleText">@GlobalSalaryProcessed.processed_salary_detail</span>
                                 <span id="salaryDetailStatus" class="badge align-middle ms-2"></span>
                             </h1>
 
@@ -31,7 +32,7 @@
                 <h6 class="card-header d-flex justify-content-between align-items-center text-tsc">
                     <span id="salaryTipsTitle">
                         <i class="mdi mdi-information-outline me-2"></i>
-                        <span id="salaryTipsTitleText">Salary Detail Tips</span>
+                        <span id="salaryTipsTitleText">@GlobalSalaryProcessed.salary_detail_tips</span>
                     </span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryTips">
                         <i class="mdi mdi-chevron-down"></i>
@@ -43,19 +44,19 @@
                         <ul class="mb-0" style="list-style:none; padding-left:0;">
                             <li class="mb-2">
                                 <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                                <strong>G.Salary vs N.Salary:</strong> N.Salary is after Savings, Shares, Charges and Standing Order.
+                                <strong>@GlobalSalaryProcessed.gsalary_vs_nsalary:</strong> @GlobalSalaryProcessed.nsalary_is_after_savings_shares_charges_and_standing_order.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-percent-outline text-tsc-dark me-2"></i>
-                                <strong>Remaining:</strong> What’s left after all deductions.
+                                <strong>@GlobalShared.Remaining:</strong> @GlobalSalaryProcessed.whats_left_after_all_deductions.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-file-document-edit-outline text-tsc me-2"></i>
-                                <strong>Loans:</strong> Main / Exceptional / Elected / Special / Micro sections render only when values exist.
+                                <strong>@GlobalShared.loans:</strong> @GlobalSalaryProcessed.main_exceptional_elected_special_micro_sections_render_only_when_values_exist.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-key-variant text-muted me-2"></i>
-                                <strong>TempPayCode:</strong> For non-member payout activation, shows last code + expiry.
+                                <strong>@GlobalSalaryProcessed.temppaycode:</strong> @GlobalSalaryProcessed.for_nonmember_payout_activation_shows_last_code_expiry.
                             </li>
                         </ul>
                     </div>
@@ -70,7 +71,7 @@
                      style="z-index:2;">
                     <div class="text-center">
                         <div class="spinner-border mb-2" role="status" aria-hidden="true"></div>
-                        <div class="small text-muted">Loading…</div>
+                        <div class="small text-muted">@GlobalShared.Loading…</div>
                     </div>
                 </div>
             </div>
@@ -78,10 +79,10 @@
             <!-- Footer (Close + Print with spinner) -->
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
                 <button type="button" id="salaryDetailPrintBtn" class="btn btn-primary">
-                    <span class="btn-text"><i class="mdi mdi-printer"></i> Print</span>
+                    <span class="btn-text"><i class="mdi mdi-printer"></i> @GlobalShared.Print</span>
                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
             </div>

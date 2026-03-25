@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 
 @{
@@ -29,13 +29,13 @@
         <div class="card bg-light mb-3">
             <div class="card-body text-center">
                 <h4 class="text-primary fw-bold">
-                    <i class="mdi mdi-account-multiple-check me-2"></i> F2-F5 Members General Situation
+                    <i class="mdi mdi-account-multiple-check me-2"></i> F2-F5 @GlobalMembersFSeries.members_general_situation
                 </h4>
                 <p>
-                    This page provides a full overview of member financial situations across <strong>@Session["BankName"]</strong>, including loans, balances, statements, and activity logs.
+                    @GlobalMembersFSeries.this_page_provides_a_full_overview_of_member_financial_situations_across <strong>@Session["BankName"]</strong>, @GlobalMembersFSeries.including_loans_balances_statements_and_activity_logs.
                 </p>
                 <p class="text-danger fw-bold">
-                    <i class="mdi mdi-shield-lock-outline me-1"></i> Strictly read-only. For authorized personnel only.
+                    <i class="mdi mdi-shield-lock-outline me-1"></i> @GlobalMembersFSeries.strictly_readonly_for_authorized_personnel_only.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -46,7 +46,7 @@
 <!-- ℹ️ Tips Section -->
 <div class="card mb-2">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Important Usage Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.important_usage_tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -54,10 +54,10 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Use tabs to switch between accounts, loans, and statements.</li>
-                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> Date ranges can be used to filter print statements.</li>
-                <li><i class="mdi mdi-eye-outline text-info me-2"></i> Click individual loans for full lifecycle/journey view.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> All access must comply with internal data policies.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMembersFSeries.use_tabs_to_switch_between_accounts_loans_and_statements.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> @GlobalMembersFSeries.date_ranges_can_be_used_to_filter_print_statements.</li>
+                <li><i class="mdi mdi-eye-outline text-info me-2"></i> @GlobalMembersFSeries.click_individual_loans_for_full_lifecyclejourney_view.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalMembersFSeries.all_access_must_comply_with_internal_data_policies.</li>
             </ul>
         </div>
     </div>
@@ -66,7 +66,7 @@
 <!-- 📂 Member Tabs + Overview -->
 <div class="card shadow-sm mb-2">
     <div class="card-header bg-white fw-bold text-primary">
-        <i class="mdi mdi-folder-multiple-outline me-2"></i> Member Quick Navigation
+        <i class="mdi mdi-folder-multiple-outline me-2"></i> @GlobalMembersFSeries.member_quick_navigation
     </div>
 
     <div class="card-body d-flex flex-wrap gap-2 justify-content-start">
@@ -75,7 +75,7 @@
            onclick="GetMembersAccounts('@Model.CustomerId','_MembersAccount','datalistingview','members_account')"
            class="btn btn-outline-primary d-flex align-items-center">
             <i class="fas fa-money-check me-2"></i>
-            <span>Accounts</span>
+            <span>@GlobalShared.Accounts</span>
         </a>
 
         <!-- Operational Receipts Button -->
@@ -85,20 +85,20 @@
          <i class="fas fa-receipt me-2"></i>
          <span>Member Operational Receipts</span>
         </a>-->
-        <button type="button"
-                onclick="showCreateModal('@Model.CustomerId')"
-                class="btn btn-label-primary btn-info me-2">
-            <i class="mdi mdi-plus mdi-18px"></i> Generate Reports
-        </button>
-        <button type="button"
-                onclick="showMemberAccountManagement('@Model.CustomerId')"
-                class="btn btn-label-primary btn-info me-2">
-            <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i>Member Account Manag.
-        </button>
-        <a href="@Url.Action("List", "MemberAccountMan")" class="btn btn-label-primary btn-sm me-2" id="btnViewList" target="_blank"
-           rel="noopener noreferrer" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
-            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList For Mem. Acc. Manag.
-        </a>
+    <button type="button"
+            onclick="showCreateModal('@Model.CustomerId')"
+            class="btn btn-label-primary btn-info me-2">
+        <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.generate_reports
+    </button>
+    <button type="button"
+            onclick="showMemberAccountManagement('@Model.CustomerId')"
+            class="btn btn-label-primary btn-info me-2">
+        <i class="mdi mdi-account-cog-outline mdi-18px me-1"></i>@GlobalShared.member_account_manag.
+    </button>
+    <a href="@Url.Action("List", "MemberAccountMan")" class="btn btn-label-primary btn-sm me-2" id="btnViewList" target="_blank"
+       rel="noopener noreferrer" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
+        <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.view_list_for Mem. Acc. Manag.
+    </a>
 
     </div>
 </div>
@@ -112,14 +112,14 @@
         <!-- Profile Info Card -->
         <div class="card shadow-sm text-start mb-2">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-card-account-details-outline me-1"></i> Member Profile
+                <i class="mdi mdi-card-account-details-outline me-1"></i> @GlobalShared.member_profile
             </div>
             <div class="card-body">
-                <p class="mb-2"><strong>Name:</strong> @Model.Customer.name</p>
-                <p class="mb-2"><strong>Member A.Number:</strong> @Model.Customer.CustomerId</p>
-                <p class="mb-2"><strong>Phone:</strong> @Model.Customer.Phone</p>
+                <p class="mb-2"><strong>@GlobalShared.Name:</strong> @Model.Customer.name</p>
+                <p class="mb-2"><strong>@GlobalMembersFSeries.member_anumber:</strong> @Model.Customer.CustomerId</p>
+                <p class="mb-2"><strong>@GlobalShared.Phone:</strong> @Model.Customer.Phone</p>
                 <p class="mb-2">
-                    <strong>Status:</strong>
+                    <strong>@GlobalShared.Status:</strong>
                     @{
                         var status = Model.Customer.MembershipApprovalStatus?.ToLower();
                         var statusClass = status == "approved"
@@ -130,7 +130,7 @@
                         @Model.Customer.MembershipApprovalStatus
                     </span>
                 </p>
-                <p class="mb-2"><strong>Branch:</strong> @Model.Branch.Name</p>
+                <p class="mb-2"><strong>@GlobalShared.Branch:</strong> @Model.Branch.Name</p>
             </div>
         </div>
 
@@ -138,7 +138,7 @@
         <!-- Profile Photo Card -->
         <div class="card shadow-sm mb-2 text-center">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-account-circle me-1"></i> Photo
+                <i class="mdi mdi-account-circle me-1"></i> @GlobalShared.Photo
             </div>
             <div class="card-body d-flex justify-content-center">
                 <a href="@Url.Content(Model.Customer.photoUrl ?? Model.Customer.ImageVirtualPath)"
@@ -156,7 +156,7 @@
         <!-- Signature Card -->
         <div class="card shadow-sm mb-2 text-center">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-pencil me-1"></i> Signature
+                <i class="mdi mdi-pencil me-1"></i> @GlobalShared.Signature
             </div>
             <div class="card-body d-flex justify-content-center">
                 <a href="@Url.Content(Model.Customer.signatureUrl ?? Model.Customer.ImageVirtualSignaturePath)"
@@ -179,7 +179,7 @@
         <!-- Member Account Overview -->
         <div class="card shadow-sm mb-3">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-file-document-outline me-1"></i> MEMBERS ACCOUNT OVERVIEW (F2-F5 SERIES)
+                <i class="mdi mdi-file-document-outline me-1"></i> @GlobalMembersFSeries.members_account_overview (F2-F5 SERIES)
             </div>
             <div class="card-body p-0" id="datalistingview">
                 <div id="datalistingview_inner">
@@ -191,61 +191,61 @@
         <!-- Member Loan Overview -->
         <div class="card shadow-sm mb-3">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-cash me-1 text-secondary"></i> LOANS CONTRACTED BY MEMBER
+                <i class="mdi mdi-cash me-1 text-secondary"></i> @GlobalMembersFSeries.loans_contracted_by_member
             </div>
             <div class="card-body">
                 <!-- Loan Filter -->
                 <div class="mb-3">
-                    <label for="loanFilterDropdown" class="form-label fw-semibold">Filter Loans:</label>
+                    <label for="loanFilterDropdown" class="form-label fw-semibold">@GlobalShared.filter_loans:</label>
                     <select id="loanFilterDropdown" class="form-select" onchange="loadLoansPartial('@Model.Customer.CustomerId', this.value)">
-                        <option value="" disabled selected>Select Filter</option>
-                        <option value="all">All Loans</option>
-                        <option value="approved">Approved</option>
-                        <option value="rescheduled">Rescheduled</option>
-                        <option value="refinanced">Refinanced</option>
-                        <option value="restructured">Restructured</option>
-                        <option value="current">Current</option>
+                        <option value="" disabled selected>@GlobalShared.select_filter</option>
+                        <option value="all">@GlobalShared.All_loans</option>
+                        <option value="approved">@GlobalShared.Approved</option>
+                        <option value="rescheduled">@GlobalShared.Rescheduled</option>
+                        <option value="refinanced">@GlobalShared.Refinanced</option>
+                        <option value="restructured">@GlobalShared.Restructured</option>
+                        <option value="current">@GlobalShared.Current</option>
                     </select>
                 </div>
 
                 <!-- Partial View Container for Loan Table -->
                 <div id="loansTableContainer" class="pt-2">
-                    <div class="text-muted small">📌 Select a filter to view member’s loan history.</div>
+                    <div class="text-muted small">📌 @GlobalMembersFSeries.select_a_filter_to_view_members_loan_history.</div>
                 </div>
             </div>
         </div>
         <!-- Member Loan Refunds -->
         <div class="card shadow-sm mb-3">
             <div class="card-header bg-white fw-bold text-black">
-                <i class="mdi mdi-cash-refund me-1 text-success"></i> LOAN REPAYMENTS / REFUNDS BY MEMBER
+                <i class="mdi mdi-cash-refund me-1 text-success"></i> @GlobalShared.loan_repayments / @GlobalMembersFSeries.refunds_by_member
             </div>
 
             <div class="card-body">
                 <!-- Filters -->
                 <div class="row g-2 align-items-end">
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">From</label>
+                        <label class="form-label fw-semibold">@GlobalShared.From</label>
                         <input type="text" id="refundDateFrom" class="form-control date-picker" placeholder="Start date" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">To</label>
+                        <label class="form-label fw-semibold">@GlobalShared.to</label>
                         <input type="text" id="refundDateTo" class="form-control date-picker" placeholder="End date" />
                     </div>
                     <div class="col-md-4 text-md-end">
                         <button class="btn btn-primary mt-3 mt-md-0"
                                 onclick="loadMemberRefunds('@Model.Customer.CustomerId')">
-                            <i class="mdi mdi-filter me-1"></i> Filter
+                            <i class="mdi mdi-filter me-1"></i> @GlobalShared.Filter
                         </button>
                         <button class="btn btn-outline-secondary mt-3 mt-md-0"
                                 onclick="clearRefundFilters(); loadMemberRefunds('@Model.Customer.CustomerId')">
-                            <i class="mdi mdi-broom me-1"></i> Clear
+                            <i class="mdi mdi-broom me-1"></i> @GlobalShared.Clear
                         </button>
                     </div>
                 </div>
 
                 <!-- Table container -->
                 <div id="refundsTableContainer" class="pt-3">
-                    <div class="text-muted small">📌 Select a date range and click <strong>Filter</strong> to view refunds.</div>
+                    <div class="text-muted small">📌 @Html.Raw(@GlobalMembersFSeries.select_a_date_range_and_click_filter_to_view_refunds)</div>
                 </div>
             </div>
         </div>
@@ -259,7 +259,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow">
             <div class="modal-header">
-                <h5 class="modal-title" id="imagePreviewModalLabel">Preview</h5>
+                <h5 class="modal-title" id="imagePreviewModalLabel">@GlobalShared.Preview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
@@ -275,7 +275,7 @@
         <div class="modal-content shadow-sm">
             <div class="modal-header">
                 <h5 class="modal-title" id="searchModalLabel">
-                    Print statements from all <strong>@Model.Customer.name</strong>'s accounts
+                    @GlobalMembersFSeries.print_statements_from_all_accounts_of: <strong>@Model.Customer.name</strong>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -284,20 +284,20 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
-                            <label for="DateFrom">Start Date</label>
+                            <label for="DateFrom">@GlobalShared.Start_Date</label>
                             @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
                             @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
-                            <label for="DateTo">End Date</label>
+                            <label for="DateTo">@GlobalShared.End_Date</label>
                             @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-12 text-end">
                         <button class="btn btn-primary mt-2" onclick="ExportIndividaulReport('@Model.CustomerId','all_by_dates_customer_account_transaction')">
-                            <i class="mdi mdi-printer me-1"></i> Print
+                            <i class="mdi mdi-printer me-1"></i> @GlobalShared.Print
                         </button>
                     </div>
                 </div>
@@ -314,8 +314,8 @@
 
             <!-- HERO TITLE -->
             <div class="loan-hero m-3">
-                <div class="title">LOAN DETAILS OVERVIEW</div>
-                <div class="subtitle">Review disbursement, guarantees, delinquency, posting mapping, and repayment history for audit & compliance.</div>
+                <div class="title">@GlobalMembersFSeries.loan_details_overview</div>
+                <div class="subtitle">@GlobalMembersFSeries.review_disbursement_guarantees_delinquency_posting_mapping_and_repayment_history_for_audit_compliance.</div>
             </div>
 
 
@@ -324,7 +324,7 @@
                 <!-- Tips Section -->
                 <div class="card mb-3">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                        <span><i class="mdi mdi-information-outline me-2"></i> Why This Loan Information Matters</span>
+                        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMembersFSeries.why_this_loan_information_matters</span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
@@ -332,9 +332,9 @@
                     <div id="collapseLoanTips" class="collapse">
                         <div class="card-body">
                             <ul class="mb-0">
-                                <li><i class="mdi mdi-chart-line text-primary me-2"></i><strong>Performance Tracking:</strong> Monitor repayments and balance trends.</li>
-                                <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>Risk Assessment:</strong> Identify write-offs, delinquency, and restructuring.</li>
-                                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i><strong>Guarantee Validation:</strong> Review collateral and coverage backing this loan.</li>
+                                <li><i class="mdi mdi-chart-line text-primary me-2"></i><strong>@GlobalMembersFSeries.performance_tracking:</strong> @GlobalMembersFSeries.monitor_repayments_and_balance_trends.</li>
+                                <li><i class="mdi mdi-shield-lock-outline text-success me-2"></i><strong>@GlobalShared.risk_assessment:</strong> @GlobalMembersFSeries.identify_writeoffs_delinquency_and_restructuring.</li>
+                                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i><strong>@GlobalShared.guarantee_validation:</strong> @GlobalMembersFSeries.review_collateral_and_coverage_backing_this_loan.</li>
                             </ul>
                         </div>
                     </div>
@@ -347,11 +347,11 @@
             <!-- Modal Footer -->
             <div class="modal-footer justify-content-between">
                 <span class="text-muted small">
-                    Member: <span class="fw-bold text-dark" id="loanCustomerName">N/A</span> |
-                    Loan #: <span class="fw-bold text-dark" id="loanIdDisplay">N/A</span>
+                    @GlobalShared.Member: <span class="fw-bold text-dark" id="loanCustomerName">N/A</span> |
+                    @GlobalShared.Loan: <span class="fw-bold text-dark" id="loanIdDisplay">N/A</span>
                 </span>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
             </div>
         </div>
@@ -362,7 +362,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="refundDetailsModalLabel">
-                    <i class="mdi mdi-cash-refund me-1"></i> Refund Details
+                    <i class="mdi mdi-cash-refund me-1"></i> @GlobalShared.refund_details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -371,7 +371,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
             </div>
         </div>

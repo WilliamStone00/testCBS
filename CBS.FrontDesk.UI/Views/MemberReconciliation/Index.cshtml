@@ -1,52 +1,53 @@
 ﻿@model dynamic
+@using Resources
 @{
     ViewBag.Title = "Member / Loan Reconciliation";
 }
 
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title">Member / Loan Reconciliation</h5>
+        <h5 class="card-title">@GlobalShared.Member / @GlobalShared.loan_reconciliation</h5>
 
         <div class="row g-3 align-items-end">
             <div class="col-md-12">
-                <label class="form-label fw-semibold">Choose mode</label>
+                <label class="form-label fw-semibold">@GlobalShared.choose_mode</label>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="reconMode" id="modeMember" value="member" checked>
-                    <label class="form-check-label" for="modeMember">Member</label>
+                    <label class="form-check-label" for="modeMember">@GlobalShared.Member</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="reconMode" id="modeLoan" value="loan">
-                    <label class="form-check-label" for="modeLoan">Loan</label>
+                    <label class="form-check-label" for="modeLoan">@GlobalShared.Loan</label>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <label for="AccountType" class="form-label">Account Type</label>
+                <label for="AccountType" class="form-label">@GlobalShared.Account_type</label>
                 <select id="AccountType" class="form-select select2" aria-label="Account Type">
-                    <option value="">--- Select Account Type ---</option>
+                    <option value="">--- @GlobalShared.select_account_type ---</option>
                 </select>
                 <div id="accountTypeMeta" class="small text-muted mt-1 d-none">
-                    <div><strong>Account ID:</strong> <span id="displayAccountId">-</span></div>
-                    <div><strong>Balance:</strong> <span id="displayBalance">-</span></div>
+                    <div><strong>@GlobalShared.Account_ID:</strong> <span id="displayAccountId">-</span></div>
+                    <div><strong>@GlobalShared.Balance:</strong> <span id="displayBalance">-</span></div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <label for="BranchId" class="form-label">Branch</label>
+                <label for="BranchId" class="form-label">@GlobalShared.Branch</label>
                 @* Server fills ViewBag.Branches in controller loader *@
                 @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                    "--- Select Branch ---", new { @class = "form-select select2", id = "BranchId" })
+                    $"--- {@GlobalShared.Select_Branch} ---", new { @class = "form-select select2", id = "BranchId" })
             </div>
 
             <div class="col-md-4">
-                <label for="BranchAccountId" class="form-label">Branch Account</label>
+                <label for="BranchAccountId" class="form-label">@GlobalShared.Branch_Account</label>
                 <select id="BranchAccountId" class="form-select select2">
-                    <option value="">--- Select Branch Account ---</option>
+                    <option value="">--- @GlobalShared.select_branch_account ---</option>
                 </select>
             </div>
 
             <div class="col-12">
-                <button id="btnLoadDetails" class="btn btn-primary" type="button" disabled>Show Branch Account Details</button>
+                <button id="btnLoadDetails" class="btn btn-primary" type="button" disabled>@GlobalShared.show_branch_account_details</button>
             </div>
         </div>
     </div>
@@ -57,7 +58,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Branch Account Details</h5>
+                <h5 class="modal-title">@GlobalShared.branch_account_details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="branchAccountModalBody">

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
     @using Resources
 <div class="table-responsive mb-3">
     @if (Convert.ToBoolean(ViewBag.IsAuthourized) == false)
@@ -11,12 +11,12 @@
             <table class="table table-hover table-bordered table-sm" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalManuallyJournalEntry.Code</th>
-                        <th>@GlobalManuallyJournalEntry.Reference</th>
-                        <th>@GlobalManuallyJournalEntry.IssuedBy</th>
-                        <th>@GlobalManuallyJournalEntry.IssuedDate</th>
-                        <th>@GlobalManuallyJournalEntry.Purpose</th>
-                        <th>@GlobalManuallyJournalEntry.Amount (XFA)</th>
+                        <th>@GlobalShared.Code</th>
+                        <th>@GlobalShared.Reference</th>
+                        <th>@GlobalShared.Issued_By</th>
+                        <th>@GlobalShared.Issued_Date</th>
+                        <th>@GlobalShared.Purpose</th>
+                        <th>@GlobalShared.Amount (XFA)</th>
                         <th>@GlobalShared.Status</th>
 
                         <th>@GlobalShared.Action</th>
@@ -76,7 +76,7 @@
                             {
                                 <td style="width:10%">
                                     <a href="#" type="button" onclick="loadPostedEntriesByReference('@item.Id')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
-                                        @GlobalManuallyJournalEntry.ApproveReject
+                                        @GlobalShared.approve_reject
                                     </a>
 
                                 </td>

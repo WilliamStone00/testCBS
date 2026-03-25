@@ -6,7 +6,7 @@
     @if (Model.LoanAmortizations.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalLoan.NoRepaymentScheduleGeneratedFor @Model.IndividualCustomer.CustomerList.name</p>
+            <p>@GlobalLoan.no_repayment_schedule_generated_for @Model.IndividualCustomer.CustomerList.name</p>
         </div>
     }
     else

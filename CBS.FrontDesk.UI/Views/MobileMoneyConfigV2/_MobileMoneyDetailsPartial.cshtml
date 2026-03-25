@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
-
+@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
+@using Resources
 @{
     var vm = Model;
 }
@@ -59,43 +59,43 @@
 <div class="detail-card">
     <div class="detail-header d-flex justify-content-between align-items-center">
         <div>
-            <div class="fw-bold">Mobile Money Details</div>
+            <div class="fw-bold">@GlobalMobileMoneyConfigV2.mobile_money_details</div>
         </div>
     </div>
 
     <div class="p-3">
         <div class="mb-3">
-            <span class="pair-label">Holder Name:</span>
+            <span class="pair-label">@GlobalShared.holder_name:</span>
             <span class="ms-1">@vm.Name</span>
         </div>
 
         <div class="grid-2col">
             <div>
-                <div class="pair-label">Phone Number:</div>
+                <div class="pair-label">@GlobalShared.Phone_Number:</div>
                 <span class="pair-name">@vm.TelNumber</span>
             </div>
 
             <div>
-                <div class="pair-label">Branch Code:</div>
+                <div class="pair-label">@GlobalShared.Branch_Code:</div>
                 <span class="pair-name">@vm.BranchCode</span>
             </div>
 
             <div>
-                <div class="pair-label">Branch Name:</div>
+                <div class="pair-label">@GlobalShared.Branch_Name:</div>
                 <span class="pair-name">@vm.BranchName</span>
             </div>
 
             <div>
-                <div class="pair-label">Branch Account GL:</div>
+                <div class="pair-label">@GlobalMobileMoneyConfigV2.branch_account_gl:</div>
                 <span class="pair-name">@vm.COAName</span>
             </div>
 
             <div>
-                <div class="pair-label">Status:</div>
+                <div class="pair-label">@GlobalShared.Status:</div>
                 <span class="pair-name">@vm.ActiveStatus</span>
             </div>
             <div>
-                <div class="pair-label">Creation Date:</div>
+                <div class="pair-label">@GlobalShared.Creation_Date:</div>
                 <span class="pair-name">@vm.CreatedDate</span>
             </div>
         </div>

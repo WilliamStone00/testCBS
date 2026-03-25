@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
     @using Resources
 @{
     var status = false;
@@ -21,7 +21,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-folder-information-outline me-2"></i>
-                @GlobalOperation.ACCOUNT_INFORMATION
+                @GlobalShared.Account_Information
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"
@@ -38,7 +38,7 @@
                                     <br />
                                     <div class="text-center my-3">
                                         <p>No initial deposit is done into account number: @Model.AccountNumber </p>
-                                        <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.PerformMemberDepositOperation">
+                                        <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.perform_member_deposit_operation">
                                             <span class="tf-icons mdi mdi-octagram-plus mdi-18px"></span>
                                         </a>
                                     </div>
@@ -55,13 +55,13 @@
                                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                                     <div class="card-info">
                                                         <div class="d-flex align-items-center">
-                                                            <h5 class="mb-0">@GlobalOperation.Balance: @Model.Balance.ToString("#,##0.0")</h5>
+                                                            <h5 class="mb-0">@GlobalShared.Balance: @Model.Balance.ToString("#,##0.0")</h5>
                                                         </div>
-                                                        <small>@GlobalOperation.AccountNumber: <b>@Model.AccountNumber</b></small><br />
-                                                        <small>@GlobalOperation.OpeningBalance: <b>N/A</b></small><br />
-                                                        <small class="mb-0">@GlobalOperation.AccountName: <b>@Model.Product.name</b></small><br />
-                                                        <small class="mb-0">@GlobalOperation.AccountStatus: <b>@Model.Status</b></small><br />
-                                                        <small class="mb-0">@GlobalOperation.DateCreated: <b>@Model.CreatedDate</b></small>
+                                                        <small>@GlobalShared.Account_Number: <b>@Model.AccountNumber</b></small><br />
+                                                        <small>@GlobalShared.Opening_Balance: <b>N/A</b></small><br />
+                                                        <small class="mb-0">@GlobalShared.Account_Name: <b>@Model.Product.name</b></small><br />
+                                                        <small class="mb-0">@GlobalShared.Account_Status: <b>@Model.Status</b></small><br />
+                                                        <small class="mb-0">@GlobalShared.Date_Created: <b>@Model.CreatedDate</b></small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,18 +71,18 @@
                                 <br />
                                 <div class="card mb-4">
                                     <div class="card-header">
-                                        <h5 class="card-title">@GlobalOperation.ACCOUNTS</h5>
+                                        <h5 class="card-title">@GlobalShared.Accounts</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive mb-3">
                                             <table class="table table-hover" id="myDataTableT">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>@GlobalOperation.AccountType</th>
+                                                        <th>@GlobalShared.Account_type</th>
                                                         <th>@GlobalShared.Status</th>
-                                                        <th>@GlobalOperation.Balance</th>
-                                                        <th>@GlobalOperation.Balance B/F</th>
-                                                        <th>@GlobalOperation.AccountNumber</th>
+                                                        <th>@GlobalShared.Balance</th>
+                                                        <th>@GlobalShared.Balance B/F</th>
+                                                        <th>@GlobalShared.Account_Number</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -101,7 +101,7 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.InActive</span></label>
+                                                                    <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.in_active</span></label>
                                                                 }
                                                             </td>
                                                             <td style="width: 15%;">@Convert.ToDecimal(d.balance).ToString("#,##0.0")</td>
@@ -111,7 +111,7 @@
                                                     }
                                                 </tbody>                                                <tfoot>
                                                     <tr>
-                                                        <td colspan="2">@GlobalOperation.TotalBalance:</td>
+                                                        <td colspan="2">@GlobalShared.Total_balance:</td>
                                                         <td colspan="3"><span id="totalBalance">@Model.AccountBalance.accounts.Sum(x => x.Balance).ToString("#,##0.0")</span></td>
                                                     </tr>
                                                 </tfoot>

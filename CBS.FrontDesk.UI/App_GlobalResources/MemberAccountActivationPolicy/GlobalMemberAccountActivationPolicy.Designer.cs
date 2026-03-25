@@ -61,281 +61,200 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activation Policy.
-        /// </summary>
-        internal static string ActivationPolicy {
-            get {
-                return ResourceManager.GetString("ActivationPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Annual behaviour.
-        /// </summary>
-        internal static string AnnualBehaviour {
-            get {
-                return ResourceManager.GetString("AnnualBehaviour", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Annual building contribution fee.
         /// </summary>
-        internal static string AnnualBuildingContributionFee {
+        internal static string annual_building_contribution_fee {
             get {
-                return ResourceManager.GetString("AnnualBuildingContributionFee", resourceCulture);
+                return ResourceManager.GetString("annual_building_contribution_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Buildin C fee.
         /// </summary>
-        internal static string BuildinCFee {
+        internal static string buildin_cfee {
             get {
-                return ResourceManager.GetString("BuildinCFee", resourceCulture);
+                return ResourceManager.GetString("buildin_cfee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bye laws fee.
         /// </summary>
-        internal static string ByeLawsFee {
+        internal static string bye_laws_fee {
             get {
-                return ResourceManager.GetString("ByeLawsFee", resourceCulture);
+                return ResourceManager.GetString("bye_laws_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check to keep this policy active.
         /// </summary>
-        internal static string CheckToKeepThisPolicyActive {
+        internal static string check_to_keep_this_policy_active {
             get {
-                return ResourceManager.GetString("CheckToKeepThisPolicyActive", resourceCulture);
+                return ResourceManager.GetString("check_to_keep_this_policy_active", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debit deposit annually.
         /// </summary>
-        internal static string DebitDepositAnnually {
+        internal static string debit_deposit_annually {
             get {
-                return ResourceManager.GetString("DebitDepositAnnually", resourceCulture);
+                return ResourceManager.GetString("debit_deposit_annually", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debit saving annually.
         /// </summary>
-        internal static string DebitSavingAnnually {
+        internal static string debit_saving_annually {
             get {
-                return ResourceManager.GetString("DebitSavingAnnually", resourceCulture);
+                return ResourceManager.GetString("debit_saving_annually", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debit share annually.
         /// </summary>
-        internal static string DebitShareAnnually {
+        internal static string debit_share_annually {
             get {
-                return ResourceManager.GetString("DebitShareAnnually", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entrance fee.
-        /// </summary>
-        internal static string EntranceFee {
-            get {
-                return ResourceManager.GetString("EntranceFee", resourceCulture);
+                return ResourceManager.GetString("debit_share_annually", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loan P fee.
         /// </summary>
-        internal static string LoanPFee {
+        internal static string loan_pfee {
             get {
-                return ResourceManager.GetString("LoanPFee", resourceCulture);
+                return ResourceManager.GetString("loan_pfee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum building contribution fee.
         /// </summary>
-        internal static string MaximumBuildingContributionFee {
+        internal static string maximum_building_contribution_fee {
             get {
-                return ResourceManager.GetString("MaximumBuildingContributionFee", resourceCulture);
+                return ResourceManager.GetString("maximum_building_contribution_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum byelaws fee.
         /// </summary>
-        internal static string MaximumByelawsFee {
+        internal static string maximum_byelaws_fee {
             get {
-                return ResourceManager.GetString("MaximumByelawsFee", resourceCulture);
+                return ResourceManager.GetString("maximum_byelaws_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum entrance fee.
         /// </summary>
-        internal static string MaximumEntranceFee {
+        internal static string maximum_entrance_fee {
             get {
-                return ResourceManager.GetString("MaximumEntranceFee", resourceCulture);
+                return ResourceManager.GetString("maximum_entrance_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum loan policy fee.
         /// </summary>
-        internal static string MaximumLoanPolicyFee {
+        internal static string maximum_loan_policy_fee {
             get {
-                return ResourceManager.GetString("MaximumLoanPolicyFee", resourceCulture);
+                return ResourceManager.GetString("maximum_loan_policy_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Member&apos; s Account Activation Policy.
         /// </summary>
-        internal static string MembersAccountActivationPolicy {
+        internal static string members_account_activation_policy {
             get {
-                return ResourceManager.GetString("MembersAccountActivationPolicy", resourceCulture);
+                return ResourceManager.GetString("members_account_activation_policy", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum building contribution fee.
         /// </summary>
-        internal static string MinimumBuildingContributionFee {
+        internal static string minimum_building_contribution_fee {
             get {
-                return ResourceManager.GetString("MinimumBuildingContributionFee", resourceCulture);
+                return ResourceManager.GetString("minimum_building_contribution_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum byelaws fee.
         /// </summary>
-        internal static string MinimumByelawsFee {
+        internal static string minimum_byelaws_fee {
             get {
-                return ResourceManager.GetString("MinimumByelawsFee", resourceCulture);
+                return ResourceManager.GetString("minimum_byelaws_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum entrance fee.
         /// </summary>
-        internal static string MinimumEntranceFee {
+        internal static string minimum_entrance_fee {
             get {
-                return ResourceManager.GetString("MinimumEntranceFee", resourceCulture);
+                return ResourceManager.GetString("minimum_entrance_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum loan policy fee.
         /// </summary>
-        internal static string MinimumLoanPolicyFee {
+        internal static string minimum_loan_policy_fee {
             get {
-                return ResourceManager.GetString("MinimumLoanPolicyFee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Moral person.
-        /// </summary>
-        internal static string MoralPerson {
-            get {
-                return ResourceManager.GetString("MoralPerson", resourceCulture);
+                return ResourceManager.GetString("minimum_loan_policy_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No member fee policy was found at the moment.
         /// </summary>
-        internal static string NoMemberFeePolicyWasFoundAtTheMoment {
+        internal static string no_member_fee_policy_was_found_at_the_moment {
             get {
-                return ResourceManager.GetString("NoMemberFeePolicyWasFoundAtTheMoment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Physical person.
-        /// </summary>
-        internal static string PhysicalPerson {
-            get {
-                return ResourceManager.GetString("PhysicalPerson", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Policy.
-        /// </summary>
-        internal static string Policy {
-            get {
-                return ResourceManager.GetString("Policy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Policy name.
-        /// </summary>
-        internal static string PolicyName {
-            get {
-                return ResourceManager.GetString("PolicyName", resourceCulture);
+                return ResourceManager.GetString("no_member_fee_policy_was_found_at_the_moment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select building contribution fee event name.
         /// </summary>
-        internal static string SelectBuildingContributionFeeEventName {
+        internal static string select_building_contribution_fee_event_name {
             get {
-                return ResourceManager.GetString("SelectBuildingContributionFeeEventName", resourceCulture);
+                return ResourceManager.GetString("select_building_contribution_fee_event_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select bye law fee event name.
         /// </summary>
-        internal static string SelectByeLawFeeEventName {
+        internal static string select_bye_law_fee_event_name {
             get {
-                return ResourceManager.GetString("SelectByeLawFeeEventName", resourceCulture);
+                return ResourceManager.GetString("select_bye_law_fee_event_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select entering fee event name.
         /// </summary>
-        internal static string SelectEnteringFeeEventName {
+        internal static string select_entering_fee_event_name {
             get {
-                return ResourceManager.GetString("SelectEnteringFeeEventName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select event codes.
-        /// </summary>
-        internal static string SelectEventCodes {
-            get {
-                return ResourceManager.GetString("SelectEventCodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select event name.
-        /// </summary>
-        internal static string SelectEventName {
-            get {
-                return ResourceManager.GetString("SelectEventName", resourceCulture);
+                return ResourceManager.GetString("select_entering_fee_event_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select loan policy fee event name.
         /// </summary>
-        internal static string SelectLoanPolicyFeeEventName {
+        internal static string select_loan_policy_fee_event_name {
             get {
-                return ResourceManager.GetString("SelectLoanPolicyFeeEventName", resourceCulture);
+                return ResourceManager.GetString("select_loan_policy_fee_event_name", resourceCulture);
             }
         }
     }

@@ -1,16 +1,16 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AddMobileMoneyCashTopup
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AddMobileMoneyCashTopup
 @using Resources
 @using (Html.BeginForm("Create", "MobileMoneyCashTopup", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend id="select_base">@GlobalMobileMoneyCashTopup.TransferRequestForm</legend>
+        <legend id="select_base">@GlobalMobileMoneyCashTopup.transfer_request_form</legend>
         <div class="row mt-2 gy-4">
             <div class="col-md-8">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalMobileMoneyCashTopup.SelectBranch+"---", new { @class = "form-control select2", @id = "branchInput" })
+                    @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalShared.Select_Branch+"---", new { @class = "form-control select2", @id = "branchInput" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger " })
-                    <label>@GlobalMobileMoneyCashTopup.Branch</label>
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.SelectTheBranchWhereTheRequestIsBeingMade."></i>
+                    <label>@GlobalShared.Branch</label>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.select_the_branch_where_the_request_is_being_made."></i>
                 </div>
             </div>
 
@@ -19,8 +19,8 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger " })
-                    <label>@GlobalMobileMoneyCashTopup.RequestedAmount</label>
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.EnterTheAmountYouWishToRequest."></i>
+                    <label>@GlobalShared.Requested_Amount</label>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.enter_the_amount_you_wish_to_request."></i>
                 </div>
             </div>
 
@@ -29,8 +29,8 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.MobileMoneyTransactionId, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.MobileMoneyTransactionId, "", new { @class = "text-danger " })
-                    <label>@GlobalMobileMoneyCashTopup.TransactionReference</label>
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ProvideTheTransactionReferenceForTrackingPurposes."></i>
+                    <label>@GlobalShared.Transaction_Reference</label>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.provide_the_transaction_reference_for_tracking_purposes."></i>
                 </div>
             </div>
 
@@ -39,15 +39,15 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger " })
-                    <label>@GlobalMobileMoneyCashTopup.MobileMoneyMemberAccountNumber</label>
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.EnterTheMobileMoneyNoneMembersAccountNumber."></i>
+                    <label>@GlobalMobileMoneyCashTopup.mobile_money_member_account_number</label>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.enter_the_mobile_money_none_members_account_number."></i>
                 </div>
             </div>
 
             <!-- Operator Type (MTN or Orange) -->
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    <label><b>@GlobalMobileMoneyCashTopup.OperatorType</b></label>
+                    <label><b>@GlobalShared.operator_type</b></label>
                     <br />
                     <div class="border p-3 me-2">
                         <div class="form-check form-check-inline" style="margin-right: 10px;">
@@ -60,14 +60,14 @@
                         </div>
                     </div>
                     @Html.ValidationMessageFor(m => m.OperatorType, "", new { @class = "text-danger " })
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.SelectTheMobileMoneyOperatorYouAreUsing."></i>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.select_the_mobile_money_operator_you_are_using."></i>
                 </div>
             </div>
 
             <!-- Source Type (GAV, OtherTransfer, HeadOffice, Wirering, M2Float) -->
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    <label><b>@GlobalMobileMoneyCashTopup.TransferType</b></label>
+                    <label><b>@GlobalShared.transfer_type</b></label>
                     <br />
                     <div class="border p-3 me-2">
                         @*<div class="form-check form-check-inline" style="margin-right: 10px;">
@@ -76,7 +76,7 @@
                         </div>*@
                         <div class="form-check form-check-inline" style="margin-right: 10px;">
                             @Html.RadioButtonFor(m => m.SourceType, "HeadOfficeToBranch", new { @class = "form-check-input", @id = "headOffice" })
-                            <label class="form-check-label" for="headOffice">@GlobalMobileMoneyCashTopup.HeadOfficeToBranch</label>
+                            <label class="form-check-label" for="headOffice">@GlobalMobileMoneyCashTopup.head_office_to_branch</label>
                         </div>
                         @*<div class="form-check form-check-inline" style="margin-right: 10px;">
                             @Html.RadioButtonFor(m => m.SourceType, "BranchToBranch", new { @class = "form-check-input", @id = "wirering", @disabled = "disabled" })
@@ -84,12 +84,12 @@
                         </div>*@
                         <div class="form-check form-check-inline">
                             @Html.RadioButtonFor(m => m.SourceType, "BranchToHeadOffice", new { @class = "form-check-input", @id = "m2Float" })
-                            <label class="form-check-label" for="m2Float">@GlobalMobileMoneyCashTopup.BranchToHeadOffice</label>
+                            <label class="form-check-label" for="m2Float">@GlobalMobileMoneyCashTopup.branch_to_head_office</label>
                         </div>
                     </div>
 
                     @Html.ValidationMessageFor(m => m.SourceType, "", new { @class = "text-danger " })
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ChooseTheSourceTypeForThisTransaction."></i>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.choose_the_source_type_for_this_transaction."></i>
                 </div>
             </div>
 
@@ -98,8 +98,8 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.RequestNote, new { @class = "form-control", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.RequestNote, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">@GlobalMobileMoneyCashTopup.RequestNote</label>
-                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ProvideAnyAdditionalNotesOrCommentsRegardingYourRequest."></i>
+                    <label for="formValidationDob">@GlobalShared.Request_note</label>
+                    <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.provide_any_additional_notes_or_comments_regarding_your_request."></i>
                 </div>
             </div>
         </div>

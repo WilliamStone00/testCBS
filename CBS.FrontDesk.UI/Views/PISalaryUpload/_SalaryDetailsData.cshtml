@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 
 
@@ -9,7 +9,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="overallSummaryHeading">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overallSummary" aria-expanded="true" aria-controls="overallSummary">
-                        @GlobalSalaryUpload.OverallPayrollSummary
+                        @GlobalPISalaryUpload.overall_payroll_summary
                     </button>
                 </h2>
                 <div id="overallSummary" class="accordion-collapse collapse show" aria-labelledby="overallSummaryHeading" data-bs-parent="#summaryAccordion">
@@ -18,7 +18,7 @@
                             <div class="col-md-6">
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body text-center">
-                                        <h6 class="card-title text-primary">@GlobalSalaryUpload.TotalMembers</h6>
+                                        <h6 class="card-title text-primary">@GlobalShared.Total_members</h6>
                                         <p class="card-text fs-4 fw-bold text-info">
                                             @Model.SalaryUploadModelSummaryDto.TotalMembers.ToString("N0")
                                         </p>
@@ -28,7 +28,7 @@
                             <div class="col-md-6">
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body text-center">
-                                        <h5 class="card-title text-primary">@GlobalSalaryUpload.TotalNetSalary</h5>
+                                        <h5 class="card-title text-primary">@GlobalPISalaryUpload.total_net_salary</h5>
                                         <p class="card-text fs-4 fw-bold text-success">
                                             @Model.SalaryUploadModelSummaryDto.TotalNetSalary.ToString("N1")
                                         </p>
@@ -45,12 +45,12 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>#</th>
-                                                <th>@GlobalSalaryUpload.Matricule</th>
-                                                <th>@GlobalSalaryUpload.Surname</th>
-                                                <th>@GlobalSalaryUpload.Name</th>
-                                                <th>@GlobalSalaryUpload.NetSalary</th>
-                                                <th>@GlobalSalaryUpload.UploadDate</th>
-                                                <th>@GlobalSalaryUpload.UploadedBy</th>
+                                                <th>@GlobalShared.matricule</th>
+                                                <th>@GlobalShared.surname</th>
+                                                <th>@GlobalShared.Name</th>
+                                                <th>@GlobalShared.net_salary</th>
+                                                <th>@GlobalShared.upload_date</th>
+                                                <th>@GlobalShared.Uploaded_By</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,7 +74,7 @@
                                 else
                                 {
                                     <div class="text-center my-3">
-                                        <p>@GlobalSalaryUpload.NoSalaryUploadsFound.</p>
+                                        <p>@GlobalPISalaryUpload.no_salary_uploads_found.</p>
                                     </div>
                                 }
                             </div>
@@ -87,7 +87,7 @@
             <div class="accordion-item mb-2">
                 <h2 class="accordion-header" id="branchSummaryHeading">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#branchSummary" aria-expanded="false" aria-controls="branchSummary">
-                        @GlobalSalaryUpload.BranchPayrollSummary
+                        @GlobalPISalaryUpload.branch_payroll_summary
                     </button>
                 </h2>
                 <div id="branchSummary" class="accordion-collapse collapse" aria-labelledby="branchSummaryHeading" data-bs-parent="#summaryAccordion">
@@ -107,15 +107,15 @@
                                             <div class="card shadow-sm border-0 h-100 p-2">
                                                 <div class="card-body">
                                                     <h6 class="card-title text-primary fw-bold text-start mb-2">@branch.BranchName</h6>
-                                                    <p class="text-muted text-start fw-medium">@GlobalSalaryUpload.BranchCode: <strong>@branch.BranchCode</strong></p>
+                                                    <p class="text-muted text-start fw-medium">@GlobalShared.Branch_Code: <strong>@branch.BranchCode</strong></p>
 
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <p class="text-info fw-bold mb-0 fw-medium">@GlobalSalaryUpload.SalaryEarners</p>
+                                                        <p class="text-info fw-bold mb-0 fw-medium">@GlobalPISalaryUpload.salary_earners</p>
                                                         <p class="text-info fw-bold mb-0 fw-medium">@branch.TotalMembers.ToString("N0")</p>
                                                     </div>
 
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <p class="text-success fw-bold mb-0 fw-medium">@GlobalSalaryUpload.GrossSalary</p>
+                                                        <p class="text-success fw-bold mb-0 fw-medium">@GlobalPISalaryUpload.gross_salary</p>
                                                         <p class="text-success fw-bold mb-0 fw-medium">@branch.TotalNetSalary.ToString("N1") XAF</p>
                                                     </div>
                                                 </div>
@@ -127,11 +127,11 @@
                                 <!-- Total Summary Card -->
                                 <div class="card shadow-sm border-0 mt-3 p-2">
                                     <div class="card-body text-center">
-                                        <h6 class="card-title text-dark fw-bold mb-2">@GlobalSalaryUpload.TotalPayrollSummary</h6>
+                                        <h6 class="card-title text-dark fw-bold mb-2">@GlobalPISalaryUpload.total_payroll_summary</h6>
                                         <div class="d-flex justify-content-around">
-                                            <p class="text-info fw-bold small">@GlobalSalaryUpload.TotalBranches: @totalBranches</p>
-                                            <p class="text-info fw-bold small">@GlobalSalaryUpload.TotalMembers: @totalMembers.ToString("N0")</p>
-                                            <p class="text-success fw-bold small">@GlobalSalaryUpload.TotalGrossSalary: @totalGrossSalary.ToString("N1") XAF</p>
+                                            <p class="text-info fw-bold small">@GlobalShared.total_branches: @totalBranches</p>
+                                            <p class="text-info fw-bold small">@GlobalShared.Total_members: @totalMembers.ToString("N0")</p>
+                                            <p class="text-success fw-bold small">@GlobalPISalaryUpload.total_gross_salary: @totalGrossSalary.ToString("N1") XAF</p>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                             else
                             {
                                 <div class="text-center my-3">
-                                    <p>@GlobalSalaryUpload.NoBranchPayrollSummariesFound.</p>
+                                    <p>@GlobalPISalaryUpload.no_branch_payroll_summaries_found.</p>
                                 </div>
                             }
                         </div>

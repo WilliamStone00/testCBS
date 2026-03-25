@@ -1,8 +1,8 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.LoanRepaymentDetailsDto
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.LoanRepaymentDetailsDto
 @{
     Layout = null;
 }
-
+@using Resources
 <fieldset class="fieldset-custom">
     <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
 
@@ -10,10 +10,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-cash-refund me-2"></i> Loan Repayment Details
+                <i class="mdi mdi-cash-refund me-2"></i> @GlobalSalaryUpload.loan_repayment_details
             </h1>
             <p class="card-text text-muted mb-1">
-                Detailed view of loan repayment transaction
+                @GlobalSalaryUpload.detailed_view_of_loan_repayment_transaction
             </p>
             @if (!string.IsNullOrEmpty(Model.TransactionReference))
             {
@@ -25,18 +25,18 @@
     <!-- Transaction Overview Card -->
     <div class="card mb-3">
         <div class="card-header bg-light text-bg-primary">
-            <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i> Transaction Overview</h6>
+            <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryUpload.transaction_overview</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Transaction ID:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.Transaction_id:</td>
                             <td><span class="badge bg-secondary">@Model.Id</span></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Status:</td>
+                            <td class="fw-bold">@GlobalShared.Status:</td>
                             <td>
                                 @{
                                     var statusClass = "bg-secondary";
@@ -70,11 +70,11 @@
 
                         </tr>
                         <tr>
-                            <td class="fw-bold">Execution Date:</td>
+                            <td class="fw-bold">@GlobalShared.execution_date:</td>
                             <td>@(Model.ExecutionDate?.ToString("dd MMM yyyy HH:mm") ?? "Not executed")</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Refund Date:</td>
+                            <td class="fw-bold">@GlobalSalaryUpload.refund_date:</td>
                             <td>@(Model.RefundDate?.ToString("dd MMM yyyy HH:mm") ?? "N/A")</td>
                         </tr>
                     </table>
@@ -82,19 +82,19 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">File Upload ID:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalSalaryUpload.file_upload_id:</td>
                             <td><span class="badge bg-secondary">@Model.FileUploadId</span></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Loan ID:</td>
+                            <td class="fw-bold">@GlobalShared.Loan_ID:</td>
                             <td>@Model.LoanId</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Salary Code:</td>
+                            <td class="fw-bold">@GlobalSalaryUpload.salary_code:</td>
                             <td><span class="badge bg-primary">@Model.SalaryCode</span></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Created Date:</td>
+                            <td class="fw-bold">@GlobalShared.Created_Date:</td>
                             <td>@(Model.CreatedDate?.ToString("dd MMM yyyy HH:mm") ?? "N/A")</td>
                         </tr>
                     </table>
@@ -105,7 +105,7 @@
                 <div class="row mt-2">
                     <div class="col-12">
                         <div class="alert alert-secondary mb-0">
-                            <strong>Description:</strong> @Model.Description
+                            <strong>@GlobalShared.Description:</strong> @Model.Description
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                     <div class="col-12">
                         <div class="alert alert-danger mb-0">
                             <i class="mdi mdi-alert-circle me-2"></i>
-                            <strong>Error:</strong> @Model.Error
+                            <strong>@GlobalShared.Error:</strong> @Model.Error
                         </div>
                     </div>
                 </div>
@@ -127,18 +127,18 @@
     <!-- Branch Information Card -->
     <div class="card mb-3">
         <div class="c bg-light text-primary">
-            <h6 class="mb-0"><i class="mdi mdi-bank me-2"></i> Branch Information</h6>
+            <h6 class="mb-0"><i class="mdi mdi-bank me-2"></i> @GlobalShared.Branch_Information</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Branch Name:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.Branch_Name:</td>
                             <td>@Model.BranchName</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Branch Code:</td>
+                            <td class="fw-bold">@GlobalShared.Branch_Code:</td>
                             <td><span class="badge bg-secondary">@Model.BranchCode</span></td>
                         </tr>
                     </table>
@@ -146,7 +146,7 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Branch ID:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.Branch_ID:</td>
                             <td><span class="badge bg-secondary">@Model.BranchId</span></td>
                         </tr>
                     </table>
@@ -158,14 +158,14 @@
     <!-- Member Information Card -->
     <div class="card mb-3">
         <div class="card-header bg-light text-primary">
-            <h6 class="mb-0"><i class="mdi mdi-account me-2"></i> Member Information</h6>
+            <h6 class="mb-0"><i class="mdi mdi-account me-2"></i> @GlobalShared.Member_Information</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Member Reference:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.Member_reference:</td>
                             <td><span class="badge bg-primary">@Model.MemberReference</span></td>
                         </tr>
                     </table>
@@ -173,7 +173,7 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Loan ID:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.Loan_ID:</td>
                             <td>@Model.LoanId</td>
                         </tr>
                     </table>
@@ -185,22 +185,22 @@
     <!-- Financial Details Card -->
     <div class="card mb-3">
         <div class="card-header bg-light text-primary">
-            <h6 class="mb-0"><i class="mdi mdi-currency-usd me-2"></i> Financial Details</h6>
+            <h6 class="mb-0"><i class="mdi mdi-currency-usd me-2"></i> @GlobalShared.Financial_Details</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 50%">Principal Amount:</td>
+                            <td class="fw-bold" style="width: 50%">@GlobalSalaryUpload.principal_amount:</td>
                             <td class="text-end">@Model.PrincipalAmount.ToString("N1")</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Interest:</td>
+                            <td class="fw-bold">@GlobalShared.Interest:</td>
                             <td class="text-end">@Model.Interest.ToString("N1")</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Charge Amount:</td>
+                            <td class="fw-bold">@GlobalShared.Charge_Amount:</td>
                             <td class="text-end">@Model.ChargeAmount.ToString("N1")</td>
                         </tr>
                     </table>
@@ -208,11 +208,11 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 50%">Tax Amount:</td>
+                            <td class="fw-bold" style="width: 50%">@GlobalSalaryUpload.tax_amount:</td>
                             <td class="text-end">@Model.TaxAmount.ToString("N1")</td>
                         </tr>
                         <tr class="table-active">
-                            <td class="fw-bold">Total Repayment:</td>
+                            <td class="fw-bold">@GlobalShared.total_repayment:</td>
                             <td class="text-end fw-bold text-primary">@Model.TotalRepaymentAmount.ToString("N1")</td>
                         </tr>
                     </table>
@@ -224,18 +224,18 @@
     <!-- Payment Details Card -->
     <div class="card mb-3">
         <div class="card-header bg-light text-primary">
-            <h6 class="mb-0"><i class="mdi mdi-credit-card me-2"></i> Payment Details</h6>
+            <h6 class="mb-0"><i class="mdi mdi-credit-card me-2"></i> @GlobalShared.Payment_Details</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">Payment Method:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalShared.payment_method:</td>
                             <td><span class="badge bg-info">@(Model.PaymentMethod ?? "N/A")</span></td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Payment Channel:</td>
+                            <td class="fw-bold">@GlobalSalaryUpload.payment_channel:</td>
                             <td><span class="badge bg-info">@(Model.PaymentChannel ?? "N/A")</span></td>
                         </tr>
                     </table>
@@ -243,15 +243,15 @@
                 <div class="col-md-6">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td class="fw-bold" style="width: 40%">BG Builder:</td>
+                            <td class="fw-bold" style="width: 40%">@GlobalSalaryUpload.bg_builder:</td>
                             <td>
                                 @if (Model.IsBGBuilder)
                                 {
-                                    <span class="badge bg-success">Yes</span>
+                                    <span class="badge bg-success">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">No</span>
+                                    <span class="badge bg-secondary">@GlobalShared.No</span>
                                 }
                             </td>
                         </tr>
@@ -266,18 +266,18 @@
     {
         <div class="card mb-3">
             <div class="card-header bg-light text-primary">
-                <h6 class="mb-0"><i class="mdi mdi-pencil-outline me-2"></i> Salary Debit Patch Information</h6>
+                <h6 class="mb-0"><i class="mdi mdi-pencil-outline me-2"></i> @GlobalSalaryUpload.salary_debit_patch_information</h6>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table table-sm table-borderless">
                             <tr>
-                                <td class="fw-bold" style="width: 40%">Patch Reference:</td>
+                                <td class="fw-bold" style="width: 40%">@GlobalSalaryUpload.patch_reference:</td>
                                 <td><span class="badge bg-secondary">@Model.SalaryDebitPatchRef</span></td>
                             </tr>
                             <tr>
-                                <td class="fw-bold">Patched At:</td>
+                                <td class="fw-bold">@GlobalSalaryUpload.patched_at:</td>
                                 <td>@(Model.SalaryDebitPatchRef.ToString() ?? "N/A")</td>
                             </tr>
                         </table>
@@ -285,7 +285,7 @@
                     <div class="col-md-6">
                         <table class="table table-sm table-borderless">
                             <tr>
-                                <td class="fw-bold" style="width: 40%">Patch Note:</td>
+                                <td class="fw-bold" style="width: 40%">@GlobalSalaryUpload.patch_note:</td>
                                 <td>@(Model.SalaryDebitPatchNote ?? "N/A")</td>
                             </tr>
                         </table>
@@ -298,7 +298,7 @@
     <!-- Actions -->
     <div class="d-flex justify-content-end mt-4">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="mdi mdi-close me-1"></i> Close
+            <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
         </button>
     </div>
 </fieldset>

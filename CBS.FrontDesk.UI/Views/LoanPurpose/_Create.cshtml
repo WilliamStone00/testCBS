@@ -8,9 +8,9 @@
                 <!-- Loan Product Category Field -->
                 <div class="col-md-12 mb-3" id="selectFeild">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.PcmfLoanPurposeId, new SelectList(ViewBag.Categories, "Id", "NameEn"), "---"+ @GlobalLoanPurpose.SelectCategory+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.PcmfLoanPurposeId, new SelectList(ViewBag.Categories, "Id", "NameEn"), "---"+ GlobalShared.Select_Category+"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.PcmfLoanPurposeId, "", new { @class = "text-danger" })
-                        <label>@GlobalLoanPurpose.SelectLoanProductCategory</label>
+                        <label>@GlobalLoanPurpose.select_loan_product_category</label>
                     </div>
                 </div>
                 <!-- Loan Purpose Type Field -->
@@ -18,7 +18,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.purposeName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.purposeName, "", new { @class = "text-danger" })
-                        <label>@GlobalLoanPurpose.LoanPurpose</label>
+                        <label>@GlobalLoanPurpose.loan_purpose</label>
                     </div>
                 </div>
             </fieldset>

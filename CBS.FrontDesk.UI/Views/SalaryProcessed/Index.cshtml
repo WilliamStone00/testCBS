@@ -1,6 +1,7 @@
-﻿@{
+@{
     ViewBag.Title = "Processed Salary Overview";
 }
+@using Resources
 <style>
 
     /* Force status column to shrink */
@@ -45,13 +46,13 @@
         <div class="card bg-light mb-1">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> Processed Salary
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalSalaryProcessed.processed_salary
                 </h1>
                 <p class="card-text">
-                    Review executed salary entries, filter by branch, operators, member, status, date, and temporary pay-code state.
+                    @GlobalSalaryProcessed.review_executed_salary_entries_filter_by_branch_operators_member_status_date_and_temporary_paycode_state.
                 </p>
                 <p class="card-text text-black fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to refine results, then Apply or Export.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalSalaryProcessed.use_the_filters_below_to_refine_results_then_apply_or_export.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -61,7 +62,7 @@
 
 <div class="card mb-1">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for filtering processed salary</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryProcessed.tips_for_filtering_processed_salary</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -69,12 +70,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-2">
-                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>Branch:</strong> Focus on a specific branch.</li>
-                <li><i class="mdi mdi-account-cash text-success me-2"></i><strong>Uploaded/Executed by:</strong> Filter by who uploaded or executed.</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Dates:</strong> Start/End are inclusive.</li>
-                <li><i class="mdi mdi-account-search text-warning me-2"></i><strong>Member:</strong> Filter by Member Ref/Name or show non-members only.</li>
-                <li><i class="mdi mdi-timer-sand-complete text-secondary me-2"></i><strong>Temp Pay Code:</strong> Show entries with an active TempPayCode or without one (mutually exclusive).</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Status:</strong> Paid vs Pending.</li>
+                <li><i class="mdi mdi-office-building text-primary me-2"></i><strong>@GlobalShared.Branch:</strong> @GlobalSalaryProcessed.focus_on_a_specific_branch.</li>
+                <li><i class="mdi mdi-account-cash text-success me-2"></i><strong>@GlobalSalaryProcessed.uploaded_executed_by:</strong> @GlobalSalaryProcessed.filter_by_who_uploaded_or_executed.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalShared.Dates:</strong> @GlobalSalaryProcessed.startend_are_inclusive.</li>
+                <li><i class="mdi mdi-account-search text-warning me-2"></i><strong>@GlobalShared.Member:</strong> @GlobalSalaryProcessed.filter_by_member_refname_or_show_nonmembers_only.</li>
+                <li><i class="mdi mdi-timer-sand-complete text-secondary me-2"></i><strong>@GlobalSalaryProcessed.temp_pay_code:</strong> @GlobalSalaryProcessed.show_entries_with_an_active_temppaycode_or_without_one_mutually_exclusive.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@GlobalShared.Status:</strong> @GlobalSalaryProcessed.paid_vs_pending.</li>
             </ul>
         </div>
     </div>
@@ -82,7 +83,7 @@
 
 <div class="card shadow p-3 mb-1">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Advanced Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Advanced_filters
     </h5>
 
     <!-- Root wrapper improves Select2 dropdown positioning -->
@@ -95,7 +96,7 @@
                     <input type="checkbox" class="form-check-input me-2"
                            id="byBranch" data-bs-toggle="collapse" data-bs-target="#branchFilterSection"
                            aria-controls="branchFilterSection" />
-                    <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                    <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.Filter_by_Branch</label>
                 </div>
             </div>
 
@@ -104,7 +105,7 @@
                     <input type="checkbox" class="form-check-input me-2"
                            id="byOperators" data-bs-toggle="collapse" data-bs-target="#operatorsFilterSection"
                            aria-controls="operatorsFilterSection" />
-                    <label class="form-check-label fw-bold" for="byOperators">Filter by Uploaded/Executed By</label>
+                    <label class="form-check-label fw-bold" for="byOperators">@GlobalSalaryProcessed.filter_by_uploadedexecuted_by</label>
                 </div>
             </div>
 
@@ -113,7 +114,7 @@
                     <input type="checkbox" class="form-check-input me-2"
                            id="byDate" data-bs-toggle="collapse" data-bs-target="#dateRangeSection"
                            aria-controls="dateRangeSection" />
-                    <label class="form-check-label fw-bold" for="byDate">Filter by Date Range</label>
+                    <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date_Range</label>
                 </div>
             </div>
         </div>
@@ -122,11 +123,11 @@
         <div id="branchFilterSection" class="collapse mb-1">
             <div class="row g-3">
                 <div class="col-12">
-                    <label class="form-label fw-bold">Select Branch</label>
+                    <label class="form-label fw-bold">@GlobalShared.Select_Branch</label>
                     @Html.DropDownList(
                       "branchInput",
                       new SelectList(ViewBag.Branches, "Id", "Name"),
-                      "--- Select Branch ---",
+                      $"--- {@GlobalShared.Select_Branch} ---",
                       new { @class = "form-select select2", id = "branchInput" }
                     )
                 </div>
@@ -137,36 +138,36 @@
         <div id="operatorsFilterSection" class="collapse mb-1">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Uploaded by</label>
+                    <label class="form-label fw-bold">@GlobalShared.Uploaded_By</label>
                     @if (ViewBag.Users != null)
                     {
                         @Html.DropDownList(
                           "uploadedByInput",
                           new SelectList(ViewBag.Users, "Value", "Text"),   // Value then Text
-                          "--- Any ---",
+                          $"--- {@GlobalShared.any} ---",
                           new { @class = "form-select select2", id = "uploadedBy" }
                         )
                     }
                     else
                     {
-                        <input type="text" id="uploadedBy" class="form-control" placeholder="Uploader username or ID" />
+                        <input type="text" id="uploadedBy" class="form-control" placeholder="@GlobalSalaryProcessed.uploader_username_or_id" />
                     }
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Executed by</label>
+                    <label class="form-label fw-bold">@GlobalShared.executed_by</label>
                     @if (ViewBag.Users != null)
                     {
                         @Html.DropDownList(
                           "executedByInput",
                           new SelectList(ViewBag.Users, "Value", "Text"),
-                          "--- Any ---",
+                          $"--- {@GlobalShared.any} ---",
                           new { @class = "form-select select2", id = "executedBy" }
                         )
                     }
                     else
                     {
-                        <input type="text" id="executedBy" class="form-control" placeholder="Executor username or ID" />
+                        <input type="text" id="executedBy" class="form-control" placeholder="@GlobalSalaryProcessed.executor_username_or_id" />
                     }
                 </div>
             </div>
@@ -176,11 +177,11 @@
         <div id="dateRangeSection" class="collapse mb-1">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Start date (inclusive)</label>
+                    <label class="form-label fw-bold">@GlobalShared.Start_Date (@GlobalShared.Inclusive)</label>
                     <input type="date" id="startDate" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">End date (inclusive)</label>
+                    <label class="form-label fw-bold">@GlobalShared.End_Date (@GlobalShared.Inclusive)</label>
                     <input type="date" id="endDate" class="form-control" />
                 </div>
             </div>
@@ -192,34 +193,34 @@
                 <div class="col-lg-4 col-md-4">
                     <div class="form-check m-0 d-flex align-items-center">
                         <input type="checkbox" id="withActiveCodeOnly" class="form-check-input me-2" />
-                        <label class="form-check-label fw-bold" for="withActiveCodeOnly">With Active TempPayCode only</label>
+                        <label class="form-check-label fw-bold" for="withActiveCodeOnly">@GlobalSalaryProcessed.with_active_temppaycode_only</label>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4">
                     <div class="form-check m-0 d-flex align-items-center">
                         <input type="checkbox" id="nonMembersOnly" class="form-check-input me-2" />
-                        <label class="form-check-label fw-bold" for="nonMembersOnly">Non-members only</label>
+                        <label class="form-check-label fw-bold" for="nonMembersOnly">@GlobalSalaryProcessed.non_members_only</label>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4">
                     <div class="form-check m-0 d-flex align-items-center">
                         <input type="checkbox" id="withoutActiveCodeOnly" class="form-check-input me-2" />
-                        <label class="form-check-label fw-bold" for="withoutActiveCodeOnly">Without Active TempPayCode only</label>
+                        <label class="form-check-label fw-bold" for="withoutActiveCodeOnly">@GlobalSalaryProcessed.without_active_temppaycode_only</label>
                     </div>
                 </div>
             </div>
 
             <div class="row g-3 align-items-end">
                 <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-bold">Member Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                     <input type="text" id="memberReference" class="form-control" placeholder="e.g., MEM000123" />
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-bold">Member Name</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_name</label>
                     <input type="text" id="memberName" class="form-control" placeholder="Search by member name" />
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <label class="form-label fw-bold">Status</label>
+                    <label class="form-label fw-bold">@GlobalShared.Status</label>
                     @if (ViewBag.StatusOptions != null)
                     {
                         @Html.DropDownList(
@@ -231,9 +232,9 @@
                     else
                     {
                         <select id="status" class="form-select">
-                            <option value="">All</option>
-                            <option value="true">Salary Paid</option>
-                            <option value="false">Pending</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="true">@GlobalSalaryProcessed.salary_paid</option>
+                            <option value="false">@GlobalShared.Pending</option>
                         </select>
                     }
                 </div>
@@ -245,13 +246,13 @@
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
             <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                <i class="mdi mdi-magnify"></i> Apply Filter
+                <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
             </button>
             <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                <i class="mdi mdi-refresh"></i> Reset
+                <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
             </button>
             <button id="exportBtn" type="button" class="btn btn-success w-100">
-                <i class="mdi mdi-file-export"></i> Export
+                <i class="mdi mdi-file-export"></i> @GlobalShared.Export
             </button>
         </div>
     </div>

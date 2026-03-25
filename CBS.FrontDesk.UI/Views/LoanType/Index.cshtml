@@ -1,19 +1,19 @@
-﻿
+
 
 @{
     ViewBag.Title = "Loan Type Settings";
 }
-
+@using Resources
 <div id="datalistingview">
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2 shadow-sm">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-bank me-2"></i> Institution Loan Types
+                        <i class="mdi mdi-bank me-2"></i> @GlobalLoanType.institution_loan_types
                     </h1>
                     <p class="card-text">
-                        Manage different types of loans offered by the bank
+                        @GlobalLoanType.manage_different_types_of_loans_offered_by_the_bank
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -23,7 +23,7 @@
 
     <div class="card mb-3">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseLoanTypeTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
@@ -34,43 +34,43 @@
                 <ul class="mb-0">
                     <li class="mb-2">
                         <i class="mdi mdi-tag-outline text-success me-2"></i>
-                        <strong>Code Convention:</strong> Use unique, meaningful codes (e.g., "HL" for Home Loan, "PL" for Personal Loan). Codes are case-sensitive and cannot be changed after creation.
+                        <strong>@GlobalLoanType.convention:</strong> @GlobalLoanType.use_unique_meaningful_codes_eg_hl_for_home_loan_pl_for_personal_loan_codes_are_casesensitive_and_cannot_be_changed_after_creation.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-format-title text-info me-2"></i>
-                        <strong>Name Standardization:</strong> Keep names clear and consistent. Use "Loan" suffix for clarity (e.g., "Education Loan" instead of just "Education").
+                        <strong>@GlobalLoanType.name_standardization:</strong> @GlobalLoanType.keep_names_clear_and_consistent_use_loan_suffix_for_clarity_eg_education_loan_instead_of_just_education.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-order-numeric-ascending text-warning me-2"></i>
-                        <strong>Display Order:</strong> Set numerical order (0, 1, 2, etc.) to control how loan types appear in dropdowns. Lower numbers appear first.
+                        <strong>@GlobalLoanType.display_order:</strong> @GlobalLoanType.set_numerical_order_0_1_2_etc_to_control_how_loan_types_appear_in_dropdowns_lower_numbers_appear_first.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-text-box-outline text-primary me-2"></i>
-                        <strong>Description Best Practices:</strong> Include key terms, eligibility criteria, and typical usage. This helps staff and customers understand the loan purpose.
+                        <strong>@GlobalLoanType.description_best_practices:</strong> @GlobalLoanType.include_key_terms_eligibility_criteria_and_typical_usage_this_helps_staff_and_customers_understand_the_loan_purpose.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-toggle-switch text-danger me-2"></i>
-                        <strong>Active/Inactive Status:</strong> Mark types as "Inactive" instead of deleting when no longer offered. This preserves historical data.
+                        <strong>@GlobalShared.Active/ @GlobalShared.InActive @GlobalShared.Status:</strong> @GlobalLoanType.mark_types_as_inactive_instead_of_deleting_when_no_longer_offered_this_preserves_historical_data.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-shield-check text-success me-2"></i>
-                        <strong>Security:</strong> Only authorized personnel should modify loan types as changes affect loan processing and reporting.
+                        <strong>@GlobalShared.Security:</strong> @GlobalLoanType.only_authorized_personnel_should_modify_loan_types_as_changes_affect_loan_processing_and_reporting.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-connection text-info me-2"></i>
-                        <strong>System Integration:</strong> Loan types are linked to interest rates, fees, and repayment schedules. Verify connections before making changes.
+                        <strong>@GlobalLoanType.system_integration:</strong> @GlobalLoanType.loan_types_are_linked_to_interest_rates_fees_and_repayment_schedules_verify_connections_before_making_changes.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-backup-restore text-warning me-2"></i>
-                        <strong>Version Control:</strong> Always document changes. The system tracks modification history for audit purposes.
+                        <strong>@GlobalLoanType.version_control:</strong> @GlobalLoanType.always_document_changes_the_system_tracks_modification_history_for_audit_purposes.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-chart-bar text-primary me-2"></i>
-                        <strong>Reporting Impact:</strong> Changes affect financial reports, portfolio analysis, and regulatory compliance reports.
+                        <strong>@GlobalLoanType.reporting_impact:</strong> @GlobalLoanType.changes_affect_financial_reports_portfolio_analysis_and_regulatory_compliance_reports.
                     </li>
                     <li class="mb-2">
                         <i class="mdi mdi-alert-circle text-secondary me-2"></i>
-                        <strong>Testing:</strong> Test new loan types in the test environment before deploying to production.
+                        <strong>@GlobalShared.testing:</strong> @GlobalLoanType.test_new_loan_types_in_the_test_environment_before_deploying_to_production.
                     </li>
                 </ul>
             </div>
@@ -81,10 +81,10 @@
     <div class="card mb-1">
         <div class="card-body d-flex justify-content-end align-items-center">
             <button type="button" onclick="showCreateModal()" class="btn btn-label-primary btn-sm me-2">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.Add New
             </button>
             <button type="button" onclick="refreshTable()" class="btn btn-label-secondary btn-sm">
-                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+                <i class="mdi mdi-refresh mdi-18px"></i> @GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -92,21 +92,21 @@
     <!-- DataTable -->
     <div class="card p-3 shadow mb-4">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-table"></i> Loan Types Catalog
+            <i class="mdi mdi-table"></i> @GlobalLoanType.loan_types_catalog
             <small class="text-muted ms-2">
-                <span id="recordCount" class="badge bg-info">Loading...</span>
+                <span id="recordCount" class="badge bg-info">@GlobalShared.Loading...</span>
             </small>
         </h5>
         <div class="table-responsive">
             <table id="loanTypeDataTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Display Order</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>@GlobalShared.Code</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.Description</th>
+                        <th>@GlobalShared.display_order</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

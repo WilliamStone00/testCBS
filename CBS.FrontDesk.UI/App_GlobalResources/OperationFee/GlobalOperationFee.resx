@@ -117,115 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ADDITIONAL_CHARGES" xml:space="preserve">
+  <data name="additional_charges" xml:space="preserve">
     <value>ADDITIONAL CHARGES</value>
   </data>
-  <data name="ApplicableForMoralPersons" xml:space="preserve">
+  <data name="applicable_for_moral_persons" xml:space="preserve">
     <value>Applicable for moral persons (Group. If not checked, then it's for individual)</value>
   </data>
-  <data name="Applied" xml:space="preserve">
-    <value>Applied</value>
-  </data>
-  <data name="AppliedOnHolidays" xml:space="preserve">
+  <data name="applied_on_holidays" xml:space="preserve">
     <value>Applied on holidays</value>
   </data>
-  <data name="BASIC_INFORMATION" xml:space="preserve">
-    <value>BASIC INFORMATION</value>
-  </data>
-  <data name="CivilServants" xml:space="preserve">
-    <value>Civil Servants</value>
-  </data>
-  <data name="DailyCollections" xml:space="preserve">
+  <data name="daily_collections" xml:space="preserve">
     <value>Daily collections</value>
   </data>
-  <data name="DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded" xml:space="preserve">
+  <data name="daily_saver_registration_onboarding_fee" xml:space="preserve">
+    <value>Daily Saver Registration/Onboarding Fee</value>
+  </data>
+  <data name="define_any_extra_charges_that_apply_when_the_limit_is_exceeded" xml:space="preserve">
     <value>Define any extra charges that apply when the limit is exceeded. This can be a flat fee or a percentage</value>
   </data>
-  <data name="DESCRIPTION" xml:space="preserve">
-    <value>DESCRIPTION</value>
-  </data>
-  <data name="DescriptionLc" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Entity" xml:space="preserve">
-    <value>Entity</value>
-  </data>
-  <data name="FeeDescription" xml:space="preserve">
-    <value>Fee description</value>
-  </data>
-  <data name="FeeIsCalculatedAsRate" xml:space="preserve">
-    <value>Fee is calculated as rate</value>
-  </data>
-  <data name="FeeIsCalculatedOnRanges" xml:space="preserve">
-    <value>Fee is calculated on ranges</value>
-  </data>
-  <data name="FEE_CALCULATION_TYPE" xml:space="preserve">
+  <data name="fee_calculation_type" xml:space="preserve">
     <value>FEE CALCULATION TYPE</value>
   </data>
-  <data name="FlatExtraChargeOnExceedingLimit" xml:space="preserve">
+  <data name="fee_description" xml:space="preserve">
+    <value>Fee description</value>
+  </data>
+  <data name="fee_is_calculated_as_rate" xml:space="preserve">
+    <value>Fee is calculated as rate</value>
+  </data>
+  <data name="fee_is_calculated_on_ranges" xml:space="preserve">
+    <value>Fee is calculated on ranges</value>
+  </data>
+  <data name="flat_extra_charge_on_exceeding_limit" xml:space="preserve">
     <value>Flat Extra Charge on Exceeding Limit</value>
   </data>
-  <data name="Membership" xml:space="preserve">
+  <data name="membership" xml:space="preserve">
     <value>Membership (Member Registration)</value>
   </data>
-  <data name="Moral" xml:space="preserve">
-    <value>Moral</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NormalCashOperation" xml:space="preserve">
+  <data name="normal_cash_operation" xml:space="preserve">
     <value>Normal cash operation</value>
   </data>
-  <data name="NormalDays" xml:space="preserve">
-    <value>Normal days</value>
+  <data name="no_fee_type_is_created" xml:space="preserve">
+    <value>No fee type is created</value>
   </data>
-  <data name="OnlyOnHolidays" xml:space="preserve">
+  <data name="only_on_holidays" xml:space="preserve">
     <value>Only on holidays</value>
   </data>
-  <data name="OperationChargesTypes" xml:space="preserve">
+  <data name="operation_charges_types" xml:space="preserve">
     <value>Operation Charges Types</value>
   </data>
-  <data name="OperationFeeDetails" xml:space="preserve">
+  <data name="operation_fee_details" xml:space="preserve">
     <value>Operation Fee Details</value>
   </data>
-  <data name="PercentageExtraChargeOnExceedingLimit" xml:space="preserve">
+  <data name="percentage_extra_charge_on_exceeding_limit" xml:space="preserve">
     <value>Percentage extra charge on exceeding limit</value>
   </data>
-  <data name="Physical" xml:space="preserve">
-    <value>Physical</value>
-  </data>
-  <data name="PrivateInstitutions" xml:space="preserve">
+  <data name="private_institutions" xml:space="preserve">
     <value>Private Institutions</value>
   </data>
-  <data name="ProvideADetailedDescriptionForThisFeeType" xml:space="preserve">
+  <data name="provide_adetailed_description_for_this_fee_type" xml:space="preserve">
     <value>Provide a detailed description for this fee type</value>
   </data>
-  <data name="ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName" xml:space="preserve">
+  <data name="provide_the_basic_details_of_the_operation_fee_such_as_its_name" xml:space="preserve">
     <value>Provide the basic details of the operation fee, such as its name</value>
   </data>
-  <data name="REGULAR_OPERATIONS_FEE_TYPE" xml:space="preserve">
+  <data name="regular_operations_fee_type" xml:space="preserve">
     <value>REGULAR OPERATIONS FEE TYPE</value>
   </data>
-  <data name="REMITTANCE_FEE_TYPE" xml:space="preserve">
+  <data name="remittance_fee_type" xml:space="preserve">
     <value>REMITTANCE FEE TYPE</value>
   </data>
-  <data name="SALARY_FEE_TYPE" xml:space="preserve">
+  <data name="salary_fee_type" xml:space="preserve">
     <value>SALARY FEE TYPE</value>
   </data>
-  <data name="SelectHowTheFeeWillBeCalculated" xml:space="preserve">
+  <data name="select_how_the_fee_will_be_calculated" xml:space="preserve">
     <value>Select how the fee will be calculated: as a percentage rate or based on defined ranges. Specify if it applies on holidays or for moral persons</value>
   </data>
-  <data name="SelectTheApplicableFeeTypeForThRemittanceTransaction" xml:space="preserve">
+  <data name="select_the_applicable_fee_type_for_th_remittance_transaction" xml:space="preserve">
     <value>Select the applicable fee type for the remittance transaction. This fee type determines the charges associated with transferring money through different remittance services such as Western Union, MoneyGram, or other platforms</value>
   </data>
-  <data name="SelectTheTypeOfOperationFeeApplicable" xml:space="preserve">
+  <data name="select_the_type_of_operation_fee_applicable" xml:space="preserve">
     <value>Select the type of operation fee applicable, such as membership or C-Money</value>
   </data>
-  <data name="SelectTheTypeOfSalaryFeeApplicable" xml:space="preserve">
+  <data name="select_the_type_of_salary_fee_applicable" xml:space="preserve">
     <value>Select the type of salary fee applicable, such as Civil Servants, Private Institutions, Daily Servers Or Internal</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
   </data>
 </root>

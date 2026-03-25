@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
 @using Resources
 
 
@@ -9,7 +9,7 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        Edit Loan Product
+                        @GlobalLoanProduct.edit_loan_product
                     </h1>
 
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -20,7 +20,7 @@
 
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Configuring Loan Products Effectively</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanProduct.tips_for_configuring_loan_products_effectively</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips2" aria-expanded="false" aria-controls="collapseTips2">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -30,99 +30,99 @@
                 <ul class="mb-0">
                     <li>
                         <i class="mdi mdi-check-circle-outline text-success me-2"></i>
-                        <strong>Loan Term:</strong> Use Short, Medium, or Long Term to comply with COBAC risk and provisioning rules.
+                        <strong>@GlobalShared.Loan_Term:</strong> @GlobalLoanProduct.use_short_medium_or_long_term_to_comply_with_cobac_risk_and_provisioning_rules.
                     </li>
                     <li>
                         <i class="mdi mdi-target-variant text-primary me-2"></i>
-                        <strong>Target:</strong> Select the intended customer group like Individual, SME, or Group to support segmentation and reporting.
+                        <strong>@GlobalShared.target:</strong> @GlobalLoanProduct.select_the_intended_customer_group_like_individual_sme_or_group_to_support_segmentation_and_reporting.
                     </li>
                     <li>
                         <i class="mdi mdi-tag-multiple-outline text-info me-2"></i>
-                        <strong>Product Category:</strong> Choose based on loan use (e.g. Consumption, Investment, Working Capital) for proper PCMF classification.
+                        <strong>@GlobalShared.product_category:</strong> @GlobalLoanProduct.choose_based_on_loan_use_eg_consumption_investment_working_capital_for_proper_pcmf_classification.
                     </li>
                     <li>
                         <i class="mdi mdi-sitemap-outline text-success me-2"></i>
-                        <strong>Loan Type Category:</strong> Identify if the product is an Overdraft, Line of Credit, SSF-based, or Main Loan. This affects accounting and liquidity reports.
+                        <strong>@GlobalShared.Loan_Type_Category:</strong> @GlobalLoanProduct.identify_if_the_product_is_an_overdraft_line_of_credit_ssfbased_or_main_loan_this_affects_accounting_and_liquidity_reports.
                     </li>
                     <li>
                         <i class="mdi mdi-alert-octagon-outline text-danger me-2"></i>
-                        <strong>Exceptional Loan:</strong> This loan type is reserved for special, non-standard credit arrangements that fall outside the structure of classic or revolving loan products. It is typically used in rare or sensitive scenarios where standard loan policies do not apply. Examples include:
+                        <strong>@GlobalShared.Exceptional_Loan:</strong> @GlobalLoanProduct.this_loan_type_is_reserved_for_special_nonstandard_credit_arrangements_that_fall_outside_the_structure_of_classic_or_revolving_loan_products_it_is_typically_used_in_rare_or_sensitive_scenarios_where_standard_loan_policies_do_not_apply_examples_include:
                         <ul class="mt-1">
-                            <li>⚖️ <em>Court-mandated loans</em> issued based on legal judgments or settlements</li>
-                            <li>🔁 <em>Rescheduled or restructured delinquent loans</em> under exceptional board approval</li>
-                            <li>🎗️ <em>Humanitarian or donor-funded relief credit</em> granted after disasters or crises</li>
-                            <li>🤝 <em>One-time internal loans</em> to staff or community members under special authorization</li>
+                            <li>⚖️ @Html.Raw(@GlobalLoanProduct.courtmandated_loans_issued_based_on_legal_judgments_or_settlements)</li>
+                            <li>🔁 @Html.Raw(@GlobalLoanProduct.rescheduled_or_restructured_delinquent_loans_under_exceptional_board_approval)</li>
+                            <li>🎗️ @Html.Raw(@GlobalLoanProduct.humanitarian_or_donorfunded_relief_credit_granted_after_disasters_or_crises)</li>
+                            <li>🤝 @Html.Raw(@GlobalLoanProduct.onetime_internal_loans_to_staff_or_community_members_under_special_authorization)</li>
                         </ul>
-                        These products must be handled with extra care and require <strong>written justification</strong> and <strong>prior validation</strong> from Internal Control, Compliance, or the Board of Directors. They are not intended for public offer or routine lending, and must be clearly documented for audit and regulatory reporting purposes.
+                        @Html.Raw(@GlobalLoanProduct.these_products_must_be_handled_with_extra_care_and_require_written_justification_and_prior_validation_from_internal_control_compliance_or_the_board_of_directors_they_are_not_intended_for_public_offer_or_routine_lending_and_must_be_clearly_documented_for_audit_and_regulatory_reporting_purposes).
                     </li>
                     <li>
                         <i class="mdi mdi-format-list-bulleted-type text-warning me-2"></i>
-                        <strong>Chart of Account Mapping:</strong> Every loan product must be linked to the correct PCMF Chart of Account. For example, loans of short term must map to short-term loan accounts.
+                        <strong>@GlobalLoanProduct.chart_of_account_mapping:</strong> @GlobalLoanProduct.every_loan_product_must_be_linked_to_the_correct_pcmf_chart_of_account_for_example_loans_of_short_term_must_map_to_shortterm_loan_accounts.
                     </li>
                     <li>
                         <i class="mdi mdi-timer-sand text-info me-2"></i>
-                        <strong>Respect PCMF Loan Terms:</strong> When mapping to COA, ensure that the selected term (Short, Medium, Long) matches the PCMF account level structure.
+                        <strong>@GlobalLoanProduct.respect_pcmf_loan_terms:</strong> @GlobalLoanProduct.when_mapping_to_coa_ensure_that_the_selected_term_short_medium_long_matches_the_pcmf_account_level_structure.
                     </li>
                     <li>
                         <i class="mdi mdi-file-chart-outline text-secondary me-2"></i>
-                        <strong>Reporting Alignment:</strong> Proper setup ensures automatic generation of SESAME and COBAC reports across branches.
+                        <strong>@GlobalLoanProduct.reporting_alignment:</strong> @GlobalLoanProduct.proper_setup_ensures_automatic_generation_of_sesame_and_cobac_reports_across_branches.
                     </li>
                     <li>
                         <i class="mdi mdi-lock-alert-outline text-danger me-2"></i>
-                        <strong>Don’t Edit Active Products:</strong> Instead, deactivate and clone to avoid inconsistencies in audit trails or regulatory forms.
+                        <strong>@GlobalLoanProduct.dont_edit_active_products:</strong> @GlobalLoanProduct.instead_deactivate_and_clone_to_avoid_inconsistencies_in_audit_trails_or_regulatory_forms.
                     </li>
                     <li>
                         <i class="mdi mdi-refresh-auto text-info me-2"></i>
-                        <strong>Review Quarterly:</strong> Validate product configurations regularly to align with evolving COBAC standards or business strategy.
+                        <strong>@GlobalLoanProduct.review_quarterly:</strong> @GlobalShared.validate_product_configurations_regularly_to_align_with_evolving_cobac_standards_or_business_strategy.
                     </li>
                     <li>
                         <i class="mdi mdi-account-check-outline text-primary me-2"></i>
-                        <strong>Assign Only Authorized Editors:</strong> Product configuration rights should be restricted to approved officers or compliance managers.
+                        <strong>@GlobalLoanProduct.assign_only_authorized_editors:</strong> @GlobalLoanProduct.product_configuration_rights_should_be_restricted_to_approved_officers_or_compliance_managers.
                     </li>
                 </ul>
             </div>
 
             <div class="card mb-2 border">
                 <div class="card-header fw-bold text-primary">
-                    <i class="mdi mdi-timetable me-1"></i> Standard Loan Term Classification (COBAC / PCMF)
+                    <i class="mdi mdi-timetable me-1"></i> @GlobalLoanProduct.standard_loan_term_classification (COBAC / PCMF)
                 </div>
                 <div class="card-body p-3">
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 20%;">Loan Term</th>
-                                    <th style="width: 25%;">Duration (Max)</th>
-                                    <th>Description</th>
+                                    <th style="width: 20%;">@GlobalShared.Loan_Term</th>
+                                    <th style="width: 25%;">@GlobalShared.Duration (Max)</th>
+                                    <th>@GlobalShared.Description</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Short Term</strong></td>
-                                    <td>Up to 12 months</td>
+                                    <td><strong>@GlobalShared.short_term</strong></td>
+                                    <td>@GlobalLoanProduct.up_to_12_months</td>
                                     <td>
-                                        Typically used for working capital, treasury needs, or revolving credits. Must be recorded under <strong>short-term loan accounts</strong> in PCMF.
+                                        @Html.Raw(@GlobalLoanProduct.typically_used_for_working_capital_treasury_needs_or_revolving_credits_must_be_recorded_under_shortterm_loan_accounts_in_pcmf).
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Medium Term</strong></td>
-                                    <td>Greater than 12 months and up to 36 months</td>
+                                    <td><strong>@GlobalShared.medium_term</strong></td>
+                                    <td>@GlobalLoanProduct.greater_than_12_months_and_up_to_36_months</td>
                                     <td>
-                                        Applied to equipment financing, business expansion, or personal projects. Mapped to <strong>medium-term loan accounts</strong> in PCMF.
+                                        @Html.Raw(@GlobalLoanProduct.applied_to_equipment_financing_business_expansion_or_personal_projects_mapped_to_mediumterm_loan_accounts_in_pcmf).
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Long Term</strong></td>
-                                    <td>Above 36 months</td>
+                                    <td><strong>@GlobalShared.long_term</strong></td>
+                                    <td>@GlobalLoanProduct.above_36_months</td>
                                     <td>
-                                        Used for long-duration projects like housing, agriculture investments, or asset acquisition. Must be posted to <strong>long-term loan accounts</strong>.
+                                        @Html.Raw(@GlobalLoanProduct.used_for_longduration_projects_like_housing_agriculture_investments_or_asset_acquisition_must_be_posted_to_longterm_loan_accounts).
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <p class="text-muted mt-3 mb-0">
-                        These classifications are essential for provisioning rules, PCMF account mapping, and generating valid SESAME reports. Always ensure your loan products respect this term structure.
+                        @GlobalLoanProduct.these_classifications_are_essential_for_provisioning_rules_pcmf_account_mapping_and_generating_valid_sesame_reports_always_ensure_your_loan_products_respect_this_term_structure.
                     </p>
                 </div>
             </div>
@@ -146,7 +146,7 @@
                 <!-- 📘 Section: Loan Classification -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header fw-bold text-primary">
-                        <i class="mdi mdi-bank-outline me-1"></i> Loan Classification
+                        <i class="mdi mdi-bank-outline me-1"></i> @GlobalLoanProduct.loan_classification
                     </div>
                     <div class="card-body row g-4">
                         <div class="col-md-12">
@@ -156,7 +156,7 @@
                                     "--- Select Term ---",
                                     new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanTermId, "", new { @class = "text-danger" })
-                                <label>Loan Term</label>
+                                <label>@GlobalShared.Loan_Term</label>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                 <!-- 📘 Section: Product & Target Binding -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header fw-bold text-primary">
-                        <i class="mdi mdi-target-variant me-1"></i> Product & Target Binding
+                        <i class="mdi mdi-target-variant me-1"></i> @GlobalLoanProduct.product_target_binding
                     </div>
                     <div class="card-body row g-4">
                         <div class="col-md-6">
@@ -175,7 +175,7 @@
                                     "--- Select Category ---",
                                     new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanProductCategoryId, "", new { @class = "text-danger" })
-                                <label>Loan Product Category</label>
+                                <label>@GlobalLoanProduct.loan_product_category</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -185,7 +185,7 @@
                                     "--- Select Target ---",
                                     new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.TargetType, "", new { @class = "text-danger" })
-                                <label>Target Type</label>
+                                <label>@GlobalShared.target_type</label>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -193,17 +193,17 @@
                                 @Html.DropDownListFor(m => m.AddLoanProductCommand.LoanTypeCategory,
                                     new SelectList(new List<SelectListItem>
                                     {
-                                        new SelectListItem { Text = "[Revolving Facility] Line of Credit", Value = "LineOfCredit" },
-                                        new SelectListItem { Text = "[Revolving Facility] Over-draft", Value = "Overdraft" },
-                                        new SelectListItem { Text = "[Classic Loan] Loan Within Standard Saving Facilities (SSF)", Value = "SSF" },
-                                        new SelectListItem { Text = "[Classic Loan] Loan Out Of Standard Saving Facilities (Main_Loan)", Value = "Main_Loan" },
-                                        new SelectListItem { Text = "[Special Loan] Exceptional Loan", Value = "ExceptionalLoan" }
+                                        new SelectListItem { Text = $"[{@GlobalLoanProduct.revolving_facility}] {@GlobalLoanProduct.line_of_credit}", Value = "LineOfCredit" },
+                                        new SelectListItem { Text = $"[{@GlobalLoanProduct.revolving_facility}] {@GlobalShared.Overdraft}", Value = "Overdraft" },
+                                        new SelectListItem { Text = $"[{@GlobalShared.classic_loan}] {@GlobalLoanProduct.loan_within_standard_saving_facilities} (SSF)", Value = "SSF" },
+                                        new SelectListItem { Text = $"[{@GlobalShared.classic_loan}] {@GlobalLoanProduct.loan_out_of_standard_saving_facilities_mainloan}", Value = "Main_Loan" },
+                                        new SelectListItem { Text = $"[{@GlobalLoanProduct.special_loan}] {@GlobalShared.Exceptional_Loan}", Value = "ExceptionalLoan" }
 
                                     }, "Value", "Text"),
                                     "--- Select Category ---",
                                     new { @class = "form-control select2", onchange = "handleLoanTypeChange(this.value);" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.LoanTypeCategory, "", new { @class = "text-danger" })
-                                <label>Loan Type Category</label>
+                                <label>@GlobalShared.Loan_Type_Category</label>
                             </div>
                         </div>
                     </div>
@@ -212,28 +212,28 @@
                 <!-- 📘 Section: Product Details -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header fw-bold text-primary">
-                        <i class="mdi mdi-format-title me-1"></i> Product Information
+                        <i class="mdi mdi-format-title me-1"></i> @GlobalShared.Product_Information
                     </div>
                     <div class="card-body row g-4">
                         <div class="col-md-3">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AddLoanProductCommand.ProductCode, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.ProductCode, "", new { @class = "text-danger" })
-                                <label>Product Code</label>
+                                <label>@GlobalShared.Product_Code</label>
                             </div>
                         </div>
                         <div class="col-md-9">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextBoxFor(m => m.AddLoanProductCommand.ProductName, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.ProductName, "", new { @class = "text-danger" })
-                                <label>Product Name</label>
+                                <label>@GlobalShared.Product_Name</label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating form-floating-outline">
                                 @Html.TextAreaFor(m => m.AddLoanProductCommand.Description, new { @class = "form-control", @style = "height: 180px;" })
                                 @Html.ValidationMessageFor(m => m.AddLoanProductCommand.Description, "", new { @class = "text-danger" })
-                                <label>Product Description</label>
+                                <label>@GlobalShared.product_description</label>
                             </div>
                         </div>
                     </div>
@@ -242,27 +242,27 @@
                 <!-- 📘 Section: Status & Tags -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-header fw-bold text-primary">
-                        <i class="mdi mdi-check-decagram-outline me-1"></i> Product Activation, Facility Link & Mortgage Tag
+                        <i class="mdi mdi-check-decagram-outline me-1"></i> @GlobalLoanProduct.product_activation_facility_link_mortgage_tag
                     </div>
                     <div class="card-body row g-3">
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.AddLoanProductCommand.ActiveStatus, new { @class = "form-check-input", id = "isActive" })
-                                <label class="form-check-label" for="isActive">Mark Product as Active</label>
+                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.mark_product_as_active</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.AddLoanProductCommand.IsProductWithSavingFacilities,
                                     new { @class = "form-check-input", id = "isSSF", @checked = "checked", disabled = "disabled" })
-                                <label class="form-check-label" for="isSSF">Reserve this product for Saving Facility Integration (SSF)</label>
+                                <label class="form-check-label" for="isSSF">@GlobalLoanProduct.reserve_this_product_for_saving_facility_integration (SSF)</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.AddLoanProductCommand.IsMortgage,
                                     new { @class = "form-check-input", id = "isMortgage" })
-                                <label class="form-check-label" for="isMortgage">Tag this product as a Mortgage Loan product</label>
+                                <label class="form-check-label" for="isMortgage">@GlobalLoanProduct.tag_this_product_as_a_mortgage_loan_product</label>
                             </div>
                         </div>
                     </div>

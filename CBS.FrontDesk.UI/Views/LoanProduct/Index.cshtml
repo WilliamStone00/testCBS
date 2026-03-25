@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
-
+@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@using Resources
 @{
     ViewBag.Title = "Loan Product Management";
 }
@@ -10,13 +10,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-briefcase-check-outline me-2"></i> Loan Product Management
+                    <i class="mdi mdi-briefcase-check-outline me-2"></i> @GlobalLoanProduct.loan_product_management
                 </h1>
                 <p class="card-text">
-                    Manage the creation, classification, and lifecycle of loan products using a structure that aligns with COBAC and PCMF standards.
+                    @GlobalLoanProduct.manage_the_creation_classification_and_lifecycle_of_loan_products_using_a_structure_that_aligns_with_cobac_and_pcmf_standards.
                 </p>
                 <p class="card-text fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Adhering to the correct structure is essential for risk controls, audit consistency, and SESAME reporting compliance.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLoanProduct.adhering_to_the_correct_structure_is_essential_for_risk_controls_audit_consistency_and_sesame_reporting_compliance.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="modal-body" id="loanProductModalBody">
-                <div class="text-muted">Loading...</div>
+                <div class="text-muted">@GlobalShared.Loading...</div>
             </div>
 
         </div>

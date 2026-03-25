@@ -18,7 +18,7 @@
         <div class="card-body text-center">
             <h5 class="modal-title text-primary">
                 <i class="mdi mdi-bank-transfer me-2"></i>
-                @(isEdit ? GlobalShared.Edit : GlobalShared.AddNew) Loan Term
+                @(isEdit ? GlobalShared.Edit : GlobalShared.AddNew) @GlobalShared.Loan_Term
             </h5>
                <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
         </div>
@@ -39,7 +39,7 @@
                             (IEnumerable<SelectListItem>)ViewBag.TermKind,
                             "Select Term Kind",
                             new { @class = "form-control select2", required = "required" })
-                        <label class="form-label">@GlobalLoanTerm.TermKind</label>
+                        <label class="form-label">@GlobalLoanTerm.term_kind</label>
                         @Html.ValidationMessageFor(m => m.TermKind, "", new { @class = "text-danger small" })
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.NameEn,
                             new { @class = "form-control", placeholder = "English Name", required = "required", maxlength = "200" })
-                        <label >@GlobalLoanTerm.Name En</label>
+                        <label >@GlobalShared.Name En</label>
                         @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger small" })
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.NameFr,
                             new { @class = "form-control", placeholder = "French Name", required = "required", maxlength = "200" })
-                        <label >@GlobalLoanTerm.Name Fr</label>
+                        <label >@GlobalShared.Name Fr</label>
                         @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger small" })
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.MinInMonth,
                             new { @class = "form-control", type = "number", min = "0", placeholder = "Minimum", required = "required" })
-                        <label >@GlobalLoanTerm.Minimum_value_in_months </label>
+                        <label >@GlobalLoanTerm.minimum_value_in_months </label>
                         @Html.ValidationMessageFor(m => m.MinInMonth, "", new { @class = "text-danger small" })
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <div class="form-floating">
                         @Html.TextBoxFor(m => m.MaxInMonth,
                             new { @class = "form-control", type = "number", min = "0", placeholder = "Maximum", required = "required" })
-                        <label >@GlobalLoanTerm.Maximum_value_in_months </label>
+                        <label >@GlobalLoanTerm.maximum_value_in_months </label>
                         @Html.ValidationMessageFor(m => m.MaxInMonth, "", new { @class = "text-danger small" })
                     </div>
                 </div>

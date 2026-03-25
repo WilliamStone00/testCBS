@@ -1,81 +1,82 @@
-﻿<div class="card">
+@using Resources
+<div class="card">
     <div class="card-body">
         <!-- Column Visibility Controls with improved styling -->
         <div class="mb-4">
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <span class="fw-bold text-muted me-2">
                     <i class="mdi mdi-view-column me-1"></i>
-                    Show/Hide Columns:
+                    @GlobalShared.show/@GlobalShared.hide_columns:
                 </span>
                 <div class="d-flex gap-2 flex-wrap">
                     <!-- Branch Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colBranch" checked data-column="1" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colBranch" style="cursor: pointer;">Branch</label>
+                        <label class="form-check-label fw-medium" for="colBranch" style="cursor: pointer;">@GlobalShared.Branch</label>
                     </div>
 
                     <!-- Member Reference Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colMemberRef" checked data-column="2" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colMemberRef" style="cursor: pointer;">Member Ref</label>
+                        <label class="form-check-label fw-medium" for="colMemberRef" style="cursor: pointer;">@GlobalShared.Member_ref</label>
                     </div>
 
                     <!-- Salary Code Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colSalaryCode" checked data-column="3" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colSalaryCode" style="cursor: pointer;">Salary Code</label>
+                        <label class="form-check-label fw-medium" for="colSalaryCode" style="cursor: pointer;">@GlobalSalaryUpload.salary_code</label>
                     </div>
 
                     <!-- Status Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colStatus" checked data-column="4" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colStatus" style="cursor: pointer;">Status</label>
+                        <label class="form-check-label fw-medium" for="colStatus" style="cursor: pointer;">@GlobalShared.Status</label>
                     </div>
 
                     <!-- Principal Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colPrincipal" checked data-column="5" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colPrincipal" style="cursor: pointer;">Principal</label>
+                        <label class="form-check-label fw-medium" for="colPrincipal" style="cursor: pointer;">@GlobalShared.Principal</label>
                     </div>
 
                     <!-- Interest Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colInterest" checked data-column="6" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colInterest" style="cursor: pointer;">Interest</label>
+                        <label class="form-check-label fw-medium" for="colInterest" style="cursor: pointer;">@GlobalShared.Interest</label>
                     </div>
 
                     <!-- Charge Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colCharge" checked data-column="7" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colCharge" style="cursor: pointer;">Charge</label>
+                        <label class="form-check-label fw-medium" for="colCharge" style="cursor: pointer;">@GlobalShared.Charge</label>
                     </div>
 
                     <!-- Tax Column (Hidden by default) -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colTax" data-column="8" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium text-muted" for="colTax" style="cursor: pointer;">Tax</label>
+                        <label class="form-check-label fw-medium text-muted" for="colTax" style="cursor: pointer;">@GlobalShared.Tax</label>
                     </div>
 
                     <!-- Total Column (Hidden by default) -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colTotal" data-column="9" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium text-muted" for="colTotal" style="cursor: pointer;">Total</label>
+                        <label class="form-check-label fw-medium text-muted" for="colTotal" style="cursor: pointer;">@GlobalShared.Total</label>
                     </div>
 
                     <!-- Actions Column -->
                     <div class="form-check form-switch">
                         <input class="form-check-input column-toggle" type="checkbox" role="switch"
                                id="colActions" checked data-column="10" style="cursor: pointer;">
-                        <label class="form-check-label fw-medium" for="colActions" style="cursor: pointer;">Actions</label>
+                        <label class="form-check-label fw-medium" for="colActions" style="cursor: pointer;">@GlobalShared.Actions</label>
                     </div>
                 </div>
             </div>
@@ -83,17 +84,17 @@
             <!-- Quick Actions -->
             <div class="d-flex gap-2 mt-2">
                 <button type="button" class="btn btn-sm btn-outline-primary" id="showAllColumns">
-                    <i class="mdi mdi-eye me-1"></i>Show All
+                    <i class="mdi mdi-eye me-1"></i>@GlobalShared.show_all
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="resetColumns">
-                    <i class="mdi mdi-refresh me-1"></i>Reset to Default
+                    <i class="mdi mdi-refresh me-1"></i>@GlobalShared.reset_to_default
                 </button>
             </div>
 
             <small class="text-muted mt-2 d-block">
                 <i class="mdi mdi-information-outline"></i>
-                <span class="fw-medium">First 7 columns + Actions shown by default.</span>
-                Use the switches above to customize your view. Hidden columns appear dimmed.
+                <span class="fw-medium">@GlobalSalaryUpload.first_7_columns_actions_shown_by_default.</span>
+                @GlobalSalaryUpload.use_the_switches_above_to_customize_your_view_hidden_columns_appear_dimmed.
             </small>
         </div>
 
@@ -114,17 +115,17 @@
                 </colgroup>
                 <thead class="table-light">
                     <tr>
-                        <th>Created Date</th>
-                        <th>Branch</th>
-                        <th>Member Reference</th>
-                        <th>Salary Code</th>
-                        <th>Status</th>
-                        <th class="text-end">Principal</th>
-                        <th class="text-end">Interest</th>
-                        <th class="text-end">Charge</th>
-                        <th class="text-end">Tax</th>
-                        <th class="text-end">Total</th>
-                        <th class="text-center">Actions</th>
+                        <th>@GlobalShared.Created_Date</th>
+                        <th>@GlobalShared.Branch</th>
+                        <th>@GlobalShared.Member_reference</th>
+                        <th>@GlobalSalaryUpload.salary_code</th>
+                        <th>@GlobalShared.Status</th>
+                        <th class="text-end">@GlobalShared.Principal</th>
+                        <th class="text-end">@GlobalShared.Interest</th>
+                        <th class="text-end">@GlobalShared.Charge</th>
+                        <th class="text-end">@GlobalShared.Tax</th>
+                        <th class="text-end">@GlobalShared.Total</th>
+                        <th class="text-center">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

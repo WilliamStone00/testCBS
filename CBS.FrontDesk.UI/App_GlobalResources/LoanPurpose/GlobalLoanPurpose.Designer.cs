@@ -63,54 +63,27 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Loan purpose.
         /// </summary>
-        internal static string LoanPurpose {
+        internal static string loan_purpose {
             get {
-                return ResourceManager.GetString("LoanPurpose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("loan_purpose", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No loan purposes available.
         /// </summary>
-        internal static string NoLoanPurposesAvailable {
+        internal static string no_loan_purposes_available {
             get {
-                return ResourceManager.GetString("NoLoanPurposesAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product category.
-        /// </summary>
-        internal static string ProductCategory {
-            get {
-                return ResourceManager.GetString("ProductCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select category.
-        /// </summary>
-        internal static string SelectCategory {
-            get {
-                return ResourceManager.GetString("SelectCategory", resourceCulture);
+                return ResourceManager.GetString("no_loan_purposes_available", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select loan product category.
         /// </summary>
-        internal static string SelectLoanProductCategory {
+        internal static string select_loan_product_category {
             get {
-                return ResourceManager.GetString("SelectLoanProductCategory", resourceCulture);
+                return ResourceManager.GetString("select_loan_product_category", resourceCulture);
             }
         }
     }

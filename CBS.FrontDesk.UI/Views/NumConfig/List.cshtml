@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @{
     ViewBag.Title = "Number Config Overview";
 }
@@ -8,10 +8,10 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-format-list-numbered me-2"></i> Number Configuration
+                        <i class="mdi mdi-format-list-numbered me-2"></i> @GlobalNumConfig.number_configuration
                     </h1>
                     <p class="card-text">
-                        Manage serial/number configuration per branch and date range.
+                        @GlobalNumConfig.manage_serialnumber_configuration_per_branch_and_date_range.
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -22,7 +22,7 @@
     <!-- Tips Section -->
     <div class="card mb-3">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Number Configuration</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalNumConfig.tips_for_number_configuration</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -30,9 +30,9 @@
         <div id="collapseTips" class="collapse">
             <div class="card-body">
                 <ul>
-                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Branch:</strong> Select the branch to apply this numbering scheme.</li>
-                    <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>Dates:</strong> Use date range to enable/disable configuration across time.</li>
-                    <li><i class="mdi mdi-numeric text-secondary me-2"></i> <strong>Positions:</strong> Bank/branch/year/serial positions control how numbers are built.</li>
+                    <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Branch:</strong> @GlobalNumConfig.select_the_branch_to_apply_this_numbering_scheme.</li>
+                    <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalShared.Dates:</strong> @GlobalNumConfig.use_date_range_to_enabledisable_configuration_across_time.</li>
+                    <li><i class="mdi mdi-numeric text-secondary me-2"></i> <strong>@GlobalShared.positions:</strong> @GlobalNumConfig.bankbranchyearserial_positions_control_how_numbers_are_built.</li>
                 </ul>
             </div>
         </div>
@@ -53,14 +53,14 @@
                data-bs-toggle="tooltip"
                title="Add New Configuration"
                target="_blank">
-                <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.add_configuration
             </a>
         </div>
     </div>
 
     <!-- Number Config Filters -->
     <div class="card shadow p-3 mb-4">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Number Config Filters</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalNumConfig.number_config_filters</h5>
 
         <form id="numconfigFilterForm" autocomplete="off">
             <div class="card p-3 mb-3 bg-light">
@@ -69,14 +69,14 @@
                     <div class="col-md-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="toggleBranch" onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
-                            <label class="form-check-label fw-bold" for="toggleBranch">Show Branch</label>
+                            <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.Show_Branch</label>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
-                            <label class="form-check-label fw-bold" for="toggleDates">Show Date Filters</label>
+                            <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.Show_Date_Filters</label>
                         </div>
                     </div>
                 </div>
@@ -84,12 +84,12 @@
                 <!-- Default Filters -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Name</label>
+                        <label class="form-label fw-bold">@GlobalShared.Name</label>
                         <input type="text" id="name" name="Name" class="form-control" placeholder="Configuration name" />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Serial Number Position</label>
+                        <label class="form-label fw-bold">@GlobalNumConfig.serial_number_position</label>
                         <input type="number" id="serialNumberPosition" name="SerialNumberPosition" class="form-control" min="0" />
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                 <div id="branchFilter" class="d-none">
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Branch</label>
+                            <label class="form-label fw-bold">@GlobalShared.Branch</label>
                             @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                         </div>
                     </div>
@@ -107,15 +107,15 @@
                 <!-- Position Settings -->
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Bank Code Position</label>
+                        <label class="form-label fw-bold">@GlobalNumConfig.bank_code_position</label>
                         <input type="number" id="bankCodePosition" name="BankCodePosition" class="form-control" min="0" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Branch Code Position</label>
+                        <label class="form-label fw-bold">@GlobalNumConfig.branch_code_position</label>
                         <input type="number" id="branchCodePosition" name="BranchCodePosition" class="form-control" min="0" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Year Position</label>
+                        <label class="form-label fw-bold">@GlobalNumConfig.year_position</label>
                         <input type="number" id="yearPosition" name="YearPosition" class="form-control" min="0" />
                     </div>
                 </div>
@@ -134,11 +134,11 @@
                 <div id="dateFilters" class="d-none">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Start Date</label>
+                            <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                             <input type="date" id="startDate" name="StartDate" class="form-control" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">End Date</label>
+                            <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                             <input type="date" id="endDate" name="EndDate" class="form-control" />
                         </div>
                     </div>
@@ -148,10 +148,10 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex">
                     <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
                     <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
                 </div>
             </div>

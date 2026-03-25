@@ -63,315 +63,270 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Add new translations.
         /// </summary>
-        internal static string AddNewTranslations {
+        internal static string add_new_translations {
             get {
-                return ResourceManager.GetString("AddNewTranslations", resourceCulture);
+                return ResourceManager.GetString("add_new_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to All editable translations will appear in the grid. Ensure accuracy when updating tooltips and descriptions.
         /// </summary>
-        internal static string AllEditableTranslationsWillAppearInTheGrid {
+        internal static string all_editable_translations_will_appear_in_the_grid {
             get {
-                return ResourceManager.GetString("AllEditableTranslationsWillAppearInTheGrid", resourceCulture);
+                return ResourceManager.GetString("all_editable_translations_will_appear_in_the_grid", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Changes take effect immediately.
         /// </summary>
-        internal static string ChangesTakeEffectImmediately {
+        internal static string changes_take_effect_immediately {
             get {
-                return ResourceManager.GetString("ChangesTakeEffectImmediately", resourceCulture);
+                return ResourceManager.GetString("changes_take_effect_immediately", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to EDIT MENU TRANSLATIONS.
         /// </summary>
-        internal static string EDITMENUTRANSLATIONS {
+        internal static string edit_menu_translations {
             get {
-                return ResourceManager.GetString("EDITMENUTRANSLATIONS", resourceCulture);
+                return ResourceManager.GetString("edit_menu_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Edit translations.
         /// </summary>
-        internal static string EditTranslations {
+        internal static string edit_translations {
             get {
-                return ResourceManager.GetString("EditTranslations", resourceCulture);
+                return ResourceManager.GetString("edit_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure all translated text accurately reflects the original meaning.
         /// </summary>
-        internal static string EnsureAllTranslatedTextAccuratelyReflectsTheOriginalMeaning {
+        internal static string ensure_all_translated_text_accurately_reflects_the_original_meaning {
             get {
-                return ResourceManager.GetString("EnsureAllTranslatedTextAccuratelyReflectsTheOriginalMeaning", resourceCulture);
+                return ResourceManager.GetString("ensure_all_translated_text_accurately_reflects_the_original_meaning", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Existing translations.
         /// </summary>
-        internal static string ExistingTranslations {
+        internal static string existing_translations {
             get {
-                return ResourceManager.GetString("ExistingTranslations", resourceCulture);
+                return ResourceManager.GetString("existing_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Existing translations can also be edited from the grid.
         /// </summary>
-        internal static string ExistingTranslationsCanAlsoBeEditedFromTheGrid {
+        internal static string existing_translations_can_also_be_edited_from_the_grid {
             get {
-                return ResourceManager.GetString("ExistingTranslationsCanAlsoBeEditedFromTheGrid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export option.
-        /// </summary>
-        internal static string ExportOption {
-            get {
-                return ResourceManager.GetString("ExportOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language filter.
-        /// </summary>
-        internal static string LanguageFilter {
-            get {
-                return ResourceManager.GetString("LanguageFilter", resourceCulture);
+                return ResourceManager.GetString("existing_translations_can_also_be_edited_from_the_grid", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Language selection.
         /// </summary>
-        internal static string LanguageSelection {
+        internal static string language_selection {
             get {
-                return ResourceManager.GetString("LanguageSelection", resourceCulture);
+                return ResourceManager.GetString("language_selection", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Load translations.
         /// </summary>
-        internal static string LoadTranslations {
+        internal static string load_translations {
             get {
-                return ResourceManager.GetString("LoadTranslations", resourceCulture);
+                return ResourceManager.GetString("load_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Make edits where necessary, then click.
         /// </summary>
-        internal static string MakeEditsWhereNecessaryThenClick {
+        internal static string make_edits_where_necessary_then_click {
             get {
-                return ResourceManager.GetString("MakeEditsWhereNecessaryThenClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Menu.
-        /// </summary>
-        internal static string Menu {
-            get {
-                return ResourceManager.GetString("Menu", resourceCulture);
+                return ResourceManager.GetString("make_edits_where_necessary_then_click", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MENU TRANSLATION OVERVIEW.
         /// </summary>
-        internal static string MENU_TRANSLATION_OVERVIEW {
+        internal static string menu_translation_overview {
             get {
-                return ResourceManager.GetString("MENU_TRANSLATION_OVERVIEW", resourceCulture);
+                return ResourceManager.GetString("menu_translation_overview", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Only untranslated menu items for that language will be shown.
         /// </summary>
-        internal static string OnlyUntranslatedMenuItemsForThatLanguageWillBeShown {
+        internal static string only_untranslated_menu_items_for_that_language_will_be_shown {
             get {
-                return ResourceManager.GetString("OnlyUntranslatedMenuItemsForThatLanguageWillBeShown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Original description.
-        /// </summary>
-        internal static string OriginalDescription {
-            get {
-                return ResourceManager.GetString("OriginalDescription", resourceCulture);
+                return ResourceManager.GetString("only_untranslated_menu_items_for_that_language_will_be_shown", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Partial updates allowed.
         /// </summary>
-        internal static string PartialUpdatesAllowed {
+        internal static string partial_updates_allowed {
             get {
-                return ResourceManager.GetString("PartialUpdatesAllowed", resourceCulture);
+                return ResourceManager.GetString("partial_updates_allowed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Review each entry.
         /// </summary>
-        internal static string ReviewEachEntry {
+        internal static string review_each_entry {
             get {
-                return ResourceManager.GetString("ReviewEachEntry", resourceCulture);
+                return ResourceManager.GetString("review_each_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Saved translations update the menu system in real-time.
         /// </summary>
-        internal static string SavedTranslationsUpdateTheMenuSystemInRealTime {
+        internal static string saved_translations_update_the_menu_system_in_real_time {
             get {
-                return ResourceManager.GetString("SavedTranslationsUpdateTheMenuSystemInRealTime", resourceCulture);
+                return ResourceManager.GetString("saved_translations_update_the_menu_system_in_real_time", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select a language.
         /// </summary>
-        internal static string SelectALanguage {
+        internal static string select_alanguage {
             get {
-                return ResourceManager.GetString("SelectALanguage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select language.
-        /// </summary>
-        internal static string SelectLanguage {
-            get {
-                return ResourceManager.GetString("SelectLanguage", resourceCulture);
+                return ResourceManager.GetString("select_alanguage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Start by selecting the language you want to translate into.
         /// </summary>
-        internal static string StartBySelectingTheLanguageYouWantToTranslateInto {
+        internal static string start_by_selecting_the_language_you_want_to_translate_into {
             get {
-                return ResourceManager.GetString("StartBySelectingTheLanguageYouWantToTranslateInto", resourceCulture);
+                return ResourceManager.GetString("start_by_selecting_the_language_you_want_to_translate_into", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Submit translations.
         /// </summary>
-        internal static string SubmitTranslations {
+        internal static string submit_translations {
             get {
-                return ResourceManager.GetString("SubmitTranslations", resourceCulture);
+                return ResourceManager.GetString("submit_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to TIPS FOR USING MENU TRANSLATIONS.
         /// </summary>
-        internal static string TIPS_FOR_USING_MENU_TRANSLATIONS {
+        internal static string tips_for_using_menu_translations {
             get {
-                return ResourceManager.GetString("TIPS_FOR_USING_MENU_TRANSLATIONS", resourceCulture);
+                return ResourceManager.GetString("tips_for_using_menu_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Translated description.
         /// </summary>
-        internal static string TranslatedDescription {
+        internal static string translated_description {
             get {
-                return ResourceManager.GetString("TranslatedDescription", resourceCulture);
+                return ResourceManager.GetString("translated_description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Translated text.
         /// </summary>
-        internal static string TranslatedText {
+        internal static string translated_text {
             get {
-                return ResourceManager.GetString("TranslatedText", resourceCulture);
+                return ResourceManager.GetString("translated_text", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Translate missing menus.
         /// </summary>
-        internal static string TranslateMissingMenus {
+        internal static string translate_missing_menus {
             get {
-                return ResourceManager.GetString("TranslateMissingMenus", resourceCulture);
+                return ResourceManager.GetString("translate_missing_menus", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Update carefully.
         /// </summary>
-        internal static string UpdateCarefully {
+        internal static string update_carefully {
             get {
-                return ResourceManager.GetString("UpdateCarefully", resourceCulture);
+                return ResourceManager.GetString("update_carefully", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Update translations.
         /// </summary>
-        internal static string UpdateTranslations {
+        internal static string update_translations {
             get {
-                return ResourceManager.GetString("UpdateTranslations", resourceCulture);
+                return ResourceManager.GetString("update_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use the language selector below to view untranslated menu items and existing translations for the selected language.
         /// </summary>
-        internal static string UseTheLanguageSelectorBelowToView {
+        internal static string use_the_language_selector_below_to_view {
             get {
-                return ResourceManager.GetString("UseTheLanguageSelectorBelowToView", resourceCulture);
+                return ResourceManager.GetString("use_the_language_selector_below_to_view", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View and manage translation records for system menus. Select a language to identify untranslated menus and initiate translation updates.
         /// </summary>
-        internal static string ViewAndManageTranslationRecordsForSystemMenus {
+        internal static string view_and_manage_translation_records_for_system_menus {
             get {
-                return ResourceManager.GetString("ViewAndManageTranslationRecordsForSystemMenus", resourceCulture);
+                return ResourceManager.GetString("view_and_manage_translation_records_for_system_menus", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View and update existing menu translations. Use the language selector to load translated menus for the selected language.
         /// </summary>
-        internal static string ViewAndUpdateExistingMenuTranslations {
+        internal static string view_and_update_existing_menu_translations {
             get {
-                return ResourceManager.GetString("ViewAndUpdateExistingMenuTranslations", resourceCulture);
+                return ResourceManager.GetString("view_and_update_existing_menu_translations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You can export translation data if needed for audit or batch work.
         /// </summary>
-        internal static string YouCanExportTranslationData {
+        internal static string you_can_export_translation_data {
             get {
-                return ResourceManager.GetString("YouCanExportTranslationData", resourceCulture);
+                return ResourceManager.GetString("you_can_export_translation_data", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You don&apos;t need to edit all rows at once.
         /// </summary>
-        internal static string YouDontNeedToEditAllRowsAtOnce {
+        internal static string you_dont_need_to_edit_all_rows_at_once {
             get {
-                return ResourceManager.GetString("YouDontNeedToEditAllRowsAtOnce", resourceCulture);
+                return ResourceManager.GetString("you_dont_need_to_edit_all_rows_at_once", resourceCulture);
             }
         }
     }

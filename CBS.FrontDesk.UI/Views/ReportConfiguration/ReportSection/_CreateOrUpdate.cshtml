@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection
-
+@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection
+@using Resources
 @{
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
 }
@@ -10,14 +10,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-view-list-outline me-2"></i> Report Section Management
+                    <i class="mdi mdi-view-list-outline me-2"></i> @GlobalReportConfiguration.report_section_management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Create and organize sections used to structure financial reports into logical categories.
+                    @GlobalReportConfiguration.create_and_organize_sections_used_to_structure_financial_reports_into_logical_categories.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Well-defined sections ensure clear grouping and consistent report hierarchy.
+                    @GlobalReportConfiguration.welldefined_sections_ensure_clear_grouping_and_consistent_report_hierarchy.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Sections</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalReportConfiguration.tips_for_configuring_report_sections</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSectionTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -38,24 +38,29 @@
         <div class="card-body">
             <ul class="mb-0">
 
-                <li><i class="mdi mdi-code-tags text-primary me-2"></i>
-                    <strong>Section Code:</strong> Use short descriptive identifiers (e.g., ASSETS, LIABILITIES, INCOME).
+                <li>
+                    <i class="mdi mdi-code-tags text-primary me-2"></i>
+                    <strong>@GlobalShared.section_code:</strong> @GlobalReportConfiguration.use_short_descriptive_identifiers (e.g., ASSETS, LIABILITIES, INCOME).
                 </li>
 
-                <li><i class="mdi mdi-format-title text-success me-2"></i>
-                    <strong>Section Name:</strong> The label that will appear in the financial reports.
+                <li>
+                    <i class="mdi mdi-format-title text-success me-2"></i>
+                    <strong>@GlobalShared.section_name:</strong> @GlobalReportConfiguration.the_label_that_will_appear_in_the_financial_reports.
                 </li>
 
-                <li><i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i>
-                    <strong>Sort Order:</strong> Controls the position of the section within the report.
+                <li>
+                    <i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i>
+                    <strong>@GlobalShared.sort_order:</strong> @GlobalReportConfiguration.controls_the_position_of_the_section_within_the_report.
                 </li>
 
-                <li><i class="mdi mdi-file-document-outline text-info me-2"></i>
-                    <strong>Report Definition:</strong> Every section must belong to a parent report (Balance Sheet, Income Statement…).
+                <li>
+                    <i class="mdi mdi-file-document-outline text-info me-2"></i>
+                    <strong>@GlobalShared.report_definition:</strong> @GlobalReportConfiguration.every_section_must_belong_to_a_parent_report_balance_sheet_income_statement.
                 </li>
 
-                <li><i class="mdi mdi-view-sequential-outline text-secondary me-2"></i>
-                    <strong>Structure:</strong> Sections define the hierarchy that report lines will follow.
+                <li>
+                    <i class="mdi mdi-view-sequential-outline text-secondary me-2"></i>
+                    <strong>@GlobalShared.structure:</strong> @GlobalReportConfiguration.sections_define_the_hierarchy_that_report_lines_will_follow.
                 </li>
 
             </ul>
@@ -74,7 +79,7 @@
             <div class="mb-3">
                 @Html.Label("ReportId", "Select Report Definition", new { @class = "form-label fw-semibold" })
                 <select id="ReportId" name="ReportId" class="form-control">
-                    <option value="">-- Select a report --</option>
+                    <option value="">-- @GlobalReportConfiguration.select_a_report --</option>
 
                     @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>)ViewBag.ReportDefinitions)
                     {
@@ -88,17 +93,17 @@
             @Html.HiddenFor(model => model.Id)
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.Code, "Section Code", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.Code, $"{@GlobalShared.section_code}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Code, new { @class = "form-control", placeholder = "Enter section code (e.g., ASSETS)" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.Name, "Section Name", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.Name, $"{@GlobalShared.section_name}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter section name" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.SortOrder, "Sort Order", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.SortOrder, $"{@GlobalShared.sort_order}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.SortOrder, new { @class = "form-control", type = "number", placeholder = "e.g., 1, 2, 3" })
             </div>
 

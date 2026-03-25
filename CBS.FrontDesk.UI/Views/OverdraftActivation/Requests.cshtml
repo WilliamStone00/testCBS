@@ -1,7 +1,7 @@
-﻿@{
+@{
     ViewBag.Title = "Request for Overdraft Service Activations";
 }
-
+@using Resources
 <div class="container">
 
     <!-- 🔷 Page Header -->
@@ -10,13 +10,13 @@
             <div class="card bg-white border-primary shadow-sm">
                 <div class="card-body text-center">
                     <h2 class="text-primary fw-bold">
-                        <i class="mdi mdi-bank-plus me-2"></i> Request for Overdraft Service Activations
+                        <i class="mdi mdi-bank-plus me-2"></i> @GlobalOverdraftActivation.request_for_overdraft_service_activations
                     </h2>
                     <p class="text-secondary fs-6 mb-2">
-                        Review and manage customer requests for activating overdraft facilities. Each request follows approval workflow and must comply with configured eligibility and product rules.
+                        @GlobalOverdraftActivation.review_and_manage_customer_requests_for_activating_overdraft_facilities_each_request_follows_approval_workflow_and_must_comply_with_configured_eligibility_and_product_rules.
                     </p>
                     <p class="text-muted small">
-                        Ensure requests are processed after confirming customer qualification, financial limits, and overdraft configuration parameters.
+                        @GlobalOverdraftActivation.ensure_requests_are_processed_after_confirming_customer_qualification_financial_limits_and_overdraft_configuration_parameters.
                     </p>
                     <hr class="my-3" style="border-top: 2px dashed #0d6efd;" />
                 </div>
@@ -36,7 +36,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
                     <div class="mb-2 mb-md-0">
                         <span class="fw-semibold text-primary">
-                            <i class="mdi mdi-cog-outline me-1"></i> Manage Activation Requests
+                            <i class="mdi mdi-cog-outline me-1"></i> @GlobalOverdraftActivation.manage_activation_requests
                         </span>
                     </div>
                     <div class="d-flex gap-2">
@@ -44,12 +44,12 @@
                            onclick="loadOverdraftData()"
                            class="btn btn-outline-primary btn-sm"
                            title="Reload the current request list">
-                            <i class="mdi mdi-refresh me-1"></i> Reload List
+                            <i class="mdi mdi-refresh me-1"></i> @GlobalShared.reload_list
                         </a>
                         <button onclick="AddORUpdateGen(null,'overdraftRequestDataTableContainer','_OverdraftActivationRequestForm','new','Overdraft')"
                                 class="btn btn-primary btn-sm"
                                 title="Submit a new overdraft activation request">
-                            <i class="mdi mdi-plus-circle-outline me-1"></i> New Request
+                            <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.new_request
                         </button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white py-2 px-3">
-                    <i class="mdi mdi-table me-2"></i> List of Overdraft Activation Requests
+                    <i class="mdi mdi-table me-2"></i> @GlobalOverdraftActivation.list_of_overdraft_activation_requests
                 </div>
                 <div class="card-body">
                     <div id="overdraftRequestDataTableContainer">

@@ -1,4 +1,4 @@
-﻿@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@model  CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @using Resources
 @{
     ViewBag.Title = "_PendingUserNotifications";
@@ -10,10 +10,10 @@
     {
         <thead class="table-light">
             <tr>
-                <th>@GlobalNotification.BranchOffice</th>
-                <th>@GlobalNotification.IssuedBy</th>
-                <th>@GlobalNotification.ActionToBePerformed</th>
-                <th>@GlobalNotification.Latency</th>
+                <th>@GlobalShared.Branch_Office</th>
+                <th>@GlobalShared.Issued_By</th>
+                <th>@GlobalShared.action_to_be_performed</th>
+                <th>@GlobalShared.latency</th>
                 <th>@GlobalShared.Action</th>
             </tr>
         </thead>
@@ -23,9 +23,9 @@
     {
         <thead class="table-light">
             <tr>
-                <th>@GlobalNotification.IssuedBy</th>
-                <th>@GlobalNotification.ActionToBePerformed</th>
-                <th>@GlobalNotification.Latency</th>
+                <th>@GlobalShared.Issued_By</th>
+                <th>@GlobalShared.action_to_be_performed</th>
+                <th>@GlobalShared.latency</th>
                 <th>@GlobalShared.Action</th>
             </tr>
         </thead>

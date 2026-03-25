@@ -1,15 +1,16 @@
-﻿<!-- 📋 Penalty Configuration Table -->
+<!-- 📋 Penalty Configuration Table -->
+@using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover table-bordered align-middle" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Value</th>
-                <th>Mode</th>
-                <th>Apply On</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>@GlobalShared.Name</th>
+                <th>@GlobalShared.Type</th>
+                <th>@GlobalShared.Value</th>
+                <th>@GlobalShared.mode</th>
+                <th>@GlobalShared.apply_on</th>
+                <th>@GlobalShared.Status</th>
+                <th>@GlobalShared.Actions</th>
             </tr>
         </thead>
     </table>

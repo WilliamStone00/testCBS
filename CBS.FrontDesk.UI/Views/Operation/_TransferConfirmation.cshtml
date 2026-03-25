@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
     @using Resources
 @using (Html.BeginForm("Deposit", "Operation", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
@@ -14,81 +14,81 @@
                     @Html.TextBox("DateOfInitiationFormatted",
                         Model.Transfer.DateOfInitiation.ToString("dd/MM/yyyy") ?? "N/A",
                         new { @class = "form-control", @readonly = "readonly" })
-                    <label>@GlobalOperation.DateOfInitiation</label>
+                    <label>@GlobalShared.date_of_initiation</label>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.TransactionRef, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.Reference</label>
+                    <label>@GlobalShared.Reference</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBox("AmountFormatted", String.Format("{0:#,##0 XAF}", Model.Transfer.Amount), new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.Amount</label>
+                    <label>@GlobalShared.Amount</label>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.SourceAccountNumber, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.SourceAccount</label>
+                    <label>@GlobalShared.Source_account</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.DestinationAccountNumber, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.ReceivingAccount</label>
+                    <label>@GlobalOperation.receiving_account</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.SourceBranchName, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.SourceBranch</label>
+                    <label>@GlobalShared.Source_branch</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.DestinationBranchName, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.DestinationBranch</label>
+                    <label>@GlobalShared.Destination_Branch</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.SenderName, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.SenderName</label>
+                    <label>@GlobalShared.sender_name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.RecieverName, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.ReceiverName</label>
+                    <label>@GlobalShared.Receiver_Name</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBox("ChargesFormatted", String.Format("{0:#,##0 XAF}", Model.Transfer.Charges), new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.Charges</label>
+                    <label>@GlobalShared.Charges</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.TransactionType, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.TransactionType</label>
+                    <label>@GlobalOperation.transaction_type</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Transfer.InitiatedByUSerName, new { @class = "form-control", @readonly = true })
-                    <label>@GlobalOperation.Initiator</label>
+                    <label>@GlobalShared.Initiator</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Transfer.InitiatorComment, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
-                    <label>@GlobalOperation.InitiationComment</label>
+                    <label>@GlobalShared.initiation_comment</label>
                 </div>
             </div>
         </div>
@@ -100,16 +100,16 @@
         <div class="row mt-2 gy-4">
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.TransferConfirmation.Status, new SelectList(ViewBag.Status, "Value", "Text"), "---"+ @GlobalOperation.Select+"---", new { @class = "form-control select2", @search = "true" })
+                    @Html.DropDownListFor(m => m.TransferConfirmation.Status, new SelectList(ViewBag.Status, "Value", "Text"), "---"+ @GlobalShared.Select+"---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.TransferConfirmation.Status, "", new { @class = "text-danger" })
-                    <label>@GlobalOperation.SelectApprovalStatus</label>
+                    <label>@GlobalShared.Select_Approval_Status</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.TransferConfirmation.Note, new { @class = "form-control", @style = "height: 75px;" })
                     @Html.ValidationMessageFor(m => m.TransferConfirmation.Note, "", new { @class = "text-danger" })
-                    <label>@GlobalOperation.Note</label>
+                    <label>@GlobalShared.Note</label>
                 </div>
             </div>
         </div>

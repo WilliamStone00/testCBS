@@ -1,13 +1,13 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 @using Resources
 <div class="table-responsive mb-3">
     <table class="table table-hover card-body" id="JournalEntryDataTable">
         <thead class="table-light">
             <tr>
-                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
-                <th>@GlobalManuallyJournalEntry.AccountName</th>
-                <th>@GlobalManuallyJournalEntry.Credit</th>
-                <th>@GlobalManuallyJournalEntry.Debit</th>
+                <th>@GlobalShared.AccountNumber</th>
+                <th>@GlobalShared.Account_Name</th>
+                <th>@GlobalShared.Credit</th>
+                <th>@GlobalShared.Debit</th>
                 <th>@GlobalShared.Action</th>
 
             </tr>
@@ -42,11 +42,11 @@
                 <tr>
                     @if (Model.EntryTempDataResult.Count() > 0)
                     {
-                        <td>@GlobalManuallyJournalEntry.TotalDebit:@Model.EntryTempDataResult[0].SumDebit</td>
+                        <td>@GlobalShared.Total_Debit:@Model.EntryTempDataResult[0].SumDebit</td>
                         <td></td>
-                        <td>@GlobalManuallyJournalEntry.TotalCredit:@Model.EntryTempDataResult[0].SumCredit</td>
+                        <td>@GlobalShared.Total_Credit:@Model.EntryTempDataResult[0].SumCredit</td>
                         <td></td>
-                        <td>@GlobalManuallyJournalEntry.Difference:@Model.EntryTempDataResult[0].Difference</td>
+                        <td>@GlobalShared.Difference:@Model.EntryTempDataResult[0].Difference</td>
 
                     }
 

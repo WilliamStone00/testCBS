@@ -63,90 +63,90 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string About {
+        internal static string about {
             get {
-                return ResourceManager.GetString("About", resourceCulture);
+                return ResourceManager.GetString("about", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Contact Us.
         /// </summary>
-        internal static string ContactUs {
+        internal static string contact_us {
             get {
-                return ResourceManager.GetString("ContactUs", resourceCulture);
+                return ResourceManager.GetString("contact_us", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flux SARL! : Empowering businesses. Enhancing lives..
+        ///   Looks up a localized string similar to Empowering businesses. Enhancing lives..
         /// </summary>
-        internal static string Flux_SARL_Empowering_businesses_Enhancing_lives {
+        internal static string empowering_businesses_enhancing_lives {
             get {
-                return ResourceManager.GetString("Flux_SARL_Empowering_businesses_Enhancing_lives", resourceCulture);
+                return ResourceManager.GetString("empowering_businesses_enhancing_lives", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
-        internal static string Home {
+        internal static string home {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("home", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No internet connection.
         /// </summary>
-        internal static string NoInternetConnection {
+        internal static string no_internet_connection {
             get {
-                return ResourceManager.GetString("NoInternetConnection", resourceCulture);
+                return ResourceManager.GetString("no_internet_connection", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to RETRY.
         /// </summary>
-        internal static string RETRY {
+        internal static string retry {
             get {
-                return ResourceManager.GetString("RETRY", resourceCulture);
+                return ResourceManager.GetString("retry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use this area to provide additional information..
         /// </summary>
-        internal static string Use_this_area_to_provide_additional_information {
+        internal static string use_this_area_to_provide_additional_information {
             get {
-                return ResourceManager.GetString("Use_this_area_to_provide_additional_information", resourceCulture);
+                return ResourceManager.GetString("use_this_area_to_provide_additional_information", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to WELCOME TO.
         /// </summary>
-        internal static string WelcomeTitle {
+        internal static string welcome_to {
             get {
-                return ResourceManager.GetString("WelcomeTitle", resourceCulture);
+                return ResourceManager.GetString("welcome_to", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Your Secure &amp; Reliable Partner. FLUX!.
         /// </summary>
-        internal static string Your_Secure_Reliable_Partner_FLUX {
+        internal static string your_secure_reliable_partner_flux {
             get {
-                return ResourceManager.GetString("Your_Secure_Reliable_Partner_FLUX", resourceCulture);
+                return ResourceManager.GetString("your_secure_reliable_partner_flux", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You are currently offline. Please check your internet connection and try again.
         /// </summary>
-        internal static string You_are_currently_offline_Please_check_your_internet_connection_and_try_again {
+        internal static string you_are_currently_offline_please_check_your_internet_connection_and_try_again {
             get {
-                return ResourceManager.GetString("You_are_currently_offline_Please_check_your_internet_connection_and_try_again", resourceCulture);
+                return ResourceManager.GetString("you_are_currently_offline_please_check_your_internet_connection_and_try_again", resourceCulture);
             }
         }
     }

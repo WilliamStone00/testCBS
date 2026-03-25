@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
 @using Resources
 
 <fieldset class="fieldset-custom">
@@ -10,12 +10,12 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>@GlobalMemberNoneCashOperation.MReference</th>
-                                <th>@GlobalMemberNoneCashOperation.MemberName</th>
-                                <th>@GlobalMemberNoneCashOperation.Account</th>
-                                <th>@GlobalMemberNoneCashOperation.BDirection</th>
-                                <th>@GlobalMemberNoneCashOperation.Amount</th>
-                                <th>@GlobalMemberNoneCashOperation.Date</th>
+                                <th>@GlobalMemberNoneCashOperation.m_reference</th>
+                                <th>@GlobalShared.Member_name</th>
+                                <th>@GlobalShared.Account</th>
+                                <th>@GlobalMemberNoneCashOperation.b_direction</th>
+                                <th>@GlobalShared.Amount</th>
+                                <th>@GlobalShared.Date</th>
                                 <th>@GlobalShared.Status</th>
                                 <th>@GlobalShared.Actions</th>
                             </tr>
@@ -30,11 +30,11 @@
                                     <td>
                                         @if (operation.BookingDirection=="Credit")
                                         {
-                                            <span class="badge bg-success">@GlobalMemberNoneCashOperation.Credit</span>
+                                            <span class="badge bg-success">@GlobalShared.Credit</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-danger">@GlobalMemberNoneCashOperation.Debit</span>
+                                            <span class="badge bg-danger">@GlobalShared.Debit</span>
                                         }
                                     </td>
                                     <td>@operation.Amount.ToString("N1")</td>
@@ -76,7 +76,7 @@
                                                         class="btn btn-sm btn-outline-success"
                                                         onclick="loadValidationForm('@operation.Id')"
                                                         data-bs-toggle="tooltip"
-                                                        title="@GlobalMemberNoneCashOperation.Approve or Reject Operation">
+                                                        title="@GlobalMemberNoneCashOperation.approve_or_reject_operation">
                                                     <i class="fas fa-check-circle me-1"></i> A/R
                                                 </button>
                                             }
@@ -97,7 +97,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>@GlobalMemberNoneCashOperation.NoMemberNoneCashOperationsFound.</p>
+                        <p>@GlobalMemberNoneCashOperation.no_member_none_cash_operations_found.</p>
                     </div>
                 }
             </div>

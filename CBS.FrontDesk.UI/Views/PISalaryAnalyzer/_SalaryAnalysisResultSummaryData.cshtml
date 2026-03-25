@@ -1,11 +1,11 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
         <!-- Dashboard Header -->
         <div class="card-header bg-light">
             <h5 class="card-title text-primary mb-0">
-                @GlobalSalaryAnalyzer.SalaryAnalysisDashboard
+                @GlobalPISalaryAnalyzer.salary_analysis_dashboard
             </h5>
         </div>
         <div id="dashboardSummary" class="mb-4">
@@ -13,7 +13,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalMembers</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.Total_members</h6>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.SalaryAnalysisResultSummary.TotalMembers
                             </p>
@@ -23,7 +23,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalNetSalary</h6>
+                            <h6 class="card-title text-primary">@GlobalPISalaryAnalyzer.total_net_salary</h6>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.SalaryAnalysisResultSummary.TotalNetSalary.ToString("N1")
                             </p>
@@ -33,7 +33,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalCapital</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_capital</h6>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.SalaryAnalysisResultSummary.TotalLoanCapital.ToString("N1")
                             </p>
@@ -43,7 +43,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalInterest</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_interest</h6>
                             <p class="card-text fs-5 fw-bold text-danger">
                                 @Model.SalaryAnalysisResultSummary.TotalLoanInterest.ToString("N1")
                             </p>
@@ -55,7 +55,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalVAT</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_vat</h6>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.SalaryAnalysisResultSummary.TotalVAT.ToString("N1")
                             </p>
@@ -65,7 +65,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalRepayment</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_repayment</h6>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.SalaryAnalysisResultSummary.TotalLoanRepayment.ToString("N1")
                             </p>
@@ -75,7 +75,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalDeposit</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_deposit</h6>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.SalaryAnalysisResultSummary.TotalDeposit.ToString("N1")
                             </p>
@@ -85,7 +85,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalSavings</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_savings</h6>
                             <p class="card-text fs-5 fw-bold text-success">
                                 @Model.SalaryAnalysisResultSummary.TotalSavings.ToString("N1")
                             </p>
@@ -97,7 +97,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalCharges</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_charges</h6>
                             <p class="card-text fs-5 fw-bold text-danger">
                                 @Model.SalaryAnalysisResultSummary.TotalCharges.ToString("N1")
                             </p>
@@ -107,7 +107,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalShares</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_shares</h6>
                             <p class="card-text fs-5 fw-bold text-warning">
                                 @Model.SalaryAnalysisResultSummary.TotalShares.ToString("N1")
                             </p>
@@ -117,7 +117,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalSalary</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_salary</h6>
                             <p class="card-text fs-5 fw-bold text-info">
                                 @Model.SalaryAnalysisResultSummary.TotalRemainingSalary.ToString("N1")
                             </p>
@@ -127,7 +127,7 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h6 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalBranches</h6>
+                            <h6 class="card-title text-primary">@GlobalShared.total_branches</h6>
                             <p class="card-text fs-5 fw-bold text-primary">
                                 @Model.SalaryAnalysisResultSummary.TotalBranches
                             </p>
@@ -140,7 +140,7 @@
         <div class="card mb-2">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                 <span>
-                    <i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryAnalyzer.TipsForEfficientUse
+                    <i class="mdi mdi-information-outline me-2"></i> @GlobalPISalaryAnalyzer.tips_for_efficient_use
                 </span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
                     <i class="mdi mdi-chevron-down"></i>
@@ -149,9 +149,9 @@
             <div id="collapseTips" class="collapse">
                 <div class="card-body">
                     <ul class="mb-0">
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryAnalyzer.UseTheDetailedTableBelowToViewIndividualSalaryBreakdowns.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryAnalyzer.ExportTheResultsToExcelForOfflineReview.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalSalaryAnalyzer.ReviewDiscrepanciesOrUnusualFigures.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPISalaryAnalyzer.use_the_detailed_table_below_to_view_individual_salary_breakdowns.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPISalaryAnalyzer.export_the_results_to_excel_for_offline_review.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPISalaryAnalyzer.review_discrepancies_or_unusual_figures.</li>
                     </ul>
                 </div>
             </div>
@@ -160,7 +160,7 @@
         <div class="card mt-4 shadow-sm border-0">
             <div class="card-header bg-light">
                 <h5 class="card-title text-primary mb-0">
-                    @GlobalSalaryAnalyzer.DetailedSalaryAnalysisResults
+                    @GlobalPISalaryAnalyzer.detailed_salary_analysis_results
                 </h5>
             </div>
             <div id="datalistingview_inner">
@@ -261,7 +261,7 @@
                     else
                     {
                         <div class="text-center my-3">
-                            <p>@GlobalSalaryAnalyzer.NoSalaryAnalysisResultsFound.</p>
+                            <p>@GlobalPISalaryAnalyzer.no_salary_analysis_results_found.</p>
                         </div>
                     }
                 </div>

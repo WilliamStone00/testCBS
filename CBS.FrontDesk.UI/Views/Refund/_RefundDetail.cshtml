@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Refund
-
+@model CBS.FrontDesk.Data.Entity.LoanConf.Refund
+@using Resources
 <style>
 /* Hide print-only elements by default */
 .print-only {
@@ -92,11 +92,11 @@
 
                 <h4 class="text-primary fw-bold mb-2">
                     <i class="mdi mdi-file-document-outline me-2"></i>
-                    LOAN REPAYMENT
+                    @GlobalShared.Loan_Repayment
                 </h4>
 
                 <p class="text-muted small mb-2">
-                    View complete repayment transaction details below
+                    @GlobalRefund.view_complete_repayment_transaction_details_below
                 </p>
 
             </div>
@@ -110,163 +110,163 @@
 
                     <!-- Refund Information -->
                     <tr class="table-light section-break">
-                        <td colspan="2" class="fw-bold text-uppercase">Refund Information</td>
+                        <td colspan="2" class="fw-bold text-uppercase">@GlobalRefund.refund_information</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold w-25">Refund ID</td>
+                        <td class="fw-bold w-25">@GlobalRefund.refund_id</td>
                         <td>@Model.Id</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Payment Date</td>
+                        <td class="fw-bold">@GlobalShared.payment_date</td>
                         <td>@Model.DateOfPayment.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Created Date</td>
+                        <td class="fw-bold">@GlobalShared.Created_Date</td>
                         <td>@Model.CreatedDate</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Completed</td>
+                        <td class="fw-bold">@GlobalShared.Completed</td>
                         <td>
                             @if (Model.IsCompleted)
                             {
-                                <span class="badge bg-success">Fully Paid</span>
+                                <span class="badge bg-success">@GlobalShared.fully_paid</span>
                             }
                             else
                             {
-                                <span class="badge bg-warning text-dark">Partial</span>
+                        <span class="badge bg-warning text-dark">@GlobalShared.partial</span>
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Reversal</td>
+                        <td class="fw-bold">@GlobalShared.reversal</td>
                         <td>
                             @if (Model.IsReversal)
                             {
-                                <span class="badge bg-danger">Yes</span>
+                                <span class="badge bg-danger">@GlobalShared.Yes</span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@GlobalShared.No</span>
                             }
                         </td>
                     </tr>
 
                     <!-- Member Information -->
                     <tr class="table-light section-break">
-                        <td colspan="2" class="fw-bold text-uppercase">Member Information</td>
+                        <td colspan="2" class="fw-bold text-uppercase">@GlobalShared.Member_Information</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Member Reference</td>
+                        <td class="fw-bold">@GlobalShared.Member_reference</td>
                         <td>@Model.Loan.CustomerId</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Member Name</td>
+                        <td class="fw-bold">@GlobalShared.Member_name</td>
                         <td>@Model.Loan.CustomerName</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Branch</td>
+                        <td class="fw-bold">@GlobalShared.Branch</td>
                         <td>@Model.BranchName</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Bank</td>
+                        <td class="fw-bold">@GlobalShared.bank</td>
                         <td>@Model.BankName</td>
                     </tr>
 
                     <!-- Loan Details -->
                     <tr class="table-light section-break">
-                        <td class="fw-bold text-uppercase">Loan Details</td>
+                        <td class="fw-bold text-uppercase">@GlobalShared.Loan_Details</td>
                         <td class="text-end no-print">
                             <a href="/MembersFSeries/LoanDetails?loanId=@Model.Loan.Id"
                                target="_blank"
                                class="btn btn-sm btn-primary">
                                 <i class="mdi mdi-open-in-new me-1"></i>
-                                Open Full Loan
+                                @GlobalRefund.open_full_loan
                             </a>
                         </td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Loan ID</td>
+                        <td class="fw-bold">@GlobalShared.Loan_ID</td>
                         <td>@Model.Loan.Id</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Loan Amount</td>
+                        <td class="fw-bold">@GlobalShared.Loan_Amount</td>
                         <td>@Model.Loan.LoanAmount.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Interest Rate</td>
+                        <td class="fw-bold">@GlobalShared.Interest_Rate</td>
                         <td>@Model.Loan.InterestRate.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">VAT</td>
+                        <td class="fw-bold">@GlobalShared.VAT</td>
                         <td>@Model.Loan.Tax.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Accrual Interest</td>
+                        <td class="fw-bold">@GlobalShared.Accrual_Interest</td>
                         <td>@Model.Loan.AccrualInterest.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Date Contracted</td>
+                        <td class="fw-bold">@GlobalShared.date_contracted</td>
                         <td>@Model.Loan.LoanDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Total Amount Paid</td>
+                        <td class="fw-bold">@GlobalShared.Total_Amount_Paid</td>
                         <td>@Model.Loan.Paid.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Current Balance</td>
+                        <td class="fw-bold">@GlobalShared.Current_balance</td>
                         <td>@Model.Loan.Balance.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Amount Left (Due)</td>
+                        <td class="fw-bold">@GlobalShared.amount_left (@GlobalShared.due)</td>
                         <td>@Model.Loan.DueAmount.ToString("N2")</td>
                     </tr>
 
                     <!-- Payment Information -->
                     <tr class="table-light section-break">
-                        <td colspan="2" class="fw-bold text-uppercase">Payment Information</td>
+                        <td colspan="2" class="fw-bold text-uppercase">@GlobalShared.payment_information</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Payment Method</td>
+                        <td class="fw-bold">@GlobalShared.payment_method</td>
                         <td>@Model.PaymentMethod</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Channel</td>
+                        <td class="fw-bold">@GlobalShared.channel</td>
                         <td>@Model.PaymentChannel</td>
                     </tr>
 
                     <!-- Cash Breakdown -->
                     <tr class="table-light section-break">
-                        <td colspan="2" class="fw-bold text-uppercase">Cash Breakdown</td>
+                        <td colspan="2" class="fw-bold text-uppercase">@GlobalRefund.cash_breakdown</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Amount Collected</td>
+                        <td class="fw-bold">@GlobalRefund.amount_collected</td>
                         <td>@Model.Amount.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Principal</td>
+                        <td class="fw-bold">@GlobalShared.Principal</td>
                         <td>@Model.Principal.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Interest</td>
+                        <td class="fw-bold">@GlobalShared.Interest</td>
                         <td>@Model.Interest.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">VAT</td>
+                        <td class="fw-bold">@GlobalShared.VAT</td>
                         <td>@Model.Tax.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Penalty</td>
+                        <td class="fw-bold">@GlobalShared.Penalty</td>
                         <td>@Model.Penalty.ToString("N2")</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Balance</td>
+                        <td class="fw-bold">@GlobalShared.Balance</td>
                         <td>@Model.Balance.ToString("N2")</td>
                     </tr>
 
                     @if (!string.IsNullOrWhiteSpace(Model.Comment))
                     {
                         <tr>
-                            <td class="fw-bold">Comment</td>
+                            <td class="fw-bold">@GlobalShared.Comment</td>
                             <td>@Model.Comment</td>
                         </tr>
                     }
@@ -278,9 +278,9 @@
 
         <!-- Modal footer (hidden in print) -->
         <div class="modal-footer mt-3 no-print">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             <button type="button" class="btn btn-primary" onclick="window.print();">
-                <i class="fa fa-print me-2"></i> Print
+                <i class="fa fa-print me-2"></i> @GlobalShared.Print
             </button>
         </div>
 

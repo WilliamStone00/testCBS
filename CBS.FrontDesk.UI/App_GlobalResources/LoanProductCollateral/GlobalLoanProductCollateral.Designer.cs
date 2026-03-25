@@ -63,99 +63,45 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Colateral.
         /// </summary>
-        internal static string Colateral {
+        internal static string colateral {
             get {
-                return ResourceManager.GetString("Colateral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter parameters.
-        /// </summary>
-        internal static string EnterParameters {
-            get {
-                return ResourceManager.GetString("EnterParameters", resourceCulture);
+                return ResourceManager.GetString("colateral", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN PRODUCT COLLATERAL CONFIGURATION.
         /// </summary>
-        internal static string LOAN_PRODUCT_COLLATERAL_CONFIGURATION {
+        internal static string loan_product_collateral_configuration {
             get {
-                return ResourceManager.GetString("LOAN_PRODUCT_COLLATERAL_CONFIGURATION", resourceCulture);
+                return ResourceManager.GetString("loan_product_collateral_configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum collateral rate.
         /// </summary>
-        internal static string MaximumCollateralRate {
+        internal static string maximum_collateral_rate {
             get {
-                return ResourceManager.GetString("MaximumCollateralRate", resourceCulture);
+                return ResourceManager.GetString("maximum_collateral_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum collateral rate.
         /// </summary>
-        internal static string MinimumCollateralRate {
+        internal static string minimum_collateral_rate {
             get {
-                return ResourceManager.GetString("MinimumCollateralRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product.
-        /// </summary>
-        internal static string Product {
-            get {
-                return ResourceManager.GetString("Product", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range.
-        /// </summary>
-        internal static string Range {
-            get {
-                return ResourceManager.GetString("Range", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select.
-        /// </summary>
-        internal static string Select {
-            get {
-                return ResourceManager.GetString("Select", resourceCulture);
+                return ResourceManager.GetString("minimum_collateral_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select collateral.
         /// </summary>
-        internal static string SelectCollateral {
+        internal static string select_collateral {
             get {
-                return ResourceManager.GetString("SelectCollateral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select product.
-        /// </summary>
-        internal static string SelectProduct {
-            get {
-                return ResourceManager.GetString("SelectProduct", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tag.
-        /// </summary>
-        internal static string Tag {
-            get {
-                return ResourceManager.GetString("Tag", resourceCulture);
+                return ResourceManager.GetString("select_collateral", resourceCulture);
             }
         }
     }

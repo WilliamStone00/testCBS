@@ -1,14 +1,14 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCollateral>
+@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCollateral>
 @using Resources
 
 <div class="table-responsive mb-3">
     <table class="table table-hover" id="myDataTable">
         <thead class="table-light">
             <tr>
-                <th>@GlobalLoanProductCollateral.Tag</th>
-                <th>@GlobalLoanProductCollateral.Product</th>
-                <th>@GlobalLoanProductCollateral.Colateral</th>
-                <th>@GlobalLoanProductCollateral.Range</th>
+                <th>@GlobalShared.tag</th>
+                <th>@GlobalShared.Product</th>
+                <th>@GlobalLoanProductCollateral.colateral</th>
+                <th>@GlobalShared.Range</th>
                 <th>@GlobalShared.Action</th>
             </tr>
         </thead>

@@ -1,14 +1,15 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.Penalty>
+@model List<CBS.FrontDesk.Data.Entity.LoanConf.Penalty>
+   @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Flat amount</th>
-            <th>Percentage</th>
-            <th>Rate</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>@GlobalShared.Name</th>
+            <th>@GlobalShared.Type</th>
+            <th>@GlobalShared.flat_amount</th>
+            <th>@GlobalShared.Percentage</th>
+            <th>@GlobalShared.rate</th>
+            <th>@GlobalShared.Status</th>
+            <th>@GlobalShared.Action</th>
         </tr>
     </thead>
     <tbody>
@@ -22,26 +23,26 @@
                 <td style="width:10%">
                     @if (@d.isRate)
                     {
-                        <label>Percentage</label>
+                    <label>@GlobalShared.Percentage</label>
                     }
                     else
                     {
-                        <label>Flat Rate</label>
+                    <label>@GlobalShared.flat_rate</label>
                     }
                 </td>
                 <td style="width:10%">
                     @if (@d.isEnabled)
                     {
-                        <label>Active</label>
+                    <label>@GlobalShared.Active</label>
                     }
                     else
                     {
-                        <label>Inactive</label>
+                    <label>@GlobalShared.InActive</label>
                     }
                 </td>
                 <td style="width:20%">
-                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Penalty')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.penaltyName to edit">Edit</a>
-                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.penaltyName" onclick="DeleteRecordDataTable('Penalty','@d.id','myDataTable','_Data',0,'datalistingview')">Delete</a>
+                    <a href="#" onclick="AddORUpdateGen(@d.id,'datalistingview','_Update','update','Penalty')" class="mr-2" data-toggle="tooltip" data-placement="top" title="Select @d.penaltyName to edit">@GlobalShared.Edit</a>
+                    <a href="#" class="mr-2" data-toggle="tooltip" data-placement="top" title="Delete @d.penaltyName" onclick="DeleteRecordDataTable('Penalty','@d.id','myDataTable','_Data',0,'datalistingview')">@GlobalShared.Delete</a>
                 </td>
             </tr>
         }

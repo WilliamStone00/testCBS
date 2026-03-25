@@ -1,25 +1,26 @@
-﻿<div class="card shadow p-3 mb-4">
+@using Resources
+<div class="card shadow p-3 mb-4">
     <h5 class="text-success mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Advanced Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Advanced_filters
     </h5>
 
     <div class="card p-3 bg-light">
         <!-- Branch Full Width -->
         <div class="row mb-3">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Branch</label>
-                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", @id = "branchInput" })
+                <label class="form-label fw-bold">@GlobalShared.Branch</label>
+                @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), $"--- {GlobalShared.Select_Branch} ---", new { @class = "form-control select2", @id = "branchInput" })
             </div>
         </div>
 
         <!-- Member Reference & Name -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Member Reference</label>
+                <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                 <input type="text" id="memberReference" class="form-control" placeholder="Member Reference" />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">Member Name</label>
+                <label class="form-label fw-bold">@GlobalShared.Member_name</label>
                 <input type="text" id="memberName" class="form-control" placeholder="Member Name" />
             </div>
         </div>
@@ -28,28 +29,28 @@
         <div class="row mb-3">
             <div class="col-md-6 form-check">
                 <input type="checkbox" id="showTransactionFilter" class="form-check-input" />
-                <label for="showTransactionFilter" class="form-check-label fw-bold">Filter by Transaction Reference</label>
+                <label for="showTransactionFilter" class="form-check-label fw-bold">@GlobalShared.filter_by_transaction_reference</label>
             </div>
             <div class="col-md-6 form-check">
                 <input type="checkbox" id="showDateFilter" class="form-check-input" />
-                <label for="showDateFilter" class="form-check-label fw-bold">Filter by Date Range</label>
+                <label for="showDateFilter" class="form-check-label fw-bold">@GlobalShared.Filter_by_Date_Range</label>
             </div>
         </div>
 
         <div id="transactionFilterSection" class="row mb-3" style="display: none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Transaction Reference</label>
+                <label class="form-label fw-bold">@GlobalShared.Transaction_Reference</label>
                 <input type="text" id="transactionReference" class="form-control" placeholder="Transaction Reference" />
             </div>
         </div>
 
         <div id="dateFilterSection" class="row mb-3" style="display: none;">
             <div class="col-md-6">
-                <label class="form-label fw-bold">Start Date</label>
+                <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                 <input type="date" id="startDate" class="form-control" />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">End Date</label>
+                <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                 <input type="date" id="endDate" class="form-control" />
             </div>
         </div>
@@ -57,13 +58,13 @@
     <!-- Action Buttons -->
     <div class="row mt-2">
         <div class="col-md-4">
-            <button id="applyFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
+            <button id="applyFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
         </div>
         <div class="col-md-4">
-            <button id="resetFilterBtn" class="btn btn-dark w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="resetFilterBtn" class="btn btn-dark w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
         </div>
         <div class="col-md-4">
-            <button id="exportBtn" class="btn btn-default w-100"><i class="mdi mdi-file-excel"></i> Export</button>
+            <button id="exportBtn" class="btn btn-default w-100"><i class="mdi mdi-file-excel"></i> @GlobalShared.Export</button>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 @using Resources
 @if (Model.Customer != null)
 {
@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="customerInfoModalLabel">@GlobalOperation.Member Information</h5>
+                    <h5 class="modal-title" id="customerInfoModalLabel">@GlobalShared.Member Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -45,7 +45,7 @@
                                     <span>@Model.Customer.taxIdentificationNumber</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">@GlobalShared.IdentityNumber:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.identity_number:</span>
                                     <span>@Model.Customer.idNumber</span>
                                 </li>
                                 <li class="mb-3">
@@ -64,32 +64,32 @@
                                         }
                                         else
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.NotActive</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.not_active</span></label>
                                         }
                                     </span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">@GlobalOperation.Telephone:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.Telephone:</span>
                                     <span>@Model.Customer.phone</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">@GlobalOperation.HomePhoneNumber:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.home_phone_number:</span>
                                     <span>@Model.Customer.phone</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">@GlobalOperation.Address:</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalShared.Address:</span>
                                     <span>@Model.Customer.address</span>
                                 </li>
                                 <li class="mb-3">
-                                    <span class="fw-medium text-heading me-2">@GlobalOperation.OnlineBankingStatus</span>
+                                    <span class="fw-medium text-heading me-2">@GlobalOperation.online_banking_status</span>
                                     <span class="badge bg-label-success rounded-pill">
                                         @if (@Model.Customer.isUseOnLineMobileBanking)
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalOperation.Active</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Active</span></label>
                                         }
                                         else
                                         {
-                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.NotActive</span></label>
+                                            <label class="ql-color-purple"><span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.not_active</span></label>
                                         }
                                     </span>
                                 </li>
@@ -105,6 +105,6 @@
 else
 {
     <div class="text-center my-3">
-        <p>@GlobalOperation.ReloadPageToGetCustomerDetails.</p>
+        <p>@GlobalOperation.reload_page_to_get_customer_details.</p>
     </div>
 }

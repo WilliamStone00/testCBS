@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.Overdraft.SubmitOverdraftActivationRequestCommand
-
+@model CBS.FrontDesk.Data.Entity.Overdraft.SubmitOverdraftActivationRequestCommand
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("SubmitOverdraftRequest", "Overdraft", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate", id = "overdraftForm" }))
     {
@@ -9,26 +9,26 @@
             <!-- 📍 Section: Member & Account Information -->
             <div class="col-12">
                 <h6 class="text-primary border-bottom pt-2 pb-1">
-                    <i class="mdi mdi-account-circle-outline me-1"></i> Member & Account Information
+                    <i class="mdi mdi-account-circle-outline me-1"></i> @GlobalOverdraftActivation.member_account_information
                 </h6>
             </div>
 
             <!-- 🔍 Member account reference number & Name -->
             <div class="col-md-12">
-                <label class="form-label">Member account reference number</label>
+                <label class="form-label">@GlobalOverdraftActivation.member_account_reference_number</label>
                 <div class="input-group shadow-sm">
                     @Html.TextBoxFor(m => m.CustomerId, new { @class = "form-control", placeholder = "Enter Member account reference number", id = "CustomerId" })
                     <button type="button" class="btn btn-outline-secondary" onclick="searchCustomer()">
-                        <i class="mdi mdi-magnify"></i> Search
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Search
                     </button>
                 </div>
-                <small class="text-muted d-block mt-1">💡 Enter or search the Member account reference number to fetch related details.</small>
+                <small class="text-muted d-block mt-1">💡 @GlobalOverdraftActivation.enter_or_search_the_member_account_reference_number_to_fetch_related_details.</small>
             </div>
 
             <div class="col-md-5">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", id = "CustomerName", @readonly = "readonly" })
-                    <label>Member Name</label>
+                    <label>@GlobalShared.Member_name</label>
                 </div>
             </div>
 
@@ -36,21 +36,21 @@
             <div class="col-md-2">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.BranchId, new { @class = "form-control", id = "BranchId", @readonly = "readonly" })
-                    <label>Branch ID</label>
+                    <label>@GlobalShared.Branch_ID</label>
                 </div>
             </div>
 
             <div class="col-md-2">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", id = "BranchCode", @readonly = "readonly" })
-                    <label>Branch Code</label>
+                    <label>@GlobalShared.Branch_Code</label>
                 </div>
             </div>
 
             <div class="col-md-3">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control", id = "BranchName", @readonly = "readonly" })
-                    <label>Branch Name</label>
+                    <label>@GlobalShared.Branch_Name</label>
                 </div>
             </div>
 
@@ -58,14 +58,14 @@
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
                     @Html.DropDownListFor(m => m.AccountId, Enumerable.Empty<SelectListItem>(), "Select account...", new { @class = "form-select select2", id = "AccountId" })
-                    <label>Main Overdraft Account</label>
+                    <label>@GlobalOverdraftActivation.main_overdraft_account</label>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
                     @Html.DropDownListFor(m => m.OverdraftFacilityConfigId, new SelectList(ViewBag.OverdraftConfigs, "Id", "Name"), "Select config...", new { @class = "form-select select2", required = "required" })
-                    <label>Overdraft Facility Config</label>
+                    <label>@GlobalOverdraftActivation.overdraft_facility_config</label>
                 </div>
             </div>
 
@@ -74,7 +74,7 @@
             <!-- 💼 Section: Overdraft Parameters -->
             <div class="col-12">
                 <h6 class="text-primary border-bottom pt-2 pb-1">
-                    <i class="mdi mdi-cash me-1"></i> Overdraft Parameters
+                    <i class="mdi mdi-cash me-1"></i> @GlobalOverdraftActivation.overdraft_parameters
                 </h6>
             </div>
 
@@ -83,10 +83,10 @@
             <div class="col-md-4">
                 <div class="form-check mb-1">
                     @Html.CheckBoxFor(m => m.PayAsYouGoInterest, new { @class = "form-check-input", id = "PayAsYouGoInterest" })
-                    <label class="form-check-label" for="PayAsYouGoInterest">Pay-as-you-go</label>
+                    <label class="form-check-label" for="PayAsYouGoInterest">@GlobalOverdraftActivation.pay_as_you_go</label>
                     <small class="text-muted d-block">
-                        💡 Charges are incurred only when a portion of the overdraft is consumed, based on a usage percentage as configured.<br />
-                        👉 <em>Example:</em> If you use 20,000 from a 100,000 overdraft limit, interest applies only on the 20,000 used.
+                        💡 @GlobalOverdraftActivation.charges_are_incurred_only_when_a_portion_of_the_overdraft_is_consumed_based_on_a_usage_percentage_as_configured.<br />
+                        👉 <em>@GlobalShared.Example:</em> @GlobalOverdraftActivation.if_you_use_20000_from_a_100000_overdraft_limit_interest_applies_only_on_the_20000_used.
                     </small>
                 </div>
             </div>
@@ -96,13 +96,13 @@
             <div class="col-md-4">
                 <div class="form-check mb-1">
                     @Html.CheckBoxFor(m => m.FlatInterestRate, new { @class = "form-check-input", id = "FlatInterestRate" })
-                    <label class="form-check-label" for="FlatInterestRate">Flat Interest</label>
-                    <small class="text-muted d-block">💡 Charges fixed interest periodically, regardless of usage.</small>
+                    <label class="form-check-label" for="FlatInterestRate">@GlobalShared.flat_interest</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.charges_fixed_interest_periodically_regardless_of_usage.</small>
                 </div>
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control", type = "number", step = "0.01", id = "InterestRate" })
-                    <label>Interest Rate (%)</label>
-                    <small class="text-muted d-block">💡 Enter the interest rate applicable to the overdraft (e.g. 10%).</small>
+                    <label>@GlobalShared.Interest_Rate (%)</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.enter_the_interest_rate_applicable_to_the_overdraft (e.g. 10%).</small>
                 </div>
             </div>
 
@@ -110,13 +110,13 @@
             <div class="col-md-4">
                 <div class="form-check mb-1">
                     @Html.CheckBoxFor(m => m.AutoRecoverOnDeposit, new { @class = "form-check-input", id = "AutoRecoverOnDeposit" })
-                    <label class="form-check-label" for="AutoRecoverOnDeposit">Auto Recover</label>
-                    <small class="text-muted d-block">💡 Automatically settles overdraft when deposits are received.</small>
+                    <label class="form-check-label" for="AutoRecoverOnDeposit">@GlobalShared.auto_recover</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.automatically_settles_overdraft_when_deposits_are_received.</small>
                 </div>
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.PenaltyRate, new { @class = "form-control", type = "number", step = "0.01" })
-                    <label>Penalty Rate (%)</label>
-                    <small class="text-muted d-block">💡 Late repayment penalties applied when repayment terms are violated.</small>
+                    <label>@GlobalShared.penalty_rate (%)</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.late_repayment_penalties_applied_when_repayment_terms_are_violated.</small>
                 </div>
             </div>
 
@@ -125,7 +125,7 @@
             <!-- 💳 Section: Salary & Recovery Settings -->
             <div class="col-12 mt-4">
                 <h6 class="text-primary border-bottom pt-2 pb-1">
-                    <i class="mdi mdi-cash-refund me-1"></i> Salary & Recovery Settings
+                    <i class="mdi mdi-cash-refund me-1"></i> @GlobalOverdraftActivation.salary_recovery_settings
                 </h6>
             </div>
 
@@ -133,8 +133,8 @@
             <div class="col-md-6">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.IsSalaryOverdraftAccount, new { @class = "form-check-input", id = "IsSalaryOD", onchange = "handleSalaryODToggle()" })
-                    <label class="form-check-label" for="IsSalaryOD">Link Salary Account to Overdraft</label>
-                    <small class="text-muted d-block">💡 Required if the overdraft depends on salary-based crediting.</small>
+                    <label class="form-check-label" for="IsSalaryOD">@GlobalOverdraftActivation.link_salary_account_to_overdraft</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.required_if_the_overdraft_depends_on_salarybased_crediting.</small>
                 </div>
             </div>
 
@@ -142,8 +142,8 @@
             <div class="col-md-6">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.LinkedSalaryAccountId, new { @class = "form-control", placeholder = "Optional", id = "LinkedSalaryAccountId" })
-                    <label>Linked Salary Account ID</label>
-                    <small class="text-muted d-block">💡 Provide the account to which salary is credited.</small>
+                    <label>@GlobalOverdraftActivation.linked_salary_account_id</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.provide_the_account_to_which_salary_is_credited.</small>
                 </div>
             </div>
 
@@ -153,8 +153,8 @@
                     @Html.ListBoxFor(m => m.RecoverySourceAccountIds,
                         new MultiSelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                         new { @class = "form-select select2", id = "RecoverySourceAccountIds", multiple = "multiple" })
-                    <label>Recovery Source Accounts</label>
-                    <small class="text-muted d-block">💡 OD will be auto-recovered from these accounts when funds are available.</small>
+                    <label>@GlobalOverdraftActivation.recovery_source_accounts</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.od_will_be_autorecovered_from_these_accounts_when_funds_are_available.</small>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@
             <!-- 🔁 Section: Provisioning & Expiry -->
             <div class="col-12 mt-4">
                 <h6 class="text-primary border-bottom pt-2 pb-1">
-                    <i class="mdi mdi-timer-cog-outline me-1"></i> Provisioning & Expiry
+                    <i class="mdi mdi-timer-cog-outline me-1"></i> @GlobalOverdraftActivation.provisioning_expiry
                 </h6>
             </div>
 
@@ -171,8 +171,8 @@
             <div class="col-md-4">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.AutoProvisionEnabled, new { @class = "form-check-input", id = "AutoProvisionEnabled" })
-                    <label class="form-check-label" for="AutoProvisionEnabled">Enable Auto-Provision</label>
-                    <small class="text-muted d-block">💡 Automatically replenishes OD limit based on defined frequency.</small>
+                    <label class="form-check-label" for="AutoProvisionEnabled">@GlobalOverdraftActivation.enable_auto_provision</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.automatically_replenishes_od_limit_based_on_defined_frequency.</small>
                 </div>
             </div>
 
@@ -180,8 +180,8 @@
             <div class="col-md-4" id="ProvisionFrequencyContainer">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.AutoProvisionFrequencyInDays, new { @class = "form-control", type = "number", min = "1" })
-                    <label>Provision Frequency (days)</label>
-                    <small class="text-muted d-block">💡 How often (in days) the OD limit is refreshed automatically.</small>
+                    <label>@GlobalOverdraftActivation.provision_frequency_days</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.how_often_in_days_the_od_limit_is_refreshed_automatically.</small>
                 </div>
             </div>
 
@@ -190,8 +190,8 @@
             <div class="col-md-4">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.ProposedExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                    <label>Expiry Date</label>
-                    <small class="text-muted d-block">💡 The proposed date when this overdraft facility expires.</small>
+                    <label>@GlobalShared.Expiry_Date</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.the_proposed_date_when_this_overdraft_facility_expires.</small>
                 </div>
             </div>
 
@@ -199,24 +199,24 @@
             <div class="col-md-4">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.AverageSalaryAmount, new { @class = "form-control", type = "number", placeholder = "e.g. 250000" })
-                    <label>Average Monthly Salary</label>
-                    <small class="text-muted d-block">💡 Enter the member’s average salary amount. This value helps compute the eligible overdraft limit.</small>
+                    <label>@GlobalOverdraftActivation.average_monthly_salary</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.enter_the_members_average_salary_amount_this_value_helps_compute_the_eligible_overdraft_limit.</small>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.RequestedLimit, new { @class = "form-control", type = "number", placeholder = "e.g. 500000" })
-                    <label>Requested Limit</label>
-                    <small class="text-muted d-block">💡 Set the eligible overdraft limit as determined by credit score analysis.</small>
+                    <label>@GlobalShared.requested_limit</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.set_the_eligible_overdraft_limit_as_determined_by_credit_score_analysis.</small>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-floating shadow-sm">
                     @Html.TextBoxFor(m => m.CustomerSegment, new { @class = "form-control", placeholder = "e.g. Platinum" })
-                    <label>Member Segment</label>
-                    <small class="text-muted d-block">💡 Helps apply segment-based overdraft rules (optional).</small>
+                    <label>@GlobalShared.member_segment</label>
+                    <small class="text-muted d-block">💡 @GlobalOverdraftActivation.helps_apply_segmentbased_overdraft_rules_optional.</small>
                 </div>
             </div>
 
@@ -224,8 +224,8 @@
 
             <!-- ✅ Submit -->
             <div class="col-12 text-end mt-4">
-                <button type="submit" class="btn btn-primary px-4" title="Submit and send overdraft activation request for processing">
-                    <i class="mdi mdi-send-check-outline me-2"></i> Submit Overdraft Request
+                <button type="submit" class="btn btn-primary px-4" title="@GlobalOverdraftActivation.submit_and_send_overdraft_activation_request_for_processing">
+                    <i class="mdi mdi-send-check-outline me-2"></i> @GlobalOverdraftActivation.submit_overdraft_request
                 </button>
             </div>
 

@@ -117,16 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountType" xml:space="preserve">
-    <value>Type de compte</value>
-  </data>
-  <data name="ChargesType" xml:space="preserve">
-    <value>Type de frais</value>
-  </data>
-  <data name="FeePolicyType" xml:space="preserve">
-    <value>Type de politique de frais</value>
-  </data>
-  <data name="FeeType" xml:space="preserve">
-    <value>Type de frais</value>
-  </data>
 </root>

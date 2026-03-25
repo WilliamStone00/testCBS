@@ -1,14 +1,15 @@
-﻿<!-- Alternative: Index_Ajax.cshtml -->
+<!-- Alternative: Index_Ajax.cshtml -->
+@using Resources
 <div id="datalistingview">
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2 shadow-sm">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-target-account me-2"></i> PCMF Targeted Population Category
+                        <i class="mdi mdi-target-account me-2"></i> @GlobalLoanTargetCatalog.pcmf_targeted_population_category
                     </h1>
                     <p class="card-text">
-                        Manage loan target categories for PCMF population classification
+                        @GlobalLoanTargetCatalog.manage_loan_target_categories_for_pcmf_population_classification
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -18,7 +19,7 @@
 
     <div class="card mb-2">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i>  Tips</span>
+            <span><i class="mdi mdi-information-outline me-2"></i>  @GlobalShared.Tips</span>
             <button class="btn btn-light btn-sm" type="button"
                     data-bs-toggle="collapse" data-bs-target="#collapseTargetTips"
                     aria-expanded="false" aria-controls="collapseTargetTips">
@@ -28,25 +29,25 @@
         <div id="collapseTargetTips" class="collapse">
             <div class="card-body">
                 <p class="mb-3">
-                    The Loan Target Catalog defines <strong>borrower segmentation</strong> for inclusive finance reporting.
-                    Each target category helps classify loans by customer type, supporting PCMF compliance and strategic lending.
+                    @Html.Raw(@GlobalLoanTargetCatalog.the_loan_target_catalog_defines_borrower_segmentation_for_inclusive_finance_reporting).
+                    @GlobalLoanTargetCatalog.each_target_category_helps_classify_loans_by_customer_type_supporting_pcmf_compliance_and_strategic_lending.
                 </p>
 
                 <div class="row">
                     <!-- Naming Guidelines -->
                     <div class="col-md-6 mb-3">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-format-letter-case me-1"></i> Naming Guidelines
+                            <i class="mdi mdi-format-letter-case me-1"></i> @GlobalShared.naming_guidelines
                         </h6>
                         <ul class="small mb-0">
                             <li class="mb-2">
-                                <strong class="text-success">✓ English Name:</strong> Use clear, descriptive names (e.g., "Micro-Entrepreneurs", "Smallholder Farmers")
+                                <strong class="text-success">✓ @GlobalShared.english_name:</strong> @GlobalLoanTargetCatalog.use_clear_descriptive_names_eg_microentrepreneurs_smallholder_farmers
                             </li>
                             <li class="mb-2">
-                                <strong class="text-success">✓ French Name:</strong> Provide accurate French translations for bilingual reporting
+                                <strong class="text-success">✓ @GlobalShared.french_name:</strong> @GlobalLoanTargetCatalog.provide_accurate_french_translations_for_bilingual_reporting
                             </li>
                             <li class="mb-2">
-                                <strong class="text-warning">⚠ Consistency:</strong> Maintain consistent naming across all loan products
+                                <strong class="text-warning">⚠ @GlobalShared.consistency:</strong> @GlobalLoanTargetCatalog.maintain_consistent_naming_across_all_loan_products
                             </li>
                         </ul>
                     </div>
@@ -54,17 +55,17 @@
                     <!-- Population Management -->
                     <div class="col-md-6 mb-3">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-account-group me-1"></i> PCMF Population
+                            <i class="mdi mdi-account-group me-1"></i> @GlobalShared.pcmf_population
                         </h6>
                         <ul class="small mb-0">
                             <li class="mb-2">
-                                <strong class="text-success">✓ Actual Counts:</strong> Enter current population numbers for accurate reporting
+                                <strong class="text-success">✓ @GlobalShared.actual_counts:</strong> @GlobalLoanTargetCatalog.enter_current_population_numbers_for_accurate_reporting
                             </li>
                             <li class="mb-2">
-                                <strong class="text-success">✓ Zero Values:</strong> Use 0 for targets without current population data
+                                <strong class="text-success">✓ @GlobalShared.zero_values:</strong> @GlobalLoanTargetCatalog.use_0_for_targets_without_current_population_data
                             </li>
                             <li class="mb-2">
-                                <strong class="text-info">🔄 Updates:</strong> Update population counts quarterly for accurate PCMF reporting
+                                <strong class="text-info">🔄 @GlobalShared.updates:</strong> @GlobalLoanTargetCatalog.update_population_counts_quarterly_for_accurate_pcmf_reporting
                             </li>
                         </ul>
                     </div>
@@ -74,20 +75,20 @@
                 <div class="row mt-2">
                     <div class="col-12">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-toggle-switch me-1"></i> Status Management
+                            <i class="mdi mdi-toggle-switch me-1"></i> @GlobalShared.Status_Management
                         </h6>
                         <div class="row small">
                             <div class="col-md-4 mb-2">
-                                <span class="badge bg-success me-1">Active</span>
-                                <strong>Active Targets:</strong> Available for new loan product creation
+                                <span class="badge bg-success me-1">@GlobalShared.Active</span>
+                                <strong>@GlobalShared.active_targets:</strong> @GlobalLoanTargetCatalog.available_for_new_loan_product_creation
                             </div>
                             <div class="col-md-4 mb-2">
-                                <span class="badge bg-secondary me-1">Inactive</span>
-                                <strong>Inactive Targets:</strong> Hidden from new loans, existing loans unaffected
+                                <span class="badge bg-secondary me-1">@GlobalShared.InActive</span>
+                                <strong>@GlobalShared.inactive_targets:</strong> @GlobalLoanTargetCatalog.hidden_from_new_loans_existing_loans_unaffected
                             </div>
                             <div class="col-md-4 mb-2">
-                                <span class="badge bg-warning me-1">Archived</span>
-                                <strong>System Note:</strong> Cannot delete targets used in existing loans
+                                <span class="badge bg-warning me-1">@GlobalShared.archived</span>
+                                <strong>@GlobalShared.system_note:</strong> @GlobalLoanTargetCatalog.cannot_delete_targets_used_in_existing_loans
                             </div>
                         </div>
                     </div>
@@ -97,27 +98,27 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-shield-check-outline me-1"></i> Regulatory Importance
+                            <i class="mdi mdi-shield-check-outline me-1"></i> @GlobalLoanTargetCatalog.regulatory_importance
                         </h6>
                         <p class="small mb-2">
-                            Proper loan target classification is essential for:
+                            @GlobalLoanTargetCatalog.proper_loan_target_classification_is_essential_for:
                         </p>
                         <ul class="small mb-0">
                             <li class="mb-1">
                                 <i class="mdi mdi-chart-line text-primary me-1"></i>
-                                <strong>PCMF Reporting:</strong> Accurate segmentation in financial inclusion reports
+                                <strong>@GlobalLoanTargetCatalog.pcmf_reporting:</strong> @GlobalLoanTargetCatalog.accurate_segmentation_in_financial_inclusion_reports
                             </li>
                             <li class="mb-1">
                                 <i class="mdi mdi-scale-balance text-info me-1"></i>
-                                <strong>COBAC Compliance:</strong> Proper risk categorization and provisioning
+                                <strong>@GlobalLoanTargetCatalog.cobac_compliance:</strong> @GlobalLoanTargetCatalog.proper_risk_categorization_and_provisioning
                             </li>
                             <li class="mb-1">
                                 <i class="mdi mdi-finance text-success me-1"></i>
-                                <strong>SESAME Integration:</strong> Correct mapping to banking supervision systems
+                                <strong>@GlobalLoanTargetCatalog.sesame_integration:</strong> @GlobalLoanTargetCatalog.correct_mapping_to_banking_supervision_systems
                             </li>
                             <li class="mb-1">
                                 <i class="mdi mdi-chart-pie text-warning me-1"></i>
-                                <strong>Strategic Analysis:</strong> Portfolio analysis by customer segment
+                                <strong>@GlobalLoanTargetCatalog.strategic_analysis:</strong> @GlobalLoanTargetCatalog.portfolio_analysis_by_customer_segment
                             </li>
                         </ul>
                     </div>
@@ -127,20 +128,20 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-best-fit me-1"></i> Best Practices
+                            <i class="mdi mdi-best-fit me-1"></i> @GlobalShared.Best_Practices
                         </h6>
                         <div class="row small">
                             <div class="col-md-6">
                                 <div class="d-flex mb-2">
                                     <i class="mdi mdi-check-circle text-success me-2 mt-1"></i>
                                     <div>
-                                        <strong>Review Existing Targets:</strong> Before creating new ones, check if similar targets exist
+                                        <strong>@GlobalLoanTargetCatalog.review_existing_targets:</strong> @GlobalLoanTargetCatalog.before_creating_new_ones_check_if_similar_targets_exist
                                     </div>
                                 </div>
                                 <div class="d-flex mb-2">
                                     <i class="mdi mdi-check-circle text-success me-2 mt-1"></i>
                                     <div>
-                                        <strong>Regular Updates:</strong> Update population data at least quarterly
+                                        <strong>@GlobalShared.regular_updates:</strong> @GlobalShared.update_population_data_at_least_quarterly
                                     </div>
                                 </div>
                             </div>
@@ -148,13 +149,13 @@
                                 <div class="d-flex mb-2">
                                     <i class="mdi mdi-alert-circle text-warning me-2 mt-1"></i>
                                     <div>
-                                        <strong>Avoid Deactivation:</strong> Only deactivate targets no longer relevant
+                                        <strong>@GlobalShared.avoid_deactivation:</strong> @GlobalLoanTargetCatalog.only_deactivate_targets_no_longer_relevant
                                     </div>
                                 </div>
                                 <div class="d-flex mb-2">
                                     <i class="mdi mdi-alert-circle text-warning me-2 mt-1"></i>
                                     <div>
-                                        <strong>Document Changes:</strong> Note reasons for status changes in comments
+                                        <strong>@GlobalShared.document_changes:</strong> @GlobalLoanTargetCatalog.note_reasons_for_status_changes_in_comments
                                     </div>
                                 </div>
                             </div>
@@ -166,32 +167,32 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-format-list-bulleted me-1"></i> Common Loan Target Examples
+                            <i class="mdi mdi-format-list-bulleted me-1"></i> @GlobalLoanTargetCatalog.common_loan_target_examples
                         </h6>
                         <div class="row small">
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Micro-Entrepreneurs
+                                @GlobalShared.microentrepreneurs
                             </div>
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Smallholder Farmers
+                                @GlobalLoanTargetCatalog.smallholder_farmers
                             </div>
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Women Entrepreneurs
+                                @GlobalShared.women_entrepreneurs
                             </div>
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Youth Entrepreneurs
+                                @GlobalShared.youth_entrepreneurs
                             </div>
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Informal Sector Workers
+                                @GlobalLoanTargetCatalog.informal_sector_workers
                             </div>
                             <div class="col-md-4 mb-2">
                                 <span class="badge bg-light text-dark me-1">•</span>
-                                Rural Population
+                                @GlobalLoanTargetCatalog.rural_population
                             </div>
                         </div>
                     </div>
@@ -203,24 +204,24 @@
                 <div class="row">
                     <div class="col-12">
                         <h6 class="text-primary mb-2">
-                            <i class="mdi mdi-lightning-bolt me-1"></i> Quick Actions Guide
+                            <i class="mdi mdi-lightning-bolt me-1"></i> @GlobalShared.quick_actions_guide
                         </h6>
                         <div class="row small">
                             <div class="col-md-3 mb-2">
                                 <i class="mdi mdi-plus text-primary me-1"></i>
-                                <strong>Add:</strong> Create new target categories
+                                <strong>@GlobalShared.Add:</strong> @GlobalLoanTargetCatalog.create_new_target_categories
                             </div>
                             <div class="col-md-3 mb-2">
                                 <i class="mdi mdi-pencil text-warning me-1"></i>
-                                <strong>Edit:</strong> Modify existing target details
+                                <strong>@GlobalShared.Edit:</strong> @GlobalLoanTargetCatalog.modify_existing_target_details
                             </div>
                             <div class="col-md-3 mb-2">
                                 <i class="mdi mdi-eye text-info me-1"></i>
-                                <strong>View:</strong> See complete target information
+                                <strong>@GlobalShared.View:</strong> @GlobalLoanTargetCatalog.see_complete_target_information
                             </div>
                             <div class="col-md-3 mb-2">
                                 <i class="mdi mdi-delete text-danger me-1"></i>
-                                <strong>Delete:</strong> Remove unused targets (if no loans attached)
+                                <strong>@GlobalShared.Delete:</strong> @GlobalLoanTargetCatalog.remove_unused_targets_if_no_loans_attached
                             </div>
                         </div>
                     </div>
@@ -228,7 +229,7 @@
 
                 <p class="text-muted mt-3 mb-0 small">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Note: Changes to loan targets affect all loan products using that target category.
+                    @GlobalShared.Note: @GlobalLoanTargetCatalog.changes_to_loan_targets_affect_all_loan_products_using_that_target_category.
                 </p>
             </div>
         </div>
@@ -240,12 +241,12 @@
             <button type="button"
                     onclick="showCreateModal()"
                     class="btn btn-label-primary btn-primary me-2">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.AddNew
             </button>
             <button type="button"
                     onclick="refreshTable()"
                     class="btn btn-label-secondary btn-info">
-                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+                <i class="mdi mdi-refresh mdi-18px"></i> @GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -253,7 +254,7 @@
     <!-- DataTable -->
     <div class="card p-3 shadow mb-4">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-table"></i> Loan Target Catalog
+            <i class="mdi mdi-table"></i>@GlobalLoanTargetCatalog.loan_target_catalog
             <small class="text-muted ms-2">
                 <span id="recordCount" class="badge bg-info">Loading...</span>
             </small>
@@ -262,11 +263,11 @@
             <table id="loanTargetDataTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th>Name (English)</th>
-                        <th>Name (French)</th>
-                        <th>PCMF Population</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>@GlobalShared.Name (@GlobalShared.English)</th>
+                        <th>@GlobalShared.Name (@GlobalShared.French)</th>
+                        <th>@GlobalShared.pcmf_population</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

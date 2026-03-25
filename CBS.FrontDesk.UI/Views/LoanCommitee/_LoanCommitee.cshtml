@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
     @using Resources
 <div class="col">
 
@@ -12,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        @GlobalLoanCommitee.LoanCommiteeGroup
+                        @GlobalLoanCommitee.loan_commitee_group
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -39,7 +39,7 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.Name, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Name, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.CommiteeName</label>
+                                        <label>@GlobalLoanCommitee.commitee_name</label>
                                     </div>
                                 </div>
 
@@ -47,48 +47,48 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.MinimumAmountToValide</label>
+                                        <label>@GlobalLoanCommitee.minimum_amount_to_valide</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.MaximumLoanAmount, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.MinimumLoanAmount, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.MaximumAmountToValide</label>
+                                        <label>@GlobalLoanCommitee.maximum_amount_to_valide</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberOfMembers, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberOfMembers, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.CommiteeSize</label>
+                                        <label>@GlobalLoanCommitee.commitee_size</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.NumberToApprovalsToValidationALoan, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.EnterAcceptableNumberOfApprovals</label>
+                                        <label>@GlobalLoanCommitee.enter_acceptable_number_of_approvals</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.SelectGroupLeader + "---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.select_group_leader + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.CommiteeLeaderUserId, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.SelectGroupLeader</label>
+                                        <label>@GlobalLoanCommitee.select_group_leader</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check">
                                         @Html.CheckBoxFor(m => m.LoanCommiteeGroup.Status, new { @class = "form-check-input" })
-                                        <label class="form-check-label" for="isActive">@GlobalLoanCommitee.ActiveStatus</label>
+                                        <label class="form-check-label" for="isActive">@GlobalShared.Active_Status</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextAreaFor(m => m.LoanCommiteeGroup.Description, new { @class = "form-control", @style = "height: 200px;" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeGroup.Description, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.Description</label>
+                                        <label>@GlobalShared.Description</label>
                                     </div>
                                 </div>
                             </div>

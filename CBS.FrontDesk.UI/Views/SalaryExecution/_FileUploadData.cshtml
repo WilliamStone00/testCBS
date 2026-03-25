@@ -1,4 +1,4 @@
-﻿
+
 
 
 @model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
@@ -71,9 +71,9 @@
                         <thead class="table-light">
                             <tr>
                                 <th>@GlobalSalaryUpload.FileName</th>
-                                <th>File Type</th>
-                                <th>Branch</th>
-                                <th>Visibility</th>
+                                <th>@GlobalShared.File_Type</th>
+                                <th>@GlobalShared.Branch</th>
+                                <th>@GlobalShared.visibility</th>
                                 <th>@GlobalSalaryUpload.UploadedBy</th>
                                 <th>@GlobalSalaryUpload.UploadedOn</th>
                                 <th style="width:1%;">@GlobalShared.Action</th>
@@ -91,7 +91,7 @@
                                         @if (!string.IsNullOrWhiteSpace(file.FileType))
                                         {<span class="badge bg-secondary">@file.FileType</span> }
                                     else
-                                    { <span class="badge bg-light text-muted">Unknown</span>}
+                                    { <span class="badge bg-light text-muted">@GlobalShared.Unknown</span>}
                                     </td>
 
                                     <!-- Branch -->
@@ -106,13 +106,13 @@
                                     <td>
                                         @if (file.PrivateView)
                                         {
-                                            <span class="status-pip offline" title="Private (visible to this branch only)"></span>
-                                            <span class="ms-1">Private</span>
+                                            <span class="status-pip offline" title="@GlobalShared.private_visible_to_this_branch_only"></span>
+                                            <span class="ms-1">@GlobalShared._private</span>
                                         }
                                         else
                                         {
-                                            <span class="status-pip online" title="Public (visible to other branches)"></span>
-                                            <span class="ms-1">Public</span>
+                                            <span class="status-pip online" title="@GlobalShared.public_visible_to_other_branches"></span>
+                                            <span class="ms-1">@GlobalShared._public</span>
                                         }
                                     </td>
 

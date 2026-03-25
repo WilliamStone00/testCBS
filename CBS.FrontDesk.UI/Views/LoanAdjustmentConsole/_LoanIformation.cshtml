@@ -45,11 +45,11 @@
             <td>@Model.InterestRate.ToString("#,##0.00")%</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastCalculatedInterestDate:</strong></td>
+            <td><strong>@GlobalLoan.last_calculated_interest_date:</strong></td>
             <td>@Model.LastInterestCalculatedDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastCalculatedInterest:</strong></td>
+            <td><strong>@GlobalLoan.last_calculated_interest:</strong></td>
             <td>@Model.LastCalculatedInterest.ToString("#,##0.0")</td>
         </tr>
         <tr>
@@ -65,11 +65,11 @@
             <td>@Model.TaxPaid.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.Fine:</strong></td>
+            <td><strong>@GlobalLoan.fine:</strong></td>
             <td>@Model.Penalty.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.FinePaid:</strong></td>
+            <td><strong>@GlobalLoan.fine_paid:</strong></td>
             <td>@Model.PenaltyPaid.ToString("#,##0.00")</td>
         </tr>
         <tr>
@@ -81,11 +81,11 @@
             <td>@Model.Balance.ToString("#,##0.00")</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastRepaymentDate:</strong></td>
+            <td><strong>@GlobalLoan.last_repayment_date:</strong></td>
             <td>@Model.LastRefundDate</td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LastRepayment:</strong></td>
+            <td><strong>@GlobalLoan.last_repayment:</strong></td>
             <td>@Model.LastPayment.ToString("#,##0.00")</td>
         </tr>
         <tr>
@@ -94,7 +94,7 @@
         </tr>
 
         <tr>
-            <td><strong>@GlobalLoan.LoanDeliquecyJourney:</strong></td>
+            <td><strong>@GlobalLoan.loan_deliquecy_journey:</strong></td>
             <td>@Model.LoanJourneyStatus</td>
         </tr>
         <tr>
@@ -106,12 +106,12 @@
                 }
                 else
                 {
-            <span class="badge bg-dark">@GlobalLoan.NotCurrent</span>
+            <span class="badge bg-dark">@GlobalLoan.not_current</span>
                 }
             </td>
         </tr>
         <tr>
-            <td><strong>@GlobalLoan.LoanManager:</strong></td>
+            <td><strong>@GlobalLoan.loan_manager:</strong></td>
             <td>@Model.LoanManager</td>
         </tr>
     </table>

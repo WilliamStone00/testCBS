@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountsUploadParam" xml:space="preserve">
+  <data name="accounts_upload_param" xml:space="preserve">
     <value>Accounts Upload Param</value>
   </data>
-  <data name="MembersAccountMigration" xml:space="preserve">
+  <data name="members_account_migration" xml:space="preserve">
     <value>Members Account Migration</value>
   </data>
-  <data name="SelectAccountType" xml:space="preserve">
-    <value>Select account type</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
-  <data name="SelectMembersIndividualAccountBalanceFile" xml:space="preserve">
+  <data name="select_members_individual_account_balance_file" xml:space="preserve">
     <value>Select members individual account balance file (Formated: AccountNumber, OpeningBalance)</value>
   </data>
 </root>

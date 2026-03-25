@@ -1,8 +1,8 @@
-﻿@{
+@{
     ViewBag.Title = "Overdraft Facility Configurations";
 }
 
-
+@using Resources
 <div class="container">
     <!-- Page Header -->
     <div class="row mb-2">
@@ -10,13 +10,13 @@
             <div class="card bg-light shadow-sm">
                 <div class="card-body text-center">
                     <h2 class="card-title text-primary">
-                        <i class="mdi mdi-bank-check me-2"></i> Overdraft Facility Configurations
+                        <i class="mdi mdi-bank-check me-2"></i> @GlobalOverdraftFacilityConfig.overdraft_facility_configurations
                     </h2>
                     <p class="card-text text-secondary fs-6">
-                        This page allows you to manage rules and limitations for overdraft-enabled account products. Each configuration controls eligibility, limits, interest, and behavior during overdraft usage.
+                        @GlobalOverdraftFacilityConfig.this_page_allows_you_to_manage_rules_and_limitations_for_overdraftenabled_account_products_each_configuration_controls_eligibility_limits_interest_and_behavior_during_overdraft_usage.
                     </p>
                     <p class="card-text text-muted small">
-                        Use the button below to add a new configuration or update an existing one for a product.
+                        @GlobalOverdraftFacilityConfig.use_the_button_below_to_add_a_new_configuration_or_update_an_existing_one_for_a_product.
                     </p>
                     <hr style="border: 2px solid rgba(0, 128, 128, 0.2);" />
                 </div>
@@ -35,16 +35,16 @@
                        onclick="LoadDataGen('OverdraftFacilityConfig','overdraftConfigDataTableContainer','_Data',0,'datalistingview')"
                        class="btn btn-outline-primary btn-sm"
                        data-bs-toggle="tooltip"
-                       title="Reload and View Overdraft Config List">
-                        <i class="mdi mdi-view-list me-1"></i> View List
+                       title="@GlobalOverdraftFacilityConfig.reload_and_view_overdraft_config_list">
+                        <i class="mdi mdi-view-list me-1"></i> @GlobalShared.View_List
                     </a>
                 </div>
                 <div>
                     <button onclick="AddORUpdateGen(null,'overdraftConfigDataTableContainer','_OverdraftFacilityConfigForm','new','OverdraftFacilityConfig')"
-                             class="btn btn-outline-primary btn-sm"
+                            class="btn btn-outline-primary btn-sm"
                             data-bs-toggle="tooltip"
-                            title="Register a New Overdraft Configuration">
-                        <i class="mdi mdi-plus me-1"></i> New Overdraft Config
+                            title="@GlobalOverdraftFacilityConfig.register_a_new_overdraft_configuration">
+                        <i class="mdi mdi-plus me-1"></i> @GlobalOverdraftFacilityConfig.new_overdraft_config
                     </button>
                 </div>
             </div>

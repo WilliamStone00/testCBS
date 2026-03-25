@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
 @using Resources
 @{
     ViewBag.Title = "All Member None-Cash Operations";
@@ -11,10 +11,10 @@
                 <div class="card bg-light">
                     <div class="card-body text-center">
                         <h1 class="card-title text-primary">
-                            <i class="mdi mdi-timer-sand me-2"></i> @GlobalMemberNoneCashOperation.ALLMemberNoneCashOperations
+                            <i class="mdi mdi-timer-sand me-2"></i> @GlobalMemberNoneCashOperation.all_member_none_cash_operations
                         </h1>
                         <p class="card-text">
-                            @GlobalMemberNoneCashOperation.ViewValidateOrDeletePendingNoneCashOperationsForMemberAccounts.
+                            @GlobalMemberNoneCashOperation.view_validate_or_delete_pending_none_cash_operations_for_member_accounts.
                         </p>
                         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                     </div>
@@ -27,7 +27,7 @@
         <!-- Tips Section -->
         <div class="card mb-2">
             <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMemberNoneCashOperation.TIPS</span>
+                <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
                 <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationTips" aria-expanded="false" aria-controls="collapseOperationTips">
                     <i class="mdi mdi-chevron-down"></i>
                 </button>
@@ -35,10 +35,10 @@
             <div id="collapseOperationTips" class="collapse">
                 <div class="card-body">
                     <ul class="mb-0">
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.ViewDetails:</strong> @GlobalMemberNoneCashOperation.UseThe <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalMemberNoneCashOperation.buttonToSeeMoreInformationAboutTheOperation.</li>
-                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Validate:</strong> Validate pending operations using the <span class="text-primary"><i class="fas fa-check-circle"></i> @GlobalShared.Validate</span> @GlobalMemberNoneCashOperation.buttonToMarkThemAsApproved.</li>
-                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@GlobalShared.Delete:</strong> @GlobalMemberNoneCashOperation.UseThe <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalMemberNoneCashOperation.buttonToRemoveIncorrectOrUnnecessaryOperations.</li>
-                        <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalMemberNoneCashOperation.KeepOperationsUpToDate:</strong> @GlobalMemberNoneCashOperation.RegularlyValidatePendingOperations.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.ViewDetails:</strong> @GlobalMemberNoneCashOperation.use_the <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalMemberNoneCashOperation.button_to_see_more_information_about_the_operation.</li>
+                        <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Validate:</strong> Validate pending operations using the <span class="text-primary"><i class="fas fa-check-circle"></i> @GlobalShared.Validate</span> @GlobalMemberNoneCashOperation.button_to_mark_them_as_approved.</li>
+                        <li><i class="mdi mdi-alert-circle-outline text-danger me-2"></i> <strong>@GlobalShared.Delete:</strong> @GlobalMemberNoneCashOperation.use_the <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalMemberNoneCashOperation.button_to_remove_incorrect_or_unnecessary_operations.</li>
+                        <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalMemberNoneCashOperation.keep_operations_up_to_date:</strong> @GlobalMemberNoneCashOperation.regularly_validate_pending_operations.</li>
                     </ul>
                 </div>
             </div>
@@ -72,14 +72,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="operationDetailModalLabel">@GlobalMemberNoneCashOperation.OperationDetails</h5>
+                <h5 class="modal-title" id="operationDetailModalLabel">@GlobalShared.operation_details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="operationDetailContainer">
                 <!-- The partial view will be loaded here -->
                 <div class="d-flex justify-content-center align-items-center p-5">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">@GlobalMemberNoneCashOperation.Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
                 </div>
             </div>
@@ -93,10 +93,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="validateOperationContainer">
-                @GlobalMemberNoneCashOperation.PartialViewContentWillBeLoadedHere
+                @GlobalMemberNoneCashOperation.partial_view_content_will_be_loaded_here
                 <div class="d-flex justify-content-center align-items-center p-5">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">@GlobalMemberNoneCashOperation.Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
                 </div>
             </div>

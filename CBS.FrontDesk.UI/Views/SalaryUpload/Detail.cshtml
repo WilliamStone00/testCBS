@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
     @using Resources
 @{
     ViewBag.Title = "Salary Summary";
@@ -9,10 +9,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryUpload.SALARY_SUMMARY
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryUpload.salary_summary
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalSalaryUpload.ViewAnalyzeAndManageEmployeeSalarySummariesEfficiently.
+                    @GlobalSalaryUpload.view_analyze_and_manage_employee_salary_summaries_efficiently.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -20,7 +20,7 @@
             <!-- Tips Section -->
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalSalaryUpload.TIPS</span>
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -28,14 +28,14 @@
                 <div id="collapseSalarySummaryTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalSalaryUpload.UseThe <strong>"@GlobalSalaryUpload.RunSalaryAnalysis"</strong> @GlobalSalaryUpload.buttonToAnalyzeUploadedSalaryData.</li>
-                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalSalaryUpload.ClickThe <strong>"@GlobalSalaryUpload.ViewResultOfAnalyzedSalary"</strong> @GlobalSalaryUpload.buttonToCheckPreviouslyAnalyzedResults.</li>
-                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryUpload.EnsureAllUploadedSalaryFilesAreAccurateAndInTheCorrectFormat (e.g., Excel, CSV).</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.RegularlyVerifyAnalyzedResultsAgainstPayrollToEnsureAccuracy.</li>
-                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryUpload.UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords.</li>
-                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryUpload.AddressAnomaliesLikeOverpaymentsOrMissingRecordsPromptly.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryUpload.EditAnalyzedSalaryRecordsForCorrectionsOrUpdatesWhenNecessary.</li>
-                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryUpload.DeleteInvalidUploadsToMaintainCleanAndAccurateRecords.</li>
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalShared.use_the <strong>"@GlobalSalaryUpload.run_salary_analysis"</strong> @GlobalSalaryUpload.button_to_analyze_uploaded_salary_data.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalShared.click_the <strong>"@GlobalSalaryUpload.view_result_of_analyzed_salary"</strong> @GlobalSalaryUpload.button_to_check_previously_analyzed_results.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryUpload.ensure_all_uploaded_salary_files_are_accurate_and_in_the_correct_format (e.g., Excel, CSV).</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.regularly_verify_analyzed_results_against_payroll_to_ensure_accuracy.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryUpload.use_search_filters_to_quickly_locate_specific_employee_salary_records.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryUpload.address_anomalies_like_overpayments_or_missing_records_promptly.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryUpload.edit_analyzed_salary_records_for_corrections_or_updates_when_necessary.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryUpload.delete_invalid_uploads_to_maintain_clean_and_accurate_records.</li>
                         </ul>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryUpload.SalaryAnalysis
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalShared.salary_analysis
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -71,7 +71,7 @@
                                                 <a type="button" href="#" class="btn btn-label-danger btn-sm me-2"
                                                    data-bs-toggle="tooltip" title="Deactivate File"
                                                    onclick="ChangeFileStatus('@Model.SalaryUploadModelSummaryDto.FileUploadId', false)">
-                                                    <i class="mdi mdi-close-circle mdi-18px"></i> @GlobalSalaryUpload.Deactivate
+                                                    <i class="mdi mdi-close-circle mdi-18px"></i> @GlobalShared.Deactivate
                                                 </a>
                                             }
                                             else
@@ -79,7 +79,7 @@
                                                 <a type="button" href="#" class="btn btn-label-success btn-sm me-2"
                                                    data-bs-toggle="tooltip" title="Activate File"
                                                    onclick="ChangeFileStatus('@Model.SalaryUploadModelSummaryDto.FileUploadId', true)">
-                                                    <i class="mdi mdi-check-circle mdi-18px"></i> @GlobalSalaryUpload.Activate
+                                                    <i class="mdi mdi-check-circle mdi-18px"></i> @GlobalShared.Activate
                                                 </a>
                                              
                                             }

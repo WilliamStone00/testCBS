@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
     @using Resources
 @{
@@ -10,10 +10,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryAnalyzer.SALARY_SUMMARY
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalPISalaryAnalyzer.salary_summary
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalSalaryAnalyzer.ViewAnalyzeAndManageEmployeeSalary.
+                    @GlobalPISalaryAnalyzer.view_analyze_and_manage_employee_salary.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -21,7 +21,7 @@
             <!-- Tips Section -->
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalSalaryAnalyzer.TIPS</span>
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -29,14 +29,14 @@
                 <div id="collapseSalarySummaryTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.UseThe <strong>"@GlobalSalaryAnalyzer.RunSalaryAnalysis"</strong> @GlobalSalaryAnalyzer.buttonToAnalyzeUploadedSalaryData.</li>
-                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.ClickThe <strong>"@GlobalSalaryAnalyzer.ViewResultOfAnalyzedSalary"</strong> @GlobalSalaryAnalyzer.buttonToCheckPreviouslyAnalyzedResults.</li>
-                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryAnalyzer.EnsureAllUploadedSalaryFilesAreAccurate (e.g., Excel, CSV).</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryAnalyzer.RegularlyVerifyAnalyzedResults.</li>
-                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryAnalyzer.UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords.</li>
-                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryAnalyzer.AddressAnomaliesLikeOverpayments.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryAnalyzer.EditAnalyzedSalaryRecordsForCorrections.</li>
-                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryAnalyzer.DeleteInvalidUploadsToMaintainClean.</li>
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @GlobalShared.use_the <strong>"@GlobalPISalaryAnalyzer.run_salary_analysis"</strong> @GlobalPISalaryAnalyzer.button_to_analyze_uploaded_salary_data.</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @GlobalShared.click_the <strong>"@GlobalPISalaryAnalyzer.view_result_of_analyzed_salary"</strong> @GlobalPISalaryAnalyzer.button_to_check_previously_analyzed_results.</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalPISalaryAnalyzer.ensure_all_uploaded_salary_files_are_accurate (e.g., Excel, CSV).</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPISalaryAnalyzer.regularly_verify_analyzed_results.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalPISalaryAnalyzer.use_search_filters_to_quickly_locate_specific_employee_salary_records.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalPISalaryAnalyzer.address_anomalies_like_overpayments.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalPISalaryAnalyzer.edit_analyzed_salary_records_for_corrections.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalPISalaryAnalyzer.delete_invalid_uploads_to_maintain_clean.</li>
                         </ul>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryAnalyzer.SalaryAnalysis
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalShared.salary_analysis
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -69,14 +69,14 @@
                                             </a>
                                             <!-- Run Salary Analysis -->
                                             <a type="button" href="#" class="btn btn-label-secondary btn-sm me-2"
-                                               data-bs-toggle="tooltip" title="@GlobalSalaryAnalyzer.RunSalaryAnalysis"
+                                               data-bs-toggle="tooltip" title="@GlobalPISalaryAnalyzer.run_salary_analysis"
                                                onclick="runAnalysis('@Model.SalaryUploadModelSummaryDto.FileUploadId')">
-                                                <i class="mdi mdi-play-box-outline mdi-18px"></i> @GlobalSalaryAnalyzer.RunAnalysis
+                                                <i class="mdi mdi-play-box-outline mdi-18px"></i> @GlobalShared.run_analysis
                                             </a>
 
                                             <!-- View Analyzed Results -->
-                                            <a type="button" href="/PISalaryAnalyzer/SalaryAnalysisResultSummary?fileUploadid=@Model.SalaryUploadModelSummaryDto.FileUploadId" target="_blank" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryAnalyzer.ViewAnalyzedResults">
-                                                <i class="mdi mdi-file-eye-outline mdi-18px"></i> @GlobalSalaryAnalyzer.ViewResults
+                                            <a type="button" href="/PISalaryAnalyzer/SalaryAnalysisResultSummary?fileUploadid=@Model.SalaryUploadModelSummaryDto.FileUploadId" target="_blank" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalPISalaryAnalyzer.view_analyzed_results">
+                                                <i class="mdi mdi-file-eye-outline mdi-18px"></i> @GlobalShared.view_results
                                             </a>
 
                                         </div>

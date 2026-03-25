@@ -1,4 +1,4 @@
-﻿@*@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@*@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
     @using Resources
 
     @if (Model != null && Model.LoanProducts.Any())
@@ -7,12 +7,12 @@
             <table class="table table-hover table-bordered table-sm" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 10%;">@GlobalLoanProduct.Target</th>
-                        <th style="width: 30%;">@GlobalLoanProduct.Type</th>
-                        <th style="width: 25%;">@GlobalLoanProduct.Name</th>
-                        <th style="width: 16%;">@GlobalLoanProduct.MinMax</th>
-                        <th style="width: 7%;">@GlobalLoanProduct.Status</th>
-                        <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                        <th style="width: 10%;">@GlobalShared.target</th>
+                        <th style="width: 30%;">@GlobalShared.Type</th>
+                        <th style="width: 25%;">@GlobalShared.Name</th>
+                        <th style="width: 16%;">@GlobalLoanProduct.min_max</th>
+                        <th style="width: 7%;">@GlobalShared.Status</th>
+                        <th style="width: 5%;">@GlobalLoanProduct.ssf</th>
                         <th style="width: 8%;">@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -41,27 +41,27 @@
                                         <ul class="mb-0">
                                             @if (d.LoanMinimumAmount <= 0)
                                             {
-                                                <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
+                                                <li>@GlobalLoanProduct.min_amount_must_be_greater_than0.</li>
                                             }
                                             @if (d.LoanMaximumAmount <= 0)
                                             {
-                                                <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
+                                                <li>@GlobalLoanProduct.max_amount_must_be_greater_than0.</li>
                                             }
                                             @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
                                             {
-                                                <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
+                                                <li>@GlobalLoanProduct.min_amount_cannot_exceed_max_amount.</li>
                                             }
                                             @if (d.LoanProductCategory.Name == "N/A")
                                             {
-                                                <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                             }
                                             @if (d.TargetType == "N/A")
                                             {
-                                                <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
+                                                <li>@GlobalLoanProduct.target_typ_is_not_configured.</li>
                                             }
                                             @if (d.LoanTerm.Name == "N/A")
                                             {
-                                                <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                                                <li>@GlobalLoanProduct.loan_term_is_not_configured.</li>
                                             }
                                         </ul>
                                     </div>
@@ -71,11 +71,11 @@
                             <td>
                                 @if (d.ActiveStatus)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanProduct.Active</span>
+                                    <span class="badge bg-info">@GlobalShared.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
+                                    <span class="badge bg-warning">@GlobalShared.InActive</span>
                                 }
                             </td>
                             <td>
@@ -99,7 +99,7 @@
                                 }
                             </td>
                             <td>
-                                <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanAccountMapping','account_mapping','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set account mapping for @d.ProductName">@GlobalLoanProduct.AccMap</a>
+                                <a href="#" class="mr-2" onclick="AddORUpdateGen('@d.Id','datalistingview','_LoanAccountMapping','account_mapping','LoanProduct')" data-toggle="tooltip" data-placement="top" title="Set account mapping for @d.ProductName">@GlobalLoanProduct.acc_map</a>
                             </td>
                         </tr>
                     }
@@ -110,7 +110,7 @@
     else
     {
         <div class="text-center my-3">
-            <p>@GlobalLoanProduct.NoLoanProductHasBeenCreated.</p>
+            <p>@GlobalLoanProduct.no_loan_product_has_been_created.</p>
         </div>
     }*@
 
@@ -131,7 +131,7 @@
                                 <div class="d-flex">
                                     <div class="card-body text-center">
                                         <h5 class="modal-title text-primary" id="accountMappingModalLabel">
-                                            <i class="fas fa-exchange-alt me-2"></i>Account Mapping
+                                            <i class="fas fa-exchange-alt me-2"></i>@GlobalShared.Account_Mapping
                                             <button type="button" class="close text-black opacity-100" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.8rem; margin-left: auto;">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -141,7 +141,7 @@
                                         </p>
                                         <div class="alert alert-info mt-3 py-2">
                                             <i class="mdi mdi-information-outline me-1"></i>
-                                            Map your loan product to the appropriate GL accounts. This ensures proper accounting and financial reporting.
+                                            @GlobalLoanProduct.map_your_loan_product_to_the_appropriate_gl_accounts_this_ensures_proper_accounting_and_financial_reporting.
                                         </div>
                                         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                                     </div>
@@ -152,9 +152,9 @@
                             <div id="accountMappingModalBody">
                                 <div class="text-center p-5">
                                     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                                        <span class="sr-only">Loading...</span>
+                                        <span class="sr-only">@GlobalShared.Loading...</span>
                                     </div>
-                                    <p class="mt-3 text-muted">Loading account mapping configuration...</p>
+                                    <p class="mt-3 text-muted">@GlobalLoanProduct.loading_account_mapping_configuration...</p>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +166,7 @@
             <!-- Change from Bootstrap 4 to Bootstrap 5 syntax -->
             <div class="modal-footer bg-light" style="border-top: 1px solid #dee2e6;">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i> Cancel
+                    <i class="fas fa-times me-1"></i> @GlobalShared.Cancel
                 </button>
             </div>
         </div>
@@ -233,12 +233,12 @@
         <table class="table table-hover table-bordered table-sm" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 10%;">@GlobalLoanProduct.Target</th>
-                    <th style="width: 30%;">@GlobalLoanProduct.Type</th>
-                    <th style="width: 25%;">@GlobalLoanProduct.Name</th>
-                    <th style="width: 16%;">@GlobalLoanProduct.MinMax</th>
-                    <th style="width: 7%;">@GlobalLoanProduct.Status</th>
-                    <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                    <th style="width: 10%;">@GlobalShared.target</th>
+                    <th style="width: 30%;">@GlobalShared.Type</th>
+                    <th style="width: 25%;">@GlobalShared.Name</th>
+                    <th style="width: 16%;">@GlobalLoanProduct.min_max</th>
+                    <th style="width: 7%;">@GlobalShared.Status</th>
+                    <th style="width: 5%;">@GlobalLoanProduct.ssf</th>
                     <th style="width: 8%;">@GlobalShared.Action</th>
                 </tr>
             </thead>
@@ -267,27 +267,27 @@
                                     <ul class="mb-0">
                                         @if (d.LoanMinimumAmount <= 0)
                                         {
-                                            <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
+                                            <li>@GlobalLoanProduct.min_amount_must_be_greater_than0.</li>
                                         }
                                         @if (d.LoanMaximumAmount <= 0)
                                         {
-                                            <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
+                                            <li>@GlobalLoanProduct.max_amount_must_be_greater_than0.</li>
                                         }
                                         @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
                                         {
-                                            <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
+                                            <li>@GlobalLoanProduct.min_amount_cannot_exceed_max_amount.</li>
                                         }
                                         @if (d.LoanProductCategory.Name == "N/A")
                                         {
-                                            <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                            <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                         }
                                         @if (d.TargetType == "N/A")
                                         {
-                                            <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
+                                            <li>@GlobalLoanProduct.target_typ_is_not_configured.</li>
                                         }
                                         @if (d.LoanTerm.Name == "N/A")
                                         {
-                                            <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                                            <li>@GlobalLoanProduct.loan_term_is_not_configured.</li>
                                         }
                                     </ul>
                                 </div>
@@ -297,11 +297,11 @@
                         <td>
                             @if (d.ActiveStatus)
                             {
-                                <span class="badge bg-info">@GlobalLoanProduct.Active</span>
+                                <span class="badge bg-info">@GlobalShared.Active</span>
                             }
                             else
                             {
-                                <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
+                                <span class="badge bg-warning">@GlobalShared.InActive</span>
                             }
                         </td>
                         <td>
@@ -331,7 +331,7 @@
                                data-toggle="tooltip"
                                data-placement="top"
                                title="Set account mapping for @d.ProductName">
-                                <i class="fas fa-exchange-alt"></i> @GlobalLoanProduct.AccMap
+                                <i class="fas fa-exchange-alt"></i> @GlobalLoanProduct.acc_map
                             </a>
                         </td>
                     </tr>
@@ -343,7 +343,7 @@
 else
 {
     <div class="text-center my-3">
-        <p>@GlobalLoanProduct.NoLoanProductHasBeenCreated.</p>
+        <p>@GlobalLoanProduct.no_loan_product_has_been_created.</p>
     </div>
 }
 

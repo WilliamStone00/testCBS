@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "Notification", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -12,7 +12,7 @@
     else
     {
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalNotification.CashClearing @Model.CashClearing.AccountInfo </legend>
+    <legend id="select_base">@GlobalNotification.cash_clearing @Model.CashClearing.AccountInfo </legend>
     @if (Convert.ToBoolean(ViewBag.AccountNotFound))
     {
 
@@ -28,9 +28,9 @@
                     <div class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-6">
                         <div>
                             <h3 class="mb-3">XAF @Model.CashClearing.AmountExpected</h3>
-                            <p class="mb-0">@GlobalNotification.AuthorizedBy @Model.CashReplenimentRequest.TempId2 </p>
-                            <p class="mb-0">@GlobalNotification.TransferBy @Model.CashClearing.TransferBy </p>
-                            <p class="mb-0">@GlobalNotification.TransactionDoneOnThe @Model.CashClearing.CreatedDate </p>
+                            <p class="mb-0">@GlobalShared.authorized_by @Model.CashReplenimentRequest.TempId2 </p>
+                            <p class="mb-0">@GlobalShared.transfer_by @Model.CashClearing.TransferBy </p>
+                            <p class="mb-0">@GlobalNotification.transaction_done_on_the @Model.CashClearing.CreatedDate </p>
                         </div>
                         <div class="avatar me-sm-6">
                             <span class="avatar-initial rounded bg-label-secondary">
@@ -43,14 +43,14 @@
         </div>
         <div class="col-md-6" hidden="hidden">
             <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalNotification.TotalAmount: 0.0</span>
+                <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                 <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                 <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CashClearing.AmountExpected">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating form-floating-outline">
-                <span class="formatted-amount shadow-box" id="lblBalance">@GlobalNotification.Balance: 0</span>
+                <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: 0</span>
             </div>
         </div>
         @Html.HiddenFor(m => m.CashClearing.ReferenceId)
@@ -145,7 +145,7 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextAreaFor(m => m.CashClearing.Description, new { @class = "form-control", @style = "height: 70px;" })
                 @Html.ValidationMessageFor(m => m.CashClearing.Description, "", new { @class = "text-danger " })
-                <label for="formValidationDob">@GlobalNotification.CashClearingDescription</label>
+                <label for="formValidationDob">@GlobalNotification.cash_clearing_description</label>
             </div>
         </div>
 

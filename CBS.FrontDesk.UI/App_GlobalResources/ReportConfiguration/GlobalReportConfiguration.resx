@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="accurate_mappings_ensure_correct_account_grouping_and_reliable_financial_reporting" xml:space="preserve">
+    <value>Accurate mappings ensure correct account grouping and reliable financial reporting</value>
+  </data>
+  <data name="activate_or_deactivate_the_definition_depending_on_business_requirements" xml:space="preserve">
+    <value>Activate or deactivate the definition depending on business requirements</value>
+  </data>
+  <data name="always_select_the_correct_report_and_section_before_creating_a_line" xml:space="preserve">
+    <value>Always select the correct report and section before creating a line</value>
+  </data>
+  <data name="assign_a_short_unique_identifier_for_easy_reference" xml:space="preserve">
+    <value>Assign a short, unique identifier for easy reference</value>
+  </data>
+  <data name="calculation_mode" xml:space="preserve">
+    <value>Calculation Mode</value>
+  </data>
+  <data name="calc_mode" xml:space="preserve">
+    <value>Calc Mode</value>
+  </data>
+  <data name="cobac_report_line_selection" xml:space="preserve">
+    <value>COBAC Report Line Selection</value>
+  </data>
+  <data name="configure_and_manage_individual_report_lines_used_to_structure_financial_statements" xml:space="preserve">
+    <value>Configure and manage individual report lines used to structure financial statements</value>
+  </data>
+  <data name="configure_and_organize_report_definitions_used_for_generating_financial_statements" xml:space="preserve">
+    <value>Configure and organize report definitions used for generating financial statements</value>
+  </data>
+  <data name="configure_mapping_rules_used_to_associate_gl_accounts_or_ranges_with_specific_report_lines" xml:space="preserve">
+    <value>Configure mapping rules used to associate GL accounts or ranges with specific report lines</value>
+  </data>
+  <data name="configure_your_calculations_values_and_formulas_accurately" xml:space="preserve">
+    <value>Configure your calculations, values, and formulas accurately</value>
+  </data>
+  <data name="controls_the_display_order_of_lines_within_a_section" xml:space="preserve">
+    <value>Controls the display order of lines within a section</value>
+  </data>
+  <data name="controls_the_position_of_the_section_within_the_report" xml:space="preserve">
+    <value>Controls the position of the section within the report</value>
+  </data>
+  <data name="create_and_organize_sections_used_to_structure_financial_reports_into_logical_categories" xml:space="preserve">
+    <value>Create and organize sections used to structure financial reports into logical categories</value>
+  </data>
+  <data name="debit_credit_or_both" xml:space="preserve">
+    <value>Debit, Credit, or Both</value>
+  </data>
+  <data name="defines_how_the_line_value_is_computed" xml:space="preserve">
+    <value>Defines how the line value is computed</value>
+  </data>
+  <data name="determines_how_accounts_are_matched" xml:space="preserve">
+    <value>Determines how accounts are matched</value>
+  </data>
+  <data name="enable_this_option_only_for_lines_that_should_appear_in_the_generated_report" xml:space="preserve">
+    <value>Enable this option only for lines that should appear in the generated report</value>
+  </data>
+  <data name="ensure_each_line_is_linked_to_the_correct_section_to_maintain_reporting_accuracy" xml:space="preserve">
+    <value>Ensure each line is linked to the correct section to maintain reporting accuracy</value>
+  </data>
+  <data name="enter_the_position_code_for_mapping" xml:space="preserve">
+    <value>Enter the position code for mapping</value>
+  </data>
+  <data name="every_section_must_belong_to_a_parent_report_balance_sheet_income_statement" xml:space="preserve">
+    <value>Every section must belong to a parent report (Balance Sheet, Income Statement…)</value>
+  </data>
+  <data name="financial_statement_section" xml:space="preserve">
+    <value>Financial Statement Section</value>
+  </data>
+  <data name="include_liaison" xml:space="preserve">
+    <value>Include Liaison</value>
+  </data>
+  <data name="keep_codes_short_and_meaningful" xml:space="preserve">
+    <value>Keep codes short and meaningful</value>
+  </data>
+  <data name="maintain_consistency_across_definitions_to_ensure_accurate_and_reliable_reporting" xml:space="preserve">
+    <value>Maintain consistency across definitions to ensure accurate and reliable reporting</value>
+  </data>
+  <data name="manage_all_report_components_definitions_sections_lines_and_line_mappings" xml:space="preserve">
+    <value>Manage all report components: Definitions, Sections, Lines and Line Mappings</value>
+  </data>
+  <data name="match_and_map_your_data_correctly_for_consistent_outputs" xml:space="preserve">
+    <value>Match and map your data correctly for consistent outputs</value>
+  </data>
+  <data name="optional_filter_by_category_group" xml:space="preserve">
+    <value>Optional - filter by category group</value>
+  </data>
+  <data name="organize_your_reports_by_logical_areas_or_categories" xml:space="preserve">
+    <value>Organize your reports by logical areas or categories</value>
+  </data>
+  <data name="provide_clear_identifiers_and_report_types" xml:space="preserve">
+    <value>Provide clear identifiers and report types</value>
+  </data>
+  <data name="ref_code" xml:space="preserve">
+    <value>Ref Code</value>
+  </data>
+  <data name="report_configuration" xml:space="preserve">
+    <value>REPORT CONFIGURATION</value>
+  </data>
+  <data name="report_definition_management" xml:space="preserve">
+    <value>Report Definition Management</value>
+  </data>
+  <data name="report_lines" xml:space="preserve">
+    <value>Report Lines</value>
+  </data>
+  <data name="report_line_management" xml:space="preserve">
+    <value>Report Line Management</value>
+  </data>
+  <data name="report_line_mapping_management" xml:space="preserve">
+    <value>Report Line Mapping Management</value>
+  </data>
+  <data name="report_section" xml:space="preserve">
+    <value>Report &amp; Section</value>
+  </data>
+  <data name="report_section_management" xml:space="preserve">
+    <value>Report Section Management</value>
+  </data>
+  <data name="sections_define_the_hierarchy_that_report_lines_will_follow" xml:space="preserve">
+    <value>Sections define the hierarchy that report lines will follow</value>
+  </data>
+  <data name="select_account_code" xml:space="preserve">
+    <value>Select account code</value>
+  </data>
+  <data name="select_a_report" xml:space="preserve">
+    <value>Select a report</value>
+  </data>
+  <data name="select_a_report_definition" xml:space="preserve">
+    <value>Select a report Definition</value>
+  </data>
+  <data name="select_a_section" xml:space="preserve">
+    <value>Select a section</value>
+  </data>
+  <data name="select_main_section_first" xml:space="preserve">
+    <value>Select main section first</value>
+  </data>
+  <data name="select_match_type_first" xml:space="preserve">
+    <value>Select match type first</value>
+  </data>
+  <data name="select_report_line" xml:space="preserve">
+    <value>Select report line</value>
+  </data>
+  <data name="select_the_appropriate_category_balance_sheet_income_statement_etc" xml:space="preserve">
+    <value>Select the appropriate category (Balance Sheet, Income Statement, etc.)</value>
+  </data>
+  <data name="select_the_exact_account_code_to_map" xml:space="preserve">
+    <value>Select the exact account code to map</value>
+  </data>
+  <data name="select_the_target_cobac_report_line" xml:space="preserve">
+    <value>Select the target COBAC report line</value>
+  </data>
+  <data name="set_the_reporting_currency_to_ensure_precise_calculations" xml:space="preserve">
+    <value>Set the reporting currency to ensure precise calculations</value>
+  </data>
+  <data name="the_label_that_will_appear_in_the_financial_reports" xml:space="preserve">
+    <value>The label that will appear in the financial reports</value>
+  </data>
+  <data name="tips_for_configuring_report_definitions" xml:space="preserve">
+    <value>Tips for Configuring Report Definitions</value>
+  </data>
+  <data name="tips_for_configuring_report_lines" xml:space="preserve">
+    <value>Tips for Configuring Report Lines</value>
+  </data>
+  <data name="tips_for_configuring_report_sections" xml:space="preserve">
+    <value>Tips for Configuring Report Sections</value>
+  </data>
+  <data name="tips_for_managing_report_configuration" xml:space="preserve">
+    <value>Tips for Managing Report Configuration</value>
+  </data>
+  <data name="use_short_descriptive_identifiers" xml:space="preserve">
+    <value>Use short descriptive identifiers</value>
+  </data>
+  <data name="welldefined_sections_ensure_clear_grouping_and_consistent_report_hierarchy" xml:space="preserve">
+    <value>Well-defined sections ensure clear grouping and consistent report hierarchy</value>
+  </data>
+</root>

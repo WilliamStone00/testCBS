@@ -117,31 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Numéro de compte</value>
-  </data>
-  <data name="All_NETWORK_MEMBERS_ACCOUNTS" xml:space="preserve">
-    <value>Tous les comptes des membres du réseau</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Agence</value>
-  </data>
-  <data name="LoadAllNetworkMembersAccounts" xml:space="preserve">
-    <value>Charger tous les comptes des membres du réseau</value>
-  </data>
-  <data name="LoadLocalMembersAccounts" xml:space="preserve">
-    <value>Charger les comptes des membres locaux</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Référence</value>
-  </data>
-  <data name="SearchByAccountNumberOrMembersNameOrTelephoneNumber" xml:space="preserve">
-    <value>Rechercher par numéro de compte ou nom du membre</value>
-  </data>
-  <data name="TelephoneNumber" xml:space="preserve">
-    <value>Numéro de téléphone</value>
-  </data>
 </root>

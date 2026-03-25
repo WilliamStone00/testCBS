@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
     @using Resources
 @{
     ViewBag.Title = "Pending Accounting Entries";
@@ -9,13 +9,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-check me-2"></i> @GlobalManuallyJournalEntry.VALIDATEJOURNALENTRIES
+                    <i class="mdi mdi-account-check me-2"></i> @GlobalManuallyJournalEntry.validate_journal_entries
                 </h1>
                 <p class="card-text">
-                    @GlobalManuallyJournalEntry.TheJournalEntriesRetrievedInThisInterfaceIncludeDataFromTheLastFinancialYear (@(DateTime.UtcNow.Year - 1)) @GlobalManuallyJournalEntry.andTheCurrentYear (@DateTime.UtcNow.Year).
+                    @GlobalManuallyJournalEntry.the_journal_entries_retrieved_in_this_interface_include_data_from_the_last_financial_year (@(DateTime.UtcNow.Year - 1)) @GlobalManuallyJournalEntry.and_the_current_year (@DateTime.UtcNow.Year).
                 </p>
                 <p class="card-text text-warning fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalManuallyJournalEntry.InCaseYouWishToHaveDataAboveThePeriod.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalManuallyJournalEntry.in_case_you_wish_to_have_data_above_the_period.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,7 +26,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalManuallyJournalEntry.TIPSFORFILTERINGJOURNALENTRIES</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalManuallyJournalEntry.tips_for_filtering_journal_entries</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,23 +36,23 @@
             <ul>
                 <li>
                     <i class="mdi mdi-office-building text-warning me-2"></i>
-                    <strong>@GlobalManuallyJournalEntry.FilterByBranch:</strong> @GlobalManuallyJournalEntry.AvailableOnlyWhenAssignedByTheHeadOffice.
+                    <strong>@GlobalShared.Filter_by_Branch:</strong> @GlobalManuallyJournalEntry.available_only_when_assigned_by_the_head_office.
                 </li>
                 <li>
                     <i class="mdi mdi-calendar-check-outline text-primary me-2"></i>
-                    <strong>@GlobalManuallyJournalEntry.DateRange:</strong> @GlobalManuallyJournalEntry.SpecifyADateRangeToFilterJournalEntriesAccordingly.
+                    <strong>@GlobalShared.Date_Range:</strong> @GlobalManuallyJournalEntry.specify_adate_range_to_filter_journal_entries_accordingly.
                 </li>
                 <li>
                     <i class="mdi mdi-alert-circle text-success me-2"></i>
-                    <strong>@GlobalManuallyJournalEntry.FilterByRequestStatus:</strong> @GlobalManuallyJournalEntry.FilterBasedOnTheStatus.
+                    <strong>@GlobalManuallyJournalEntry.filter_by_request_status:</strong> @GlobalManuallyJournalEntry.filter_based_on_the_status.
                 </li>
                 <li>
                     <i class="mdi mdi-account-outline text-info me-2"></i>
-                    <strong>@GlobalManuallyJournalEntry.FilterByRequestIssuer:</strong> @GlobalManuallyJournalEntry.SelectTheUserWhoInitiatedTheRequestWithinTheBranch.
+                    <strong>@GlobalManuallyJournalEntry.filter_by_request_issuer:</strong> @GlobalManuallyJournalEntry.select_the_user_who_initiated_the_request_within_the_branch.
                 </li>
                 <li>
                     <i class="mdi mdi-account-check-outline text-danger me-2"></i>
-                    <strong>@GlobalManuallyJournalEntry.FilterByRequestApprover:</strong> @GlobalManuallyJournalEntry.SelectTheUserWhoApprovedTheRequest.
+                    <strong>@GlobalManuallyJournalEntry.filter_by_request_approver:</strong> @GlobalManuallyJournalEntry.select_the_user_who_approved_the_request.
                 </li>
             </ul>
 
@@ -72,7 +72,7 @@
                     aria-expanded="true"
                     aria-controls="accordionPopoutIcon-3">
                 <i class="mdi mdi-book-open-variant text-secondary me-2"></i>
-                @GlobalManuallyJournalEntry.JOURNALENTRIES
+                @GlobalManuallyJournalEntry.journalentries
             </button>
         </h2>
         <div id="accordionPopoutIcon-3"

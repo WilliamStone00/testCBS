@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using Resources
 @{
     var product = Model.Product;
@@ -11,14 +11,14 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-bank me-2"></i>Loan Product Configuration Management
+                        <i class="mdi mdi-bank me-2"></i>@GlobalLoanProduct.loan_product_configuration_management
                     </h1>
                     <p class="card-text">
-                        Configure and manage comprehensive loan product settings including interest rates, repayment terms, collateral requirements, and eligibility criteria.
+                        @GlobalLoanProduct.configure_and_manage_comprehensive_loan_product_settings_including_interest_rates_repayment_terms_collateral_requirements_and_eligibility_criteria.
                     </p>
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Define product policies, interest structures, collateral requirements, and repayment options for different loan types.
+                        @GlobalLoanProduct.define_product_policies_interest_structures_collateral_requirements_and_repayment_options_for_different_loan_types.
                     </div>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -29,7 +29,7 @@
     <!-- Tips Section -->
     <div class="card mb-3">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Loan Product Configuration Tips</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLoanProduct.loan_product_configuration_tips</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanProductTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -39,51 +39,51 @@
                 <ul>
                     <li>
                         <i class="mdi mdi-currency-usd text-success me-2"></i>
-                        <strong>Loan Amount Range:</strong> Set minimum and maximum loan amounts to control risk exposure and ensure reasonable lending limits.
+                        <strong>@GlobalLoanProduct.loan_amount_range:</strong> @GlobalLoanProduct.set_minimum_and_maximum_loan_amounts_to_control_risk_exposure_and_ensure_reasonable_lending_limits.
                     </li>
                     <li>
                         <i class="mdi mdi-percent text-info me-2"></i>
-                        <strong>Interest Rate Range:</strong> Define flexible interest rate boundaries that can be adjusted based on borrower risk profile.
+                        <strong>@GlobalLoanProduct.interest_rate_range:</strong> @GlobalLoanProduct.define_flexible_interest_rate_boundaries_that_can_be_adjusted_based_on_borrower_risk_profile.
                     </li>
                     <li>
                         <i class="mdi mdi-calendar-clock text-warning me-2"></i>
-                        <strong>Loan Duration:</strong> Configure minimum and maximum loan terms in months to align with borrower repayment capacity.
+                        <strong>@GlobalShared.Loan_Duration:</strong> @GlobalLoanProduct.configure_minimum_and_maximum_loan_terms_in_months_to_align_with_borrower_repayment_capacity.
                     </li>
                     <li>
                         <i class="mdi mdi-shield-account text-primary me-2"></i>
-                        <strong>Collateral Requirements:</strong> Specify if collateral is required and set minimum collateral percentage relative to loan amount.
+                        <strong>@GlobalLoanProduct.collateral_requirements:</strong> @GlobalLoanProduct.specify_if_collateral_is_required_and_set_minimum_collateral_percentage_relative_to_loan_amount.
                     </li>
                     <li>
                         <i class="mdi mdi-account-group text-danger me-2"></i>
-                        <strong>Guarantor Settings:</strong> Determine if guarantors are required and define their fund coverage obligations.
+                        <strong>@GlobalLoanProduct.guarantor_settings:</strong> @GlobalLoanProduct.determine_if_guarantors_are_required_and_define_their_fund_coverage_obligations.
                     </li>
                     <li>
                         <i class="mdi mdi-bank-transfer text-secondary me-2"></i>
-                        <strong>Account Requirements:</strong> Configure required account types (share, savings, salary) and minimum balance percentages.
+                        <strong>@GlobalShared.account_requirements:</strong> @GlobalLoanProduct.configure_required_account_types_share_savings_salary_and_minimum_balance_percentages.
                     </li>
                     <li>
                         <i class="mdi mdi-calendar-sync text-success me-2"></i>
-                        <strong>Repayment Cycles:</strong> Select available repayment frequencies (daily, weekly, monthly) to match borrower cash flow.
+                        <strong>@GlobalShared.repayment_cycles:</strong> @GlobalLoanProduct.select_available_repayment_frequencies_daily_weekly_monthly_to_match_borrower_cash_flow.
                     </li>
                     <li>
                         <i class="mdi mdi-home-analytics text-info me-2"></i>
-                        <strong>Mortgage Features:</strong> Enable specialized mortgage settings like LTV ratios, grace periods, and title requirements.
+                        <strong>Mortgage Features:</strong> @GlobalLoanProduct.enable_specialized_mortgage_settings_like_ltv_ratios_grace_periods_and_title_requirements.
                     </li>
                     <li>
                         <i class="mdi mdi-cash-refresh text-primary me-2"></i>
-                        <strong>Top-up Options:</strong> Configure refinancing capabilities and minimum repayment percentages required for top-ups.
+                        <strong>@GlobalShared.topup_options:</strong> @GlobalLoanProduct.configure_refinancing_capabilities_and_minimum_repayment_percentages_required_for_topups.
                     </li>
                     <li>
                         <i class="mdi mdi-alert-circle text-warning me-2"></i>
-                        <strong>Penalty Settings:</strong> Define late payment penalties, interest waiver options, and delinquency management rules.
+                        <strong>@GlobalShared.penalty_settings:</strong> @GlobalLoanProduct.define_late_payment_penalties_interest_waiver_options_and_delinquency_management_rules.
                     </li>
                     <li>
                         <i class="mdi mdi-account-check text-success me-2"></i>
-                        <strong>Eligibility Criteria:</strong> Set target populations (individual, employee, corporate) and purpose classifications.
+                        <strong>@GlobalLoanProduct.eligibility_criteria:</strong> @GlobalLoanProduct.set_target_populations_individual_employee_corporate_and_purpose_classifications.
                     </li>
                     <li>
                         <i class="mdi mdi-calculator-variant text-info me-2"></i>
-                        <strong>Down Payment:</strong> Configure minimum down payment percentage to reduce initial risk exposure.
+                        <strong>@GlobalLoanProduct.down_payment:</strong> @GlobalLoanProduct.configure_minimum_down_payment_percentage_to_reduce_initial_risk_exposure.
                     </li>
                 </ul>
             </div>
@@ -94,28 +94,28 @@
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
             <span class="text-primary fw-semibold">
-                <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
+                <i class="mdi mdi-eye-outline me-1"></i> @GlobalLoanProduct.live_pcmf_preview
             </span>
-            <small class="text-muted">Live</small>
+            <small class="text-muted">@GlobalShared.live</small>
         </div>
 
         <div class="card-body py-2">
             <div class="d-flex flex-wrap gap-2 align-items-center">
 
                 <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">
-                    Section: @product.PcmfSection
+                    @GlobalShared.section: @product.PcmfSection
                 </span>
 
                 <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">
-                    Group: @product.PcmfGroupCode
+                    @GlobalShared.Group: @product.PcmfGroupCode
                 </span>
 
                 <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">
-                    Base: @product.PcmfPopulation
+                    @GlobalShared._base: @product.PcmfPopulation
                 </span>
 
                 <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">
-                    Population: @product.PcmfBaseCode
+                    @GlobalShared.population: @product.PcmfBaseCode
                 </span>
 
                 <!-- TAXATION CONTROL (INLINE) -->
@@ -131,7 +131,7 @@
 
                         <label class="form-check-label fw-semibold ms-2"
                                for="ApplyTaxIfLoanAmountMeetControl">
-                            Apply Tax If Loan Amount Meet Control
+                            @GlobalLoanProduct.apply_tax_if_loan_amount_meet_control
                         </label>
 
                         <!-- Important for false value -->
@@ -145,7 +145,7 @@
             </div>
 
             <div class="small text-muted mt-2">
-                Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
+                @GlobalLoanProduct.updates_automatically_as_you_pick_facility_term_purpose_target.
             </div>
         </div>
 
@@ -157,7 +157,7 @@
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
                 <i class="mdi mdi-tag-outline me-2 text-primary"></i>
-                <span class="fw-semibold text-primary">PCMF Classification</span>
+                <span class="fw-semibold text-primary">@GlobalLoanProduct.pcmf_classification</span>
             </button>
         </h2>
 
@@ -176,7 +176,7 @@
                             <label>Loan Term</label>
                         </div>
                         <div class="small text-muted">
-                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                            @Html.Raw(@GlobalLoanProduct.required_for_classic_ssf_loc_only_overdraft_can_be_empty).
                         </div>
                     </div>
 
@@ -187,9 +187,9 @@
                                 "--- Select PCMF Purpose ---",
                                 new { @class = "form-control select2", required = "required", disabled = "disabled", id = "PcmfLoanPurposeId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
-                            <label>PCMF Loan Purpose</label>
+                            <label>@GlobalLoanProduct.pcmf_loan_purpose</label>
                         </div>
-                        <div class="small text-muted">Filtered by term/section.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.filtered_by_termsection.</div>
                     </div>
 
                     <div class="col-md-5">
@@ -199,9 +199,9 @@
                                 "--- Select Target ---",
                                 new { @class = "form-control select2", required = "required", disabled = "disabled", id = "LoanTargetId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
-                            <label>Loan Target</label>
+                            <label>@GlobalShared.Loan_Target</label>
                         </div>
-                        <div class="small text-muted">Enabled after purpose.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.enabled_after_purpose.</div>
                     </div>
 
                 </div>
@@ -219,19 +219,19 @@
                     Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                 {
                     <div class="alert alert-danger" role="alert">
-                        <strong>@GlobalLoanProduct.ValidationError:</strong>
+                        <strong>@GlobalShared.Validation_Error:</strong>
                         <ul>
                             @if (Model.Policy.LoanMinimumAmount <= 0)
                             {
-                                <li>@GlobalLoanProduct.MinimumLoanAmountMustBeGreaterThan0.</li>
+                                <li>@GlobalLoanProduct.minimum_loan_amount_must_be_greater_than0.</li>
                             }
                             @if (Model.Policy.LoanMaximumAmount <= 0)
                             {
-                                <li>@GlobalLoanProduct.MaximumLoanAmountMustBeGreaterThan0.</li>
+                                <li>@GlobalLoanProduct.maximum_loan_amount_must_be_greater_than0.</li>
                             }
                             @if (Model.Policy.LoanMinimumAmount > Model.Policy.LoanMaximumAmount)
                             {
-                                <li>@GlobalLoanProduct.MinimumLoanAmountCannotExceedMaximumLoanAmount.</li>
+                                <li>@GlobalLoanProduct.minimum_loan_amount_cannot_exceed_maximum_loan_amount.</li>
                             }
                         </ul>
                     </div>
@@ -244,12 +244,12 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        @GlobalLoanProduct.MinimumAndDownPaymentSettings
-                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanRangeSetTheMinimumDefaultAndMaximumLoanAmounts.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.MinimumLoanAmountDetermineAReasonableMinimumLoanAmount.
-                            2. @GlobalLoanProduct.DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData.
-                            3. @GlobalLoanProduct.MaximumLoanAmountDefineToLimitRiskExposure."></i>
+                        @GlobalLoanProduct.minimum_and_down_payment_settings
+                        <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.loan_range_set_the_minimum_default_and_maximum_loan_amounts.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.minimum_loan_amount_determine_areasonable_minimum_loan_amount.
+                            2. @GlobalLoanProduct.default_loan_amount_set_based_on_market_demand_and_historical_data.
+                            3. @GlobalLoanProduct.maximum_loan_amount_define_to_limit_risk_exposure."></i>
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -265,14 +265,14 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Product.ProductCode, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.Product.ProductCode, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.Code</label>
+                                            <label>@GlobalShared.Code</label>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Product.ProductName, new { @class = "form-control", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.Product.ProductName, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.Name</label>
+                                            <label>@GlobalShared.Name</label>
                                         </div>
                                     </div>
 
@@ -280,34 +280,34 @@
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextAreaFor(m => m.Product.Description, new { @class = "form-control", @style = "height: 75px;", @readonly = true })
                                             @Html.ValidationMessageFor(m => m.Product.Description, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.Description</label>
+                                            <label>@GlobalShared.Description</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Policy.LoanMinimumAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Policy.LoanMinimumAmount, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.MinimumLoanAmount</label>
+                                            <label>@GlobalLoanProduct.minimum_loan_amount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Policy.LoanMaximumAmount, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Policy.LoanMaximumAmount, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.MaximumLoanAmount</label>
+                                            <label>@GlobalLoanProduct.maximum_loan_amount</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-floating form-floating-outline">
                                             @Html.TextBoxFor(m => m.Policy.MinimumDownPaymentPercentage, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.Policy.MinimumDownPaymentPercentage, "", new { @class = "text-danger" })
-                                            <label>@GlobalLoanProduct.MinimumDownPaymentRate</label>
+                                            <label>@GlobalLoanProduct.minimum_down_payment_rate</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.Policy.IsPaidFeeBeforeProcessing, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.MustApartialFeeBePaidBeforeTheLoanApplicationIsProcessed?</label>
+                                            <label class="form-check-label" for="isActive">@GlobalLoanProduct.must_apartial_fee_be_paid_before_the_loan_application_is_processed?</label>
                                         </div>
                                     </div>
 
@@ -333,18 +333,18 @@
                                 data-bs-target="#collapseDeliveryOptions"
                                 aria-expanded="false"
                                 aria-controls="collapseDeliveryOptions">
-                            @GlobalLoanProduct.InterestSettings
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.InterestSetTheInterestTypePeriodAndRatesForTheLoanProduct.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.LoanInterestTypeDetermineTheTypeOfInterest.
-                            2. @GlobalLoanProduct.LoanInterestPeriodSpecifyThePeriodForInterest.
-                            3. @GlobalLoanProduct.MinimumInterestRateDefineTheMinimumInterestRateApplicableToTheLoan.
-                            4. @GlobalLoanProduct.DefaultInterestRateSetTheDefaultInterestRateForTheLoanProduct.
-                            5. @GlobalLoanProduct.MaximumInterestRateDefineTheMaximumInterestRate.
-                            6. @GlobalLoanProduct.StartGeneratingInterestAfterDisbursementDecideIfInterestAccrualStarts.
-                            7. @GlobalLoanProduct.InterestWaiverAllowForTheWaiverOfInterestCharges.
-                            8. @GlobalLoanProduct.MinimumInterestWaiverRateSpecifyTheMinimumRate.
-                            9. @GlobalLoanProduct.MaximumInterestWaiverRateDefineTheMaximumRate."></i>
+                            @GlobalShared.interest_settings
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.interest_set_the_interest_type_period_and_rates_for_the_loan_product.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.loan_interest_type_determine_the_type_of_interest.
+                            2. @GlobalLoanProduct.loan_interest_period_specify_the_period_for_interest.
+                            3. @GlobalLoanProduct.minimum_interest_rate_define_the_minimum_interest_rate_applicable_to_the_loan.
+                            4. @GlobalLoanProduct.default_interest_rate_set_the_default_interest_rate_for_the_loan_product.
+                            5. @GlobalLoanProduct.maximum_interest_rate_define_the_maximum_interest_rate.
+                            6. @GlobalLoanProduct.start_generating_interest_after_disbursement_decide_if_interest_accrual_starts.
+                            7. @GlobalLoanProduct.interest_waiver_allow_for_the_waiver_of_interest_charges.
+                            8. @GlobalLoanProduct.minimum_interest_waiver_rate_specify_the_minimum_rate.
+                            9. @GlobalLoanProduct.maximum_interest_waiver_rate_define_the_maximum_rate."></i>
 
 
                         </button>
@@ -357,7 +357,7 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.InterestSettings</legend>
+                                    <legend>@GlobalShared.interest_settings</legend>
                                     <div class="row g-4">
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
@@ -370,46 +370,46 @@
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumInterestRate, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(m => m.Policy.MinimumInterestRate, "", new { @class = "text-danger" })
-                                                <label>@GlobalLoanProduct.MinimumInterestValue</label>
+                                                <label>@GlobalLoanProduct.minimum_interest_value</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MaximumInterestRate, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(m => m.Policy.MaximumInterestRate, "", new { @class = "text-danger" })
-                                                <label>@GlobalLoanProduct.MaximumInterestValue</label>
+                                                <label>@GlobalLoanProduct.maximum_interest_value</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.StartGeneratingInterestAfterDisbustment, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToStartAccrualInterestAfterDisbustment.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_to_start_accrual_interest_after_disbustment.</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToAllowInterestWaiverForThisProduct</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_to_allow_interest_waiver_for_this_product</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumInterestWaiver, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(m => m.Policy.MinimumInterestWaiver, "", new { @class = "text-danger" })
-                                                <label>@GlobalLoanProduct.MinimumInterestWaiverRate (%)</label>
+                                                <label>@GlobalLoanProduct.minimum_interest_waiver_rate (%)</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MaximumInterestWaiver, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(m => m.Policy.MaximumInterestWaiver, "", new { @class = "text-danger" })
-                                                <label>@GlobalLoanProduct.MaximumInterestWaiverRate (%)</label>
+                                                <label>@GlobalLoanProduct.maximum_interest_waiver_rate (%)</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.StopInterestCalculationAtLoanMaturityDate, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.StopInterestCalculationAtLoaMaturityDate.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.stop_interest_calculation_at_loa_maturity_date.</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -423,7 +423,7 @@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.InterestMustBePaidUpFront, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.InterestMustBePaidUpfront.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.interest_must_be_paid_upfront.</label>
                                             </div>
                                         </div>
                                     </div>
@@ -448,15 +448,15 @@
                         Model.Product.Term.MaxInMonth == 0)
                     {
                         <div class="alert alert-danger" role="alert">
-                            <strong>@GlobalLoanProduct.ConfigurationMissing:</strong>
+                            <strong>@GlobalLoanProduct.configuration_missing:</strong>
                             <ul>
                                 @if (Model.Product.Term == null || Model.Product.Term.Name == "N/A" || string.IsNullOrEmpty(Model.Product.Term.Name))
                                 {
-                                    <li>@GlobalLoanProduct.LoanTermIsNotConfiguredForThisLoanProduct.</li>
+                                    <li>@GlobalLoanProduct.loan_term_is_not_configured_for_this_loan_product.</li>
                                 }
                                 @if (Model.Product.Term == null || Model.Product.Term.MinInMonth == 0 || Model.Product.Term.MaxInMonth == 0)
                                 {
-                                    <li>@GlobalLoanProduct.LoanTermDurationParametersAreNotProperlySet.</li>
+                                    <li>@GlobalLoanProduct.loan_term_duration_parameters_are_not_properly_set.</li>
                                 }
                             </ul>
                         </div>
@@ -469,15 +469,15 @@
                                 data-bs-target="#collapsePaymentMethod"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod">
-                            @GlobalLoanProduct.DurationInMonths
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.DurationSetTheLoanDurationParameters.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.MinimumLoanDurationSpecifyTheShortestDurationAllowedForTheLoan.
-                            2. @GlobalLoanProduct.DefaultLoanDurationSetTheDefaultDurationForTheLoanProduct.
-                            3. @GlobalLoanProduct.MaximumLoanDurationDefineTheLongestDuration.
-                            4. @GlobalLoanProduct.FlexibilityOfferCustomizableLoanDurations.
-                            5. @GlobalLoanProduct.RiskMitigationBalanceRiskAndBorrower.
-                            6. @GlobalLoanProduct.MarketAnalysisConsiderMarketTrends."></i>
+                            @GlobalLoanProduct.duration_in_months
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.duration_set_the_loan_duration_parameters.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.minimum_loan_duration_specify_the_shortest_duration_allowed_for_the_loan.
+                            2. @GlobalLoanProduct.default_loan_duration_set_the_default_duration_for_the_loan_product.
+                            3. @GlobalLoanProduct.maximum_loan_duration_define_the_longest_duration.
+                            4. @GlobalLoanProduct.flexibility_offer_customizable_loan_durations.
+                            5. @GlobalLoanProduct.risk_mitigation_balance_risk_and_borrower.
+                            6. @GlobalLoanProduct.market_analysis_consider_market_trends."></i>
                         </button>
                     </h2>
                     <div id="collapsePaymentMethod"
@@ -488,24 +488,24 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.LoanDuration</legend>
+                                    <legend>@GlobalShared.Loan_Duration</legend>
                                     <div class="row g-4">
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.Name, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.LoanDurationPeriod</label>
+                                                <label>@GlobalLoanProduct.loan_duration_period</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.MinInMonth, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.MinimumMonth</label>
+                                                <label>@GlobalLoanProduct.minimum_month</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.MaxInMonth, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.MaximumMonth</label>
+                                                <label>@GlobalLoanProduct.maximum_month</label>
                                             </div>
                                         </div>
                                     </div>
@@ -524,15 +524,15 @@
                                 data-bs-target="#collapsePaymentMethod7"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod7">
-                            @GlobalLoanProduct.Repayment
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.RepaymentDefineTheRepaymentTermsAndOptionsForTheLoanProduct.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.RepaymentFrequencySpecifyHowOftenBorrowers.
-                            2. @GlobalLoanProduct.RepaymentMethodDetermineTheMethods.
-                            3. @GlobalLoanProduct.GracePeriodSetAGracePeriodDuringWhichBorrowers.
-                            4. @GlobalLoanProduct.PenaltyChargesDefinePenaltiesForLateRepayments.
-                            5. @GlobalLoanProduct.FlexibleOptionsOfferFlexibleRepaymentOptions.
-                            6. @GlobalLoanProduct.CustomerEducationProvideClearInformation."></i>
+                            @GlobalShared.repayment
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.repayment_define_the_repayment_terms_and_options_for_the_loan_product.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.repayment_frequency_specify_how_often_borrowers.
+                            2. @GlobalLoanProduct.repayment_method_determine_the_methods.
+                            3. @GlobalLoanProduct.grace_period_set_agrace_period_during_which_borrowers.
+                            4. @GlobalLoanProduct.penalty_charges_define_penalties_for_late_repayments.
+                            5. @GlobalLoanProduct.flexible_options_offer_flexible_repayment_options.
+                            6. @GlobalLoanProduct.customer_education_provide_clear_information."></i>
 
                         </button>
                     </h2>
@@ -545,13 +545,13 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.RepaymentPeriods</legend>
+                                    <legend>@GlobalLoanProduct.repayment_periods</legend>
 
                                     <div class="row g-4">
                                         <div class="col-md-12 mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.ListBoxFor(m => m.Product.RepaymentCycles, new MultiSelectList(ViewBag.RepaymentCycles, "Value", "Text"), new { @class = "select2 form-select" })
-                                                <label>@GlobalLoanProduct.RepaymentCycles</label>
+                                                <label>@GlobalShared.repayment_cycles</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-2">
@@ -568,44 +568,44 @@
                                                 }
                                                 else
                                                 {
-                                                    <p>@GlobalLoanProduct.NoRepaymentCyclesSelected</p>
+                                                    <p>@GlobalLoanProduct.no_repayment_cycles_selected</p>
                                                 }
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.InterestOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.InterestOrder</label>
+                                                <label>@GlobalLoanProduct.interest_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.CapitalOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.CapitalOrder</label>
+                                                <label>@GlobalShared.capital_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.FineOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.FineOrder</label>
+                                                <label>@GlobalLoanProduct.fine_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.InterestRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.InterestPercentToRefund</label>
+                                                <label>@GlobalLoanProduct.interest_percent_to_refund</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.CapitalRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.CapitalPercentToRefund</label>
+                                                <label>@GlobalLoanProduct.capital_percent_to_refund</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.FineRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.FinePercentToRefund</label>
+                                                <label>@GlobalLoanProduct.fine_percent_to_refund</label>
                                             </div>
                                         </div>
 
@@ -630,18 +630,18 @@
                                 data-bs-target="#collapsePaymentMethod1"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod1">
-                            @GlobalLoanProduct.DefaultedLoanSettings
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.ChargesDefineTheChargePoliciesForTheLoanProduct.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.ApplyChargesCheckThisBoxToApplyChargesToThisLoanProduct.
-                            2. @GlobalLoanProduct.MinimumChargeRateSetTheMinimumChargeRateApplicableToTheLoanProduct.
-                            3. @GlobalLoanProduct.DefaultChargeRateDefineTheDefaultChargeRateApplicableToTheLoanProduct.
-                            4. @GlobalLoanProduct.MinimumDaysToApplyChargesAfterDueDateSpecifyTheMinimumNumberOfDays.
-                            5. @GlobalLoanProduct.MaximumDaysToApplyChargesAfterDueDateSpecifyTheMaximumNumberOfDaysToApply.
-                            6. @GlobalLoanProduct.DefaultDaysToApplyChargesAfterDueDateSetTheDefaultNumberOfDaysToApply.
-                            7. @GlobalLoanProduct.MaximumChargeRateDefineTheMaximumChargeRateApplicableToTheLoanProduct.
-                            8. @GlobalLoanProduct.ChargesCessationSpecifyTheNumberOfDaysAfterWhichChargesShouldStopApplying.
-                            9. @GlobalLoanProduct.ChargesAppliedOnSelectWhetherChargesAreAppliedToInterestOrBalance.
+                            @GlobalLoanProduct.defaulted_loan_settings
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.charges_define_the_charge_policies_for_the_loan_product.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.apply_charges_check_this_box_to_apply_charges_to_this_loan_product.
+                            2. @GlobalLoanProduct.minimum_charge_rate_set_the_minimum_charge_rate_applicable_to_the_loan_product.
+                            3. @GlobalLoanProduct.default_charge_rate_define_the_default_charge_rate_applicable_to_the_loan_product.
+                            4. @GlobalLoanProduct.minimum_days_to_apply_charges_after_due_date_specify_the_minimum_number_of_days.
+                            5. @GlobalLoanProduct.maximum_days_to_apply_charges_after_due_date_specify_the_maximum_number_of_days_to_apply.
+                            6. @GlobalLoanProduct.default_days_to_apply_charges_after_due_date_set_the_default_number_of_days_to_apply.
+                            7. @GlobalLoanProduct.maximum_charge_rate_define_the_maximum_charge_rate_applicable_to_the_loan_product.
+                            8. @GlobalLoanProduct.charges_cessation_specify_the_number_of_days_after_which_charges_should_stop_applying.
+                            9. @GlobalLoanProduct.charges_applied_on_select_whether_charges_are_applied_to_interest_or_balance.
                             "></i>
                         </button>
                     </h2>
@@ -653,12 +653,12 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.DefaultedLoans</legend>
+                                    <legend>@GlobalLoanProduct.defaulted_loans</legend>
                                     <div class="row g-4">
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsChargesApplied, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckIfChargesShouldBeAppliedToThisProduct</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_if_charges_should_be_applied_to_this_product</label>
                                             </div>
                                         </div>
                                         <div id="penaltySection" class="col-md-12 mb-2" style="display: none;">
@@ -669,7 +669,7 @@
                                                     "Select penalty...",
                                                     new { @class = "select2 form-select" }
                                                 )
-                                                <label>@GlobalLoanProduct.PenaltyType</label>
+                                                <label>@GlobalShared.penalty_type</label>
                                             </div>
                                         </div>
 
@@ -697,16 +697,16 @@
                                 data-bs-target="#collapsePaymentMethod3"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod3">
-                            @GlobalLoanProduct.CollateralCheckListSettings
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.CollateralValuesEvaluationSettingsDefineTheRequirements.
-@GlobalLoanProduct.KeyPoints:
-1. @GlobalLoanProduct.RequiresGuarantorDetermineIfTheProductRequiresGuarantor.
-2. @GlobalLoanProduct.RequiresCollateralSpecifyIfCollateralIsNecessary.
-3. @GlobalLoanProduct.RequiresSalaryAccountDecideIfAsalaryAccountIsNeededForTheLoan.
-4. @GlobalLoanProduct.RequiresShareAccountDetermineIfAMemberShareAccountIsRequired.
-5. @GlobalLoanProduct.RequiresSavingAccountSpecifyIfAMemberSavingAccountIsRequired.
-6. @GlobalLoanProduct.RequiresIrrevocableSalaryTransferDecide.
-7. @GlobalLoanProduct.RequiresRegisteredPublicAuthorityDetermineIfARegistered."></i>
+                            @GlobalLoanProduct.collateral_check_list_settings
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.collateral_values_evaluation_settings_define_the_requirements.
+@GlobalShared.key_points:
+1. @GlobalLoanProduct.requires_guarantor_determine_if_the_product_requires_guarantor.
+2. @GlobalLoanProduct.requires_collateral_specify_if_collateral_is_necessary.
+3. @GlobalLoanProduct.requires_salary_account_decide_if_asalary_account_is_needed_for_the_loan.
+4. @GlobalLoanProduct.requires_share_account_determine_if_amember_share_account_is_required.
+5. @GlobalLoanProduct.requires_saving_account_specify_if_amember_saving_account_is_required.
+6. @GlobalLoanProduct.requires_irrevocable_salary_transfer_decide.
+7. @GlobalLoanProduct.requires_registered_public_authority_determine_if_aregistered."></i>
 
                         </button>
                     </h2>
@@ -723,113 +723,113 @@
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.RequiresGuarantor, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.DoesThisProductRequiresGuarantor?</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.does_this_product_requires_guarantor?</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequiredCollateral, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresCollateralSuchAsLandsBuildingCars...</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_collateral_such_as_lands_building_cars...</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequiredSalaryccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresSalaryAccount</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_salary_account</label>
                                             </div>
                                         </div>
 
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.Co_obligorMustHaveFundToGuranteeLoan, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CoObligorMustHaveFundToGuranteeThisLoan.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.co_obligor_must_have_fund_to_gurantee_this_loan.</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequiredShareAccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresMembersShareAccount</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_members_share_account</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequiredSavingAccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresMembersSavingAccount</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_members_saving_account</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequredIrrivocableSalaryTransfer, new { @class = "form-check-input", disabled = "disabled" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresIrrivocableFundTransfer</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_irrivocable_fund_transfer</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsRequresRegisteredPublicAuthority, new { @class = "form-check-input", disabled = "disabled" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.RequiresRegisteredPublicAuthority</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.requires_registered_public_authority</label>
                                             </div>
                                         </div>
 
-                                        @*<h6>@GlobalLoanProduct.Collateral</h6>
+                                        @*<h6>@GlobalShared.Collateral</h6>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumCollateralPercentage, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.CollateralRate</label>
+                                                <label>@GlobalLoanProduct.collateral_rate</label>
                                             </div>
                                         </div>*@
-                                        <h6>@GlobalLoanProduct.MembersAccount</h6>
+                                        <h6>@GlobalShared.Members_Account</h6>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumShareAccountBalanceForTheRequestAmount, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumShareAccountBalanceRequired</label>
+                                                <label>@GlobalLoanProduct.minimum_share_account_balance_required</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.BlockShareAccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedShareAccountForStandingOrders. </label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.blocked_share_account_for_standing_orders. </label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumSavingAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumSavingAccountRate</label>
+                                                <label>@GlobalLoanProduct.minimum_saving_account_rate</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.BlockSavingAccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedDownPaymentsForSavingAccount. </label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.blocked_down_payments_for_saving_account. </label>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumSalaryAccountBalanceRateForTheRequestAmount, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumSalaryAccountRate</label>
+                                                <label>@GlobalLoanProduct.minimum_salary_account_rate</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.BlockSalaryAccount, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedSalaryAccountForStandingOrders. </label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.blocked_salary_account_for_standing_orders. </label>
                                             </div>
                                         </div>
                                         @*<div class="col-12">
                                                 <div class="form-check">
                                                     @Html.CheckBoxFor(m => m.Policy.BlockGurantorAccount, new { @class = "form-check-input" })
-                                                    <label class="form-check-label" for="isActive">@GlobalLoanProduct.BlockedCoGuarantorsAccount. </label>
+                                                    <label class="form-check-label" for="isActive">@GlobalLoanProduct.blocked_co_guarantors_account. </label>
                                                 </div>
                                             </div>*@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.ShorteeMustHaveFundToGuranteeLoan, new { @class = "form-check-input", @id = "shorteeFundCheckbox" })
-                                                <label class="form-check-label" for="shorteeFundCheckbox">@GlobalLoanProduct.ShorteeMustHaveFundToGuaranteeThisLoan.</label>
+                                                <label class="form-check-label" for="shorteeFundCheckbox">@GlobalLoanProduct.shortee_must_have_fund_to_guarantee_this_loan.</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12" id="percentageCoverageContainer">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumPercentageCoverageOfShortee, new { @class = "form-control", @id = "percentageCoverageInput" })
-                                                <label for="percentageCoverageInput">@GlobalLoanProduct.EnterShorteeMinimumPercentageCoverage.</label>
+                                                <label for="percentageCoverageInput">@GlobalLoanProduct.enter_shortee_minimum_percentage_coverage.</label>
                                             </div>
                                         </div>
                                     </div>
@@ -854,8 +854,8 @@
                                 data-bs-target="#collapseMortgage"
                                 aria-expanded="false"
                                 aria-controls="collapseMortgage">
-                            @GlobalLoanProduct.MortgageConfiguration
-                            <i class="mdi mdi-home-lock text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.MortgageSettingsConfigureSpecificParameters."></i>
+                            @GlobalLoanProduct.mortgage_configuration
+                            <i class="mdi mdi-home-lock text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.mortgage_settings_configure_specific_parameters."></i>
                         </button>
                     </h2>
                     <div id="collapseMortgage"
@@ -871,49 +871,49 @@
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsMortgage, new { @class = "form-check-input" })
-                                                <label class="form-check-label">@GlobalLoanProduct.IsThisAMortgageLoanProduct?</label>
+                                                <label class="form-check-label">@GlobalLoanProduct.is_this_amortgage_loan_product?</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.RequireInsurance, new { @class = "form-check-input" })
-                                                <label class="form-check-label">@GlobalLoanProduct.RequireInsuranceBeforeDisbursement</label>
+                                                <label class="form-check-label">@GlobalLoanProduct.require_insurance_before_disbursement</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.RequireTitleRegistration, new { @class = "form-check-input" })
-                                                <label class="form-check-label">@GlobalLoanProduct.RequireLandTitleRegistration</label>
+                                                <label class="form-check-label">@GlobalLoanProduct.require_land_title_registration</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.GracePeriodMonths, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.GracePeriodMonths</label>
+                                                <label>@GlobalLoanProduct.grace_period_months</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MaxLoanToValueRatio, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MaxLTVRatio (e.g. 0.80 = 80%)</label>
+                                                <label>@GlobalLoanProduct.max_ltvratio (e.g. 0.80 = 80%)</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinCollateralCoveragePercent, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinCollateralCoverage (e.g. 1.25 = 125%)</label>
+                                                <label>@GlobalLoanProduct.min_collateral_coverage (e.g. 1.25 = 125%)</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.EnablePhasedDisbursement, new { @class = "form-check-input" })
-                                                <label class="form-check-label">@GlobalLoanProduct.EnablePhasedDisbursement</label>
+                                                <label class="form-check-label">@GlobalLoanProduct.enable_phased_disbursement</label>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.AllowThirdPartyOwnership, new { @class = "form-check-input" })
-                                                <label class="form-check-label">@GlobalLoanProduct.AllowThirdPartyPropertyOwnership</label>
+                                                <label class="form-check-label">@GlobalLoanProduct.allow_third_party_property_ownership</label>
                                             </div>
                                         </div>
                                     </div>
@@ -938,13 +938,13 @@
                                 data-bs-target="#collapsePaymentMethod5"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod5">
-                            @GlobalLoanProduct.TopupOption
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.LoanTopUpLimitsDefineTheLimitsAndCriteria.
-                                    @GlobalLoanProduct.KeyPoints:
-                                    1. @GlobalLoanProduct.HasTopUpDetermineIfTheProductOffersRefinancing.
-                                    2. @GlobalLoanProduct.MinimumTopUpAmountSpecifyTheMinimumAmountAllowed.
-                                    3. @GlobalLoanProduct.DefaultTopUpAmountSetTheDefaultAmountForRefinancing.
-                                    4. @GlobalLoanProduct.MaximumTopUpAmountDefineTheMaximumAmountAllowed.">
+                            @GlobalShared.topup_option
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.loan_top_up_limits_define_the_limits_and_criteria.
+                                    @GlobalShared.key_points:
+                                    1. @GlobalLoanProduct.has_top_up_determine_if_the_product_offers_refinancing.
+                                    2. @GlobalLoanProduct.minimum_top_up_amount_specify_the_minimum_amount_allowed.
+                                    3. @GlobalLoanProduct.default_top_up_amount_set_the_default_amount_for_refinancing.
+                                    4. @GlobalLoanProduct.maximum_top_up_amount_define_the_maximum_amount_allowed.">
 
                             </i>
 
@@ -958,18 +958,18 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.LoanTopUpSettings</legend>
+                                    <legend>@GlobalLoanProduct.loan_top_up_settings</legend>
                                     <div class="row g-4">
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.HasTopUp, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.DoesThisProductReqiresRefinancing?</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.does_this_product_reqires_refinancing?</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumPercentageRefundBeforeRefinancing, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumPercentageThatMustBeRefundedForToppingUp</label>
+                                                <label>@GlobalLoanProduct.minimum_percentage_that_must_be_refunded_for_topping_up</label>
                                             </div>
                                         </div>
                                     </div>
@@ -992,18 +992,18 @@
                                 data-bs-target="#collapseDeliveryOptions"
                                 aria-expanded="false"
                                 aria-controls="collapseDeliveryOptions">
-                            @GlobalLoanProduct.InterestSettings
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.InterestSetTheInterestTypePeriodAndRatesForTheLoanProduct.
-@GlobalLoanProduct.KeyPoints:
-1. @GlobalLoanProduct.LoanInterestTypeDetermineTheTypeOfInterest.
-2. @GlobalLoanProduct.LoanInterestPeriodSpecifyThePeriodForInterest.
-3. @GlobalLoanProduct.MinimumInterestRateDefineTheMinimumInterestRateApplicableToTheLoan.
-4. @GlobalLoanProduct.DefaultInterestRateSetTheDefaultInterestRateForTheLoanProduct.
-5. @GlobalLoanProduct.MaximumInterestRateDefineTheMaximumInterestRate.
-6. @GlobalLoanProduct.StartGeneratingInterestAfterDisbursementDecideIfInterestAccrualStarts.
-7. @GlobalLoanProduct.InterestWaiverAllowForTheWaiverOfInterestCharges.
-8. @GlobalLoanProduct.MinimumInterestWaiverRateSpecifyTheMinimumRate.
-9. @GlobalLoanProduct.MaximumInterestWaiverRateDefineTheMaximumRate."></i>
+                            @GlobalShared.interest_settings
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.interest_set_the_interest_type_period_and_rates_for_the_loan_product.
+@GlobalShared.key_points:
+1. @GlobalLoanProduct.loan_interest_type_determine_the_type_of_interest.
+2. @GlobalLoanProduct.loan_interest_period_specify_the_period_for_interest.
+3. @GlobalLoanProduct.minimum_interest_rate_define_the_minimum_interest_rate_applicable_to_the_loan.
+4. @GlobalLoanProduct.default_interest_rate_set_the_default_interest_rate_for_the_loan_product.
+5. @GlobalLoanProduct.maximum_interest_rate_define_the_maximum_interest_rate.
+6. @GlobalLoanProduct.start_generating_interest_after_disbursement_decide_if_interest_accrual_starts.
+7. @GlobalLoanProduct.interest_waiver_allow_for_the_waiver_of_interest_charges.
+8. @GlobalLoanProduct.minimum_interest_waiver_rate_specify_the_minimum_rate.
+9. @GlobalLoanProduct.maximum_interest_waiver_rate_define_the_maximum_rate."></i>
 
 
                         </button>
@@ -1016,48 +1016,48 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.InterestSettings</legend>
+                                    <legend>@GlobalShared.interest_settings</legend>
                                     <div class="row g-4">
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumInterestRate, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumInterestValue</label>
+                                                <label>@GlobalLoanProduct.minimum_interest_value</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MaximumInterestRate, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MaximumInterestValue</label>
+                                                <label>@GlobalLoanProduct.maximum_interest_value</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.StartGeneratingInterestAfterDisbustment, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToStartAccrualInterestAfterDisbustment.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_to_start_accrual_interest_after_disbustment.</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsInterestWaiverApplied, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckToAllowInterestWaiverForThisProduct</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_to_allow_interest_waiver_for_this_product</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MinimumInterestWaiver, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MinimumInterestWaiverRate (%)</label>
+                                                <label>@GlobalLoanProduct.minimum_interest_waiver_rate (%)</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.MaximumInterestWaiver, new { @class = "form-control" })
-                                                <label>@GlobalLoanProduct.MaximumInterestWaiverRate (%)</label>
+                                                <label>@GlobalLoanProduct.maximum_interest_waiver_rate (%)</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.StopInterestCalculationAtLoanMaturityDate, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.StopInterestCalculationAtLoaMaturityDate.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.stop_interest_calculation_at_loa_maturity_date.</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -1070,7 +1070,7 @@
                                         @*<div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.InterestMustBePaidUpFront, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.InterestMustBePaidUpfront.</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.interest_must_be_paid_upfront.</label>
                                             </div>
                                         </div>*@
                                     </div>
@@ -1096,15 +1096,15 @@
                         Model.Product.Term.MaxInMonth == 0)
                     {
                         <div class="alert alert-danger" role="alert">
-                            <strong>@GlobalLoanProduct.ConfigurationMissing:</strong>
+                            <strong>@GlobalLoanProduct.configuration_missing:</strong>
                             <ul>
                                 @if (Model.Product.Term == null || Model.Product.Term.Name == "N/A" || string.IsNullOrEmpty(Model.Product.Term.Name))
                                 {
-                                    <li>@GlobalLoanProduct.LoanTermIsNotConfiguredForThisLoanProduct.</li>
+                                    <li>@GlobalLoanProduct.loan_term_is_not_configured_for_this_loan_product.</li>
                                 }
                                 @if (Model.Product.Term == null || Model.Product.Term.MinInMonth == 0 || Model.Product.Term.MaxInMonth == 0)
                                 {
-                                    <li>@GlobalLoanProduct.LoanTermDurationParametersAreNotProperlySet.</li>
+                                    <li>@GlobalLoanProduct.loan_term_duration_parameters_are_not_properly_set.</li>
                                 }
                             </ul>
                         </div>
@@ -1117,15 +1117,15 @@
                                 data-bs-target="#collapsePaymentMethod"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod">
-                            @GlobalLoanProduct.DurationInMonths
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.DurationSetTheLoanDurationParameters.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.MinimumLoanDurationSpecifyTheShortestDurationAllowedForTheLoan.
-                            2. @GlobalLoanProduct.DefaultLoanDurationSetTheDefaultDurationForTheLoanProduct.
-                            3. @GlobalLoanProduct.MaximumLoanDurationDefineTheLongestDuration.
-                            4. @GlobalLoanProduct.FlexibilityOfferCustomizableLoanDurations.
-                            5. @GlobalLoanProduct.RiskMitigationBalanceRiskAndBorrower.
-                            6. @GlobalLoanProduct.MarketAnalysisConsiderMarketTrends."></i>
+                            @GlobalLoanProduct.duration_in_months
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.duration_set_the_loan_duration_parameters.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.minimum_loan_duration_specify_the_shortest_duration_allowed_for_the_loan.
+                            2. @GlobalLoanProduct.default_loan_duration_set_the_default_duration_for_the_loan_product.
+                            3. @GlobalLoanProduct.maximum_loan_duration_define_the_longest_duration.
+                            4. @GlobalLoanProduct.flexibility_offer_customizable_loan_durations.
+                            5. @GlobalLoanProduct.risk_mitigation_balance_risk_and_borrower.
+                            6. @GlobalLoanProduct.market_analysis_consider_market_trends."></i>
                         </button>
                     </h2>
                     <div id="collapsePaymentMethod"
@@ -1136,24 +1136,24 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.LoanDuration</legend>
+                                    <legend>@GlobalShared.Loan_Duration</legend>
                                     <div class="row g-4">
                                         <div class="col-md-12">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.Name, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.LoanDurationPeriod</label>
+                                                <label>@GlobalLoanProduct.loan_duration_period</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.MinInMonth, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.MinimumMonth</label>
+                                                <label>@GlobalLoanProduct.minimum_month</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Product.Term.MaxInMonth, new { @class = "form-control", @readonly = true })
-                                                <label>@GlobalLoanProduct.MaximumMonth</label>
+                                                <label>@GlobalLoanProduct.maximum_month</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1170,15 +1170,15 @@
                                 data-bs-target="#collapsePaymentMethod7"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod7">
-                            @GlobalLoanProduct.Repayment
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.RepaymentDefineTheRepaymentTermsAndOptionsForTheLoanProduct.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.RepaymentFrequencySpecifyHowOftenBorrowers.
-                            2. @GlobalLoanProduct.RepaymentMethodDetermineTheMethods.
-                            3. @GlobalLoanProduct.GracePeriodSetAGracePeriodDuringWhichBorrowers.
-                            4. @GlobalLoanProduct.PenaltyChargesDefinePenaltiesForLateRepayments.
-                            5. @GlobalLoanProduct.FlexibleOptionsOfferFlexibleRepaymentOptions.
-                            6. @GlobalLoanProduct.CustomerEducationProvideClearInformation."></i>
+                            @GlobalShared.repayment
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.repayment_define_the_repayment_terms_and_options_for_the_loan_product.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.repayment_frequency_specify_how_often_borrowers.
+                            2. @GlobalLoanProduct.repayment_method_determine_the_methods.
+                            3. @GlobalLoanProduct.grace_period_set_agrace_period_during_which_borrowers.
+                            4. @GlobalLoanProduct.penalty_charges_define_penalties_for_late_repayments.
+                            5. @GlobalLoanProduct.flexible_options_offer_flexible_repayment_options.
+                            6. @GlobalLoanProduct.customer_education_provide_clear_information."></i>
 
                         </button>
                     </h2>
@@ -1191,13 +1191,13 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.RepaymentPeriods</legend>
+                                    <legend>@GlobalLoanProduct.repayment_periods</legend>
 
                                     <div class="row g-4">
                                         <div class="col-md-12 mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.ListBoxFor(m => m.Product.RepaymentCycles, new MultiSelectList(ViewBag.RepaymentCycles, "Value", "Text"), new { @class = "select2 form-select" })
-                                                <label>@GlobalLoanProduct.RepaymentCycles</label>
+                                                <label>@GlobalShared.repayment_cycles</label>
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-2">
@@ -1214,44 +1214,44 @@
                                                 }
                                                 else
                                                 {
-                                                    <p>@GlobalLoanProduct.NoRepaymentCyclesSelected</p>
+                                                    <p>@GlobalLoanProduct.no_repayment_cycles_selected</p>
                                                 }
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.InterestOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.InterestOrder</label>
+                                                <label>@GlobalLoanProduct.interest_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.CapitalOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.CapitalOrder</label>
+                                                <label>@GlobalShared.capital_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.FineOrder, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.FineOrder</label>
+                                                <label>@GlobalLoanProduct.fine_order</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.InterestRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.InterestPercentToRefund</label>
+                                                <label>@GlobalLoanProduct.interest_percent_to_refund</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.CapitalRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.CapitalPercentToRefund</label>
+                                                <label>@GlobalLoanProduct.capital_percent_to_refund</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating form-floating-outline">
                                                 @Html.TextBoxFor(m => m.Policy.FineRate, new { @class = "form-control", disabled = "disabled" })
-                                                <label>@GlobalLoanProduct.FinePercentToRefund</label>
+                                                <label>@GlobalLoanProduct.fine_percent_to_refund</label>
                                             </div>
                                         </div>
 
@@ -1277,18 +1277,18 @@
                                 data-bs-target="#collapsePaymentMethod1"
                                 aria-expanded="false"
                                 aria-controls="collapsePaymentMethod1">
-                            @GlobalLoanProduct.DefaultedLoanSettings
-                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.ChargesDefineTheChargePoliciesForTheLoanProduct.
-                            @GlobalLoanProduct.KeyPoints:
-                            1. @GlobalLoanProduct.ApplyChargesCheckThisBoxToApplyChargesToThisLoanProduct.
-                            2. @GlobalLoanProduct.MinimumChargeRateSetTheMinimumChargeRateApplicableToTheLoanProduct.
-                            3. @GlobalLoanProduct.DefaultChargeRateDefineTheDefaultChargeRateApplicableToTheLoanProduct.
-                            4. @GlobalLoanProduct.MinimumDaysToApplyChargesAfterDueDateSpecifyTheMinimumNumberOfDays.
-                            5. @GlobalLoanProduct.MaximumDaysToApplyChargesAfterDueDateSpecifyTheMaximumNumberOfDaysToApply.
-                            6. @GlobalLoanProduct.DefaultDaysToApplyChargesAfterDueDateSetTheDefaultNumberOfDaysToApply.
-                            7. @GlobalLoanProduct.MaximumChargeRateDefineTheMaximumChargeRateApplicableToTheLoanProduct.
-                            8. @GlobalLoanProduct.ChargesCessationSpecifyTheNumberOfDaysAfterWhichChargesShouldStopApplying.
-                            9. @GlobalLoanProduct.ChargesAppliedOnSelectWhetherChargesAreAppliedToInterestOrBalance.
+                            @GlobalLoanProduct.defaulted_loan_settings
+                            <i class="mdi mdi-help-circle text-primary ms-2" data-bs-toggle="tooltip" title="@GlobalLoanProduct.charges_define_the_charge_policies_for_the_loan_product.
+                            @GlobalShared.key_points:
+                            1. @GlobalLoanProduct.apply_charges_check_this_box_to_apply_charges_to_this_loan_product.
+                            2. @GlobalLoanProduct.minimum_charge_rate_set_the_minimum_charge_rate_applicable_to_the_loan_product.
+                            3. @GlobalLoanProduct.default_charge_rate_define_the_default_charge_rate_applicable_to_the_loan_product.
+                            4. @GlobalLoanProduct.minimum_days_to_apply_charges_after_due_date_specify_the_minimum_number_of_days.
+                            5. @GlobalLoanProduct.maximum_days_to_apply_charges_after_due_date_specify_the_maximum_number_of_days_to_apply.
+                            6. @GlobalLoanProduct.default_days_to_apply_charges_after_due_date_set_the_default_number_of_days_to_apply.
+                            7. @GlobalLoanProduct.maximum_charge_rate_define_the_maximum_charge_rate_applicable_to_the_loan_product.
+                            8. @GlobalLoanProduct.charges_cessation_specify_the_number_of_days_after_which_charges_should_stop_applying.
+                            9. @GlobalLoanProduct.charges_applied_on_select_whether_charges_are_applied_to_interest_or_balance.
                             "></i>
                         </button>
                     </h2>
@@ -1300,12 +1300,12 @@
                             @using (Html.BeginForm("Update", "LoanProduct", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdateWithButtonState(this);" }))
                             {
                                 <fieldset class="fieldset-custom">
-                                    <legend>@GlobalLoanProduct.DefaultedLoans</legend>
+                                    <legend>@GlobalLoanProduct.defaulted_loans</legend>
                                     <div class="row g-4">
                                         <div class="col-12">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.Policy.IsChargesApplied, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.CheckIfChargesShouldBeAppliedToThisProduct</label>
+                                                <label class="form-check-label" for="isActive">@GlobalLoanProduct.check_if_charges_should_be_applied_to_this_product</label>
                                             </div>
                                         </div>
                                         <div id="penaltySection" class="col-md-12 mb-2" style="display: none;">
@@ -1316,7 +1316,7 @@
                                                     "Select penalty...",
                                                     new { @class = "select2 form-select" }
                                                 )
-                                                <label>@GlobalLoanProduct.PenaltyType</label>
+                                                <label>@GlobalShared.penalty_type</label>
                                             </div>
                                         </div>
                                     </div>

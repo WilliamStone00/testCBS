@@ -63,1224 +63,830 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Accepted MFA types: SMS (Short Message Service), Email, and Time-based One-Time Password.
         /// </summary>
-        internal static string AcceptedMFATypesSMS {
+        internal static string accepted_mfa_types_sms {
             get {
-                return ResourceManager.GetString("AcceptedMFATypesSMS", resourceCulture);
+                return ResourceManager.GetString("accepted_mfa_types_sms", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Activates additional authentication beyond password (e.g. Email, SMS, TOTP).
         /// </summary>
-        internal static string ActivatesAdditionalAuthenticationBeyondPassword {
+        internal static string activates_additional_authentication_beyond_password {
             get {
-                return ResourceManager.GetString("ActivatesAdditionalAuthenticationBeyondPassword", resourceCulture);
+                return ResourceManager.GetString("activates_additional_authentication_beyond_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Administrators can configure centralized or branch-specific controls to enforce system-wide security hygiene.
         /// </summary>
-        internal static string AdministratorsCanConfigureCentralized {
+        internal static string administrators_can_configure_centralized {
             get {
-                return ResourceManager.GetString("AdministratorsCanConfigureCentralized", resourceCulture);
+                return ResourceManager.GetString("administrators_can_configure_centralized", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Admin reset bypass history.
         /// </summary>
-        internal static string AdminResetBypassHistory {
+        internal static string admin_reset_bypass_history {
             get {
-                return ResourceManager.GetString("AdminResetBypassHistory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Allow admin reset.
-        /// </summary>
-        internal static string AllowAdminReset {
-            get {
-                return ResourceManager.GetString("AllowAdminReset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Allowed special chars.
-        /// </summary>
-        internal static string AllowedSpecialChars {
-            get {
-                return ResourceManager.GetString("AllowedSpecialChars", resourceCulture);
+                return ResourceManager.GetString("admin_reset_bypass_history", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Allows admin accounts to reset passwords on behalf of users.
         /// </summary>
-        internal static string AllowsAdminAccountsToResetPasswordsOnBehalfOfUsers {
+        internal static string allows_admin_accounts_to_reset_passwords_on_behalf_of_users {
             get {
-                return ResourceManager.GetString("AllowsAdminAccountsToResetPasswordsOnBehalfOfUsers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to and.
-        /// </summary>
-        internal static string and {
-            get {
-                return ResourceManager.GetString("and", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to and more.
-        /// </summary>
-        internal static string andMore {
-            get {
-                return ResourceManager.GetString("andMore", resourceCulture);
+                return ResourceManager.GetString("allows_admin_accounts_to_reset_passwords_on_behalf_of_users", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Apply to all branches (Central).
         /// </summary>
-        internal static string ApplyToAllBranchesCentral {
+        internal static string apply_to_all_branches_central {
             get {
-                return ResourceManager.GetString("ApplyToAllBranchesCentral", resourceCulture);
+                return ResourceManager.GetString("apply_to_all_branches_central", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to At least 1 uppercase, 1 lowercase, 1 digit, and 1 special character.
         /// </summary>
-        internal static string AtLeast1Uppercase1Lowercase1DigitAnd1SpecialCharacter {
+        internal static string at_least1_uppercase1_lowercase1_digit_and1_special_character {
             get {
-                return ResourceManager.GetString("AtLeast1Uppercase1Lowercase1DigitAnd1SpecialCharacter", resourceCulture);
+                return ResourceManager.GetString("at_least1_uppercase1_lowercase1_digit_and1_special_character", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to At least one lowercase letter (a–z) must be present in the password.
         /// </summary>
-        internal static string AtLeastOneLowercaseLetterMustBePresentInThePassword {
+        internal static string at_least_one_lowercase_letter_must_be_present_in_the_password {
             get {
-                return ResourceManager.GetString("AtLeastOneLowercaseLetterMustBePresentInThePassword", resourceCulture);
+                return ResourceManager.GetString("at_least_one_lowercase_letter_must_be_present_in_the_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to At least one numeric digit (0–9) must be present in the password.
         /// </summary>
-        internal static string AtLeastOneNumericDigitMustBePresentInThePassword {
+        internal static string at_least_one_numeric_digit_must_be_present_in_the_password {
             get {
-                return ResourceManager.GetString("AtLeastOneNumericDigitMustBePresentInThePassword", resourceCulture);
+                return ResourceManager.GetString("at_least_one_numeric_digit_must_be_present_in_the_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to At least one special character from the allowed list must be present.
         /// </summary>
-        internal static string AtLeastOneSpecialCharacterFromTheAllowedListMustBePresent {
+        internal static string at_least_one_special_character_from_the_allowed_list_must_be_present {
             get {
-                return ResourceManager.GetString("AtLeastOneSpecialCharacterFromTheAllowedListMustBePresent", resourceCulture);
+                return ResourceManager.GetString("at_least_one_special_character_from_the_allowed_list_must_be_present", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to At least one uppercase letter (A–Z) must be present in the password.
         /// </summary>
-        internal static string AtLeastOneUppercaseLetterMustBePresentInThePassword {
+        internal static string at_least_one_uppercase_letter_must_be_present_in_the_password {
             get {
-                return ResourceManager.GetString("AtLeastOneUppercaseLetterMustBePresentInThePassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to attempts.
-        /// </summary>
-        internal static string attempts {
-            get {
-                return ResourceManager.GetString("attempts", resourceCulture);
+                return ResourceManager.GetString("at_least_one_uppercase_letter_must_be_present_in_the_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bad password example.
         /// </summary>
-        internal static string BadPasswordExample {
+        internal static string bad_password_example {
             get {
-                return ResourceManager.GetString("BadPasswordExample", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Block inactive (days).
-        /// </summary>
-        internal static string BlockInactiveDays {
-            get {
-                return ResourceManager.GetString("BlockInactiveDays", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Block inactive user after (days).
-        /// </summary>
-        internal static string BlockInactiveUserAfterDays {
-            get {
-                return ResourceManager.GetString("BlockInactiveUserAfterDays", resourceCulture);
+                return ResourceManager.GetString("bad_password_example", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Blocks passwords that contain simple numeric sequences like.
         /// </summary>
-        internal static string BlocksPasswordsThatContainSimpleNumericSequencesLike {
+        internal static string blocks_passwords_that_contain_simple_numeric_sequences_like {
             get {
-                return ResourceManager.GetString("BlocksPasswordsThatContainSimpleNumericSequencesLike", resourceCulture);
+                return ResourceManager.GetString("blocks_passwords_that_contain_simple_numeric_sequences_like", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch code.
+        ///   Looks up a localized string similar to Block inactive (days).
         /// </summary>
-        internal static string BranchCode {
+        internal static string block_inactive_days {
             get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
+                return ResourceManager.GetString("block_inactive_days", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch name.
+        ///   Looks up a localized string similar to Block inactive user after (days).
         /// </summary>
-        internal static string BranchName {
+        internal static string block_inactive_user_after_days {
             get {
-                return ResourceManager.GetString("BranchName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Central.
-        /// </summary>
-        internal static string Central {
-            get {
-                return ResourceManager.GetString("Central", resourceCulture);
+                return ResourceManager.GetString("block_inactive_user_after_days", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Changes will auto-sync.
         /// </summary>
-        internal static string ChangesWillASync {
+        internal static string changes_will_async {
             get {
-                return ResourceManager.GetString("ChangesWillASync", resourceCulture);
+                return ResourceManager.GetString("changes_will_async", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Configuration Scope.
         /// </summary>
-        internal static string ConfigurationScope {
+        internal static string configuration_scope {
             get {
-                return ResourceManager.GetString("ConfigurationScope", resourceCulture);
+                return ResourceManager.GetString("configuration_scope", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Controls password expiration and minimum hold duration.
         /// </summary>
-        internal static string ControlsPasswordExpirationAndMinimumHoldDuration {
+        internal static string controls_password_expiration_and_minimum_hold_duration {
             get {
-                return ResourceManager.GetString("ControlsPasswordExpirationAndMinimumHoldDuration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create new policy.
-        /// </summary>
-        internal static string CreateNewPolicy {
-            get {
-                return ResourceManager.GetString("CreateNewPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to day.
-        /// </summary>
-        internal static string day {
-            get {
-                return ResourceManager.GetString("day", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to days.
-        /// </summary>
-        internal static string days {
-            get {
-                return ResourceManager.GetString("days", resourceCulture);
+                return ResourceManager.GetString("controls_password_expiration_and_minimum_hold_duration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Days before password reset.
         /// </summary>
-        internal static string DaysBeforePasswordReset {
+        internal static string days_before_password_reset {
             get {
-                return ResourceManager.GetString("DaysBeforePasswordReset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default.
-        /// </summary>
-        internal static string Default {
-            get {
-                return ResourceManager.GetString("Default", resourceCulture);
+                return ResourceManager.GetString("days_before_password_reset", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Default password policy configuration (excludes form-controlled fields).
         /// </summary>
-        internal static string DefaultPasswordPolicyConfiguration {
+        internal static string default_password_policy_configuration {
             get {
-                return ResourceManager.GetString("DefaultPasswordPolicyConfiguration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default value.
-        /// </summary>
-        internal static string DefaultValue {
-            get {
-                return ResourceManager.GetString("DefaultValue", resourceCulture);
+                return ResourceManager.GetString("default_password_policy_configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Defines character composition requirements to increase password complexity.
         /// </summary>
-        internal static string DefinesCharacterCompositionRequirementsToIncreasePasswordComplexity {
+        internal static string defines_character_composition_requirements_to_increase_password_complexity {
             get {
-                return ResourceManager.GetString("DefinesCharacterCompositionRequirementsToIncreasePasswordComplexity", resourceCulture);
+                return ResourceManager.GetString("defines_character_composition_requirements_to_increase_password_complexity", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Defines rules for account lockout handling based on repeated login failures.
         /// </summary>
-        internal static string DefinesRulesForAccountLockoutHandlingBonRepeatedLoginFailures {
+        internal static string defines_rules_for_account_lockout_handling_bon_repeated_login_failures {
             get {
-                return ResourceManager.GetString("DefinesRulesForAccountLockoutHandlingBonRepeatedLoginFailures", resourceCulture);
+                return ResourceManager.GetString("defines_rules_for_account_lockout_handling_bon_repeated_login_failures", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delay period before MFA becomes mandatory for new users.
         /// </summary>
-        internal static string DelayPeriodBeforeMFABecomesMandatoryForNewUsers {
+        internal static string delay_period_before_mfabecomes_mandatory_for_new_users {
             get {
-                return ResourceManager.GetString("DelayPeriodBeforeMFABecomesMandatoryForNewUsers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("delay_period_before_mfabecomes_mandatory_for_new_users", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Determines whether admin-initiated resets bypass password reuse checks.
         /// </summary>
-        internal static string DeterminesWhetherAdminInitiatedResetsBypassPasswordReuseChecks {
+        internal static string determines_whether_admin_initiated_resets_bypass_password_reuse_checks {
             get {
-                return ResourceManager.GetString("DeterminesWhetherAdminInitiatedResetsBypassPasswordReuseChecks", resourceCulture);
+                return ResourceManager.GetString("determines_whether_admin_initiated_resets_bypass_password_reuse_checks", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Determines whether admin resets bypass password reuse history checks. If false, admins must follow reuse restrictions.
         /// </summary>
-        internal static string DeterminesWhetherAdminResetsBypassPasswordReuseHistoryChecks {
+        internal static string determines_whether_admin_resets_bypass_password_reuse_history_checks {
             get {
-                return ResourceManager.GetString("DeterminesWhetherAdminResetsBypassPasswordReuseHistoryChecks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disallowed substrings.
-        /// </summary>
-        internal static string DisallowedSubstrings {
-            get {
-                return ResourceManager.GetString("DisallowedSubstrings", resourceCulture);
+                return ResourceManager.GetString("determines_whether_admin_resets_bypass_password_reuse_history_checks", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Disallow previous passwords.
         /// </summary>
-        internal static string DisallowPreviousPasswords {
+        internal static string disallow_previous_passwords {
             get {
-                return ResourceManager.GetString("DisallowPreviousPasswords", resourceCulture);
+                return ResourceManager.GetString("disallow_previous_passwords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Disallow username in password.
         /// </summary>
-        internal static string DisallowUsernameInPassword {
+        internal static string disallow_username_in_password {
             get {
-                return ResourceManager.GetString("DisallowUsernameInPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EnableMFA (Multi-Factor Authentication).
-        /// </summary>
-        internal static string EnableMFA {
-            get {
-                return ResourceManager.GetString("EnableMFA", resourceCulture);
+                return ResourceManager.GetString("disallow_username_in_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enables Multi-Factor Authentication for additional login security.
         /// </summary>
-        internal static string EnablesMultiFactorAuthenticationForAdditionalLoginSecurity {
+        internal static string enables_multi_factor_authentication_for_additional_login_security {
             get {
-                return ResourceManager.GetString("EnablesMultiFactorAuthenticationForAdditionalLoginSecurity", resourceCulture);
+                return ResourceManager.GetString("enables_multi_factor_authentication_for_additional_login_security", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enables protection against brute-force attacks.
         /// </summary>
-        internal static string EnablesProtectionAgainstBruteForceAttacks {
+        internal static string enables_protection_against_brute_force_attacks {
             get {
-                return ResourceManager.GetString("EnablesProtectionAgainstBruteForceAttacks", resourceCulture);
+                return ResourceManager.GetString("enables_protection_against_brute_force_attacks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EnableMFA (Multi-Factor Authentication).
+        /// </summary>
+        internal static string enable_mfa {
+            get {
+                return ResourceManager.GetString("enable_mfa", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enforces minimum and maximum number of characters in passwords.
         /// </summary>
-        internal static string EnforcesMinimumAndMaximumNumberOfCharactersInPasswords {
+        internal static string enforces_minimum_and_maximum_number_of_characters_in_passwords {
             get {
-                return ResourceManager.GetString("EnforcesMinimumAndMaximumNumberOfCharactersInPasswords", resourceCulture);
+                return ResourceManager.GetString("enforces_minimum_and_maximum_number_of_characters_in_passwords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enforces strong passwords.
         /// </summary>
-        internal static string EnforcesStrongPasswords {
+        internal static string enforces_strong_passwords {
             get {
-                return ResourceManager.GetString("EnforcesStrongPasswords", resourceCulture);
+                return ResourceManager.GetString("enforces_strong_passwords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter key-value pairs as JSON.
         /// </summary>
-        internal static string EnterKeyValuePairsAsJSON {
+        internal static string enter_key_value_pairs_as_json {
             get {
-                return ResourceManager.GetString("EnterKeyValuePairsAsJSON", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Example.
-        /// </summary>
-        internal static string Example {
-            get {
-                return ResourceManager.GetString("Example", resourceCulture);
+                return ResourceManager.GetString("enter_key_value_pairs_as_json", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Example: Lock for 15 minutes after 5 failed attempts.
         /// </summary>
-        internal static string ExampleLockFor15MinutesAfter5FailedAttempts {
+        internal static string example_lock_for15_minutes_after5_failed_attempts {
             get {
-                return ResourceManager.GetString("ExampleLockFor15MinutesAfter5FailedAttempts", resourceCulture);
+                return ResourceManager.GetString("example_lock_for15_minutes_after5_failed_attempts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Fails complexity rules: uses disallowed keywords, lacks uppercase and special characters, predictable structure.
         /// </summary>
-        internal static string FailsComplexityRulesUsesDisallowedKeywords {
+        internal static string fails_complexity_rules_uses_disallowed_keywords {
             get {
-                return ResourceManager.GetString("FailsComplexityRulesUsesDisallowedKeywords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to false.
-        /// </summary>
-        internal static string False {
-            get {
-                return ResourceManager.GetString("False", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to flag.
-        /// </summary>
-        internal static string flag {
-            get {
-                return ResourceManager.GetString("flag", resourceCulture);
+                return ResourceManager.GetString("fails_complexity_rules_uses_disallowed_keywords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Good password example.
         /// </summary>
-        internal static string GoodPasswordExample {
+        internal static string good_password_example {
             get {
-                return ResourceManager.GetString("GoodPasswordExample", resourceCulture);
+                return ResourceManager.GetString("good_password_example", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Grace period before MFA becomes mandatory for users after account creation.
         /// </summary>
-        internal static string GracePeriodBeforeMFABecomesMandatoryForUsersAfterAccountCreation {
+        internal static string grace_period_before_mfabecomes_mandatory_for_users_after_account_creation {
             get {
-                return ResourceManager.GetString("GracePeriodBeforeMFABecomesMandatoryForUsersAfterAccountCreation", resourceCulture);
+                return ResourceManager.GetString("grace_period_before_mfabecomes_mandatory_for_users_after_account_creation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Greatly reduces risks from credential theft.
         /// </summary>
-        internal static string GreatlReducesRisksFromCredentialTheft {
+        internal static string greatl_reduces_risks_from_credential_theft {
             get {
-                return ResourceManager.GetString("GreatlReducesRisksFromCredentialTheft", resourceCulture);
+                return ResourceManager.GetString("greatl_reduces_risks_from_credential_theft", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Helps prevent cycling through weak passwords.
         /// </summary>
-        internal static string HelpsPreventCyclingThroughWeakPasswords {
+        internal static string helps_prevent_cycling_through_weak_passwords {
             get {
-                return ResourceManager.GetString("HelpsPreventCyclingThroughWeakPasswords", resourceCulture);
+                return ResourceManager.GetString("helps_prevent_cycling_through_weak_passwords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to How many previous passwords are remembered to avoid reuse.
         /// </summary>
-        internal static string HowManyPreviousPasswordsAreRememberedToAvoidReuse {
+        internal static string how_many_previous_passwords_are_remembered_to_avoid_reuse {
             get {
-                return ResourceManager.GetString("HowManyPreviousPasswordsAreRememberedToAvoidReuse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Idle duration.
-        /// </summary>
-        internal static string IdleDuration {
-            get {
-                return ResourceManager.GetString("IdleDuration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Idle timeout.
-        /// </summary>
-        internal static string IdleTimeout {
-            get {
-                return ResourceManager.GetString("IdleTimeout", resourceCulture);
+                return ResourceManager.GetString("how_many_previous_passwords_are_remembered_to_avoid_reuse", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Idle Timeout &amp; Password Policy Configuration.
         /// </summary>
-        internal static string IdleTimeoutPasswordPolicyConfiguration {
+        internal static string idle_timeout_password_policy_configuration {
             get {
-                return ResourceManager.GetString("IdleTimeoutPasswordPolicyConfiguration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If.
-        /// </summary>
-        internal static string If {
-            get {
-                return ResourceManager.GetString("If", resourceCulture);
+                return ResourceManager.GetString("idle_timeout_password_policy_configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to is allowed. For centralized control, enable the.
         /// </summary>
-        internal static string isAllowedForCentralizedControlEnableThe {
+        internal static string is_allowed_for_centralized_control_enable_the {
             get {
-                return ResourceManager.GetString("isAllowedForCentralizedControlEnableThe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Is Central.
-        /// </summary>
-        internal static string IsCentral {
-            get {
-                return ResourceManager.GetString("IsCentral", resourceCulture);
+                return ResourceManager.GetString("is_allowed_for_centralized_control_enable_the", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to JSON-formatted set of rules governing password structure, rotation, reuse, and security.
         /// </summary>
-        internal static string JSONFormattedSetOfRulesGoverningPasswordStructure {
+        internal static string jsonformatted_set_of_rules_governing_password_structure {
             get {
-                return ResourceManager.GetString("JSONFormattedSetOfRulesGoverningPasswordStructure", resourceCulture);
+                return ResourceManager.GetString("jsonformatted_set_of_rules_governing_password_structure", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lockout threshold, duration, resetInterval.
         /// </summary>
-        internal static string LockoutThresholdDurationResetnterval {
+        internal static string lockout_threshold_duration_resetnterval {
             get {
-                return ResourceManager.GetString("LockoutThresholdDurationResetnterval", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login attempts.
-        /// </summary>
-        internal static string LoginAttempts {
-            get {
-                return ResourceManager.GetString("LoginAttempts", resourceCulture);
+                return ResourceManager.GetString("lockout_threshold_duration_resetnterval", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum failed login attempts before account lockout is triggered.
         /// </summary>
-        internal static string MaximumFailedLoginAttemptsBeforeAccountLockoutIsTriggered {
+        internal static string maximum_failed_login_attempts_before_account_lockout_is_triggered {
             get {
-                return ResourceManager.GetString("MaximumFailedLoginAttemptsBeforeAccountLockoutIsTriggered", resourceCulture);
+                return ResourceManager.GetString("maximum_failed_login_attempts_before_account_lockout_is_triggered", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum number of characters allowed in a password.
         /// </summary>
-        internal static string MaximumNumberOfCharactersAllowedInAPassword {
+        internal static string maximum_number_of_characters_allowed_in_apassword {
             get {
-                return ResourceManager.GetString("MaximumNumberOfCharactersAllowedInAPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max length.
-        /// </summary>
-        internal static string MaxLength {
-            get {
-                return ResourceManager.GetString("MaxLength", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max login attempts.
-        /// </summary>
-        internal static string MaxLoginAttempts {
-            get {
-                return ResourceManager.GetString("MaxLoginAttempts", resourceCulture);
+                return ResourceManager.GetString("maximum_number_of_characters_allowed_in_apassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MaxPasswordAgeDays / MinPasswordAgeDays.
         /// </summary>
-        internal static string MaxPasswordAgeDaysMinPasswordAgeDays {
+        internal static string max_password_age_days_min_password_age_days {
             get {
-                return ResourceManager.GetString("MaxPasswordAgeDaysMinPasswordAgeDays", resourceCulture);
+                return ResourceManager.GetString("max_password_age_days_min_password_age_days", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Meets all policy rules: length, digits, uppercase/lowercase, special characters, no username or weak patterns.
         /// </summary>
-        internal static string MeetsAllPolicyRulesLengthDigitsUppercaseLowercase {
+        internal static string meets_all_policy_rules_length_digits_uppercase_lowercase {
             get {
-                return ResourceManager.GetString("MeetsAllPolicyRulesLengthDigitsUppercaseLowercase", resourceCulture);
+                return ResourceManager.GetString("meets_all_policy_rules_length_digits_uppercase_lowercase", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MFA enforcement grace days.
         /// </summary>
-        internal static string MFAEnforcementGraceDays {
+        internal static string mfa_enforcement_grace_days {
             get {
-                return ResourceManager.GetString("MFAEnforcementGraceDays", resourceCulture);
+                return ResourceManager.GetString("mfa_enforcement_grace_days", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MFA types allowed.
         /// </summary>
-        internal static string MFATypesAllowed {
+        internal static string mfa_types_allowed {
             get {
-                return ResourceManager.GetString("MFATypesAllowed", resourceCulture);
+                return ResourceManager.GetString("mfa_types_allowed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum number of characters required in a password.
         /// </summary>
-        internal static string MinimumNumberOfCharactersRequiredInAPassword {
+        internal static string minimum_number_of_characters_required_in_apassword {
             get {
-                return ResourceManager.GetString("MinimumNumberOfCharactersRequiredInAPassword", resourceCulture);
+                return ResourceManager.GetString("minimum_number_of_characters_required_in_apassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum number of days required before a user can reset their password again.
         /// </summary>
-        internal static string MinimumNumberOfDaysRequiredBeforeAUserCanResetTheirPasswordAgain {
+        internal static string minimum_number_of_days_required_before_auser_can_reset_their_password_again {
             get {
-                return ResourceManager.GetString("MinimumNumberOfDaysRequiredBeforeAUserCanResetTheirPasswordAgain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Min length.
-        /// </summary>
-        internal static string MinLength {
-            get {
-                return ResourceManager.GetString("MinLength", resourceCulture);
+                return ResourceManager.GetString("minimum_number_of_days_required_before_auser_can_reset_their_password_again", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MinLength &amp; MaxLength.
         /// </summary>
-        internal static string MinLengthMaxLength {
+        internal static string min_length_max_length {
             get {
-                return ResourceManager.GetString("MinLengthMaxLength", resourceCulture);
+                return ResourceManager.GetString("min_length_max_length", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to New configuration entries will be rejected if one already exists for the same scope.
         /// </summary>
-        internal static string NewConfigurationEntriesWillBeRejectedIfOneAlreadyExistsForTheSameScope {
+        internal static string new_configuration_entries_will_be_rejected_if_one_already_exists_for_the_same_scope {
             get {
-                return ResourceManager.GetString("NewConfigurationEntriesWillBeRejectedIfOneAlreadyExistsForTheSameScope", resourceCulture);
+                return ResourceManager.GetString("new_configuration_entries_will_be_rejected_if_one_already_exists_for_the_same_sco" +
+                        "pe", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No password policy configurations defined.
         /// </summary>
-        internal static string NoPasswordPolicyConfigurationsDefined {
+        internal static string no_password_policy_configurations_defined {
             get {
-                return ResourceManager.GetString("NoPasswordPolicyConfigurationsDefined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notice.
-        /// </summary>
-        internal static string Notice {
-            get {
-                return ResourceManager.GetString("Notice", resourceCulture);
+                return ResourceManager.GetString("no_password_policy_configurations_defined", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of days of inactivity after which a user account will be automatically disabled.
         /// </summary>
-        internal static string NumberOfDaysOfInactivityAfterWhichAUserAccountWillBeAutomaticallyDisabled {
+        internal static string number_of_days_of_inactivity_after_which_auser_account_will_be_automatically_disabled {
             get {
-                return ResourceManager.GetString("NumberOfDaysOfInactivityAfterWhichAUserAccountWillBeAutomaticallyDisabled", resourceCulture);
+                return ResourceManager.GetString("number_of_days_of_inactivity_after_which_auser_account_will_be_automatically_disa" +
+                        "bled", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of days required to reset password.
         /// </summary>
-        internal static string NumberOfDaysRequiredToResetPassword {
+        internal static string number_of_days_required_to_reset_password {
             get {
-                return ResourceManager.GetString("NumberOfDaysRequiredToResetPassword", resourceCulture);
+                return ResourceManager.GetString("number_of_days_required_to_reset_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of days to block user if in active.
         /// </summary>
-        internal static string NumberOfDaysToBlockUserIfInactive {
+        internal static string number_of_days_to_block_user_if_inactive {
             get {
-                return ResourceManager.GetString("NumberOfDaysToBlockUserIfInactive", resourceCulture);
+                return ResourceManager.GetString("number_of_days_to_block_user_if_inactive", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of login attempts.
         /// </summary>
-        internal static string NumberOfLoginAttempts {
+        internal static string number_of_login_attempts {
             get {
-                return ResourceManager.GetString("NumberOfLoginAttempts", resourceCulture);
+                return ResourceManager.GetString("number_of_login_attempts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of previous passwords retained to avoid reuse.
         /// </summary>
-        internal static string NumberOfPreviousPasswordsRetainedToAvoidReuse {
+        internal static string number_of_previous_passwords_retained_to_avoid_reuse {
             get {
-                return ResourceManager.GetString("NumberOfPreviousPasswordsRetainedToAvoidReuse", resourceCulture);
+                return ResourceManager.GetString("number_of_previous_passwords_retained_to_avoid_reuse", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to one configuration per branch.
         /// </summary>
-        internal static string oneConfigurationPerBranch {
+        internal static string one_configuration_per_branch {
             get {
-                return ResourceManager.GetString("oneConfigurationPerBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only.
-        /// </summary>
-        internal static string Only {
-            get {
-                return ResourceManager.GetString("Only", resourceCulture);
+                return ResourceManager.GetString("one_configuration_per_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Only one policy can exist per scope (central or per branch).
         /// </summary>
-        internal static string OnlyOnePolicyCanExistPerScopeCentralOrPerBranch {
+        internal static string only_one_policy_can_exist_per_scope_central_or_per_branch {
             get {
-                return ResourceManager.GetString("OnlyOnePolicyCanExistPerScopeCentralOrPerBranch", resourceCulture);
+                return ResourceManager.GetString("only_one_policy_can_exist_per_scope_central_or_per_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Optional regular expression to enforce additional formatting logic.
         /// </summary>
-        internal static string OptionalRegularExpressionToEnforceAdditionalFormattingLogic {
+        internal static string optional_regular_expression_to_enforce_additional_formatting_logic {
             get {
-                return ResourceManager.GetString("OptionalRegularExpressionToEnforceAdditionalFormattingLogic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Options.
-        /// </summary>
-        internal static string Options {
-            get {
-                return ResourceManager.GetString("Options", resourceCulture);
+                return ResourceManager.GetString("optional_regular_expression_to_enforce_additional_formatting_logic", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to or similar serial-like structures.
         /// </summary>
-        internal static string orSimilarSerialLikeStructures {
+        internal static string or_similar_serial_like_structures {
             get {
-                return ResourceManager.GetString("orSimilarSerialLikeStructures", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to password.
-        /// </summary>
-        internal static string password {
-            get {
-                return ResourceManager.GetString("password", resourceCulture);
+                return ResourceManager.GetString("or_similar_serial_like_structures", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Password history count.
         /// </summary>
-        internal static string PasswordHistoryCount {
+        internal static string password_history_count {
             get {
-                return ResourceManager.GetString("PasswordHistoryCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password policies.
-        /// </summary>
-        internal static string PasswordPolicies {
-            get {
-                return ResourceManager.GetString("PasswordPolicies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password Policy &amp; Idle Timeout Guidelines.
-        /// </summary>
-        internal static string PasswordPolicyIdleTimeoutGuidelines {
-            get {
-                return ResourceManager.GetString("PasswordPolicyIdleTimeoutGuidelines", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password policy rules.
-        /// </summary>
-        internal static string PasswordPolicyRules {
-            get {
-                return ResourceManager.GetString("PasswordPolicyRules", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password rules.
-        /// </summary>
-        internal static string PasswordRules {
-            get {
-                return ResourceManager.GetString("PasswordRules", resourceCulture);
+                return ResourceManager.GetString("password_history_count", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PASSWORD POLICY CONFIGURATIONS.
         /// </summary>
-        internal static string PASSWORD_POLICY_CONFIGURATIONS {
+        internal static string password_policy_configurations {
             get {
-                return ResourceManager.GetString("PASSWORD_POLICY_CONFIGURATIONS", resourceCulture);
+                return ResourceManager.GetString("password_policy_configurations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Policy &amp; Idle Timeout Guidelines.
+        /// </summary>
+        internal static string password_policy_idle_timeout_guidelines {
+            get {
+                return ResourceManager.GetString("password_policy_idle_timeout_guidelines", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PASSWORD POLICY MANAGEMENT.
         /// </summary>
-        internal static string PASSWORD_POLICY_MANAGEMENT {
+        internal static string password_policy_management {
             get {
-                return ResourceManager.GetString("PASSWORD_POLICY_MANAGEMENT", resourceCulture);
+                return ResourceManager.GetString("password_policy_management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password policy rules.
+        /// </summary>
+        internal static string password_policy_rules {
+            get {
+                return ResourceManager.GetString("password_policy_rules", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Patterns or keywords that must not appear in passwords.
         /// </summary>
-        internal static string PatternsOrKeywordsThatMustNotAppearInPasswords {
+        internal static string patterns_or_keywords_that_must_not_appear_in_passwords {
             get {
-                return ResourceManager.GetString("PatternsOrKeywordsThatMustNotAppearInPasswords", resourceCulture);
+                return ResourceManager.GetString("patterns_or_keywords_that_must_not_appear_in_passwords", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Permits administrators to reset user passwords if needed.
         /// </summary>
-        internal static string PermitsAdministratorsToResetUserPasswordsIfNeeded {
+        internal static string permits_administrators_to_reset_user_passwords_if_needed {
             get {
-                return ResourceManager.GetString("PermitsAdministratorsToResetUserPasswordsIfNeeded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Policy key.
-        /// </summary>
-        internal static string PolicyKey {
-            get {
-                return ResourceManager.GetString("PolicyKey", resourceCulture);
+                return ResourceManager.GetString("permits_administrators_to_reset_user_passwords_if_needed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Prevents the reuse of past passwords within the history count.
         /// </summary>
-        internal static string PreventsTheReuseOfPastPasswordsWithinTheHistoryCount {
+        internal static string prevents_the_reuse_of_past_passwords_within_the_history_count {
             get {
-                return ResourceManager.GetString("PreventsTheReuseOfPastPasswordsWithinTheHistoryCount", resourceCulture);
+                return ResourceManager.GetString("prevents_the_reuse_of_past_passwords_within_the_history_count", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Prevents use of username as part of the password for added security.
         /// </summary>
-        internal static string PreventsUseOfUsernameAsPartOfThePasswordForAddedSecurity {
+        internal static string prevents_use_of_username_as_part_of_the_password_for_added_security {
             get {
-                return ResourceManager.GetString("PreventsUseOfUsernameAsPartOfThePasswordForAddedSecurity", resourceCulture);
+                return ResourceManager.GetString("prevents_use_of_username_as_part_of_the_password_for_added_security", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Promotes timely rotation and avoids abuse of frequent resets.
         /// </summary>
-        internal static string PromotesTimelyRotationAndAvoidsAbuseOfFrequentResets {
+        internal static string promotes_timely_rotation_and_avoids_abuse_of_frequent_resets {
             get {
-                return ResourceManager.GetString("PromotesTimelyRotationAndAvoidsAbuseOfFrequentResets", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recommended.
-        /// </summary>
-        internal static string Recommended {
-            get {
-                return ResourceManager.GetString("Recommended", resourceCulture);
+                return ResourceManager.GetString("promotes_timely_rotation_and_avoids_abuse_of_frequent_resets", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Regex pattern validation.
         /// </summary>
-        internal static string RegexPatternValidation {
+        internal static string regex_pattern_validation {
             get {
-                return ResourceManager.GetString("RegexPatternValidation", resourceCulture);
+                return ResourceManager.GetString("regex_pattern_validation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Rejects common weak keywords and phrases often exploited in brute-force and dictionary attacks.
         /// </summary>
-        internal static string RejectsCommonWeakKeywordsAndPhrasesOftenExploitedInBruteForce {
+        internal static string rejects_common_weak_keywords_and_phrases_often_exploited_in_brute_force {
             get {
-                return ResourceManager.GetString("RejectsCommonWeakKeywordsAndPhrasesOftenExploitedInBruteForce", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reject serial patterns.
-        /// </summary>
-        internal static string RejectSerialPatterns {
-            get {
-                return ResourceManager.GetString("RejectSerialPatterns", resourceCulture);
+                return ResourceManager.GetString("rejects_common_weak_keywords_and_phrases_often_exploited_in_brute_force", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Rejects passwords with 3 or more consecutive repeated characters (e.g., aaa, 111).
         /// </summary>
-        internal static string RejectsPasswordsWith3OrMoreConsecutiveRepeatedCharacters {
+        internal static string rejects_passwords_with3_or_more_consecutive_repeated_characters {
             get {
-                return ResourceManager.GetString("RejectsPasswordsWith3OrMoreConsecutiveRepeatedCharacters", resourceCulture);
+                return ResourceManager.GetString("rejects_passwords_with3_or_more_consecutive_repeated_characters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Require digit.
+        ///   Looks up a localized string similar to Reject serial patterns.
         /// </summary>
-        internal static string RequireDigit {
+        internal static string reject_serial_patterns {
             get {
-                return ResourceManager.GetString("RequireDigit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Require lowercase.
-        /// </summary>
-        internal static string RequireLowercase {
-            get {
-                return ResourceManager.GetString("RequireLowercase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Require special char.
-        /// </summary>
-        internal static string RequireSpecialChar {
-            get {
-                return ResourceManager.GetString("RequireSpecialChar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Require uppercase.
-        /// </summary>
-        internal static string RequireUppercase {
-            get {
-                return ResourceManager.GetString("RequireUppercase", resourceCulture);
+                return ResourceManager.GetString("reject_serial_patterns", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to RequireUppercase, Lowercase, Digit, SpecialChar.
         /// </summary>
-        internal static string RequireUppercaseLowercaseDigitSpecialChar {
+        internal static string require_uppercase_lowercase_digit_special_char {
             get {
-                return ResourceManager.GetString("RequireUppercaseLowercaseDigitSpecialChar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset After (days).
-        /// </summary>
-        internal static string ResetAfterDays {
-            get {
-                return ResourceManager.GetString("ResetAfterDays", resourceCulture);
+                return ResourceManager.GetString("require_uppercase_lowercase_digit_special_char", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Restricts passwords from containing the username (case-insensitive match).
         /// </summary>
-        internal static string RestrictsPasswordsFromContainingTheUsername {
+        internal static string restricts_passwords_from_containing_the_username {
             get {
-                return ResourceManager.GetString("RestrictsPasswordsFromContainingTheUsername", resourceCulture);
+                return ResourceManager.GetString("restricts_passwords_from_containing_the_username", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Scope: Central or Branch-Level.
         /// </summary>
-        internal static string ScopeCentralOrBranchLevel {
+        internal static string scope_central_or_branch_level {
             get {
-                return ResourceManager.GetString("ScopeCentralOrBranchLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select a branch.
-        /// </summary>
-        internal static string SelectABranch {
-            get {
-                return ResourceManager.GetString("SelectABranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("scope_central_or_branch_level", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Session &amp; Access Control.
         /// </summary>
-        internal static string SessionAccessControl {
+        internal static string session_access_control {
             get {
-                return ResourceManager.GetString("SessionAccessControl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set.
-        /// </summary>
-        internal static string Set {
-            get {
-                return ResourceManager.GetString("Set", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set of permitted special characters.
-        /// </summary>
-        internal static string SetOfPermittedSpecialCharacters {
-            get {
-                return ResourceManager.GetString("SetOfPermittedSpecialCharacters", resourceCulture);
+                return ResourceManager.GetString("session_access_control", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Settings include lockout thresholds, idle duration before session termination, and detailed password policy enforcement.
         /// </summary>
-        internal static string SettingsIncludeLockoutThresholds {
+        internal static string settings_include_lockout_thresholds {
             get {
-                return ResourceManager.GetString("SettingsIncludeLockoutThresholds", resourceCulture);
+                return ResourceManager.GetString("settings_include_lockout_thresholds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set of permitted special characters.
+        /// </summary>
+        internal static string set_of_permitted_special_characters {
+            get {
+                return ResourceManager.GetString("set_of_permitted_special_characters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Time (in minutes) a user session can remain inactive before automatic logout.
         /// </summary>
-        internal static string TimeAUserSessionCanRemainInactiveBeforeAutomaticLogout {
+        internal static string time_auser_session_can_remain_inactive_before_automatic_logout {
             get {
-                return ResourceManager.GetString("TimeAUserSessionCanRemainInactiveBeforeAutomaticLogout", resourceCulture);
+                return ResourceManager.GetString("time_auser_session_can_remain_inactive_before_automatic_logout", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to to apply the policy globally across the system.
         /// </summary>
-        internal static string toApplyThePolicyGloballyAcrossTheSystem {
+        internal static string to_apply_the_policy_globally_across_the_system {
             get {
-                return ResourceManager.GetString("toApplyThePolicyGloballyAcrossTheSystem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to true.
-        /// </summary>
-        internal static string True {
-            get {
-                return ResourceManager.GetString("True", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Typically.
-        /// </summary>
-        internal static string Typically {
-            get {
-                return ResourceManager.GetString("Typically", resourceCulture);
+                return ResourceManager.GetString("to_apply_the_policy_globally_across_the_system", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Update Idle Timeout &amp; Password Policy.
         /// </summary>
-        internal static string UpdateIdleTimeoutPasswordPolicy {
+        internal static string update_idle_timeout_password_policy {
             get {
-                return ResourceManager.GetString("UpdateIdleTimeoutPasswordPolicy", resourceCulture);
+                return ResourceManager.GetString("update_idle_timeout_password_policy", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use this interface to define rules for user inactivity, password expiration, and complexity enforcement.
         /// </summary>
-        internal static string UseThisInterfaceToDefineRulesForUserInactivity {
+        internal static string use_this_interface_to_define_rules_for_user_inactivity {
             get {
-                return ResourceManager.GetString("UseThisInterfaceToDefineRulesForUserInactivity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View existing configs.
-        /// </summary>
-        internal static string ViewExistingConfigs {
-            get {
-                return ResourceManager.GetString("ViewExistingConfigs", resourceCulture);
+                return ResourceManager.GetString("use_this_interface_to_define_rules_for_user_inactivity", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You are updating the configuration for either a specific branch or centralized system-wide policy.
         /// </summary>
-        internal static string YouAreUpdatingTheConfigurationForEither {
+        internal static string you_are_updating_the_configuration_for_either {
             get {
-                return ResourceManager.GetString("YouAreUpdatingTheConfigurationForEither", resourceCulture);
+                return ResourceManager.GetString("you_are_updating_the_configuration_for_either", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to you must select a specific branch from the dropdown list using.
         /// </summary>
-        internal static string youMustSelectASpecificBranchFromTheDropdownListUsing {
+        internal static string you_must_select_aspecific_branch_from_the_dropdown_list_using {
             get {
-                return ResourceManager.GetString("youMustSelectASpecificBranchFromTheDropdownListUsing", resourceCulture);
+                return ResourceManager.GetString("you_must_select_aspecific_branch_from_the_dropdown_list_using", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 12–128 characters long.
         /// </summary>
-        internal static string _12_128CharactersLong {
+        internal static string _12_128_characters_long {
             get {
-                return ResourceManager.GetString("_12_128CharactersLong", resourceCulture);
+                return ResourceManager.GetString("_12_128_characters_long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If.
+        /// </summary>
+        internal static string _if {
+            get {
+                return ResourceManager.GetString("if", resourceCulture);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller>
 @using Resources
 <fieldset class="fieldset-custom">
     <legend id="select_base">Data listings </legend>
@@ -14,11 +14,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalMobileMoneyCashTopup.Date</th>
-                        <th>@GlobalMobileMoneyCashTopup.Amount</th>
-                        <th>@GlobalMobileMoneyCashTopup.Branch</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.Amount</th>
+                        <th>@GlobalShared.Branch</th>
                         <th>@GlobalShared.Status</th>
-                        <th>@GlobalMobileMoneyCashTopup.InitiatedBy</th>
+                        <th>@GlobalShared.Initiated_By</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>

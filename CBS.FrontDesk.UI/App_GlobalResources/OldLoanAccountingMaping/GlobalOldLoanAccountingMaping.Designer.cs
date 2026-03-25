@@ -61,119 +61,92 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data.
-        /// </summary>
-        internal static string Data {
-            get {
-                return ResourceManager.GetString("Data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No old loan maping is created.
         /// </summary>
-        internal static string NoOldLoanMapingIsCreated {
+        internal static string no_old_loan_maping_is_created {
             get {
-                return ResourceManager.GetString("NoOldLoanMapingIsCreated", resourceCulture);
+                return ResourceManager.GetString("no_old_loan_maping_is_created", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Old Loan Accounting Maping.
         /// </summary>
-        internal static string OldLoanAccountingMaping {
+        internal static string old_loan_accounting_maping {
             get {
-                return ResourceManager.GetString("OldLoanAccountingMaping", resourceCulture);
+                return ResourceManager.GetString("old_loan_accounting_maping", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger.
         /// </summary>
-        internal static string SelectAccountLedger {
+        internal static string select_account_ledger {
             get {
-                return ResourceManager.GetString("SelectAccountLedger", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for capital amount.
         /// </summary>
-        internal static string SelectAccountLedgerForCapitalAmount {
+        internal static string select_account_ledger_for_capital_amount {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForCapitalAmount", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_capital_amount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for interest amount.
         /// </summary>
-        internal static string SelectAccountLedgerForInterestAmount {
+        internal static string select_account_ledger_for_interest_amount {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForInterestAmount", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_interest_amount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for provision more than four years.
         /// </summary>
-        internal static string SelectAccountLedgerForProvisionMoreThanFourYears {
+        internal static string select_account_ledger_for_provision_more_than_four_years {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForProvisionMoreThanFourYears", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_provision_more_than_four_years", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for provision more than one year.
         /// </summary>
-        internal static string SelectAccountLedgerForProvisionMoreThanOneYear {
+        internal static string select_account_ledger_for_provision_more_than_one_year {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForProvisionMoreThanOneYear", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_provision_more_than_one_year", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for provision more than three years.
         /// </summary>
-        internal static string SelectAccountLedgerForProvisionMoreThanThreeYears {
+        internal static string select_account_ledger_for_provision_more_than_three_years {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForProvisionMoreThanThreeYears", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_provision_more_than_three_years", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for provision more than two years.
         /// </summary>
-        internal static string SelectAccountLedgerForProvisionMoreThanTwoYears {
+        internal static string select_account_ledger_for_provision_more_than_two_years {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForProvisionMoreThanTwoYears", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_provision_more_than_two_years", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select account ledger for vat amount.
         /// </summary>
-        internal static string SelectAccountLedgerForVatAmount {
+        internal static string select_account_ledger_for_vat_amount {
             get {
-                return ResourceManager.GetString("SelectAccountLedgerForVatAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select loan type.
-        /// </summary>
-        internal static string SelectLoanType {
-            get {
-                return ResourceManager.GetString("SelectLoanType", resourceCulture);
+                return ResourceManager.GetString("select_account_ledger_for_vat_amount", resourceCulture);
             }
         }
     }

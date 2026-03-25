@@ -1,16 +1,16 @@
-﻿@using Resources
+@using Resources
 <div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Checkbooks</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> @GlobalShared.Checkbooks</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>CreatedDate</th>
-                    <th>Category Name</th>
-                    <th>Customer ID</th>
-                    <th>Num. Of Leaves</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.CreatedDate</th>
+                    <th>@GlobalShared.Category_name</th>
+                    <th>@GlobalShared.Customer_ID</th>
+                    <th>@GlobalShared.NumOfLeaves</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>

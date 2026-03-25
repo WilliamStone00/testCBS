@@ -1,5 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
 @using CBS.FrontDesk.Data.Entity.SalaryManagement
+@using Resources
 @{
     // convenience
     var revoke = Model?.RevokeTempPayCodesByIdList ?? new RevokeTempPayCodesByIdList();
@@ -14,32 +15,32 @@
 
 <div class="px-3 pb-2">
     <h5 class="fw-bold text-danger mb-2">
-        <i class="mdi mdi-block-helper me-1"></i> Revoke TempPayCode
+        <i class="mdi mdi-block-helper me-1"></i> @GlobalSalaryProcessed.revoke_temppaycode
     </h5>
 
     <div id="revokeAlert" class="d-none"></div>
 
     <div class="alert alert-warning py-2">
         <i class="mdi mdi-alert-decagram-outline me-1"></i>
-        Revoking will immediately invalidate the code. This action is logged.
+        @GlobalSalaryProcessed.revoking_will_immediately_invalidate_the_code_this_action_is_logged.
     </div>
 
     <div class="row g-3 mb-2">
         <div class="col-md-6">
             <table class="table table-sm table-bordered kv mb-0">
                 <tbody>
-                    <tr><th>TempPayCode Id</th><td class="mono">@Safe(tempId)</td></tr>
-                    <tr><th>Status</th><td>@Safe(codeInfo?.Status)</td></tr>
-                    <tr><th>Expires</th><td>@Safe(codeInfo?.ExpiresAt)</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.temp_pay_code_id</th><td class="mono">@Safe(tempId)</td></tr>
+                    <tr><th>@GlobalShared.Status</th><td>@Safe(codeInfo?.Status)</td></tr>
+                    <tr><th>@GlobalShared.Expires</th><td>@Safe(codeInfo?.ExpiresAt)</td></tr>
                 </tbody>
             </table>
         </div>
         <div class="col-md-6">
             <table class="table table-sm table-bordered kv mb-0">
                 <tbody>
-                    <tr><th>Non-Member Ref</th><td class="mono">@Safe(codeInfo?.NonMemberReference)</td></tr>
-                    <tr><th>Amount</th><td>@Safe(codeInfo?.Amount)</td></tr>
-                    <tr><th>Branch</th><td>@Safe(codeInfo?.Branch ?? Model?.BranchName)</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.non_member_ref</th><td class="mono">@Safe(codeInfo?.NonMemberReference)</td></tr>
+                    <tr><th>@GlobalShared.Amount</th><td>@Safe(codeInfo?.Amount)</td></tr>
+                    <tr><th>@GlobalShared.Branch</th><td>@Safe(codeInfo?.Branch ?? Model?.BranchName)</td></tr>
                 </tbody>
             </table>
         </div>
@@ -61,20 +62,20 @@
                value="@tempId" />
 
         <div class="mb-3">
-            <label class="form-label fw-bold">Reason (for audit)</label>
+            <label class="form-label fw-bold">@GlobalSalaryProcessed.reason_for_audit</label>
             <textarea class="form-control"
                       name="RevokeTempPayCodesByIdList.Reason"
                       rows="3"
-                      placeholder="Why are you revoking this code?">@revoke.Reason</textarea>
+                      placeholder="@GlobalSalaryProcessed.why_are_you_revoking_this_code?">@revoke.Reason</textarea>
         </div>
 
         <div class="d-flex">
             <button type="submit" id="revokeBtn" class="btn btn-danger">
-                <span class="btn-text"><i class="mdi mdi-block-helper"></i> Revoke</span>
+                <span class="btn-text"><i class="mdi mdi-block-helper"></i> @GlobalShared.Revoke</span>
                 <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
-                <i class="mdi mdi-close"></i> Close
+                <i class="mdi mdi-close"></i> @GlobalShared.Close
             </button>
         </div>
     }

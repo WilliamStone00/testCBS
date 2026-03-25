@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="always_document_changes_the_system_tracks_modification_history_for_audit_purposes" xml:space="preserve">
+    <value>Always document changes. The system tracks modification history for audit purposes</value>
+  </data>
+  <data name="changes_affect_financial_reports_portfolio_analysis_and_regulatory_compliance_reports" xml:space="preserve">
+    <value>Changes affect financial reports, portfolio analysis, and regulatory compliance reports</value>
+  </data>
+  <data name="check_if_loan_type_is_ssf" xml:space="preserve">
+    <value>Check if Loan type is SSF</value>
+  </data>
+  <data name="convention" xml:space="preserve">
+    <value> Convention</value>
+  </data>
+  <data name="description_best_practices" xml:space="preserve">
+    <value>Description Best Practices</value>
+  </data>
+  <data name="detailed_view_of_loan_type_entry" xml:space="preserve">
+    <value>Detailed view of loan type entry</value>
+  </data>
+  <data name="display_order" xml:space="preserve">
+    <value>Display Order</value>
+  </data>
+  <data name="include_key_terms_eligibility_criteria_and_typical_usage_this_helps_staff_and_customers_understand_the_loan_purpose" xml:space="preserve">
+    <value>Include key terms, eligibility criteria, and typical usage. This helps staff and customers understand the loan purpose</value>
+  </data>
+  <data name="institution_loan_types" xml:space="preserve">
+    <value>Institution Loan Types</value>
+  </data>
+  <data name="keep_names_clear_and_consistent_use_loan_suffix_for_clarity_eg_education_loan_instead_of_just_education" xml:space="preserve">
+    <value>Keep names clear and consistent. Use "Loan" suffix for clarity (e.g., "Education Loan" instead of just "Education")</value>
+  </data>
+  <data name="loan_types_are_linked_to_interest_rates_fees_and_repayment_schedules_verify_connections_before_making_changes" xml:space="preserve">
+    <value>Loan types are linked to interest rates, fees, and repayment schedules. Verify connections before making changes</value>
+  </data>
+  <data name="loan_types_catalog" xml:space="preserve">
+    <value>Loan Types Catalog</value>
+  </data>
+  <data name="loan_type_details" xml:space="preserve">
+    <value>Loan Type Details</value>
+  </data>
+  <data name="manage_different_types_of_loans_offered_by_the_bank" xml:space="preserve">
+    <value>Manage different types of loans offered by the bank</value>
+  </data>
+  <data name="mark_types_as_inactive_instead_of_deleting_when_no_longer_offered_this_preserves_historical_data" xml:space="preserve">
+    <value>Mark types as "Inactive" instead of deleting when no longer offered. This preserves historical data</value>
+  </data>
+  <data name="name_standardization" xml:space="preserve">
+    <value>Name Standardization</value>
+  </data>
+  <data name="only_authorized_personnel_should_modify_loan_types_as_changes_affect_loan_processing_and_reporting" xml:space="preserve">
+    <value>Only authorized personnel should modify loan types as changes affect loan processing and reporting</value>
+  </data>
+  <data name="reporting_impact" xml:space="preserve">
+    <value>Reporting Impact</value>
+  </data>
+  <data name="set_numerical_order_0_1_2_etc_to_control_how_loan_types_appear_in_dropdowns_lower_numbers_appear_first" xml:space="preserve">
+    <value>Set numerical order (0, 1, 2, etc.) to control how loan types appear in dropdowns. Lower numbers appear first</value>
+  </data>
+  <data name="system_integration" xml:space="preserve">
+    <value>System Integration</value>
+  </data>
+  <data name="test_new_loan_types_in_the_test_environment_before_deploying_to_production" xml:space="preserve">
+    <value>Test new loan types in the test environment before deploying to production</value>
+  </data>
+  <data name="use_unique_meaningful_codes_eg_hl_for_home_loan_pl_for_personal_loan_codes_are_casesensitive_and_cannot_be_changed_after_creation" xml:space="preserve">
+    <value>Use unique, meaningful codes (e.g., "HL" for Home Loan, "PL" for Personal Loan). Codes are case-sensitive and cannot be changed after creation</value>
+  </data>
+  <data name="version_control" xml:space="preserve">
+    <value>Version Control</value>
+  </data>
+</root>

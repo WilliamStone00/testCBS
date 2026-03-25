@@ -61,866 +61,580 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account.
-        /// </summary>
-        internal static string Account {
-            get {
-                return ResourceManager.GetString("Account", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account balance.
-        /// </summary>
-        internal static string AccountBalance {
-            get {
-                return ResourceManager.GetString("AccountBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account holder name.
-        /// </summary>
-        internal static string AccountHolderName {
-            get {
-                return ResourceManager.GetString("AccountHolderName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account information.
-        /// </summary>
-        internal static string AccountInformation {
-            get {
-                return ResourceManager.GetString("AccountInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accounting date.
-        /// </summary>
-        internal static string AccountingDate {
-            get {
-                return ResourceManager.GetString("AccountingDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account number.
-        /// </summary>
-        internal static string AccountNumber {
-            get {
-                return ResourceManager.GetString("AccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accounts.
-        /// </summary>
-        internal static string Accounts {
-            get {
-                return ResourceManager.GetString("Accounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account type.
-        /// </summary>
-        internal static string AccountType {
-            get {
-                return ResourceManager.GetString("AccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ALL Member None-Cash Operations.
         /// </summary>
-        internal static string ALLMemberNoneCashOperations {
+        internal static string all_member_none_cash_operations {
             get {
-                return ResourceManager.GetString("ALLMemberNoneCashOperations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval comment.
-        /// </summary>
-        internal static string ApprovalComment {
-            get {
-                return ResourceManager.GetString("ApprovalComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval date.
-        /// </summary>
-        internal static string ApprovalDate {
-            get {
-                return ResourceManager.GetString("ApprovalDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval decision.
-        /// </summary>
-        internal static string ApprovalDecision {
-            get {
-                return ResourceManager.GetString("ApprovalDecision", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval information.
-        /// </summary>
-        internal static string ApprovalInformation {
-            get {
-                return ResourceManager.GetString("ApprovalInformation", resourceCulture);
+                return ResourceManager.GetString("all_member_none_cash_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Approval is final:** Ensure the correct decision is made as modifications post-approval require administrative permissions.
         /// </summary>
-        internal static string ApprovalIsFinalEnsureTheCorrectDecisionIsMade {
+        internal static string approval_is_final_ensure_the_correct_decision_is_made {
             get {
-                return ResourceManager.GetString("ApprovalIsFinalEnsureTheCorrectDecisionIsMade", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval status.
-        /// </summary>
-        internal static string ApprovalStatus {
-            get {
-                return ResourceManager.GetString("ApprovalStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
+                return ResourceManager.GetString("approval_is_final_ensure_the_correct_decision_is_made", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Approved transactions** will proceed to the next step, impacting the member’s account after validation.
         /// </summary>
-        internal static string ApprovedTransactionsWillProceedToTheNextStep {
+        internal static string approved_transactions_will_proceed_to_the_next_step {
             get {
-                return ResourceManager.GetString("ApprovedTransactionsWillProceedToTheNextStep", resourceCulture);
+                return ResourceManager.GetString("approved_transactions_will_proceed_to_the_next_step", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Approve or reject operation.
         /// </summary>
-        internal static string ApproveOrRejectOperation {
+        internal static string approve_or_reject_operation {
             get {
-                return ResourceManager.GetString("ApproveOrRejectOperation", resourceCulture);
+                return ResourceManager.GetString("approve_or_reject_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Approve or reject the member&apos;s operation based on the provided details. Please ensure the decision is final before submission.
         /// </summary>
-        internal static string ApproveOrRejectTheMembersOperationBasedOnTheProvidedDetails {
+        internal static string approve_or_reject_the_members_operation_based_on_the_provided_details {
             get {
-                return ResourceManager.GetString("ApproveOrRejectTheMembersOperationBasedOnTheProvidedDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to B.Direction.
-        /// </summary>
-        internal static string BDirection {
-            get {
-                return ResourceManager.GetString("BDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Booking Direction.
-        /// </summary>
-        internal static string BookingDirection {
-            get {
-                return ResourceManager.GetString("BookingDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch name.
-        /// </summary>
-        internal static string BranchName {
-            get {
-                return ResourceManager.GetString("BranchName", resourceCulture);
+                return ResourceManager.GetString("approve_or_reject_the_members_operation_based_on_the_provided_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to button to mark them as approved.
         /// </summary>
-        internal static string buttonToMarkThemAsApproved {
+        internal static string button_to_mark_them_as_approved {
             get {
-                return ResourceManager.GetString("buttonToMarkThemAsApproved", resourceCulture);
+                return ResourceManager.GetString("button_to_mark_them_as_approved", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to button to remove incorrect or unnecessary operations.
         /// </summary>
-        internal static string buttonToRemoveIncorrectOrUnnecessaryOperations {
+        internal static string button_to_remove_incorrect_or_unnecessary_operations {
             get {
-                return ResourceManager.GetString("buttonToRemoveIncorrectOrUnnecessaryOperations", resourceCulture);
+                return ResourceManager.GetString("button_to_remove_incorrect_or_unnecessary_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to button to see more information about the operation.
         /// </summary>
-        internal static string buttonToSeeMoreInformationAboutTheOperation {
+        internal static string button_to_see_more_information_about_the_operation {
             get {
-                return ResourceManager.GetString("buttonToSeeMoreInformationAboutTheOperation", resourceCulture);
+                return ResourceManager.GetString("button_to_see_more_information_about_the_operation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chart of account.
+        ///   Looks up a localized string similar to B.Direction.
         /// </summary>
-        internal static string ChartOfAccount {
+        internal static string b_direction {
             get {
-                return ResourceManager.GetString("ChartOfAccount", resourceCulture);
+                return ResourceManager.GetString("b_direction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Choose the corresponding General Ledger (GL) account from the dropdown list to ensure proper booking of transactions.
         /// </summary>
-        internal static string ChooseTheCorrespondingGeneralLedger {
+        internal static string choose_the_corresponding_general_ledger {
             get {
-                return ResourceManager.GetString("ChooseTheCorrespondingGeneralLedger", resourceCulture);
+                return ResourceManager.GetString("choose_the_corresponding_general_ledger", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to confirm.
+        ///   Looks up a localized string similar to Choose the flow. We’ll auto-set the Booking Direction (Debit/Credit) and you’ll see which side increases or decreases.
         /// </summary>
-        internal static string confirm {
+        internal static string choose_the_flow_well_autoset_the_booking_direction_debitcredit_and_youll_see_which_side_increases_or_decreases {
             get {
-                return ResourceManager.GetString("confirm", resourceCulture);
+                return ResourceManager.GetString("choose_the_flow_well_autoset_the_booking_direction_debitcredit_and_youll_see_whic" +
+                        "h_side_increases_or_decreases", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Correspondant A.
         /// </summary>
-        internal static string CorrespondantA {
+        internal static string correspondant_a {
             get {
-                return ResourceManager.GetString("CorrespondantA", resourceCulture);
+                return ResourceManager.GetString("correspondant_a", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Corresponding Accounts.
         /// </summary>
-        internal static string CorrespondingAccounts {
+        internal static string corresponding_accounts {
             get {
-                return ResourceManager.GetString("CorrespondingAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create request.
-        /// </summary>
-        internal static string CreateRequest {
-            get {
-                return ResourceManager.GetString("CreateRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit.
-        /// </summary>
-        internal static string Credit {
-            get {
-                return ResourceManager.GetString("Credit", resourceCulture);
+                return ResourceManager.GetString("corresponding_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Credit member&apos;s account.
         /// </summary>
-        internal static string CreditMembersAccount {
+        internal static string credit_members_account {
             get {
-                return ResourceManager.GetString("CreditMembersAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Debit.
-        /// </summary>
-        internal static string Debit {
-            get {
-                return ResourceManager.GetString("Debit", resourceCulture);
+                return ResourceManager.GetString("credit_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debit member&apos;s account.
         /// </summary>
-        internal static string DebitMembersAccount {
+        internal static string debit_members_account {
             get {
-                return ResourceManager.GetString("DebitMembersAccount", resourceCulture);
+                return ResourceManager.GetString("debit_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Double-check all amounts entered, including fees, totals, and balance updates. Ensure that the amounts are accurate before confirming the transaction.
         /// </summary>
-        internal static string DoubleCheckAllAmountsEntered {
+        internal static string double_check_all_amounts_entered {
             get {
-                return ResourceManager.GetString("DoubleCheckAllAmountsEntered", resourceCulture);
+                return ResourceManager.GetString("double_check_all_amounts_entered", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure the selected ledger and member account are correct, as once submitted, the transaction cannot be modified without proper approval.
         /// </summary>
-        internal static string EnsureTheSelectedLedgerAndMemberAccountAreCorrect {
+        internal static string ensure_the_selected_ledger_and_member_account_are_correct {
             get {
-                return ResourceManager.GetString("EnsureTheSelectedLedgerAndMemberAccountAreCorrect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter Member Reference Number.
-        /// </summary>
-        internal static string EnterMemberReferenceNumber {
-            get {
-                return ResourceManager.GetString("EnterMemberReferenceNumber", resourceCulture);
+                return ResourceManager.GetString("ensure_the_selected_ledger_and_member_account_are_correct", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter reasons for the operation.
         /// </summary>
-        internal static string EnterReasonsForTheOperation {
+        internal static string enter_reasons_for_the_operation {
             get {
-                return ResourceManager.GetString("EnterReasonsForTheOperation", resourceCulture);
+                return ResourceManager.GetString("enter_reasons_for_the_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the 10-digit Member Reference Number. This includes a 3-digit Branch Code followed by a 7-digit Member Code.
         /// </summary>
-        internal static string EnterThe10DigitMemberReferenceNumber {
+        internal static string enter_the10_digit_member_reference_number {
             get {
-                return ResourceManager.GetString("EnterThe10DigitMemberReferenceNumber", resourceCulture);
+                return ResourceManager.GetString("enter_the10_digit_member_reference_number", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fee.
+        ///   Looks up a localized string similar to float decreases when cash leaves to wallet.
         /// </summary>
-        internal static string Fee {
+        internal static string float_decreases_when_cash_leaves_to_wallet {
             get {
-                return ResourceManager.GetString("Fee", resourceCulture);
+                return ResourceManager.GetString("float_decreases_when_cash_leaves_to_wallet", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General information.
+        ///   Looks up a localized string similar to Is Mobile Money operation.
         /// </summary>
-        internal static string GeneralInformation {
+        internal static string is_mobile_money_operation {
             get {
-                return ResourceManager.GetString("GeneralInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inc.
-        /// </summary>
-        internal static string Inc {
-            get {
-                return ResourceManager.GetString("Inc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiated by.
-        /// </summary>
-        internal static string InitiatedBy {
-            get {
-                return ResourceManager.GetString("InitiatedBy", resourceCulture);
+                return ResourceManager.GetString("is_mobile_money_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Keep Operations Up-to-date.
         /// </summary>
-        internal static string KeepOperationsUpToDate {
+        internal static string keep_operations_up_to_date {
             get {
-                return ResourceManager.GetString("KeepOperationsUpToDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading.
-        /// </summary>
-        internal static string Loading {
-            get {
-                return ResourceManager.GetString("Loading", resourceCulture);
+                return ResourceManager.GetString("keep_operations_up_to_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Manage Member&apos;s None Cash Operations.
         /// </summary>
-        internal static string ManageMembersNoneCashOperations {
+        internal static string manage_members_none_cash_operations {
             get {
-                return ResourceManager.GetString("ManageMembersNoneCashOperations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member name.
-        /// </summary>
-        internal static string MemberName {
-            get {
-                return ResourceManager.GetString("MemberName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member reference.
-        /// </summary>
-        internal static string MemberReference {
-            get {
-                return ResourceManager.GetString("MemberReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Members Accounts.
-        /// </summary>
-        internal static string MembersAccounts {
-            get {
-                return ResourceManager.GetString("MembersAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member&apos;s name.
-        /// </summary>
-        internal static string MembersName {
-            get {
-                return ResourceManager.GetString("MembersName", resourceCulture);
+                return ResourceManager.GetString("manage_members_none_cash_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MEMBER&apos;S OTHER NONE-CASH OPERATION.
         /// </summary>
-        internal static string MEMBERSOTHERNONECASHOPERATION {
+        internal static string members_other_none_cash_operation {
             get {
-                return ResourceManager.GetString("MEMBERSOTHERNONECASHOPERATION", resourceCulture);
+                return ResourceManager.GetString("members_other_none_cash_operation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M.Reference.
+        ///   Looks up a localized string similar to Member’s Phone (wallet) → MoMo Float.
         /// </summary>
-        internal static string MReference {
+        internal static string members_phone_wallet_momo_float {
             get {
-                return ResourceManager.GetString("MReference", resourceCulture);
+                return ResourceManager.GetString("members_phone_wallet_momo_float", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Account = Debited.
+        /// </summary>
+        internal static string member_account_debited {
+            get {
+                return ResourceManager.GetString("member_account_debited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Account → MoMo Float.
+        /// </summary>
+        internal static string member_account_momo_float {
+            get {
+                return ResourceManager.GetString("member_account_momo_float", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Account → MoMo Float → Member’s Phone (wallet payout).
+        /// </summary>
+        internal static string member_account_momo_float_members_phone_wallet_payout {
+            get {
+                return ResourceManager.GetString("member_account_momo_float_members_phone_wallet_payout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoMo Float.
+        /// </summary>
+        internal static string momo_float {
+            get {
+                return ResourceManager.GetString("momo_float", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoMo Float = Credited.
+        /// </summary>
+        internal static string momo_float_credited {
+            get {
+                return ResourceManager.GetString("momo_float_credited", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MY Requests For Member None-Cash Operations.
         /// </summary>
-        internal static string MYRequestsForMemberNoneCashOperations {
+        internal static string my_requests_for_member_none_cash_operations {
             get {
-                return ResourceManager.GetString("MYRequestsForMemberNoneCashOperations", resourceCulture);
+                return ResourceManager.GetString("my_requests_for_member_none_cash_operations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M.Reference.
+        /// </summary>
+        internal static string m_reference {
+            get {
+                return ResourceManager.GetString("m_reference", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No member none-cash operations found.
         /// </summary>
-        internal static string NoMemberNoneCashOperationsFound {
+        internal static string no_member_none_cash_operations_found {
             get {
-                return ResourceManager.GetString("NoMemberNoneCashOperationsFound", resourceCulture);
+                return ResourceManager.GetString("no_member_none_cash_operations_found", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Once a transaction is submitted, it **requires validation and approval** from the designated authority before taking effect.
         /// </summary>
-        internal static string OnceAtransactionIsSubmitted {
+        internal static string once_a_transaction_is_submitted {
             get {
-                return ResourceManager.GetString("OnceAtransactionIsSubmitted", resourceCulture);
+                return ResourceManager.GetString("once_a_transaction_is_submitted", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Only one operation can be processed at a time.** Multiple entries are not allowed. Select a single ledger account and a corresponding member’s account to complete the transaction.
         /// </summary>
-        internal static string OnlyOneOperationCanBeProcessedAtAtime {
+        internal static string only_one_operation_can_be_processed_at_atime {
             get {
-                return ResourceManager.GetString("OnlyOneOperationCanBeProcessedAtAtime", resourceCulture);
+                return ResourceManager.GetString("only_one_operation_can_be_processed_at_atime", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation details.
+        ///   Looks up a localized string similar to Orange Money – How should the funds move.
         /// </summary>
-        internal static string OperationDetails {
+        internal static string orange_money_how_should_the_funds_move {
             get {
-                return ResourceManager.GetString("OperationDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Operation metadata.
-        /// </summary>
-        internal static string OperationMetadata {
-            get {
-                return ResourceManager.GetString("OperationMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to or.
-        /// </summary>
-        internal static string or {
-            get {
-                return ResourceManager.GetString("or", resourceCulture);
+                return ResourceManager.GetString("orange_money_how_should_the_funds_move", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Partial view content will be loaded here.
         /// </summary>
-        internal static string PartialViewContentWillBeLoadedHere {
+        internal static string partial_view_content_will_be_loaded_here {
             get {
-                return ResourceManager.GetString("PartialViewContentWillBeLoadedHere", resourceCulture);
+                return ResourceManager.GetString("partial_view_content_will_be_loaded_here", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Pending Member None-Cash Operations.
         /// </summary>
-        internal static string PendingMemberNoneCashOperations {
+        internal static string pending_member_none_cash_operations {
             get {
-                return ResourceManager.GetString("PendingMemberNoneCashOperations", resourceCulture);
+                return ResourceManager.GetString("pending_member_none_cash_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform other none-cash transactions such as debiting or crediting members’ accounts with ease. Please note that these transactions will not take immediate effect and must undergo validation and approval before impacting member accounts.
         /// </summary>
-        internal static string PerformOtherNonecashTransactions {
+        internal static string perform_other_nonecash_transactions {
             get {
-                return ResourceManager.GetString("PerformOtherNonecashTransactions", resourceCulture);
+                return ResourceManager.GetString("perform_other_nonecash_transactions", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform secure cash deposits into member accounts. Follow the guidelines outlined in the Help Tips section above.
         /// </summary>
-        internal static string PerformSecureCashDepositsIntoMemberAccounts {
+        internal static string perform_secure_cash_deposits_into_member_accounts {
             get {
-                return ResourceManager.GetString("PerformSecureCashDepositsIntoMemberAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product id.
-        /// </summary>
-        internal static string ProductID {
-            get {
-                return ResourceManager.GetString("ProductID", resourceCulture);
+                return ResourceManager.GetString("perform_secure_cash_deposits_into_member_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Provide a comment for the validation.
         /// </summary>
-        internal static string ProvideACommentForTheValidation {
+        internal static string provide_acomment_for_the_validation {
             get {
-                return ResourceManager.GetString("ProvideACommentForTheValidation", resourceCulture);
+                return ResourceManager.GetString("provide_acomment_for_the_validation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Provide a detailed note describing the reason for the operation. This is essential for auditing purposes.
         /// </summary>
-        internal static string ProvideADetailedNoteDescribingTheReasonForTheOperation {
+        internal static string provide_adetailed_note_describing_the_reason_for_the_operation {
             get {
-                return ResourceManager.GetString("ProvideADetailedNoteDescribingTheReasonForTheOperation", resourceCulture);
+                return ResourceManager.GetString("provide_adetailed_note_describing_the_reason_for_the_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to R.Date.
         /// </summary>
-        internal static string RDate {
+        internal static string rdate {
             get {
-                return ResourceManager.GetString("RDate", resourceCulture);
+                return ResourceManager.GetString("rdate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Regularly validate pending operations to maintain accurate records and approvals.
         /// </summary>
-        internal static string RegularlyValidatePendingOperations {
+        internal static string regularly_validate_pending_operations {
             get {
-                return ResourceManager.GetString("RegularlyValidatePendingOperations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request date.
-        /// </summary>
-        internal static string RequestDate {
-            get {
-                return ResourceManager.GetString("RequestDate", resourceCulture);
+                return ResourceManager.GetString("regularly_validate_pending_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Review pending operations regularly** to prevent delays in member transactions.
         /// </summary>
-        internal static string ReviewPendingOperationsRegularly {
+        internal static string review_pending_operations_regularly {
             get {
-                return ResourceManager.GetString("ReviewPendingOperationsRegularly", resourceCulture);
+                return ResourceManager.GetString("review_pending_operations_regularly", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select correspondent account.
         /// </summary>
-        internal static string SelectCorrespondentAccount {
+        internal static string select_correspondent_account {
             get {
-                return ResourceManager.GetString("SelectCorrespondentAccount", resourceCulture);
+                return ResourceManager.GetString("select_correspondent_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select GL.
         /// </summary>
-        internal static string SelectGL {
+        internal static string select_gl {
             get {
-                return ResourceManager.GetString("SelectGL", resourceCulture);
+                return ResourceManager.GetString("select_gl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select MM/OM operation collection account.
+        /// </summary>
+        internal static string select_mmom_operation_collection_account {
+            get {
+                return ResourceManager.GetString("select_mmom_operation_collection_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select whether to.
         /// </summary>
-        internal static string SelectWhetherTo {
+        internal static string select_whether_to {
             get {
-                return ResourceManager.GetString("SelectWhetherTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source.
-        /// </summary>
-        internal static string Source {
-            get {
-                return ResourceManager.GetString("Source", resourceCulture);
+                return ResourceManager.GetString("select_whether_to", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Source and branch details.
         /// </summary>
-        internal static string SourceAndBranchDetails {
+        internal static string source_and_branch_details {
             get {
-                return ResourceManager.GetString("SourceAndBranchDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Submit validation.
-        /// </summary>
-        internal static string SubmitValidation {
-            get {
-                return ResourceManager.GetString("SubmitValidation", resourceCulture);
+                return ResourceManager.GetString("source_and_branch_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to the member’s account by choosing the appropriate option in the form.
         /// </summary>
-        internal static string theMembersAccountByChoosingTheAppropriateOption {
+        internal static string the_members_account_by_choosing_the_appropriate_option {
             get {
-                return ResourceManager.GetString("theMembersAccountByChoosingTheAppropriateOption", resourceCulture);
+                return ResourceManager.GetString("the_members_account_by_choosing_the_appropriate_option", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The member&apos;s account will only be impacted once the validation and approval process is complete.
         /// </summary>
-        internal static string TheMembersAccountWillOnlyBeImpactedOnce {
+        internal static string the_members_account_will_only_be_impacted_once {
             get {
-                return ResourceManager.GetString("TheMembersAccountWillOnlyBeImpactedOnce", resourceCulture);
+                return ResourceManager.GetString("the_members_account_will_only_be_impacted_once", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TIPS.
+        ///   Looks up a localized string similar to The member sends funds from their MoMo wallet; branch float increases in debit, and the member’s local account is credited.
         /// </summary>
-        internal static string TIPS {
+        internal static string the_member_sends_funds_from_their_momo_wallet_branch_float_increases_in_debit_and_the_members_local_account_is_credited {
             get {
-                return ResourceManager.GetString("TIPS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total.
-        /// </summary>
-        internal static string Total {
-            get {
-                return ResourceManager.GetString("Total", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction reference.
-        /// </summary>
-        internal static string TransactionReference {
-            get {
-                return ResourceManager.GetString("TransactionReference", resourceCulture);
+                return ResourceManager.GetString("the_member_sends_funds_from_their_momo_wallet_branch_float_increases_in_debit_and" +
+                        "_the_members_local_account_is_credited", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use the.
         /// </summary>
-        internal static string UseThe {
+        internal static string use_the {
             get {
-                return ResourceManager.GetString("UseThe", resourceCulture);
+                return ResourceManager.GetString("use_the", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Use the comment field** to provide any remarks or justifications related to the validation decision.
         /// </summary>
-        internal static string UseTheCommentFieldToProvideAnyRemarks {
+        internal static string use_the_comment_field_to_provide_any_remarks {
             get {
-                return ResourceManager.GetString("UseTheCommentFieldToProvideAnyRemarks", resourceCulture);
+                return ResourceManager.GetString("use_the_comment_field_to_provide_any_remarks", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use the search bar to find a member’s account by entering the 10-digit reference number (3-digit branch code followed by a 7-digit member code).
         /// </summary>
-        internal static string UseTheSearchBarToFindAMembersAccount {
+        internal static string use_the_search_bar_to_find_amembers_account {
             get {
-                return ResourceManager.GetString("UseTheSearchBarToFindAMembersAccount", resourceCulture);
+                return ResourceManager.GetString("use_the_search_bar_to_find_amembers_account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use when the branch transfers money from the member’s account to the MoMo/OM float.
+        /// </summary>
+        internal static string use_when_the_branch_transfers_money_from_the_members_account_to_the_momoom_float {
+            get {
+                return ResourceManager.GetString("use_when_the_branch_transfers_money_from_the_members_account_to_the_momoom_float", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use when the member requests a payout to their MTN/Orange wallet.
+        /// </summary>
+        internal static string use_when_the_member_requests_a_payout_to_their_mtnorange_wallet {
+            get {
+                return ResourceManager.GetString("use_when_the_member_requests_a_payout_to_their_mtnorange_wallet", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Validate Member None-Cash Operation.
         /// </summary>
-        internal static string ValidateMemberNoneCashOperation {
+        internal static string validate_member_none_cash_operation {
             get {
-                return ResourceManager.GetString("ValidateMemberNoneCashOperation", resourceCulture);
+                return ResourceManager.GetString("validate_member_none_cash_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Validate pending operations using the.
         /// </summary>
-        internal static string ValidatePendingOperationsUsingThe {
+        internal static string validate_pending_operations_using_the {
             get {
-                return ResourceManager.GetString("ValidatePendingOperationsUsingThe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validation comment.
-        /// </summary>
-        internal static string ValidationComment {
-            get {
-                return ResourceManager.GetString("ValidationComment", resourceCulture);
+                return ResourceManager.GetString("validate_pending_operations_using_the", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Verify all operation details** before approving or rejecting. Review the corresponding member account and ledger details.
         /// </summary>
-        internal static string VerifyAllOperationDetailsBeforeApprovingOrRejecting {
+        internal static string verify_all_operation_details_before_approving_or_rejecting {
             get {
-                return ResourceManager.GetString("VerifyAllOperationDetailsBeforeApprovingOrRejecting", resourceCulture);
+                return ResourceManager.GetString("verify_all_operation_details_before_approving_or_rejecting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Verify the member’s name and account details before proceeding with any transaction.
         /// </summary>
-        internal static string VerifyTheMembersNameAndAccountDetails {
+        internal static string verify_the_members_name_and_account_details {
             get {
-                return ResourceManager.GetString("VerifyTheMembersNameAndAccountDetails", resourceCulture);
+                return ResourceManager.GetString("verify_the_members_name_and_account_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View, Detail, or delete pending none-cash operations for member accounts.
         /// </summary>
-        internal static string ViewDetailOrDeletePendingNonecashOperations {
+        internal static string view_detail_or_delete_pending_nonecash_operations {
             get {
-                return ResourceManager.GetString("ViewDetailOrDeletePendingNonecashOperations", resourceCulture);
+                return ResourceManager.GetString("view_detail_or_delete_pending_nonecash_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View, validate, or delete pending none-cash operations for member accounts. Ensure requests are properly validated before proceeding.
         /// </summary>
-        internal static string ViewValidateOrDeletePendingNoneCashOperationsForMemberAccounts {
+        internal static string view_validate_or_delete_pending_none_cash_operations_for_member_accounts {
             get {
-                return ResourceManager.GetString("ViewValidateOrDeletePendingNoneCashOperationsForMemberAccounts", resourceCulture);
+                return ResourceManager.GetString("view_validate_or_delete_pending_none_cash_operations_for_member_accounts", resourceCulture);
             }
         }
     }

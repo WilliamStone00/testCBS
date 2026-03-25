@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="allows_different_interest_rates_depending_on_how_much_of_the_od_is_used" xml:space="preserve">
+    <value>Allows different interest rates depending on how much of the OD is used</value>
+  </data>
+  <data name="allow_customers_to_go_beyond_their_limit_for_a_fee_useful_in_emergencies" xml:space="preserve">
+    <value>Allow customers to go beyond their limit for a fee, useful in emergencies</value>
+  </data>
+  <data name="allow_customers_to_repay_overdraft_manually_through_teller_or_mobile_app" xml:space="preserve">
+    <value>Allow customers to repay overdraft manually through teller or mobile app</value>
+  </data>
+  <data name="allow_exceeding_limit" xml:space="preserve">
+    <value>Allow Exceeding Limit</value>
+  </data>
+  <data name="allow_manual_repayment" xml:space="preserve">
+    <value>Allow Manual Repayment</value>
+  </data>
+  <data name="allow_partial_draw" xml:space="preserve">
+    <value>Allow Partial Draw</value>
+  </data>
+  <data name="allow_topup_request" xml:space="preserve">
+    <value>Allow Top-Up Request</value>
+  </data>
+  <data name="associate_penalty_rules_for_overdraft_misuse_late_repayment_or_limit_breaches_these_are_enforced_at_runtime_if_enabled" xml:space="preserve">
+    <value>Associate penalty rules for overdraft misuse, late repayment, or limit breaches. These are enforced at runtime if enabled</value>
+  </data>
+  <data name="automatically_deduct_overdraft_used_from_any_future_deposits_eg_salary_transfers" xml:space="preserve">
+    <value>Automatically deduct overdraft used from any future deposits (e.g. salary, transfers)</value>
+  </data>
+  <data name="automatically_disburse_overdraft_funds_to_the_customers_linked_account" xml:space="preserve">
+    <value>Automatically disburse overdraft funds to the customer’s linked account</value>
+  </data>
+  <data name="auto_recover_on_deposit" xml:space="preserve">
+    <value>Auto Recover on Deposit</value>
+  </data>
+  <data name="auto_replenishment" xml:space="preserve">
+    <value>Auto Replenishment</value>
+  </data>
+  <data name="block_when_over_limit" xml:space="preserve">
+    <value>Block When Over Limit</value>
+  </data>
+  <data name="centralisation_branch_scope" xml:space="preserve">
+    <value>Centralisation &amp; Branch Scope</value>
+  </data>
+  <data name="centralised_configuration" xml:space="preserve">
+    <value>Centralised Configuration</value>
+  </data>
+  <data name="check_if_this_overdraft_should_automatically_expire_after_a_fixed_term" xml:space="preserve">
+    <value>Check if this overdraft should automatically expire after a fixed term</value>
+  </data>
+  <data name="check_this_if_the_overdraft_is_for_accounts_receiving_salaries" xml:space="preserve">
+    <value>Check this if the overdraft is for accounts receiving salaries</value>
+  </data>
+  <data name="choose_one_or_more_penalties_that_apply_when_the_member_violates_overdraft_terms_eg_repayment_delay" xml:space="preserve">
+    <value>Choose one or more penalties that apply when the member violates overdraft terms (e.g., repayment delay)</value>
+  </data>
+  <data name="configuration_name_this_name_must_be_unique" xml:space="preserve">
+    <value>Configuration name. This name must be unique</value>
+  </data>
+  <data name="default_od_limit" xml:space="preserve">
+    <value>Default OD Limit</value>
+  </data>
+  <data name="define_a_flat_fee_rate_or_use_tiered_interest_based_on_utilization_brackets_eg_050_51100_tiers_override_the_flat_rate" xml:space="preserve">
+    <value>Define a flat fee rate or use tiered interest based on utilization brackets (e.g., 0–50%, 51–100%). Tiers override the flat rate</value>
+  </data>
+  <data name="define_interest_rate_tiers" xml:space="preserve">
+    <value>Define interest rate tiers</value>
+  </data>
+  <data name="define_which_account_product_the_od_applies_to_set_minimum_credit_score_salary_linkage_and_allowed_member_segments" xml:space="preserve">
+    <value>Define which account product the OD applies to. Set minimum credit score, salary linkage, and allowed member segments</value>
+  </data>
+  <data name="disbursement_behavior" xml:space="preserve">
+    <value>Disbursement Behavior</value>
+  </data>
+  <data name="eligibility_product_binding" xml:space="preserve">
+    <value>Eligibility &amp; Product Binding</value>
+  </data>
+  <data name="eligibility_rules" xml:space="preserve">
+    <value>Eligibility Rules</value>
+  </data>
+  <data name="enable_full_or_partial_draws_od_can_be_autodisbursed_to_a_linked_account_exceeding_limits_can_trigger_additional_fees_or_blocks" xml:space="preserve">
+    <value>Enable full or partial draws. OD can be auto-disbursed to a linked account. Exceeding limits can trigger additional fees or blocks</value>
+  </data>
+  <data name="enable_this_if_penalty_rules_like_late_fees_or_breach_charges_should_apply_to_this_overdraft" xml:space="preserve">
+    <value>Enable this if penalty rules (like late fees or breach charges) should apply to this overdraft</value>
+  </data>
+  <data name="enable_this_if_the_configuration_should_apply_to_all_branches" xml:space="preserve">
+    <value>Enable this if the configuration should apply to all branches</value>
+  </data>
+  <data name="enable_this_to_allow_customers_to_request_an_increase_in_their_overdraft_limit" xml:space="preserve">
+    <value>Enable this to allow customers to request an increase in their overdraft limit</value>
+  </data>
+  <data name="enable_tiered_interest" xml:space="preserve">
+    <value>Enable Tiered Interest</value>
+  </data>
+  <data name="ensure_the_customer_has_a_linked_salary_account_to_qualify" xml:space="preserve">
+    <value>Ensure the customer has a linked salary account to qualify</value>
+  </data>
+  <data name="exceed_limit_fee" xml:space="preserve">
+    <value>Exceed Limit Fee</value>
+  </data>
+  <data name="fee_charged_on_the_approved_topup_amount" xml:space="preserve">
+    <value>Fee charged on the approved top-up amount</value>
+  </data>
+  <data name="fee_rate" xml:space="preserve">
+    <value>Fee Rate</value>
+  </data>
+  <data name="for_compliance_legal_or_credit_policy_guidance_consult_your_internal_control_or_risk_department_before_applying_changes_to_active_overdraft_products" xml:space="preserve">
+    <value>For compliance, legal, or credit policy guidance, consult your internal control or risk department before applying changes to active overdraft products</value>
+  </data>
+  <data name="grace_period_days" xml:space="preserve">
+    <value>Grace Period (Days)</value>
+  </data>
+  <data name="if_checked_the_overdraft_can_be_renewed_after_it_expires" xml:space="preserve">
+    <value>If checked, the overdraft can be renewed after it expires</value>
+  </data>
+  <data name="if_enabled_blocks_all_transactions_once_the_overdraft_limit_is_exceeded" xml:space="preserve">
+    <value>If enabled, blocks all transactions once the overdraft limit is exceeded</value>
+  </data>
+  <data name="incomebased_limits" xml:space="preserve">
+    <value>Income-Based Limits</value>
+  </data>
+  <data name="incomebased_od" xml:space="preserve">
+    <value>Income-Based OD</value>
+  </data>
+  <data name="interest_strategy" xml:space="preserve">
+    <value>Interest Strategy</value>
+  </data>
+  <data name="internal_policy_cap_on_od_limit_based_on_salary" xml:space="preserve">
+    <value>Internal policy cap on OD limit based on salary</value>
+  </data>
+  <data name="limit_pricing" xml:space="preserve">
+    <value>Limit &amp; Pricing</value>
+  </data>
+  <data name="limit_what_percentage_of_the_approved_od_can_be_used" xml:space="preserve">
+    <value>Limit what percentage of the approved OD can be used</value>
+  </data>
+  <data name="maximum_percentage_allowed_by_law_or_regulator" xml:space="preserve">
+    <value>Maximum percentage allowed by law or regulator</value>
+  </data>
+  <data name="max_allowed_by_state" xml:space="preserve">
+    <value>Max Allowed % by State</value>
+  </data>
+  <data name="max_od" xml:space="preserve">
+    <value>Max OD</value>
+  </data>
+  <data name="max_od_of_salary" xml:space="preserve">
+    <value>Max OD % of Salary</value>
+  </data>
+  <data name="max_tenure" xml:space="preserve">
+    <value>Max Tenure</value>
+  </data>
+  <data name="max_topup_limit" xml:space="preserve">
+    <value>Max Top-Up Limit</value>
+  </data>
+  <data name="members_may_request_overdraft_increases_subject_to_a_topup_fee_and_configured_maximums" xml:space="preserve">
+    <value>Members may request overdraft increases, subject to a top-up fee and configured maximums</value>
+  </data>
+  <data name="minimum_credit_score_a_customer_must_have_to_be_eligible" xml:space="preserve">
+    <value>Minimum credit score a customer must have to be eligible</value>
+  </data>
+  <data name="min_credit_score" xml:space="preserve">
+    <value>Min Credit Score</value>
+  </data>
+  <data name="misconfigured_overdraft_settings_may_block_legitimate_usage_or_create_financial_risk_always_validate_values_before_enabling" xml:space="preserve">
+    <value>Misconfigured overdraft settings may block legitimate usage or create financial risk. Always validate values before enabling</value>
+  </data>
+  <data name="new_overdraft_config" xml:space="preserve">
+    <value>New Overdraft Config</value>
+  </data>
+  <data name="notifications_alerts" xml:space="preserve">
+    <value>Notifications &amp; Alerts</value>
+  </data>
+  <data name="notify_members_when_od_usage_reaches_a_defined_percentage_threshold_useful_for_monitoring_and_selfcontrol" xml:space="preserve">
+    <value>Notify members when OD usage reaches a defined percentage threshold. Useful for monitoring and self-control</value>
+  </data>
+  <data name="number_of_days_after_usage_before_recovery_or_penalties_begin" xml:space="preserve">
+    <value>Number of days after usage before recovery or penalties begin</value>
+  </data>
+  <data name="od_can_be_autorecovered_from_incoming_deposits_or_repaid_manually_grace_period_and_delayed_interest_options_are_available" xml:space="preserve">
+    <value>OD can be auto-recovered from incoming deposits or repaid manually. Grace period and delayed interest options are available</value>
+  </data>
+  <data name="od_limits_can_be_based_on_salary_percentage_income_bands_or_fixed_default_values_legal_and_internal_caps_must_both_be_respected" xml:space="preserve">
+    <value>OD limits can be based on salary percentage, income bands, or fixed default values. Legal and internal caps must both be respected</value>
+  </data>
+  <data name="overdraft_configuration_guidelines" xml:space="preserve">
+    <value>Overdraft Configuration Guidelines</value>
+  </data>
+  <data name="overdraft_facility_configurations" xml:space="preserve">
+    <value>Overdraft Facility Configurations</value>
+  </data>
+  <data name="penalties_sanctions" xml:space="preserve">
+    <value>Penalties &amp; Sanctions</value>
+  </data>
+  <data name="penalty_enforcement" xml:space="preserve">
+    <value>Penalty Enforcement</value>
+  </data>
+  <data name="penalty_rate_charged_when_the_customer_exceeds_their_overdraft_limit" xml:space="preserve">
+    <value>Penalty rate charged when the customer exceeds their overdraft limit</value>
+  </data>
+  <data name="permit_customers_to_draw_only_part_of_the_approved_overdraft_limit" xml:space="preserve">
+    <value>Permit customers to draw only part of the approved overdraft limit</value>
+  </data>
+  <data name="recovery_logic" xml:space="preserve">
+    <value>Recovery Logic</value>
+  </data>
+  <data name="register_a_new_overdraft_configuration" xml:space="preserve">
+    <value>Register a New Overdraft Configuration</value>
+  </data>
+  <data name="reload_and_view_overdraft_config_list" xml:space="preserve">
+    <value>Reload and View Overdraft Config List</value>
+  </data>
+  <data name="repayment_recovery" xml:space="preserve">
+    <value>Repayment &amp; Recovery</value>
+  </data>
+  <data name="replenishment_frequency" xml:space="preserve">
+    <value>Replenishment Frequency</value>
+  </data>
+  <data name="require_salary_link" xml:space="preserve">
+    <value>Require Salary Link</value>
+  </data>
+  <data name="salary_account_product" xml:space="preserve">
+    <value>Salary Account Product</value>
+  </data>
+  <data name="select_applicable_penalties" xml:space="preserve">
+    <value>Select Applicable Penalties</value>
+  </data>
+  <data name="select_loan_product" xml:space="preserve">
+    <value>Select Loan Product</value>
+  </data>
+  <data name="select_the_branch_this_overdraft_setting_applies_to_if_not_centralised" xml:space="preserve">
+    <value>Select the branch this overdraft setting applies to if not centralised</value>
+  </data>
+  <data name="select_the_loan_product_to_which_this_overdraft_configuration_is_limited" xml:space="preserve">
+    <value>Select the loan product to which this overdraft configuration is limited</value>
+  </data>
+  <data name="send_smsemail_alerts_when_the_customer_begins_using_overdraft_or_passes_a_threshold" xml:space="preserve">
+    <value>Send SMS/email alerts when the customer begins using overdraft or passes a threshold</value>
+  </data>
+  <data name="set_how_often_the_available_overdraft_limit_is_refreshed_eg_every_30_days" xml:space="preserve">
+    <value>Set how often the available overdraft limit is refreshed (e.g. every 30 days)</value>
+  </data>
+  <data name="set_the_usage_percentage_that_triggers_a_notification" xml:space="preserve">
+    <value>Set the usage percentage that triggers a notification</value>
+  </data>
+  <data name="specify_how_long_the_od_is_active_eg_90_days_you_can_set_expiry_dates_and_whether_the_od_is_renewable_after_expiration" xml:space="preserve">
+    <value>Specify how long the OD is active (e.g., 90 days). You can set expiry dates and whether the OD is renewable after expiration</value>
+  </data>
+  <data name="specify_the_highest_amount_that_can_be_requested_as_a_topup" xml:space="preserve">
+    <value>Specify the highest amount that can be requested as a top-up</value>
+  </data>
+  <data name="tenure_control" xml:space="preserve">
+    <value>Tenure Control</value>
+  </data>
+  <data name="tenure_expiry" xml:space="preserve">
+    <value>Tenure &amp; Expiry</value>
+  </data>
+  <data name="the_configuration_will_remain_strictly_confined_to_the_scope_of_the_selected_product_in_accordance_with_cobaccompliant_credit_linkage_rules" xml:space="preserve">
+    <value>The configuration will remain strictly confined to the scope of the selected product, in accordance with COBAC-compliant credit linkage rules</value>
+  </data>
+  <data name="the_interest_or_fee_charged_on_the_utilized_overdraft_amount" xml:space="preserve">
+    <value>The interest or fee charged on the utilized overdraft amount</value>
+  </data>
+  <data name="this_is_the_base_overdraft_limit_assigned_to_newly_eligible_accounts" xml:space="preserve">
+    <value>This is the base overdraft limit assigned to newly eligible accounts</value>
+  </data>
+  <data name="this_page_allows_you_to_manage_rules_and_limitations_for_overdraftenabled_account_products_each_configuration_controls_eligibility_limits_interest_and_behavior_during_overdraft_usage" xml:space="preserve">
+    <value>This page allows you to manage rules and limitations for overdraft-enabled account products. Each configuration controls eligibility, limits, interest, and behavior during overdraft usage</value>
+  </data>
+  <data name="this_section_allows_you_to_define_overdraft_limits_based_on_income_or_salary_bands_useful_for_scaling_overdraft_facilities_proportionally_to_customer_earnings" xml:space="preserve">
+    <value>This section allows you to define overdraft limits based on income or salary bands. Useful for scaling overdraft facilities proportionally to customer earnings</value>
+  </data>
+  <data name="topup_fee" xml:space="preserve">
+    <value>Top-Up Fee</value>
+  </data>
+  <data name="topup_requests" xml:space="preserve">
+    <value>Top-Up Requests</value>
+  </data>
+  <data name="topup_request_fees" xml:space="preserve">
+    <value>Top-Up Request &amp; Fees</value>
+  </data>
+  <data name="total_number_of_days_the_overdraft_remains_valid_before_it_expires" xml:space="preserve">
+    <value>Total number of days the overdraft remains valid before it expires</value>
+  </data>
+  <data name="usage_disbursement" xml:space="preserve">
+    <value>Usage &amp; Disbursement</value>
+  </data>
+  <data name="use_limit_bands_to_assign_od_amounts_based_on_income_ranges" xml:space="preserve">
+    <value>Use limit bands to assign OD amounts based on income ranges</value>
+  </data>
+  <data name="use_the_autoreplenishment_frequency_to_refresh_od_usage_monthly_quarterly_etc" xml:space="preserve">
+    <value>Use the auto-replenishment frequency to refresh OD usage — monthly, quarterly, etc</value>
+  </data>
+  <data name="use_the_button_below_to_add_a_new_configuration_or_update_an_existing_one_for_a_product" xml:space="preserve">
+    <value>Use the button below to add a new configuration or update an existing one for a product</value>
+  </data>
+  <data name="use_this_section_to_define_od_tiers_for_customers_with_different_salary_ranges" xml:space="preserve">
+    <value>Use this section to define OD tiers for customers with different salary ranges</value>
+  </data>
+</root>

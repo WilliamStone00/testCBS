@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="check_the_box_to_enable_branch_selection_you_can_show_or_hide_it_as_needed" xml:space="preserve">
+    <value>Check the box to enable branch selection. You can show or hide it as needed</value>
+  </data>
+  <data name="choose_whether_to_view_cash_in_or_cash_out_operations" xml:space="preserve">
+    <value>Choose whether to view &lt;em&gt;Cash In&lt;/em&gt; or &lt;em&gt;Cash Out&lt;/em&gt; operations</value>
+  </data>
+  <data name="click_search_to_load_matching_results_in_the_table_below" xml:space="preserve">
+    <value>Click &lt;em&gt;Search&lt;/em&gt; to load matching results in the table below</value>
+  </data>
+  <data name="combine_filters_eg_branch_date_for_more_precise_results" xml:space="preserve">
+    <value>Combine filters (e.g., Branch + Date) for more precise results</value>
+  </data>
+  <data name="counterparty_branchid" xml:space="preserve">
+    <value>Counterparty BranchId</value>
+  </data>
+  <data name="ensure_the_journal_reference_you_select_exists_and_has_reconciled_lines_before_viewing_details" xml:space="preserve">
+    <value>Ensure the journal reference you select exists and has reconciled lines before viewing details</value>
+  </data>
+  <data name="enter_a_reference_number_or_keyword_to_search_for_specific_transactions" xml:space="preserve">
+    <value>Enter a reference number or keyword to search for specific transactions</value>
+  </data>
+  <data name="export_reconciled_entries" xml:space="preserve">
+    <value>Export Reconciled Entries</value>
+  </data>
+  <data name="export_reconciled_journal_entries_with_optional_filtering_and_format_selection" xml:space="preserve">
+    <value>Export reconciled journal entries with optional filtering and format selection</value>
+  </data>
+  <data name="filter_between_temporary_or_reconciled_journal_entries" xml:space="preserve">
+    <value>Filter between &lt;em&gt;Temporary&lt;/em&gt; or &lt;em&gt;Reconciled&lt;/em&gt; journal entries</value>
+  </data>
+  <data name="include_all_analysis_sheets" xml:space="preserve">
+    <value>Include All Analysis Sheets</value>
+  </data>
+  <data name="include_summary_sheet" xml:space="preserve">
+    <value>Include Summary Sheet</value>
+  </data>
+  <data name="leave_empty_to_include_all_dates" xml:space="preserve">
+    <value>Leave empty to include all dates</value>
+  </data>
+  <data name="reconciled_journals" xml:space="preserve">
+    <value>RECONCILED JOURNALS</value>
+  </data>
+  <data name="reconciled_journal_lines" xml:space="preserve">
+    <value>Reconciled Journal Lines</value>
+  </data>
+  <data name="reconciled_ledger_line" xml:space="preserve">
+    <value>Reconciled Ledger Line</value>
+  </data>
+  <data name="reconciled_line_module" xml:space="preserve">
+    <value>Reconciled Line Module</value>
+  </data>
+  <data name="show_counter_party_branch_filter" xml:space="preserve">
+    <value>Show counter party Branch Filter</value>
+  </data>
+  <data name="use_the_filters_below_to_search_and_review_reconciled_ledger_line_efficiently" xml:space="preserve">
+    <value>Use the filters below to search and review Reconciled Ledger Line efficiently</value>
+  </data>
+  <data name="use_the_reset_button_to_clear_all_filters_and_start_a_new_search" xml:space="preserve">
+    <value>Use the reset button to clear all filters and start a new search</value>
+  </data>
+  <data name="use_the_toggle_to_show_or_hide_accounting_and_creation_date_filters_you_can_filter_by_range_for_better_results" xml:space="preserve">
+    <value>Use the toggle to show or hide accounting and creation date filters. You can filter by range for better results</value>
+  </data>
+  <data name="view_and_analyze_journal_entries_reconciled_by_reference_branch_and_account_check_debit_credit_totals_and_balances_for_each_entry" xml:space="preserve">
+    <value>View and analyze journal entries reconciled by reference, branch, and account. Check debit/credit totals and balances for each entry</value>
+  </data>
+</root>

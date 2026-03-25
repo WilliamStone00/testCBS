@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
+@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
     @using Resources
 <div class="card-body">
 
@@ -11,20 +11,20 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Role.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Role.Name, "", new { @class = "text-danger" })
-                    <label>@GlobalRole.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Role.Description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Role.Description, "", new { @class = "text-danger" })
-                    <label>@GlobalRole.Description</label>
+                    <label>@GlobalShared.Description</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check">
                     @Html.CheckBoxFor(m => m.Role.IsTeller, new { @class = "form-check-input" })
-                    <label class="form-check-label">@GlobalRole.IsThisRoleTeller ?</label>
+                    <label class="form-check-label">@GlobalRole.is_this_role_teller ?</label>
                 </div>
             </div>
         </div>

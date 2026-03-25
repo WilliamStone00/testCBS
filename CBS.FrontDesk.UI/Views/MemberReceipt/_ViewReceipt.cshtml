@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt
-
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt
+@using Resources
 <div class="modal fade" id="viewReceiptModal" tabindex="-1" aria-labelledby="viewReceiptModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content position-relative">
@@ -8,7 +8,7 @@
             <div id="receiptLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-tsc mb-3" role="status"></div>
-                    <p class="fw-semibold text-tsc">Loading receipt details... Please wait.</p>
+                    <p class="fw-semibold text-tsc">@GlobalMemberReceipt.loading_receipt_details_please_wait.</p>
                 </div>
             </div>
 
@@ -18,9 +18,9 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-tsc" id="viewReceiptModalLabel">
-                                <i class="mdi mdi-receipt-text-outline me-2"></i> Receipt Viewer
+                                <i class="mdi mdi-receipt-text-outline me-2"></i> @GlobalShared.receipt_viewer
                             </h1>
-                            <p class="card-text">You are viewing a detailed summary of the selected member payment receipt. Use the tips below to guide your validation process.</p>
+                            <p class="card-text">@GlobalMemberReceipt.you_are_viewing_a_detailed_summary_of_the_selected_member_payment_receipt_use_the_tips_below_to_guide_your_validation_process.</p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
                     </div>
@@ -30,7 +30,7 @@
             <!-- Viewer Tips Section -->
             <div class="card mx-3 mt-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-tsc">
-                    <span><i class="mdi mdi-information-outline me-2"></i> Receipt Validation Tips</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMemberReceipt.receipt_validation_tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReceiptTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -40,23 +40,23 @@
                         <ul class="mb-0" style="list-style: none; padding-left: 0;">
                             <li class="mb-2">
                                 <i class="mdi mdi-eye-check-outline text-tsc me-2"></i>
-                                <strong>Confirm Identity:</strong> Ensure the names match verified member and depositor information.
+                                <strong>@GlobalShared.confirm_identity:</strong> @GlobalMemberReceipt.ensure_the_names_match_verified_member_and_depositor_information.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                                <strong>Review Totals:</strong> Make sure the total paid equals the breakdown + charges.
+                                <strong>@GlobalShared.review_totals:</strong> @GlobalMemberReceipt.make_sure_the_total_paid_equals_the_breakdown_charges.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-bank text-muted me-2"></i>
-                                <strong>Use Audit References:</strong> Always double-check internal/external reference numbers.
+                                <strong>@GlobalMemberReceipt.use_audit_references:</strong> @GlobalMemberReceipt.always_doublecheck_internalexternal_reference_numbers.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-chart-bar text-tsc-dark me-2"></i>
-                                <strong>Check Denominations:</strong> Cash breakdown should match physical notes and coins.
+                                <strong>@GlobalMemberReceipt.check_denominations:</strong> @GlobalMemberReceipt.cash_breakdown_should_match_physical_notes_and_coins.
                             </li>
                             <li class="mb-2">
                                 <i class="mdi mdi-alert-octagon-outline text-danger me-2"></i>
-                                <strong>Suspect Discrepancy?</strong> Report mismatches for audit follow-up.
+                                <strong>@GlobalMemberReceipt.suspect_discrepancy?</strong> @GlobalMemberReceipt.report_mismatches_for_audit_followup.
                             </li>
                         </ul>
                     </div>
@@ -71,13 +71,13 @@
             <!-- Always-visible Footer with Cancel/Print -->
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
                 <button type="button"
                         id="btnPrintReceipt"
                         class="btn btn-primary"
                         onclick="ReprintReceipts(this)">
-                    <span class="btn-text"><i class="mdi mdi-printer"></i> Print</span>
+                    <span class="btn-text"><i class="mdi mdi-printer"></i> @GlobalShared.Print</span>
                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
 

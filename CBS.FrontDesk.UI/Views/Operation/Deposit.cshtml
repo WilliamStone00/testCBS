@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
     @using Resources
 @{
     ViewBag.Title = "Deposit";
@@ -9,7 +9,7 @@
             @if (@Model.Customer == null)
             {
                 <div class="text-center my-3">
-                    <p>@GlobalOperation.ErrorOcuredWhileGettingMember</p>
+                    <p>@GlobalOperation.error_ocured_while_getting_member</p>
                 </div>
             }
             else
@@ -26,8 +26,8 @@
                                 <div class="d-flex justify-content-center">
                                     <!-- Center-align text -->
                                     <div class="fw-bold fs-4">
-                                        @GlobalOperation.MEMBERS_CASH_DESK_OPERATIONS
-                                        <small style="color: blue;">@GlobalOperation.SelectedAccount: @Model.AccountType, @GlobalOperation.AccountNumber: @Model.AccountNumber</small>
+                                        @GlobalOperation.members_cash_desk_operations
+                                        <small style="color: blue;">@GlobalOperation.selected_account: @Model.AccountType, @GlobalShared.Account_Number: @Model.AccountNumber</small>
                                     </div>                                
                                 </div>
                             </button>

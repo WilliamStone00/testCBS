@@ -1,5 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
+@using Resources
 
 <style>
     /* Keep dropdown above modal/backdrop */
@@ -44,7 +45,7 @@
 {
     <div class="alert alert-warning mb-0">
         <i class="mdi mdi-alert-circle-outline me-1"></i>
-        Product not found.
+        @GlobalLoanProduct.product_not_found.
     </div>
     return;
 }
@@ -68,10 +69,10 @@
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
                         <i class="mdi mdi-cog-outline me-2"></i>
-                        Accounting Mapping
+                        @GlobalShared.accounting_mapping
                     </h1>
                     <p class="card-text">
-                        Configure only the GL accounts required for automated posting. Keep it minimal and consistent with PCMF/COBAC.
+                        @GlobalLoanProduct.configure_only_the_gl_accounts_required_for_automated_posting_keep_it_minimal_and_consistent_with_pcmfcobac.
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -86,10 +87,10 @@
                     <span class="fw-semibold">@p.ProductName</span>
                 </small>
                 <small class="text-info">
-                    Code: <span class="fw-semibold">@p.ProductCode</span> •
+                    @GlobalShared.Code: <span class="fw-semibold">@p.ProductCode</span> •
                     PCMF: <span class="fw-semibold">@p.PcmfBaseCode</span> / <span class="fw-semibold">@p.PcmfGroupCode</span> •
-                    Section: <span class="fw-semibold">@p.PcmfSection</span> •
-                    Population: <span class="fw-semibold">@p.PcmfPopulation</span>
+                    @GlobalShared.section: <span class="fw-semibold">@p.PcmfSection</span> •
+                    @GlobalShared.population: <span class="fw-semibold">@p.PcmfPopulation</span>
                 </small>
             </div>
 
@@ -103,21 +104,21 @@
         <h2 class="accordion-header" id="hdPcmf">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
-                <span class="fw-semibold text-primary">PCMF Preview</span>
+                <span class="fw-semibold text-primary">@GlobalLoanProduct.pcmf_preview</span>
             </button>
         </h2>
 
         <div class="card-body py-2">
             <div class="d-flex flex-wrap gap-2 align-items-center">
-                <span class="badge bg-label-secondary">Section: @Model.Product.PcmfSection</span>
-                <span class="badge bg-label-dark">Group: @Model.Product.PcmfGroupCode</span>
-                <span class="badge bg-label-primary">Base: @Model.Product.PcmfBaseCode</span>
+                <span class="badge bg-label-secondary">@GlobalShared.section: @Model.Product.PcmfSection</span>
+                <span class="badge bg-label-dark">@GlobalShared.Group: @Model.Product.PcmfGroupCode</span>
+                <span class="badge bg-label-primary">@GlobalShared._base : @Model.Product.PcmfBaseCode</span>
                 <span class="badge bg-label-info">
-                    Population: @Model.Product.PcmfPopulation
+                    @GlobalShared.population: @Model.Product.PcmfPopulation
                 </span>
 
                 <small class="text-muted ms-auto">
-                    Use these codes to choose the correct GL accounts for reporting & SESAME/PCMF mapping.
+                    @GlobalLoanProduct.use_these_codes_to_choose_the_correct_gl_accounts_for_reporting_sesamepcmf_mapping.
                 </small>
             </div>
         </div>
@@ -128,7 +129,7 @@
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
                 <i class="mdi mdi-tag-outline me-2 text-primary"></i>
-                <span class="fw-semibold text-primary">PCMF Classification</span>
+                <span class="fw-semibold text-primary">@GlobalLoanProduct.pcmf_classification</span>
             </button>
         </h2>
 
@@ -144,10 +145,10 @@
                                 "--- Select Loan Term ---",
                                 new { @class = "form-control select2", id = "LoanTermId", disabled = "disabled" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
-                            <label>Loan Term</label>
+                            <label>@GlobalShared.Loan_Term</label>
                         </div>
                         <div class="small text-muted">
-                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                            @Html.Raw(@GlobalLoanProduct.required_for_classic_ssf_loc_only_overdraft_can_be_empty).
                         </div>
                     </div>
 
@@ -158,9 +159,9 @@
                                 "--- Select PCMF Purpose ---",
                                 new { @class = "form-control select2", required = "required", disabled = "disabled", id = "PcmfLoanPurposeId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
-                            <label>PCMF Loan Purpose</label>
+                            <label>@GlobalLoanProduct.pcmf_loan_purpose</label>
                         </div>
-                        <div class="small text-muted">Filtered by term/section.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.filtered_by_termsection.</div>
                     </div>
 
                     <div class="col-md-5">
@@ -170,9 +171,9 @@
                                 "--- Select Target ---",
                                 new { @class = "form-control select2", required = "required", disabled = "disabled", id = "LoanTargetId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
-                            <label>Loan Target</label>
+                            <label>@GlobalShared.Loan_Target</label>
                         </div>
-                        <div class="small text-muted">Enabled after purpose.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.enabled_after_purpose.</div>
                     </div>
 
                 </div>
@@ -197,8 +198,8 @@
                 <h2 class="accordion-header" id="hdCore">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cpCore" aria-expanded="true" aria-controls="cpCore">
                         <i class="mdi mdi-bank-outline me-2 text-primary"></i>
-                        <span class="fw-semibold">Core Posting GLs</span>
-                        <span class="ms-2 text-muted">(principal, interest, transit)</span>
+                        <span class="fw-semibold">@GlobalLoanProduct.core_posting_gls</span>
+                        <span class="ms-2 text-muted">(@GlobalShared.Principal, @GlobalShared.Interest, @GlobalShared.transit)</span>
                     </button>
                 </h2>
 
@@ -212,9 +213,9 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForPrincipalAmount),
                                         "--- Select Principal Disbursement GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
-                                    <label for="ChartOfAccountIdForPrincipalAmount">Principal Disbursement Account (Non-Taxable)</label>
+                                    <label for="ChartOfAccountIdForPrincipalAmount">@GlobalLoanProduct.principal_disbursement_account_nontaxable</label>
                                 </div>
-                                <small class="text-muted">Used for standard loan disbursement principal posting.</small>
+                                <small class="text-muted">@GlobalLoanProduct.used_for_standard_loan_disbursement_principal_posting.</small>
                             </div>
 
                             <div class="col-md-12">
@@ -223,9 +224,9 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForInterestReceived),
                                         "--- Select Interest Received GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
-                                    <label for="ChartOfAccountIdForInterestReceived">Interest Received Account (Non-Taxable)</label>
+                                    <label for="ChartOfAccountIdForInterestReceived">@GlobalLoanProduct.interest_received_account_nontaxable</label>
                                 </div>
-                                <small class="text-muted">Interest income account for non-taxable loans.</small>
+                                <small class="text-muted">@GlobalLoanProduct.interest_income_account_for_nontaxable_loans.</small>
                             </div>
 
                             <div class="col-md-12">
@@ -234,9 +235,9 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForLoanTransition),
                                         "--- Select Loan Transit GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForLoanTransition" })
-                                    <label for="ChartOfAccountIdForLoanTransition">Loan Transit Account</label>
+                                    <label for="ChartOfAccountIdForLoanTransition">@GlobalLoanProduct.loan_transit_account</label>
                                 </div>
-                                <small class="text-muted">Used for refinancing/internal movements and transition flows.</small>
+                                <small class="text-muted">@GlobalLoanProduct.used_for_refinancinginternal_movements_and_transition_flows.</small>
                             </div>
 
                         </div>
@@ -249,8 +250,8 @@
                 <h2 class="accordion-header" id="hdTax">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cpTax" aria-expanded="false" aria-controls="cpTax">
                         <i class="mdi mdi-percent-outline me-2 text-primary"></i>
-                        <span class="fw-semibold">Taxable Loan GLs</span>
-                        <span class="ms-2 text-muted">(principal, interest, tax)</span>
+                        <span class="fw-semibold">@GlobalLoanProduct.taxable_loan_gls</span>
+                        <span class="ms-2 text-muted">(@GlobalShared.Principal, @GlobalShared.Interest, @GlobalShared.Tax)</span>
                     </button>
                 </h2>
 
@@ -264,7 +265,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForTaxiblePrincipalAmount),
                                         "--- Select Taxable Principal GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
-                                    <label for="ChartOfAccountIdForTaxiblePrincipalAmount">Taxable Principal Disbursement Account</label>
+                                    <label for="ChartOfAccountIdForTaxiblePrincipalAmount">@GlobalLoanProduct.taxable_principal_disbursement_account</label>
                                 </div>
                             </div>
 
@@ -274,7 +275,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForTaxibleInterestReceived),
                                         "--- Select Taxable Interest GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
-                                    <label for="ChartOfAccountIdForTaxibleInterestReceived">Taxable Interest Received Account</label>
+                                    <label for="ChartOfAccountIdForTaxibleInterestReceived">@GlobalLoanProduct.taxable_interest_received_account</label>
                                 </div>
                             </div>
 
@@ -284,7 +285,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForTax),
                                         "--- Select Tax Account ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
-                                    <label for="ChartOfAccountIdForTax">Tax Account</label>
+                                    <label for="ChartOfAccountIdForTax">@GlobalShared.tax_account</label>
                                 </div>
                             </div>
 
@@ -298,7 +299,7 @@
                 <h2 class="accordion-header" id="hdFees">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cpFees" aria-expanded="false" aria-controls="cpFees">
                         <i class="mdi mdi-cash-multiple me-2 text-primary"></i>
-                        <span class="fw-semibold">Fees & Penalties</span>
+                        <span class="fw-semibold">@GlobalLoanProduct.fees_penalties</span>
                     </button>
                 </h2>
 
@@ -312,7 +313,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForFee),
                                         "--- Select Fee GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForFee" })
-                                    <label for="ChartOfAccountIdForFee">Fee Account</label>
+                                    <label for="ChartOfAccountIdForFee">@GlobalLoanProduct.fee_account</label>
                                 </div>
                             </div>
 
@@ -322,7 +323,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForPenalty),
                                         "--- Select Penalty GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
-                                    <label for="ChartOfAccountIdForPenalty">Penalty Account</label>
+                                    <label for="ChartOfAccountIdForPenalty">@GlobalShared.penalty_account</label>
                                 </div>
                             </div>
 
@@ -336,7 +337,7 @@
                 <h2 class="accordion-header" id="hdRisk">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cpRisk" aria-expanded="false" aria-controls="cpRisk">
                         <i class="mdi mdi-shield-alert-outline me-2 text-primary"></i>
-                        <span class="fw-semibold">Write-Off & Provisioning</span>
+                        <span class="fw-semibold">@GlobalLoanProduct.writeoff_provisioning</span>
                     </button>
                 </h2>
 
@@ -350,7 +351,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForWriteOffPrincipal),
                                         "--- Select Write-Off Principal GL ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForWriteOffPrincipal" })
-                                    <label for="ChartOfAccountIdForWriteOffPrincipal">Write-Off Principal Account</label>
+                                    <label for="ChartOfAccountIdForWriteOffPrincipal">@GlobalLoanProduct.writeoff_principal_account</label>
                                 </div>
                             </div>
 
@@ -360,7 +361,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForProvisionMoreThanOneYear),
                                         "--- Provision > 1 Year ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForProvisionMoreThanOneYear" })
-                                    <label for="ChartOfAccountIdForProvisionMoreThanOneYear">Provision &gt; 1 Year</label>
+                                    <label for="ChartOfAccountIdForProvisionMoreThanOneYear">@GlobalShared.provision &gt; 1 Year</label>
                                 </div>
                             </div>
 
@@ -370,7 +371,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForProvisionMoreThanTwoYear),
                                         "--- Provision > 2 Years ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForProvisionMoreThanTwoYear" })
-                                    <label for="ChartOfAccountIdForProvisionMoreThanTwoYear">Provision &gt; 2 Years</label>
+                                    <label for="ChartOfAccountIdForProvisionMoreThanTwoYear">@GlobalShared.provision &gt; 2 Years</label>
                                 </div>
                             </div>
 
@@ -380,7 +381,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForProvisionMoreThanThreeYear),
                                         "--- Provision > 3 Years ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForProvisionMoreThanThreeYear" })
-                                    <label for="ChartOfAccountIdForProvisionMoreThanThreeYear">Provision &gt; 3 Years</label>
+                                    <label for="ChartOfAccountIdForProvisionMoreThanThreeYear">@GlobalShared.provision &gt; 3 Years</label>
                                 </div>
                             </div>
 
@@ -390,7 +391,7 @@
                                         new SelectList(ViewBag.ChartOfAccounts, "Value", "Text", map.ChartOfAccountIdForProvisionMoreThanFourYear),
                                         "--- Provision > 4 Years ---",
                                         new { @class = "form-control select2", id = "ChartOfAccountIdForProvisionMoreThanFourYear" })
-                                    <label for="ChartOfAccountIdForProvisionMoreThanFourYear">Provision &gt; 4 Years</label>
+                                    <label for="ChartOfAccountIdForProvisionMoreThanFourYear">@GlobalShared.provision &gt; 4 Years</label>
                                 </div>
                             </div>
 
@@ -406,14 +407,14 @@
             <div class="card-body bg-light d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="mb-1 text-primary">
-                        <i class="mdi mdi-content-save-outline me-2"></i> Save Mapping
+                        <i class="mdi mdi-content-save-outline me-2"></i> @GlobalShared.Save_Mapping
                     </h6>
-                    <small class="text-muted">Save all account mapping configurations for this product.</small>
+                    <small class="text-muted">@GlobalLoanProduct.save_all_account_mapping_configurations_for_this_product.</small>
                 </div>
                 <button type="submit"
                         id="btnSaveLoanProductMapping"
                         class="btn btn-primary px-4">
-                    <i class="mdi mdi-check-circle-outline me-2"></i> Save
+                    <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalShared.Save
                 </button>
 
 

@@ -61,1199 +61,561 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account balance.
-        /// </summary>
-        internal static string AccountBalance {
-            get {
-                return ResourceManager.GetString("AccountBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account Description.
-        /// </summary>
-        internal static string AccountDescription {
-            get {
-                return ResourceManager.GetString("AccountDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Accounting entries.
         /// </summary>
-        internal static string AccountingEntries {
+        internal static string accounting_entries {
             get {
-                return ResourceManager.GetString("AccountingEntries", resourceCulture);
+                return ResourceManager.GetString("accounting_entries", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Accounting Entry Rules.
         /// </summary>
-        internal static string AccountingEntryRules {
+        internal static string accounting_entry_rules {
             get {
-                return ResourceManager.GetString("AccountingEntryRules", resourceCulture);
+                return ResourceManager.GetString("accounting_entry_rules", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Accounting Event Entry Rule.
         /// </summary>
-        internal static string Accounting_Event_Entry_Rule {
+        internal static string accounting_event_entry_rule {
             get {
-                return ResourceManager.GetString("Accounting_Event_Entry_Rule", resourceCulture);
+                return ResourceManager.GetString("accounting_event_entry_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Accounting Event Name.
         /// </summary>
-        internal static string Accounting_Event_Name {
+        internal static string accounting_event_name {
             get {
-                return ResourceManager.GetString("Accounting_Event_Name", resourceCulture);
+                return ResourceManager.GetString("accounting_event_name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acc. name.
+        ///   Looks up a localized string similar to Account Description.
         /// </summary>
-        internal static string AccountName {
+        internal static string account_description {
             get {
-                return ResourceManager.GetString("AccountName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account number.
-        /// </summary>
-        internal static string AccountNumber {
-            get {
-                return ResourceManager.GetString("AccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Acc .number.
-        /// </summary>
-        internal static string Account_Number {
-            get {
-                return ResourceManager.GetString("Account_Number", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add entry.
-        /// </summary>
-        internal static string AddEntry {
-            get {
-                return ResourceManager.GetString("AddEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add entry rule.
-        /// </summary>
-        internal static string AddEntryRule {
-            get {
-                return ResourceManager.GetString("AddEntryRule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
+                return ResourceManager.GetString("account_description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Amount to be executed.
         /// </summary>
-        internal static string AmountToBeExecuted {
+        internal static string amount_to_be_executed {
             get {
-                return ResourceManager.GetString("AmountToBeExecuted", resourceCulture);
+                return ResourceManager.GetString("amount_to_be_executed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Amount to be executed in journal.
         /// </summary>
-        internal static string Amount_to_be_executed_in_journal {
+        internal static string amount_to_be_executed_in_journal {
             get {
-                return ResourceManager.GetString("Amount_to_be_executed_in_journal", resourceCulture);
+                return ResourceManager.GetString("amount_to_be_executed_in_journal", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to and the current year.
         /// </summary>
-        internal static string andTheCurrentYear {
+        internal static string and_the_current_year {
             get {
-                return ResourceManager.GetString("andTheCurrentYear", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved date.
-        /// </summary>
-        internal static string ApprovedDate {
-            get {
-                return ResourceManager.GetString("ApprovedDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string Approved_By {
-            get {
-                return ResourceManager.GetString("Approved_By", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved date.
-        /// </summary>
-        internal static string Approved_Date {
-            get {
-                return ResourceManager.GetString("Approved_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approve/Reject.
-        /// </summary>
-        internal static string ApproveReject {
-            get {
-                return ResourceManager.GetString("ApproveReject", resourceCulture);
+                return ResourceManager.GetString("and_the_current_year", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Available only when assigned by the head office.
         /// </summary>
-        internal static string AvailableOnlyWhenAssignedByTheHeadOffice {
+        internal static string available_only_when_assigned_by_the_head_office {
             get {
-                return ResourceManager.GetString("AvailableOnlyWhenAssignedByTheHeadOffice", resourceCulture);
+                return ResourceManager.GetString("available_only_when_assigned_by_the_head_office", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Booking direction.
         /// </summary>
-        internal static string BookingDirection {
+        internal static string booking_direction {
             get {
-                return ResourceManager.GetString("BookingDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the branch and scope of your entries.
-        /// </summary>
-        internal static string BranchId {
-            get {
-                return ResourceManager.GetString("BranchId", resourceCulture);
+                return ResourceManager.GetString("booking_direction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Branch&apos;s eligible for the execution of.
         /// </summary>
-        internal static string BranchsEligibleForTheExecutionOf {
+        internal static string branchs_eligible_for_the_execution_of {
             get {
-                return ResourceManager.GetString("BranchsEligibleForTheExecutionOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chain entry.
-        /// </summary>
-        internal static string ChainEntry {
-            get {
-                return ResourceManager.GetString("ChainEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chart of Account.
-        /// </summary>
-        internal static string ChartOfAccount {
-            get {
-                return ResourceManager.GetString("ChartOfAccount", resourceCulture);
+                return ResourceManager.GetString("branchs_eligible_for_the_execution_of", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check if the approver is out of the issuing branch.
         /// </summary>
-        internal static string CheckIfTheApproverIsOutOfTheIssuingBranch {
+        internal static string check_if_the_approver_is_out_of_the_issuing_branch {
             get {
-                return ResourceManager.GetString("CheckIfTheApproverIsOutOfTheIssuingBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        internal static string Code {
-            get {
-                return ResourceManager.GetString("Code", resourceCulture);
+                return ResourceManager.GetString("check_if_the_approver_is_out_of_the_issuing_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Configured Manual Journal Entry.
         /// </summary>
-        internal static string ConfiguredManualJournalEntry {
+        internal static string configured_manual_journal_entry {
             get {
-                return ResourceManager.GetString("ConfiguredManualJournalEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit.
-        /// </summary>
-        internal static string Credit {
-            get {
-                return ResourceManager.GetString("Credit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current balance.
-        /// </summary>
-        internal static string CurrentBalance {
-            get {
-                return ResourceManager.GetString("CurrentBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date issued.
-        /// </summary>
-        internal static string DateIssued {
-            get {
-                return ResourceManager.GetString("DateIssued", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date range.
-        /// </summary>
-        internal static string DateRange {
-            get {
-                return ResourceManager.GetString("DateRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date issued.
-        /// </summary>
-        internal static string Date_Issued {
-            get {
-                return ResourceManager.GetString("Date_Issued", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Debit.
-        /// </summary>
-        internal static string Debit {
-            get {
-                return ResourceManager.GetString("Debit", resourceCulture);
+                return ResourceManager.GetString("configured_manual_journal_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DECISION STATEMENT.
         /// </summary>
-        internal static string DECISIONSTATEMENT {
+        internal static string decision_statement {
             get {
-                return ResourceManager.GetString("DECISIONSTATEMENT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DECISION STATEMENT.
-        /// </summary>
-        internal static string DECISION_STATEMENT {
-            get {
-                return ResourceManager.GetString("DECISION_STATEMENT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Difference.
-        /// </summary>
-        internal static string Difference {
-            get {
-                return ResourceManager.GetString("Difference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Direction.
-        /// </summary>
-        internal static string Direction {
-            get {
-                return ResourceManager.GetString("Direction", resourceCulture);
+                return ResourceManager.GetString("decision_statement", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Double validation needed.
         /// </summary>
-        internal static string DoubleValidationNeeded {
+        internal static string double_validation_needed {
             get {
-                return ResourceManager.GetString("DoubleValidationNeeded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter description.
-        /// </summary>
-        internal static string EnterDescription {
-            get {
-                return ResourceManager.GetString("EnterDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter event name.
-        /// </summary>
-        internal static string EnterEventName {
-            get {
-                return ResourceManager.GetString("EnterEventName", resourceCulture);
+                return ResourceManager.GetString("double_validation_needed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter reason for manual entry.
         /// </summary>
-        internal static string EnterReasonForManualEntry {
+        internal static string enter_reason_for_manual_entry {
             get {
-                return ResourceManager.GetString("EnterReasonForManualEntry", resourceCulture);
+                return ResourceManager.GetString("enter_reason_for_manual_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Entry metadata.
         /// </summary>
-        internal static string EntryMetadata {
+        internal static string entry_metadata {
             get {
-                return ResourceManager.GetString("EntryMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entry type.
-        /// </summary>
-        internal static string EntryType {
-            get {
-                return ResourceManager.GetString("EntryType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Event description.
-        /// </summary>
-        internal static string EventDescription {
-            get {
-                return ResourceManager.GetString("EventDescription", resourceCulture);
+                return ResourceManager.GetString("entry_metadata", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Event Entry Metadata.
         /// </summary>
-        internal static string EventEntryMetadata {
+        internal static string event_entry_metadata {
             get {
-                return ResourceManager.GetString("EventEntryMetadata", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Event name.
-        /// </summary>
-        internal static string EventName {
-            get {
-                return ResourceManager.GetString("EventName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Event Entry Metadata.
-        /// </summary>
-        internal static string Event_Entry_Metadata {
-            get {
-                return ResourceManager.GetString("Event_Entry_Metadata", resourceCulture);
+                return ResourceManager.GetString("event_entry_metadata", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Filter based on the status — pending, rejected, or approved.
         /// </summary>
-        internal static string FilterBasedOnTheStatus {
+        internal static string filter_based_on_the_status {
             get {
-                return ResourceManager.GetString("FilterBasedOnTheStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by branch.
-        /// </summary>
-        internal static string FilterByBranch {
-            get {
-                return ResourceManager.GetString("FilterByBranch", resourceCulture);
+                return ResourceManager.GetString("filter_based_on_the_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Filter by request approver.
         /// </summary>
-        internal static string FilterByRequestApprover {
+        internal static string filter_by_request_approver {
             get {
-                return ResourceManager.GetString("FilterByRequestApprover", resourceCulture);
+                return ResourceManager.GetString("filter_by_request_approver", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Filter by request issuer.
         /// </summary>
-        internal static string FilterByRequestIssuer {
+        internal static string filter_by_request_issuer {
             get {
-                return ResourceManager.GetString("FilterByRequestIssuer", resourceCulture);
+                return ResourceManager.GetString("filter_by_request_issuer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Filter by request status.
         /// </summary>
-        internal static string FilterByRequestStatus {
+        internal static string filter_by_request_status {
             get {
-                return ResourceManager.GetString("FilterByRequestStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From date.
-        /// </summary>
-        internal static string FromDate {
-            get {
-                return ResourceManager.GetString("FromDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In case you wish to have data above the period of year please kindly contact your  system administrator.
-        /// </summary>
-        internal static string InCaseYouWishToHaveDataAboveThePeriod {
-            get {
-                return ResourceManager.GetString("InCaseYouWishToHaveDataAboveThePeriod", resourceCulture);
+                return ResourceManager.GetString("filter_by_request_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to INITIATE EXCEPTIONAL JOURNAL ENTRY.
         /// </summary>
-        internal static string INITIATEEXCEPTIONALJOURNALENTRY {
+        internal static string initiate_exceptional_journal_entry {
             get {
-                return ResourceManager.GetString("INITIATEEXCEPTIONALJOURNALENTRY", resourceCulture);
+                return ResourceManager.GetString("initiate_exceptional_journal_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to INITIATE JOURNAL ENTRY.
         /// </summary>
-        internal static string INITIATEJOURNALENTRY {
+        internal static string initiate_journal_entry {
             get {
-                return ResourceManager.GetString("INITIATEJOURNALENTRY", resourceCulture);
+                return ResourceManager.GetString("initiate_journal_entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In case you wish to have data above the period of year please kindly contact your  system administrator.
+        /// </summary>
+        internal static string in_case_you_wish_to_have_data_above_the_period {
+            get {
+                return ResourceManager.GetString("in_case_you_wish_to_have_data_above_the_period", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Is a chain entry.
         /// </summary>
-        internal static string IsAChainEntry {
+        internal static string is_achain_entry {
             get {
-                return ResourceManager.GetString("IsAChainEntry", resourceCulture);
+                return ResourceManager.GetString("is_achain_entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is a chain entry.
+        /// </summary>
+        internal static string is_a_chain_entry {
+            get {
+                return ResourceManager.GetString("is_a_chain_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Is chain execution.
         /// </summary>
-        internal static string IsChainExecution {
+        internal static string is_chain_execution {
             get {
-                return ResourceManager.GetString("IsChainExecution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IssuedBy.
-        /// </summary>
-        internal static string IssuedBy {
-            get {
-                return ResourceManager.GetString("IssuedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IssuedDate.
-        /// </summary>
-        internal static string IssuedDate {
-            get {
-                return ResourceManager.GetString("IssuedDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Issuer.
-        /// </summary>
-        internal static string Issuer {
-            get {
-                return ResourceManager.GetString("Issuer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Issuer Information.
-        /// </summary>
-        internal static string IssuerInformation {
-            get {
-                return ResourceManager.GetString("IssuerInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Issuer Information.
-        /// </summary>
-        internal static string Issuer_Information {
-            get {
-                return ResourceManager.GetString("Issuer_Information", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Is validation needed.
-        /// </summary>
-        internal static string IsValidationNeeded {
-            get {
-                return ResourceManager.GetString("IsValidationNeeded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Is a chain entry.
-        /// </summary>
-        internal static string Is_a_chain_entry {
-            get {
-                return ResourceManager.GetString("Is_a_chain_entry", resourceCulture);
+                return ResourceManager.GetString("is_chain_execution", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Is Validation Needed.
         /// </summary>
-        internal static string Is_Validation_Needed {
+        internal static string is_validation_needed {
             get {
-                return ResourceManager.GetString("Is_Validation_Needed", resourceCulture);
+                return ResourceManager.GetString("is_validation_needed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to JOURNAL ENTRIES.
         /// </summary>
-        internal static string JOURNALENTRIES {
+        internal static string journal_entries {
             get {
-                return ResourceManager.GetString("JOURNALENTRIES", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Journal entry status.
-        /// </summary>
-        internal static string JournalEntryStatus {
-            get {
-                return ResourceManager.GetString("JournalEntryStatus", resourceCulture);
+                return ResourceManager.GetString("journal_entries", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Journal Entries Reference:loading.
         /// </summary>
-        internal static string Journal_Entries_Reference_loading {
+        internal static string journal_entries_reference_loading {
             get {
-                return ResourceManager.GetString("Journal_Entries_Reference_loading", resourceCulture);
+                return ResourceManager.GetString("journal_entries_reference_loading", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Journal Entry at this level can only be passed from branch office terminal. Please kindly contact the branch manager concern.
         /// </summary>
-        internal static string Journal_Entry_at_this_level_can_only__be_passed_from_branch_office_terminal {
+        internal static string journal_entry_at_this_level_can_only_be_passed_from_branch_office_terminal {
             get {
-                return ResourceManager.GetString("Journal_Entry_at_this_level_can_only _be_passed_from_branch_office_terminal", resourceCulture);
+                return ResourceManager.GetString("journal_entry_at_this_level_can_only_be_passed_from_branch_office_terminal", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Journal Entry Status.
         /// </summary>
-        internal static string Journal_Entry_Status {
+        internal static string journal_entry_status {
             get {
-                return ResourceManager.GetString("Journal_Entry_Status", resourceCulture);
+                return ResourceManager.GetString("journal_entry_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Level of execution.
         /// </summary>
-        internal static string LevelOfExecution {
+        internal static string level_of_execution {
             get {
-                return ResourceManager.GetString("LevelOfExecution", resourceCulture);
+                return ResourceManager.GetString("level_of_execution", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to List of accounting entries involve.
         /// </summary>
-        internal static string ListOfAccountingEntriesInvolve {
+        internal static string list_of_accounting_entries_involve {
             get {
-                return ResourceManager.GetString("ListOfAccountingEntriesInvolve", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading.
-        /// </summary>
-        internal static string loading {
-            get {
-                return ResourceManager.GetString("loading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading.
-        /// </summary>
-        internal static string Loading_ {
-            get {
-                return ResourceManager.GetString("Loading_", resourceCulture);
+                return ResourceManager.GetString("list_of_accounting_entries_involve", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Next accounting event.
         /// </summary>
-        internal static string NextAccountingEvent {
+        internal static string next_accounting_event {
             get {
-                return ResourceManager.GetString("NextAccountingEvent", resourceCulture);
+                return ResourceManager.GetString("next_accounting_event", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No accounting rules available.
         /// </summary>
-        internal static string NoAccountingRulesAvailable {
+        internal static string no_accounting_rules_available {
             get {
-                return ResourceManager.GetString("NoAccountingRulesAvailable", resourceCulture);
+                return ResourceManager.GetString("no_accounting_rules_available", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PASSING JOURNAL ENTRY FOR.
         /// </summary>
-        internal static string PASSINGJOURNALENTRYFOR {
+        internal static string passing_journal_entry_for {
             get {
-                return ResourceManager.GetString("PASSINGJOURNALENTRYFOR", resourceCulture);
+                return ResourceManager.GetString("passing_journal_entry_for", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Please confirm that you would like to permanently delete this accounting event rule and its associated data.
         /// </summary>
-        internal static string PleaseConfirmThatYouWouldLikeToPermanentlyDeleteThisAccountingEvent {
+        internal static string please_confirm_that_you_would_like_to_permanently_delete_this_accounting_event {
             get {
-                return ResourceManager.GetString("PleaseConfirmThatYouWouldLikeToPermanentlyDeleteThisAccountingEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Post Entries.
-        /// </summary>
-        internal static string PostEntries {
-            get {
-                return ResourceManager.GetString("PostEntries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Posting source.
-        /// </summary>
-        internal static string PostingSource {
-            get {
-                return ResourceManager.GetString("PostingSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Posting source.
-        /// </summary>
-        internal static string Posting_Source {
-            get {
-                return ResourceManager.GetString("Posting_Source", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Purpose.
-        /// </summary>
-        internal static string Purpose {
-            get {
-                return ResourceManager.GetString("Purpose", resourceCulture);
+                return ResourceManager.GetString("please_confirm_that_you_would_like_to_permanently_delete_this_accounting_event", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Purpose of the entry.
         /// </summary>
-        internal static string Purpose_of_the_Entry {
+        internal static string purpose_of_the_entry {
             get {
-                return ResourceManager.GetString("Purpose_of_the_Entry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reason.
-        /// </summary>
-        internal static string Reason {
-            get {
-                return ResourceManager.GetString("Reason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference.
-        /// </summary>
-        internal static string Reference {
-            get {
-                return ResourceManager.GetString("Reference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference Id.
-        /// </summary>
-        internal static string ReferenceId {
-            get {
-                return ResourceManager.GetString("ReferenceId", resourceCulture);
+                return ResourceManager.GetString("purpose_of_the_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Registered Accounting Entry Rule.
         /// </summary>
-        internal static string Registered_Accounting_Entry_Rule {
+        internal static string registered_accounting_entry_rule {
             get {
-                return ResourceManager.GetString("Registered_Accounting_Entry_Rule", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rule name.
-        /// </summary>
-        internal static string RuleName {
-            get {
-                return ResourceManager.GetString("RuleName", resourceCulture);
+                return ResourceManager.GetString("registered_accounting_entry_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Save Event Entry Rule.
         /// </summary>
-        internal static string SaveEventEntryRule {
+        internal static string save_event_entry_rule {
             get {
-                return ResourceManager.GetString("SaveEventEntryRule", resourceCulture);
+                return ResourceManager.GetString("save_event_entry_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Search journal entry.
         /// </summary>
-        internal static string SearchJournalEntry {
+        internal static string search_journal_entry {
             get {
-                return ResourceManager.GetString("SearchJournalEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select.
-        /// </summary>
-        internal static string Select {
-            get {
-                return ResourceManager.GetString("Select", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select account.
-        /// </summary>
-        internal static string SelectAccount {
-            get {
-                return ResourceManager.GetString("SelectAccount", resourceCulture);
+                return ResourceManager.GetString("search_journal_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select bookingDirection.
         /// </summary>
-        internal static string SelectBookingDirection {
+        internal static string select_booking_direction {
             get {
-                return ResourceManager.GetString("SelectBookingDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch office.
-        /// </summary>
-        internal static string SelectBranchOffice {
-            get {
-                return ResourceManager.GetString("SelectBranchOffice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select chain event entry.
-        /// </summary>
-        internal static string SelectChainEventEntry {
-            get {
-                return ResourceManager.GetString("SelectChainEventEntry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select direction.
-        /// </summary>
-        internal static string SelectDirection {
-            get {
-                return ResourceManager.GetString("SelectDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select eligible branches.
-        /// </summary>
-        internal static string SelectEligibleBranches {
-            get {
-                return ResourceManager.GetString("SelectEligibleBranches", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select entry type.
-        /// </summary>
-        internal static string SelectEntryType {
-            get {
-                return ResourceManager.GetString("SelectEntryType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select filtering option.
-        /// </summary>
-        internal static string SelectFilteringOption {
-            get {
-                return ResourceManager.GetString("SelectFilteringOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select level of execution.
-        /// </summary>
-        internal static string SelectLevelOfExecution {
-            get {
-                return ResourceManager.GetString("SelectLevelOfExecution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the user who approved the request — can be from the branch or the entire system.
-        /// </summary>
-        internal static string SelectTheUserWhoApprovedTheRequest {
-            get {
-                return ResourceManager.GetString("SelectTheUserWhoApprovedTheRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the user who initiated the request within the branch.
-        /// </summary>
-        internal static string SelectTheUserWhoInitiatedTheRequestWithinTheBranch {
-            get {
-                return ResourceManager.GetString("SelectTheUserWhoInitiatedTheRequestWithinTheBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select transaction.
-        /// </summary>
-        internal static string SelectTransaction {
-            get {
-                return ResourceManager.GetString("SelectTransaction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select users in the branch.
-        /// </summary>
-        internal static string SelectUsersInTheBranch {
-            get {
-                return ResourceManager.GetString("SelectUsersInTheBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select users in the system.
-        /// </summary>
-        internal static string SelectUsersInTheSystem {
-            get {
-                return ResourceManager.GetString("SelectUsersInTheSystem", resourceCulture);
+                return ResourceManager.GetString("select_booking_direction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Chain Event Entry.
         /// </summary>
-        internal static string Select_Chain_Event_Entry {
+        internal static string select_chain_event_entry {
             get {
-                return ResourceManager.GetString("Select_Chain_Event_Entry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Chart of Account.
-        /// </summary>
-        internal static string Select_Chart_of_Account {
-            get {
-                return ResourceManager.GetString("Select_Chart_of_Account", resourceCulture);
+                return ResourceManager.GetString("select_chain_event_entry", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Eligible Branches.
         /// </summary>
-        internal static string Select_Eligible_Branches {
+        internal static string select_eligible_branches {
             get {
-                return ResourceManager.GetString("Select_Eligible_Branches", resourceCulture);
+                return ResourceManager.GetString("select_eligible_branches", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Entry Type.
         /// </summary>
-        internal static string Select_Entry_Type {
+        internal static string select_entry_type {
             get {
-                return ResourceManager.GetString("Select_Entry_Type", resourceCulture);
+                return ResourceManager.GetString("select_entry_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select filtering option.
+        /// </summary>
+        internal static string select_filtering_option {
+            get {
+                return ResourceManager.GetString("select_filtering_option", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Level of Execution.
         /// </summary>
-        internal static string Select_Level_of_Execution {
+        internal static string select_level_of_execution {
             get {
-                return ResourceManager.GetString("Select_Level_of_Execution", resourceCulture);
+                return ResourceManager.GetString("select_level_of_execution", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Transaction.
+        ///   Looks up a localized string similar to Select the user who approved the request — can be from the branch or the entire system.
         /// </summary>
-        internal static string Select_Transaction {
+        internal static string select_the_user_who_approved_the_request {
             get {
-                return ResourceManager.GetString("Select_Transaction", resourceCulture);
+                return ResourceManager.GetString("select_the_user_who_approved_the_request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the user who initiated the request within the branch.
+        /// </summary>
+        internal static string select_the_user_who_initiated_the_request_within_the_branch {
+            get {
+                return ResourceManager.GetString("select_the_user_who_initiated_the_request_within_the_branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select users in the branch.
+        /// </summary>
+        internal static string select_users_in_the_branch {
+            get {
+                return ResourceManager.GetString("select_users_in_the_branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select users in the system.
+        /// </summary>
+        internal static string select_users_in_the_system {
+            get {
+                return ResourceManager.GetString("select_users_in_the_system", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Setting Accounting Event Entry Rule.
         /// </summary>
-        internal static string SettingAccountingEventEntryRule {
+        internal static string setting_accounting_event_entry_rule {
             get {
-                return ResourceManager.GetString("SettingAccountingEventEntryRule", resourceCulture);
+                return ResourceManager.GetString("setting_accounting_event_entry_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Specify a date range to filter journal entries accordingly.
         /// </summary>
-        internal static string SpecifyADateRangeToFilterJournalEntriesAccordingly {
+        internal static string specify_adate_range_to_filter_journal_entries_accordingly {
             get {
-                return ResourceManager.GetString("SpecifyADateRangeToFilterJournalEntriesAccordingly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Submit entry.
-        /// </summary>
-        internal static string SubmitEntry {
-            get {
-                return ResourceManager.GetString("SubmitEntry", resourceCulture);
+                return ResourceManager.GetString("specify_adate_range_to_filter_journal_entries_accordingly", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The comment field is required.
         /// </summary>
-        internal static string TheCommentFieldIsRequired {
+        internal static string the_comment_field_is_required {
             get {
-                return ResourceManager.GetString("TheCommentFieldIsRequired", resourceCulture);
+                return ResourceManager.GetString("the_comment_field_is_required", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The journal entries retrieved in this interface include data from the last financial year.
         /// </summary>
-        internal static string TheJournalEntriesRetrievedInThisInterfaceIncludeDataFromTheLastFinancialYear {
+        internal static string the_journal_entries_retrieved_in_this_interface_include_data_from_the_last_financial_year {
             get {
-                return ResourceManager.GetString("TheJournalEntriesRetrievedInThisInterfaceIncludeDataFromTheLastFinancialYear", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The comment field is required.
-        /// </summary>
-        internal static string The_comment_field_is_required {
-            get {
-                return ResourceManager.GetString("The_comment_field_is_required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This action cannot be undone.
-        /// </summary>
-        internal static string ThisActionCannotBeUndone {
-            get {
-                return ResourceManager.GetString("ThisActionCannotBeUndone", resourceCulture);
+                return ResourceManager.GetString("the_journal_entries_retrieved_in_this_interface_include_data_from_the_last_financ" +
+                        "ial_year", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to TIPS FOR FILTERING JOURNAL ENTRIES.
         /// </summary>
-        internal static string TIPSFORFILTERINGJOURNALENTRIES {
+        internal static string tips_for_filtering_journal_entries {
             get {
-                return ResourceManager.GetString("TIPSFORFILTERINGJOURNALENTRIES", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To date.
-        /// </summary>
-        internal static string ToDate {
-            get {
-                return ResourceManager.GetString("ToDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TOTAL.
-        /// </summary>
-        internal static string TOTAL {
-            get {
-                return ResourceManager.GetString("TOTAL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total credit.
-        /// </summary>
-        internal static string TotalCredit {
-            get {
-                return ResourceManager.GetString("TotalCredit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total debit.
-        /// </summary>
-        internal static string TotalDebit {
-            get {
-                return ResourceManager.GetString("TotalDebit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction reference.
-        /// </summary>
-        internal static string TransactionReference {
-            get {
-                return ResourceManager.GetString("TransactionReference", resourceCulture);
+                return ResourceManager.GetString("tips_for_filtering_journal_entries", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Update Event Entry Rule.
         /// </summary>
-        internal static string UpdateEventEntryRule {
+        internal static string update_event_entry_rule {
             get {
-                return ResourceManager.GetString("UpdateEventEntryRule", resourceCulture);
+                return ResourceManager.GetString("update_event_entry_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to VALIDATE JOURNAL ENTRIES.
         /// </summary>
-        internal static string VALIDATEJOURNALENTRIES {
+        internal static string validate_journal_entries {
             get {
-                return ResourceManager.GetString("VALIDATEJOURNALENTRIES", resourceCulture);
+                return ResourceManager.GetString("validate_journal_entries", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Value date.
         /// </summary>
-        internal static string ValueDate {
+        internal static string value_date {
             get {
-                return ResourceManager.GetString("ValueDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to YES.
-        /// </summary>
-        internal static string YES {
-            get {
-                return ResourceManager.GetString("YES", resourceCulture);
+                return ResourceManager.GetString("value_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You have requested to delete the accounting event rule with the following details.
         /// </summary>
-        internal static string YouHaveRequestedToDeleteTheAccountingEventRule {
+        internal static string you_have_requested_to_delete_the_accounting_event_rule {
             get {
-                return ResourceManager.GetString("YouHaveRequestedToDeleteTheAccountingEventRule", resourceCulture);
+                return ResourceManager.GetString("you_have_requested_to_delete_the_accounting_event_rule", resourceCulture);
             }
         }
     }

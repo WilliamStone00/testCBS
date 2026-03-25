@@ -1,4 +1,4 @@
-﻿@{ ViewBag.Title = "Notification History"; }
+@{ ViewBag.Title = "Notification History"; }
 @using Resources
 
 <!-- =================================================
@@ -7,14 +7,14 @@
 <div class="card bg-light mb-4 shadow-sm">
     <div class="card-body text-center">
         <h1 class="card-title text-primary fw-bold mb-2">
-            <i class="mdi mdi-history me-2"></i> Notification History
+            <i class="mdi mdi-history me-2"></i> @GlobalNotificationHistory.notification_history
         </h1>
         <p class="card-text text-muted mb-1">
-            Search and review the history of all automated notifications sent by the system.
+            @GlobalNotificationHistory.search_and_review_the_history_of_all_automated_notifications_sent_by_the_system.
         </p>
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            <strong>How to Search:</strong> You must select a search criteria (either Branch or Customer ID) and click the "Search" button to load data.
+            <strong>@GlobalShared.how_to_search:</strong> @GlobalNotificationHistory.you_must_select_a_search_criteria_either_branch_or_customer_id_and_click_the_search_button_to_load_data.
         </div>
         <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
     </div>
@@ -26,7 +26,7 @@
 ================================================== -->
 <div class="card mb-4">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Searching History</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalNotificationHistory.tips_for_searching_history</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -35,16 +35,16 @@
         <div class="card-body">
             <ol class="list-group list-group-numbered">
                 <li class="list-group-item">
-                    <strong>Choose Your Search Method:</strong> Start by using the "Search By" dropdown. This changes the input field to allow you to search for all notifications sent to a specific `Branch` or a single `Customer ID`.
+                    <strong>@GlobalNotificationHistory.choose_your_search_method:</strong> @GlobalNotificationHistory.start_by_using_the_search_by_dropdown_this_changes_the_input_field_to_allow_you_to_search_for_all_notifications_sent_to_a_specific_branch_or_a_single_customer_id.
                 </li>
                 <li class="list-group-item">
-                    <strong>Branch Search:</strong> When searching by branch, you will see a complete history of all notifications related to that branch's activities. This is useful for branch-level audits.
+                    <strong>@GlobalShared.branch_search:</strong> @GlobalNotificationHistory.when_searching_by_branch_you_will_see_a_complete_history_of_all_notifications_related_to_that_branchs_activities_this_is_useful_for_branchlevel_audits.
                 </li>
                 <li class="list-group-item">
-                    <strong>Customer ID Search:</strong> When searching by Customer ID, you will see all notifications sent directly to that specific customer. This is useful for investigating a customer's query.
+                    <strong>@GlobalNotificationHistory.customer_id_search:</strong> @GlobalNotificationHistory.when_searching_by_customer_id_you_will_see_all_notifications_sent_directly_to_that_specific_customer_this_is_useful_for_investigating_a_customers_query.
                 </li>
                 <li class="list-group-item">
-                    <strong>Review Content:</strong> The "Content" column in the results table shows the exact message that was sent. For long messages, hover over the text to see the full content in a tooltip.
+                    <strong>@GlobalShared.review_content:</strong> @GlobalNotificationHistory.the_content_column_in_the_results_table_shows_the_exact_message_that_was_sent_for_long_messages_hover_over_the_text_to_see_the_full_content_in_a_tooltip.
                 </li>
             </ol>
         </div>
@@ -53,33 +53,33 @@
 
 <!-- Search/Filter Section -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-magnify me-1"></i> Search Notification History</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-magnify me-1"></i> @GlobalNotificationHistory.search_notification_history</h5>
     <div class="card p-3 mb-3 bg-light border">
         <div class="row g-3 align-items-end">
             <!-- Search Type Selector -->
             <div class="col-md-3">
-                <label class="form-label fw-bold">Search By:</label>
+                <label class="form-label fw-bold">@GlobalShared.search_by:</label>
                 <select id="searchBy" class="form-control select2">
-                    <option value="branch" selected>Branch</option>
-                    <option value="customer">Customer ID</option>
+                    <option value="branch" selected>@GlobalShared.Branch</option>
+                    <option value="customer">@GlobalShared.Customer_ID</option>
                 </select>
             </div>
 
             <!-- Branch Search Input (Visible by default) -->
             <div id="branchSearchContainer" class="col-md-7">
                 <label class="form-label">Select Branch</label>
-                @Html.DropDownList("branchSearchValue", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select a Branch ---", new { @class = "form-control select2" })
+                @Html.DropDownList("branchSearchValue", new SelectList(ViewBag.Branches, "Id", "Name"), $"--- {@GlobalShared.select_a_branch} ---", new { @class = "form-control select2" })
             </div>
 
             <!-- Customer Search Input (Initially Hidden) -->
             <div id="customerSearchContainer" class="col-md-7" style="display:none;">
-                <label class="form-label">Enter Customer ID</label>
+                <label class="form-label">@GlobalShared.enter_customer_id</label>
                 <input type="text" id="customerSearchValue" class="form-control" placeholder="Enter full Customer ID..." />
             </div>
 
             <!-- Action Button -->
             <div class="col-md-2">
-                <button id="applyFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify"></i> Search</button>
+                <button id="applyFilterBtn" class="btn btn-primary w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Search</button>
             </div>
         </div>
     </div>
@@ -91,11 +91,11 @@
         <table id="historyDataTable" class="table table-hover" style="width:100%;">
             <thead class="table-light">
                 <tr>
-                    <th>Customer</th>
-                    <th>Branch</th>
-                    <th>Notification Type</th>
-                    <th>Sent Date</th>
-                    <th>Content</th>
+                    <th>@GlobalShared.Customer</th>
+                    <th>@GlobalShared.Branch</th>
+                    <th>@GlobalShared.notification_type</th>
+                    <th>@GlobalShared.sent_date</th>
+                    <th>@GlobalShared.content</th>
                 </tr>
             </thead>
             <tbody></tbody>

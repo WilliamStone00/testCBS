@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cni_id_no" xml:space="preserve">
+    <value>CNI / ID No</value>
+  </data>
+  <data name="contact_address" xml:space="preserve">
+    <value>Contact &amp; Address</value>
+  </data>
+  <data name="executor_username_or_id" xml:space="preserve">
+    <value>Executor username or ID</value>
+  </data>
+  <data name="expiry_defaults_to_now_48h_utc_adjust_if_needed" xml:space="preserve">
+    <value>Expiry defaults to &lt;strong&gt;now + 48h (UTC)&lt;/strong&gt;. Adjust if needed</value>
+  </data>
+  <data name="file_ref_id" xml:space="preserve">
+    <value>File Ref Id</value>
+  </data>
+  <data name="file_upload_id" xml:space="preserve">
+    <value>File Upload Id</value>
+  </data>
+  <data name="fill_kyc_and_submit_a_temporary_payment_code_will_be_generated_for_this_nonmember" xml:space="preserve">
+    <value>Fill KYC and submit. A temporary payment code will be generated for this non-member</value>
+  </data>
+  <data name="filter_by_member_refname_or_show_nonmembers_only" xml:space="preserve">
+    <value>Filter by Member Ref/Name or show non-members only</value>
+  </data>
+  <data name="filter_by_uploadedexecuted_by" xml:space="preserve">
+    <value>Filter by Uploaded/Executed By</value>
+  </data>
+  <data name="filter_by_who_uploaded_or_executed" xml:space="preserve">
+    <value>Filter by who uploaded or executed</value>
+  </data>
+  <data name="focus_on_a_specific_branch" xml:space="preserve">
+    <value>Focus on a specific branch</value>
+  </data>
+  <data name="for_nonmember_payout_activation_shows_last_code_expiry" xml:space="preserve">
+    <value>For non-member payout activation, shows last code + expiry</value>
+  </data>
+  <data name="gross_salary" xml:space="preserve">
+    <value>Gross Salary</value>
+  </data>
+  <data name="g_salary" xml:space="preserve">
+    <value>G.Salary</value>
+  </data>
+  <data name="g_salary_vs_nsalary" xml:space="preserve">
+    <value>G.Salary vs N.Salary</value>
+  </data>
+  <data name="if_empty_server_defaults_to_now_48h_utc" xml:space="preserve">
+    <value>If empty, server defaults to now + 48h (UTC)</value>
+  </data>
+  <data name="include_country_code_if_international" xml:space="preserve">
+    <value>Include country code if international</value>
+  </data>
+  <data name="is_old_loan" xml:space="preserve">
+    <value>Is Old Loan</value>
+  </data>
+  <data name="is_paid" xml:space="preserve">
+    <value>Is Paid</value>
+  </data>
+  <data name="loan_2_exceptional" xml:space="preserve">
+    <value>Loan 2 – Exceptional</value>
+  </data>
+  <data name="loan_3_elected_staff" xml:space="preserve">
+    <value>Loan 3 – Elected Staff</value>
+  </data>
+  <data name="loan_4_special_overdraft" xml:space="preserve">
+    <value>Loan 4 – Special / Overdraft</value>
+  </data>
+  <data name="loan_8_micro" xml:space="preserve">
+    <value>Loan 8 – Micro</value>
+  </data>
+  <data name="main_exceptional_elected_special_micro_sections_render_only_when_values_exist" xml:space="preserve">
+    <value>Main / Exceptional / Elected / Special / Micro sections render only when values exist</value>
+  </data>
+  <data name="non_members_only" xml:space="preserve">
+    <value>Non-members only</value>
+  </data>
+  <data name="non_member_already_activated" xml:space="preserve">
+    <value>Non-Member Already Activated</value>
+  </data>
+  <data name="non_member_ref" xml:space="preserve">
+    <value>Non-Member Ref</value>
+  </data>
+  <data name="non_member_reference" xml:space="preserve">
+    <value>Non-Member Reference</value>
+  </data>
+  <data name="non_member_reference_detected" xml:space="preserve">
+    <value>Non-member reference detected</value>
+  </data>
+  <data name="n_salary" xml:space="preserve">
+    <value>N.Salary</value>
+  </data>
+  <data name="n_salary_is_after_savings_shares_charges_and_standing_order" xml:space="preserve">
+    <value>N.Salary is after Savings, Shares, Charges and Standing Order</value>
+  </data>
+  <data name="paid_vs_pending" xml:space="preserve">
+    <value>Paid vs Pending</value>
+  </data>
+  <data name="payment_comment" xml:space="preserve">
+    <value>Payment Comment</value>
+  </data>
+  <data name="preference_shares" xml:space="preserve">
+    <value>Preference Shares</value>
+  </data>
+  <data name="processed_salary" xml:space="preserve">
+    <value>Processed Salary</value>
+  </data>
+  <data name="processed_salary_detail" xml:space="preserve">
+    <value>Processed Salary – Detail</value>
+  </data>
+  <data name="processed_salary_details" xml:space="preserve">
+    <value>Processed Salary – Details</value>
+  </data>
+  <data name="processed_salary_results" xml:space="preserve">
+    <value>Processed Salary Results</value>
+  </data>
+  <data name="provided_by_salary_extract" xml:space="preserve">
+    <value>Provided by salary extract</value>
+  </data>
+  <data name="reason_for_audit" xml:space="preserve">
+    <value>Reason (for audit)</value>
+  </data>
+  <data name="register_activate_nonmember_generate_temppaycode" xml:space="preserve">
+    <value>Register / Activate Non-Member &amp; Generate TempPayCode</value>
+  </data>
+  <data name="register_generate_code" xml:space="preserve">
+    <value>Register &amp; Generate Code</value>
+  </data>
+  <data name="review_executed_salary_entries_filter_by_branch_operators_member_status_date_and_temporary_paycode_state" xml:space="preserve">
+    <value>Review executed salary entries, filter by branch, operators, member, status, date, and temporary pay-code state</value>
+  </data>
+  <data name="revoke_temppaycode" xml:space="preserve">
+    <value>Revoke TempPayCode</value>
+  </data>
+  <data name="revoking_will_immediately_invalidate_the_code_this_action_is_logged" xml:space="preserve">
+    <value>Revoking will immediately invalidate the code. This action is logged</value>
+  </data>
+  <data name="salary_analysis_result_id" xml:space="preserve">
+    <value>Salary Analysis Result Id</value>
+  </data>
+  <data name="salary_detail_tips" xml:space="preserve">
+    <value>Salary Detail Tips</value>
+  </data>
+  <data name="salary_paid" xml:space="preserve">
+    <value>Salary Paid</value>
+  </data>
+  <data name="saving_id" xml:space="preserve">
+    <value>Saving Id</value>
+  </data>
+  <data name="select_subdivision" xml:space="preserve">
+    <value>Select Sub-Division</value>
+  </data>
+  <data name="show_entries_with_an_active_temppaycode_or_without_one_mutually_exclusive" xml:space="preserve">
+    <value>Show entries with an active TempPayCode or without one (mutually exclusive)</value>
+  </data>
+  <data name="standing_order" xml:space="preserve">
+    <value>Standing Order</value>
+  </data>
+  <data name="startend_are_inclusive" xml:space="preserve">
+    <value>Start/End are inclusive</value>
+  </data>
+  <data name="temp_pay_code_expiry" xml:space="preserve">
+    <value>TempPayCode Expiry</value>
+  </data>
+  <data name="temp_pay_code_id" xml:space="preserve">
+    <value>TempPayCode Id</value>
+  </data>
+  <data name="temp_code_expires" xml:space="preserve">
+    <value>Temp Code Expires</value>
+  </data>
+  <data name="temp_code_status" xml:space="preserve">
+    <value>Temp Code Status</value>
+  </data>
+  <data name="temp_pay_code" xml:space="preserve">
+    <value>Temp Pay Code</value>
+  </data>
+  <data name="this_entry_already_has_an_active_temppaycode_you_may_revoke_it_below" xml:space="preserve">
+    <value>This entry already has an active TempPayCode. You may revoke it below</value>
+  </data>
+  <data name="tips_for_filtering_processed_salary" xml:space="preserve">
+    <value>Tips for filtering processed salary</value>
+  </data>
+  <data name="uploaded_executed_by" xml:space="preserve">
+    <value>Uploaded/Executed by</value>
+  </data>
+  <data name="uploader_username_or_id" xml:space="preserve">
+    <value>Uploader username or ID</value>
+  </data>
+  <data name="use_the_filters_below_to_refine_results_then_apply_or_export" xml:space="preserve">
+    <value>Use the filters below to refine results, then Apply or Export</value>
+  </data>
+  <data name="whats_left_after_all_deductions" xml:space="preserve">
+    <value>What’s left after all deductions</value>
+  </data>
+  <data name="why_are_you_revoking_this_code" xml:space="preserve">
+    <value>Why are you revoking this code</value>
+  </data>
+  <data name="without_active_temppaycode_only" xml:space="preserve">
+    <value>Without Active TempPayCode only</value>
+  </data>
+  <data name="with_active_temppaycode_only" xml:space="preserve">
+    <value>With Active TempPayCode only</value>
+  </data>
+</root>

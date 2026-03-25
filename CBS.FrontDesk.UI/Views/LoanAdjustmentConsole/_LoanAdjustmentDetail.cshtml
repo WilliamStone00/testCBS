@@ -1,5 +1,5 @@
 ﻿@model CBS.FrontDesk.Data.LoanAdjustmentP.LoanAdjustmentRequestDetailsDto
-
+@using Resources
 @functions {
     public class AdjustmentDisplayItem
     {
@@ -41,49 +41,49 @@
 
             <!-- 🧾 Request Overview -->
             <tr class="table-primary">
-                <td colspan="2" class="text-center fw-bold">📋 Loan Adjustment Request Overview</td>
+                <td colspan="2" class="text-center fw-bold">📋 @GlobalLoanAdjustmentConsole.loan_adjustment_request_overview</td>
             </tr>
-            <tr><td class="fw-bold">Customer ID</td><td>@request.CustomerId</td></tr>
-            <tr><td class="fw-bold">Customer Name</td><td>@request.CustomerName</td></tr>
-            <tr><td class="fw-bold">Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
-            <tr><td class="fw-bold">Requested Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
-            <tr><td class="fw-bold">Requested By</td><td>@request.RequestedBy</td></tr>
-            <tr><td class="fw-bold">Reason</td><td>@request.Reason</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Customer ID</td><td>@request.CustomerId</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Customer Name</td><td>@request.CustomerName</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Branch</td><td>@request.BranchName (@request.BranchCode)</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Requested_Date</td><td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Requested_by</td><td>@request.RequestedBy</td></tr>
+            <tr><td class="fw-bold">@GlobalShared.Reason</td><td>@request.Reason</td></tr>
             <tr>
-                <td class="fw-bold">Status</td>
+                <td class="fw-bold">@GlobalShared.Status</td>
                 <td><span class="badge bg-@(request.Status == "Approved" ? "success" : request.Status == "Rejected" ? "danger" : "warning")">@request.Status</span></td>
             </tr>
             @if (!string.IsNullOrWhiteSpace(request.ApprovedBy))
             {
-                <tr><td class="fw-bold">Approved By</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Approved_by</td><td>@request.ApprovedBy (@request.ApprovedDate?.ToString("dd/MM/yyyy HH:mm:ss"))</td></tr>
             }
             @if (!string.IsNullOrWhiteSpace(request.RejectionReason))
             {
-                <tr><td class="fw-bold text-danger">Rejection Reason</td><td class="text-danger">@request.RejectionReason</td></tr>
+                <tr><td class="fw-bold text-danger">@GlobalShared.rejection_reason</td><td class="text-danger">@request.RejectionReason</td></tr>
             }
 
             <!-- 💰 Financial Adjustments -->
-            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">💰 Financial Fields</td></tr>
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">💰 @GlobalShared.financial_fields</td></tr>
             @foreach (var item in financialAdjustments)
             {
                 <tr>
                     <td class="fw-semibold">@item.Label</td>
                     <td>
-                        Old: <span class="text-muted">@item.OldValue</span>
-                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                        @GlobalShared.old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">@GlobalShared.New: <strong>@item.NewValue</strong></span>
                     </td>
                 </tr>
             }
 
             <!-- 📌 Status Adjustments -->
-            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">📌 Status & Policy Fields</td></tr>
+            <tr class="table-primary"><td colspan="2" class="text-center fw-bold">📌 @GlobalShared.Status & @GlobalShared.policy_fields</td></tr>
             @foreach (var item in statusAdjustments)
             {
                 <tr>
                     <td class="fw-semibold">@item.Label</td>
                     <td>
-                        Old: <span class="text-muted">@item.OldValue</span>
-                        <span class="ms-3">New: <strong>@item.NewValue</strong></span>
+                        @GlobalShared.old: <span class="text-muted">@item.OldValue</span>
+                        <span class="ms-3">@GlobalShared.New: <strong>@item.NewValue</strong></span>
                     </td>
                 </tr>
             }
@@ -92,20 +92,20 @@
             @if (history?.Any() == true)
             {
                 <tr class="table-primary">
-                    <td colspan="2" class="text-center fw-bold">📚 Adjustment History</td>
+                    <td colspan="2" class="text-center fw-bold">📚 @GlobalShared.adjustment_history</td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <table class="table table-sm table-bordered table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Field</th>
-                                    <th>Old</th>
-                                    <th>New</th>
-                                    <th>Status</th>
-                                    <th>Changed By</th>
-                                    <th>Approved By</th>
+                                    <th>@GlobalShared.Date</th>
+                                    <th>@GlobalShared.field</th>
+                                    <th>@GlobalShared.old</th>
+                                    <th>@GlobalShared.New</th>
+                                    <th>@GlobalShared.Status</th>
+                                    <th>@GlobalShared.changed_by</th>
+                                    <th>@GlobalShared.Approved_by</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -1,23 +1,23 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine
+@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine
 
 @{
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
 }
-
+@using Resources
 <!-- Header Section -->
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-format-list-numbered me-2"></i> Report Line Management
+                    <i class="mdi mdi-format-list-numbered me-2"></i>@GlobalReportConfiguration.report_line_management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure and manage individual report lines used to structure financial statements.
+                    @GlobalReportConfiguration.configure_and_manage_individual_report_lines_used_to_structure_financial_statements.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensure each line is linked to the correct section to maintain reporting accuracy.
+                    @GlobalReportConfiguration.ensure_each_line_is_linked_to_the_correct_section_to_maintain_reporting_accuracy.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Lines</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalReportConfiguration.tips_for_configuring_report_lines</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLineTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -37,18 +37,18 @@
     <div id="collapseLineTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-link-variant text-primary me-2"></i> <strong>Report & Section:</strong> Always select the correct report and section before creating a line.</li>
+                <li><i class="mdi mdi-link-variant text-primary me-2"></i> <strong>@GlobalReportConfiguration.report_section:</strong> @GlobalReportConfiguration.always_select_the_correct_report_and_section_before_creating_a_line.</li>
 
-                <li><i class="mdi mdi-pound text-success me-2"></i> <strong>Reference Code:</strong> Keep codes short and meaningful (e.g., ASSET01, REV02).</li>
+                <li><i class="mdi mdi-pound text-success me-2"></i> <strong>@GlobalShared.reference_code:</strong> @GlobalReportConfiguration.keep_codes_short_and_meaningful (e.g., ASSET01, REV02).</li>
 
-                <li><i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i> <strong>Sort Order:</strong> Controls the display order of lines within a section.</li>
+                <li><i class="mdi mdi-sort-numeric-ascending text-warning me-2"></i> <strong>@GlobalShared.sort_order:</strong> @GlobalReportConfiguration.controls_the_display_order_of_lines_within_a_section.</li>
 
                 <li><i class="mdi mdi-calculator-variant-outline text-info me-2"></i> 
-                    <strong>Calculation Mode:</strong> Defines how the line value is computed (SUM, DIRECT, SUBTOTAL, etc.).
+                    <strong>@GlobalReportConfiguration.calculation_mode:</strong> @GlobalReportConfiguration.defines_how_the_line_value_is_computed (SUM, DIRECT, SUBTOTAL, etc.).
                 </li>
-
-                <li><i class="mdi mdi-eye-outline text-secondary me-2"></i> 
-                    <strong>Show in Output:</strong> Enable this option only for lines that should appear in the generated report.
+                <li>
+                    <i class="mdi mdi-eye-outline text-secondary me-2"></i>
+                    <strong>@GlobalShared.show_in_output:</strong> @GlobalReportConfiguration.enable_this_option_only_for_lines_that_should_appear_in_the_generated_report.
                 </li>
             </ul>
         </div>
@@ -69,7 +69,7 @@ new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this
             <div class="mb-3">
                 @Html.Label("ReportId", "Select Report Definition", new { @class = "form-label fw-semibold" })
                 <select id="ReportId" name="ReportId" class="form-control">
-                    <option value="">-- Select a report Definition --</option>
+                    <option value="">-- @GlobalReportConfiguration.select_a_report_definition --</option>
 
                     @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>)ViewBag.ReportDefinitions)
                     {
@@ -84,7 +84,7 @@ new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this
             <div class="mb-3">
                 @Html.Label("SectionId", "Select Section Definition", new { @class = "form-label fw-semibold" })
                 <select id="SectionId" name="SectionId" class="form-control">
-                    <option value="">-- Select a section --</option>
+                    <option value="">-- @GlobalReportConfiguration.select_a_section --</option>
 
                     @foreach (var item in (IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection>)ViewBag.ReportSections)
                     {
@@ -96,22 +96,22 @@ new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(m => m.RefCode, "Reference Code", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(m => m.RefCode, $"{@GlobalShared.reference_code}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(m => m.RefCode, new { @class = "form-control", placeholder = "e.g., ASSET001" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(m => m.Caption, "Caption", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(m => m.Caption, $"{@GlobalShared.caption}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(m => m.Caption, new { @class = "form-control", placeholder = "Text to display" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(m => m.SortOrder, "Sort Order", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(m => m.SortOrder, $"{@GlobalShared.sort_order}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control", type = "number" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(m => m.CalcMode, "Calculation Mode", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(m => m.CalcMode, $"{@GlobalReportConfiguration.calculation_mode}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(m => m.CalcMode, new { @class = "form-control", placeholder = "SUM, SUBTOTAL, DIRECT" })
             </div>
 

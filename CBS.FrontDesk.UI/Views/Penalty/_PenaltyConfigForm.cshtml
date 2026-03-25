@@ -1,9 +1,9 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Penalty
-
+@model CBS.FrontDesk.Data.Entity.LoanConf.Penalty
+@using Resources
 @using (Html.BeginForm("AddOrEdit", "Penalty", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 
 {
-    @Html.ValidationSummary(true, "Please correct the errors and try again.", new { @class = "alert alert-danger" })
+    @Html.ValidationSummary(true, $"{@GlobalPenalty.please_correct_the_errors_and_try_again}.", new { @class = "alert alert-danger" })
 
 <div class="row gy-3">
     @Html.HiddenFor(model => model.Id)
@@ -11,31 +11,31 @@
     <!-- 📌 Basic Info -->
     <div class="col-12">
         <h6 class="text-danger border-bottom pt-2 pb-1">
-            <i class="mdi mdi-file-document-outline me-1"></i> Penalty Details
+            <i class="mdi mdi-file-document-outline me-1"></i> @GlobalPenalty.penalty_details
         </h6>
     </div>
 
     <div class="col-md-6">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.PenaltyName, new { @class = "form-control", required = "required" })
-            <label>Penalty Name</label>
-            <small class="text-muted d-block">💡 Example: “Late Fee – Personal Loans”. Must be unique.</small>
+            <label>@GlobalPenalty.penalty_name</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.example_late_fee_personal_loans_must_be_unique.</small>
         </div>
     </div>
 
     <div class="col-md-6">
         <div class="form-floating shadow-sm">
             @Html.DropDownListFor(m => m.PenaltyType, new SelectList(ViewBag.PenaltyTypes, "Value", "Text"), "--- Select Penalty Type ---", new { @class = "form-control select2", required = "required" })
-            <label>Penalty Type</label>
-            <small class="text-muted d-block">💡 Determines when to trigger penalty (e.g., after due date or on maturity).</small>
+            <label>@GlobalShared.penalty_type</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.determines_when_to_trigger_penalty_eg_after_due_date_or_on_maturity.</small>
         </div>
     </div>
 
     <div class="col-md-12">
         <div class="form-floating shadow-sm">
             @Html.TextAreaFor(m => m.Description, new { @class = "form-control", style = "height: 150px;" })
-            <label>Description (optional)</label>
-            <small class="text-muted d-block">💡 Internal notes or detailed explanation for admins.</small>
+            <label>@GlobalShared.Description (@GlobalShared.Optional)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.internal_notes_or_detailed_explanation_for_admins.</small>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
     <!-- 💵 Value & Application Mode -->
     <div class="col-12">
         <h6 class="text-danger border-bottom pt-2 pb-1">
-            <i class="mdi mdi-currency-usd me-1"></i> Value & Application Mode
+            <i class="mdi mdi-currency-usd me-1"></i> @GlobalPenalty.value_application_mode
         </h6>
     </div>
 
@@ -60,16 +60,16 @@
                 min = "0",
                 required = "required"
             })
-            <label>Penalty Value</label>
-            <small class="text-muted d-block">💡 Enter either a fixed amount (e.g., 2000 FCFA) or a % rate.</small>
+            <label>@GlobalPenalty.penalty_value</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.enter_either_a_fixed_amount_eg_2000_fcfa_or_a_rate.</small>
         </div>
     </div>
 
     <div class="col-md-6">
         <div class="form-check mt-4 pt-2">
             @Html.CheckBoxFor(m => m.IsRate, new { @class = "form-check-input", id = "IsRate" })
-            <label class="form-check-label" for="IsRate">Value is a Rate (%)</label>
-            <small class="text-muted d-block">💡 When checked, the system treats PenaltyValue as a percentage (e.g., 2%). Recommended max: 10%.</small>
+            <label class="form-check-label" for="IsRate">@GlobalShared.value_is_a_rate (%)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.when_checked_the_system_treats_penaltyvalue_as_a_percentage_eg_2_recommended_max_10.</small>
         </div>
     </div>
 
@@ -79,7 +79,7 @@
     <!-- ⚙️ Calculation Logic -->
     <div class="col-12">
         <h6 class="text-danger border-bottom pt-2 pb-1">
-            <i class="mdi mdi-calculator-variant me-1"></i> Calculation Logic
+            <i class="mdi mdi-calculator-variant me-1"></i> @GlobalPenalty.calculation_logic
         </h6>
     </div>
 
@@ -89,17 +89,17 @@
             @Html.DropDownListFor(m => m.CalculatePenaltyOn,
                 new List<SelectListItem>
                 {
-                    new SelectListItem { Text = "Overdue Principal Amount", Value = "Overdue_Principal_Amount" },
-                    new SelectListItem { Text = "Overdue Interest Amount", Value = "Overdue_Interest_Amount" },
-                    new SelectListItem { Text = "Overdue Daily Interest Amount", Value = "Overdue_Daily_Interest_Amount" },
-                    new SelectListItem { Text = "Apply Fixed Penalty Amount", Value = "Apply_Fixed_Penalty_Amount" },
-                    new SelectListItem { Text = "Overdue Principal + Interest", Value = "Overdue_Principal_Plus_Interest" }
+                    new SelectListItem { Text = $"{@GlobalPenalty.overdue_principal_amount}", Value = "Overdue_Principal_Amount" },
+                    new SelectListItem { Text = $"{@GlobalPenalty.overdue_interest_amount}", Value = "Overdue_Interest_Amount" },
+                    new SelectListItem { Text = $"{@GlobalPenalty.overdue_daily_interest_amount}", Value = "Overdue_Daily_Interest_Amount" },
+                    new SelectListItem { Text = $"{@GlobalPenalty.apply_fixed_penalty_amount}", Value = "Apply_Fixed_Penalty_Amount" },
+                    new SelectListItem { Text = $"{@GlobalPenalty.overdue_principal_interest}", Value = "Overdue_Principal_Plus_Interest" }
                 },
                 "--- Select Base ---",
                 new { @class = "form-control select2" })
-            <label>Apply On</label>
+            <label>@GlobalShared.apply_on</label>
             <small class="text-muted d-block">
-                💡 Defines the part of the loan used as the penalty base. For fixed fees, choose "Apply Fixed Penalty Amount".
+                💡 @GlobalPenalty.defines_the_part_of_the_loan_used_as_the_penalty_base_for_fixed_fees_choose_apply_fixed_penalty_amount".
             </small>
         </div>
     </div>
@@ -108,8 +108,8 @@
     <div class="col-md-6">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.PenaltyMaxCapAmount, new { @class = "form-control", type = "number", min = "0" })
-            <label>Penalty Cap (optional)</label>
-            <small class="text-muted d-block">💡 Maximum amount this penalty can reach (e.g., 50,000 FCFA).</small>
+            <label>@GlobalPenalty.penalty_cap (@GlobalShared.Optional)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.maximum_amount_this_penalty_can_reach (e.g., 50,000 FCFA).</small>
         </div>
     </div>
 
@@ -117,8 +117,8 @@
     <div class="col-md-4">
         <div class="form-check mt-4 pt-2">
             @Html.CheckBoxFor(m => m.IsCumulative, new { @class = "form-check-input", id = "IsCumulative" })
-            <label class="form-check-label fw-bold" for="IsCumulative">Cumulative</label>
-            <small class="text-muted d-block">💡 Apply the penalty at each eligible recurrence interval. Recommended for daily/weekly logic.</small>
+            <label class="form-check-label fw-bold" for="IsCumulative">@GlobalShared.cumulative</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.apply_the_penalty_at_each_eligible_recurrence_interval_recommended_for_dailyweekly_logic.</small>
         </div>
     </div>
 
@@ -126,8 +126,8 @@
     <div class="col-md-4">
         <div class="form-check mt-4 pt-2">
             @Html.CheckBoxFor(m => m.IsOneTimeOnly, new { @class = "form-check-input", id = "IsOneTimeOnly" })
-            <label class="form-check-label fw-bold" for="IsOneTimeOnly">Apply Once</label>
-            <small class="text-muted d-block">💡 Use for special one-time charges like late start fees.</small>
+            <label class="form-check-label fw-bold" for="IsOneTimeOnly">@GlobalShared.apply_once</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.use_for_special_onetime_charges_like_late_start_fees.</small>
         </div>
     </div>
 
@@ -135,7 +135,7 @@
     <!-- 📅 Timing & Recurrence -->
     <div class="col-12">
         <h6 class="text-danger border-bottom pt-2 pb-1">
-            <i class="mdi mdi-clock-outline me-1"></i> Timing & Recurrence
+            <i class="mdi mdi-clock-outline me-1"></i> @GlobalPenalty.timing_recurrence
         </h6>
     </div>
 
@@ -143,8 +143,8 @@
     <div class="col-md-4">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.GracePeriodInDaysBeforeApplyingPenalty, new { @class = "form-control", type = "number", min = "0" })
-            <label>Grace Period (Days)</label>
-            <small class="text-muted d-block">💡 Days after due date before penalty eligibility begins.</small>
+            <label>@GlobalShared.grace_period (@GlobalShared.Days)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.days_after_due_date_before_penalty_eligibility_begins.</small>
         </div>
     </div>
 
@@ -152,8 +152,8 @@
     <div class="col-md-4">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.DaysToApplyPenalty, new { @class = "form-control", type = "number", min = "0" })
-            <label>Apply After (Days)</label>
-            <small class="text-muted d-block">💡 Minimum number of days overdue before enforcing penalty.</small>
+            <label>@GlobalShared.apply_after (@GlobalShared.Days)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.minimum_number_of_days_overdue_before_enforcing_penalty.</small>
         </div>
     </div>
 
@@ -161,8 +161,8 @@
     <div class="col-md-4">
         <div class="form-check mt-4 pt-2">
             @Html.CheckBoxFor(m => m.ApplyOnWeekends, new { @class = "form-check-input", id = "ApplyOnWeekends" })
-            <label class="form-check-label fw-bold" for="ApplyOnWeekends">Apply on Weekends</label>
-            <small class="text-muted d-block">💡 Check to allow penalties even on weekends.</small>
+            <label class="form-check-label fw-bold" for="ApplyOnWeekends">@GlobalShared.apply_on_weekends</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.check_to_allow_penalties_even_on_weekends.</small>
         </div>
     </div>
 
@@ -176,10 +176,10 @@
                     new SelectListItem { Text = "Months", Value = "Months" },
                     new SelectListItem { Text = "Years", Value = "Years" }
                 },
-                "--- Select Period ---",
+                $"--- {@GlobalShared.select_period} ---",
                 new { @class = "form-control select2" })
-            <label>Recurring Period</label>
-            <small class="text-muted d-block">💡 How often to apply: daily, weekly, monthly, etc.</small>
+            <label>@GlobalShared.recurring_period</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.how_often_to_apply_daily_weekly_monthly_etc.</small>
         </div>
     </div>
 
@@ -187,8 +187,8 @@
     <div class="col-md-4">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.RecuringInterval, new { @class = "form-control", type = "number", min = "1" })
-            <label>Interval</label>
-            <small class="text-muted d-block">💡 Multiplier of the period (e.g., every 2 weeks = 2).</small>
+            <label>@GlobalShared.interval</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.multiplier_of_the_period (e.g., every 2 weeks = 2).</small>
         </div>
     </div>
 
@@ -196,8 +196,8 @@
     <div class="col-md-4">
         <div class="form-check mt-4 pt-2">
             @Html.CheckBox("HasExpiryAfterDays", false, new { @class = "form-check-input", id = "HasExpiryAfterDays" })
-            <label class="form-check-label fw-bold" for="HasExpiryAfterDays">Enable Expiry by Days</label>
-            <small class="text-muted d-block">💡 Ends penalty enforcement after a specific number of days.</small>
+            <label class="form-check-label fw-bold" for="HasExpiryAfterDays">@GlobalPenalty.enable_expiry_by_days</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.ends_penalty_enforcement_after_a_specific_number_of_days.</small>
         </div>
     </div>
 
@@ -205,8 +205,8 @@
     <div class="col-md-4" id="expiryDaysContainer" style="display:none;">
         <div class="form-floating shadow-sm">
             @Html.TextBox("ExpireAfterDays", null, new { @class = "form-control", type = "number", min = "1" })
-            <label>Expire After (Days)</label>
-            <small class="text-muted d-block">💡 Time in days from activation until penalty stops applying.</small>
+            <label>@GlobalShared.expire_after (@GlobalShared.Days)</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.time_in_days_from_activation_until_penalty_stops_applying.</small>
         </div>
     </div>
 
@@ -216,7 +216,7 @@
     <!-- 🧾 Accounting -->
     <div class="col-12">
         <h6 class="text-danger border-bottom pt-2 pb-1">
-            <i class="mdi mdi-bank-transfer me-1"></i> Accounting Posting
+            <i class="mdi mdi-bank-transfer me-1"></i> @GlobalPenalty.accounting_posting
         </h6>
     </div>
 
@@ -224,8 +224,8 @@
     <div class="col-md-12">
         <div class="form-floating shadow-sm">
             @Html.TextBoxFor(m => m.FeePostingAccountId, new { @class = "form-control" })
-            <label>Fee Posting Account ID</label>
-            <small class="text-muted d-block">💡 Used for tracking penalty revenue in the General Ledger (GL).</small>
+            <label>@GlobalPenalty.fee_posting_account_id</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.used_for_tracking_penalty_revenue_in_the_general_ledger_gl.</small>
         </div>
     </div>
 
@@ -233,8 +233,8 @@
     <div class="col-md-12">
         <div class="form-check mt-3">
             @Html.CheckBoxFor(m => m.IsEnabled, new { @class = "form-check-input", id = "IsEnabled" })
-            <label class="form-check-label fw-bold" for="IsEnabled">Enable Penalty</label>
-            <small class="text-muted d-block">💡 Toggle to activate or deactivate this penalty rule.</small>
+            <label class="form-check-label fw-bold" for="IsEnabled">@GlobalShared.enable_penalty</label>
+            <small class="text-muted d-block">💡 @GlobalPenalty.toggle_to_activate_or_deactivate_this_penalty_rule.</small>
         </div>
     </div>
 
@@ -244,7 +244,7 @@
             <i class="mdi mdi-content-save-outline me-1"></i>
             @(Model.Id == null ? "Save Configuration" : "Update Configuration")
         </button>
-        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">Reset</button>
+        <button type="reset" class="btn btn-outline-secondary shadow-sm px-4">@GlobalShared.Reset</button>
     </div>
 
 

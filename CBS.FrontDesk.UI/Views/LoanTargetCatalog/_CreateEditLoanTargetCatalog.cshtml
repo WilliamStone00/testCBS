@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.UpdateLoanTargetCatalogRequest
+@model CBS.FrontDesk.Data.Entity.LoanConf.UpdateLoanTargetCatalogRequest
 @using Resources
 
 <div class="modal-body">
@@ -49,7 +49,7 @@
                                     placeholder = "Name (English)",
                                     maxlength = "200"
                                 })
-                                <label>Name (English)</label>
+                                <label>@GlobalShared.Name (@GlobalShared.English)</label>
                                 @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                                     placeholder = "Name (French)",
                                     maxlength = "200"
                                 })
-                                <label>Name (French)</label>
+                                <label>@GlobalShared.Name (@GlobalShared.French)</label>
                                 @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                     "Select PCMF Population",
                                     new { @class = "form-control select2" }
                                 )
-                                <label>PCMF Population</label>
+                                <label>@GlobalShared.pcmf_population</label>
                                 @Html.ValidationMessageFor(m => m.PcmfPopulation, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                             <div class="form-check mt-2">
                                 @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
                                 <label class="form-check-label fw-bold ms-2" for="isActive">
-                                    Active Status
+                                    @GlobalShared.Active_Status
                                 </label>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                         else
                         {
                             <button type="submit" class="btn btn-primary me-2">
-                                <i class="mdi mdi-refresh me-1"></i> @GlobalBank.Update
+                                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Update
                             </button>
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                                 Close

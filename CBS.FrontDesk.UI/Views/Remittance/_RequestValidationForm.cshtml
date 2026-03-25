@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.ValidationOfRemittanceCommand
+@model CBS.FrontDesk.Data.Entity.SavingProducts.ValidationOfRemittanceCommand
 @using Resources
 @{
     var totalAmountPayable = Model.Remittance.Amount + Model.Remittance.Fee;
@@ -14,48 +14,48 @@
         <div class="accordion-item mt-2">
             <h2 class="accordion-header" id="remittanceDetailsHeader">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#remittanceDetails" aria-expanded="true" aria-controls="remittanceDetails">
-                    @GlobalRemittance.RemittanceDetails
+                    @GlobalRemittance.remittance_details
                 </button>
             </h2>
             <div id="remittanceDetails" class="accordion-collapse collapse show" aria-labelledby="remittanceDetailsHeader" data-bs-parent="#remittanceAccordion">
                 <div class="accordion-body">
                     <fieldset class="fieldset-custom">
-                        <legend id="select_base">@GlobalRemittance.RemittanceDetails</legend>
+                        <legend id="select_base">@GlobalRemittance.remittance_details</legend>
                         <div class="mb-4">
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p><strong>@GlobalRemittance.Date:</strong> @Model.Remittance.InitiationDate</p>
-                                    <p><strong>@GlobalRemittance.Sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
-                                    <p><strong>@GlobalRemittance.Receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
-                                    <p><strong>@GlobalRemittance.InitialAmount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
-                                    <p><strong>@GlobalRemittance.Reference:</strong> @Model.Remittance.TransactionReference</p>
+                                    <p><strong>@GlobalShared.Date:</strong> @Model.Remittance.InitiationDate</p>
+                                    <p><strong>@GlobalShared.sender:</strong> @Model.Remittance.SenderName, [Tel: @Model.Remittance.SenderPhoneNumber]</p>
+                                    <p><strong>@GlobalShared.receiver:</strong> @Model.Remittance.ReceiverName, [Tel: @Model.Remittance.ReceiverPhoneNumber]</p>
+                                    <p><strong>@GlobalShared.initial_amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                    <p><strong>@GlobalShared.Reference:</strong> @Model.Remittance.TransactionReference</p>
                                     <p>
-                                        <strong>@GlobalRemittance.ChargeStatus:</strong>
+                                        <strong>@GlobalRemittance.charge_status:</strong>
                                         @if (Model.Remittance.ChargeType == "Inclussive")
                                         {
-                                            <span class="badge bg-dark text-white">@GlobalRemittance.ChargeIncludedInAmount</span>
+                                            <span class="badge bg-dark text-white">@GlobalRemittance.charge_included_in_amount</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-dark text-white">@GlobalRemittance.ChargeExcludedFromAmount</span>
+                                            <span class="badge bg-dark text-white">@GlobalRemittance.charge_excluded_from_amount</span>
                                         }
                                     </p>
-                                    <p><strong>@GlobalRemittance.TransferSource:</strong> @Model.Remittance.TransfterSource</p>
+                                    <p><strong>@GlobalShared.transfer_source:</strong> @Model.Remittance.TransfterSource</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>@GlobalRemittance.RequestedAmount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
-                                    <p><strong>@GlobalRemittance.InitiatingBranch:</strong> @Model.Remittance.SourceBranchName</p>
-                                    <p><strong>@GlobalRemittance.Charges:</strong> @Model.Remittance.Fee.ToString("#,##0.0")</p>
+                                    <p><strong>@GlobalShared.Requested_Amount:</strong> @Model.Remittance.InitailAmount.ToString("#,##0.0")</p>
+                                    <p><strong>@GlobalShared.initiating_branch:</strong> @Model.Remittance.SourceBranchName</p>
+                                    <p><strong>@GlobalShared.Charges:</strong> @Model.Remittance.Fee.ToString("#,##0.0")</p>
                                     <p>
-                                        <strong>@GlobalRemittance.TotalAmountToBePaidBySender:</strong>
+                                        <strong>@GlobalRemittance.total_amount_to_be_paid_by_sender:</strong>
                                         <span class="text-success">@totalAmountPayable.ToString("#,##0.0")</span>
                                     </p>
                                     <p>
-                                        <strong>@GlobalRemittance.AmountToBeReceivedByReceiver:</strong>
+                                        <strong>@GlobalRemittance.amount_to_be_received_by_receiver:</strong>
                                         <span class="text-info">@totalAmountRecevable.ToString("#,##0.0")</span>
                                     </p>
-                                    <p><strong>@GlobalRemittance.TransferType:</strong> @Model.Remittance.TransferType</p>
+                                    <p><strong>@GlobalShared.transfer_type:</strong> @Model.Remittance.TransferType</p>
                                 </div>
                             </div>
                         </div>
@@ -68,13 +68,13 @@
         <div class="accordion-item mt-2">
             <h2 class="accordion-header" id="reviewApproveFormHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reviewApproveForm" aria-expanded="false" aria-controls="reviewApproveForm">
-                    @GlobalRemittance.ReviewAndApproveForm
+                    @GlobalRemittance.review_and_approve_form
                 </button>
             </h2>
             <div id="reviewApproveForm" class="accordion-collapse collapse" aria-labelledby="reviewApproveFormHeader" data-bs-parent="#remittanceAccordion">
                 <div class="accordion-body">
                     <fieldset class="fieldset-custom mt-4">
-                        <legend id="select_base">@GlobalRemittance.ReviewAndApproveForm</legend>
+                        <legend id="select_base">@GlobalRemittance.review_and_approve_form</legend>
                         <hr>
                         <div class="row mt-2 gy-4">
                             <!-- Status Radio Buttons -->
@@ -97,7 +97,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextAreaFor(m => m.ApprovalComment, new { @class = "form-control", @style = "height: 70px;" })
                                     @Html.ValidationMessageFor(m => m.ApprovalComment, "", new { @class = "text-danger" })
-                                    <label for="formValidationDob">@GlobalRemittance.ApprovalNote</label>
+                                    <label for="formValidationDob">@GlobalShared.Approval_note</label>
                                 </div>
                             </div>
                         </div>

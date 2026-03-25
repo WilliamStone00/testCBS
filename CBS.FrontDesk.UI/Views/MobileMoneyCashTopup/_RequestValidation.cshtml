@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MobileMoneyCashTopup
+@model CBS.FrontDesk.Data.Entity.SavingProducts.MobileMoneyCashTopup
 
 @using Resources
 @if (ViewBag.HasError)
@@ -14,12 +14,12 @@ else
     {
         @Html.HiddenFor(model => model.ValidateMobileMoneyCashTopup.Id)
         <fieldset class="fieldset-custom">
-            <legend id="select_base">@Model.OperatorType.ToUpper() @GlobalMobileMoneyCashTopup.TRANSFER_PENDING_VALIDATION: REF (@Model.RequestReference)</legend>
+            <legend id="select_base">@Model.OperatorType.ToUpper() @GlobalMobileMoneyCashTopup.transfer_pending_validation: REF (@Model.RequestReference)</legend>
             <div class="row mt-2 gy-4">
                 <!-- Request Approval Status (Radio Buttons) -->
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <label for="RequestApprovalStatus"><b>@GlobalMobileMoneyCashTopup.ApprovalStatus</b></label>
+                        <label for="RequestApprovalStatus"><b>@GlobalShared.Approval_status</b></label>
                         <br />
                         <div class="border p-3 mt-2">
                             <div class="form-check form-check-inline">
@@ -36,7 +36,7 @@ else
                             </div>
                         </div>
                         @Html.ValidationMessageFor(m => m.ValidateMobileMoneyCashTopup.RequestApprovalStatus, "", new { @class = "text-danger " })
-                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.SelectTheCurrentApprovalStatusForTheTransferRequest."></i>
+                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.select_the_current_approval_status_for_the_transfer_request."></i>
                     </div>
                 </div>
 
@@ -44,9 +44,9 @@ else
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         <span class="formatted-amount shadow-box float-end">
-                            @GlobalMobileMoneyCashTopup.RequestedAmount: @Model.Amount.ToString("#,##0.0")
+                            @GlobalShared.Requested_Amount: @Model.Amount.ToString("#,##0.0")
                         </span>
-                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ThisIsTheAmountRequestedInTheTransfer."></i>
+                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.this_is_the_amount_requested_in_the_transfer."></i>
                     </div>
                 </div>
 
@@ -55,16 +55,16 @@ else
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.ValidateMobileMoneyCashTopup.RequestApprovalNote, new { @class = "form-control", @style = "height: 70px;" })
                         @Html.ValidationMessageFor(m => m.ValidateMobileMoneyCashTopup.RequestApprovalNote, "", new { @class = "text-danger " })
-                        <label for="formValidationApprovalNote">@GlobalMobileMoneyCashTopup.ApprovalNote</label>
-                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.EnterAnyNotesRegardingTheApprovalStatus."></i>
+                        <label for="formValidationApprovalNote">@GlobalShared.Approval_note</label>
+                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.enter_any_notes_regarding_the_approval_status."></i>
                     </div>
                 </div>
 
                 <!-- Request Details Section (Modal Trigger) -->
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detailsModal">@GlobalMobileMoneyCashTopup.ViewRequestDetails</button>
-                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ClickToViewTheDetailedInformationOfTheRequest."></i>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detailsModal">@GlobalMobileMoneyCashTopup.view_request_details</button>
+                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.click_to_view_the_detailed_information_of_the_request."></i>
                     </div>
                 </div>
 
@@ -73,8 +73,8 @@ else
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.RequestNote, new { @class = "form-control", @style = "height: 70px;", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.RequestNote, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">@GlobalMobileMoneyCashTopup.RequestNote</label>
-                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ThisNoteContainsAdditionalInformationAboutTheRequest."></i>
+                        <label for="formValidationDob">@GlobalShared.Request_note</label>
+                        <i class="mdi mdi-help-circle text-muted ms-1" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.this_note_contains_additional_information_about_the_request."></i>
                     </div>
                 </div>
             </div>
@@ -91,57 +91,57 @@ else
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">@GlobalMobileMoneyCashTopup.RequestDetails</h5>
+                    <h5 class="modal-title" id="detailsModalLabel">@GlobalShared.request_details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table">
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.RequestedDateTime:</th>
+                            <th>@GlobalMobileMoneyCashTopup.requested_date_time:</th>
                             <td>@Model.RequestDate</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.TransactionReference:</th>
+                            <th>@GlobalShared.Transaction_Reference:</th>
                             <td>@Model.MobileMoneyTransactionId</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.RequestReference:</th>
+                            <th>@GlobalShared.request_reference:</th>
                             <td>@Model.RequestReference</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.RequestedAmount:</th>
+                            <th>@GlobalShared.Requested_Amount:</th>
                             <td>@Model.Amount.ToString("#,##0.0")</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.InitiatedBy:</th>
+                            <th>@GlobalShared.Initiated_By:</th>
                             <td>@Model.RequestInitiatedBy</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.OperatorType:</th>
+                            <th>@GlobalShared.operator_type:</th>
                             <td>@Model.OperatorType</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.Source Type:</th>
+                            <th>@GlobalShared.source Type:</th>
                             <td>@Model.SourceType</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.Branch:</th>
+                            <th>@GlobalShared.Branch:</th>
                             <td>@Model.Branch.BranchCode, @Model.Branch.Name</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.RequestNote:</th>
+                            <th>@GlobalShared.Request_note:</th>
                             <td>@Model.RequestNote</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.ApprovalStatus:</th>
+                            <th>@GlobalShared.Approval_status:</th>
                             <td>@Model.RequestApprovalStatus</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.MemberReferenceAccountNumber:</th>
+                            <th>@GlobalMobileMoneyCashTopup.member_reference_account_number:</th>
                             <td>@Model.MobileMoneyMemberReference & @Model.AccountNumber</td>
                         </tr>
                         <tr>
-                            <th>@GlobalMobileMoneyCashTopup.ApprovalNote:</th>
+                            <th>@GlobalShared.Approval_note:</th>
                             <td>@Model.RequestApprovalNote</td>
                         </tr>
                     </table>

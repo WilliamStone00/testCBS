@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
 
 @{
     ViewBag.Title = "Cheque Number Configuration";
@@ -10,15 +10,14 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-cog-outline me-2"></i> Cheque Number Configurations
+                        <i class="mdi mdi-cog-outline me-2"></i> @GlobalNumConfig.cheque_number_configurations
                     </h1>
                     <p class="card-text">
-                        Define and manage the structure of cheque number identifiers by arranging variables
-                        (Bank Code, Branch Code, Year, Serial Number).
+                        @GlobalNumConfig.define_and_manage_the_structure_of_cheque_number_identifiers_by_arranging_variablesbank_code_branch_code_year_serial_number.
                     </p>
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Use drag-and-drop or dropdowns to control the order of variables in cheque numbers.
+                        @GlobalNumConfig.use_draganddrop_or_dropdowns_to_control_the_order_of_variables_in_cheque_numbers.
                     </div>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -28,7 +27,7 @@
     <!--tips-->
     <div class="card mb-3">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> Tips for Cheque Number Configuration</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalNumConfig.tips_for_cheque_number_configuration</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChequeTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -38,24 +37,24 @@
                 <ul>
                     <li>
                         <i class="mdi mdi-cursor-move text-success me-2"></i>
-                        <strong>Drag & Drop:</strong> Drag placeholders (e.g. <code>{BranchCode}</code>, <code>{Year}</code>, <code>{Sequence}</code>) in the template area to build your cheque number format.
+                        <strong>@GlobalNumConfig.drag_drop:</strong> @Html.Raw(@GlobalNumConfig.drag_placeholders_eg_branchcode_year_sequence_in_the_template_area_to_build_your_cheque_number_format).
                     </li>
                     <li>
                         <i class="mdi mdi-eye text-info me-2"></i>
-                        <strong>Preview:</strong> The template area shows your current format in real time.
+                        <strong>@GlobalShared.Preview:</strong> @GlobalNumConfig.the_template_area_shows_your_current_format_in_real_time.
                         Example: <code>{BranchCode}-{Year}-{Sequence}</code>.
                     </li>
                     <li>
                         <i class="mdi mdi-check-decagram text-warning me-2"></i>
-                        <strong>Validation:</strong> Ensure each required placeholder (like <code>{Sequence}</code>) is included at least once.
+                        <strong>@GlobalShared.Validation:</strong> @Html.Raw(@GlobalNumConfig.ensure_each_required_placeholder_like_sequence_is_included_at_least_once).
                     </li>
                     <li>
                         <i class="mdi mdi-content-save text-primary me-2"></i>
-                        <strong>Save:</strong> Click "Save" to store your template. You can also <strong>Reset</strong> to clear and start fresh.
+                        <strong>@GlobalShared.Save:</strong> @Html.Raw(@GlobalNumConfig.click_save_to_store_your_template_you_can_also_reset_to_clear_and_start_fresh).
                     </li>
                     <li>
                         <i class="mdi mdi-refresh text-secondary me-2"></i>
-                        <strong>Reorder:</strong> Drag placeholders horizontally to adjust the order of fields in your cheque number.
+                        <strong>@GlobalShared.reorder:</strong> @GlobalNumConfig.drag_placeholders_horizontally_to_adjust_the_order_of_fields_in_your_cheque_number.
                     </li>
                 </ul>
             </div>
@@ -64,7 +63,7 @@
 
 
     <div class="card shadow p-3 mb-4">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Configurations</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.configurations</h5>
         <div class="card mb-1">
             <div class="card-body d-flex justify-content-end align-items-center">
                 <a href="@Url.Action("List", "NumConfig")"
@@ -79,7 +78,7 @@
                    id="btnViewList"
                    data-bs-toggle="tooltip"
                    title="Add New Configuration">
-                    <i class="mdi mdi-plus mdi-18px"></i> Add Configuration
+                    <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.add_configuration
                 </a>
             </div>
         </div>

@@ -61,794 +61,489 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account impact.
-        /// </summary>
-        internal static string AccountImpact {
-            get {
-                return ResourceManager.GetString("AccountImpact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Address anomalies like overpayments or missing records promptly.
         /// </summary>
-        internal static string AddressAnomaliesLikeOverpayments {
+        internal static string address_anomalies_like_overpayments {
             get {
-                return ResourceManager.GetString("AddressAnomaliesLikeOverpayments", resourceCulture);
+                return ResourceManager.GetString("address_anomalies_like_overpayments", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Analyzed Salary Upload Form.
         /// </summary>
-        internal static string AnalyzedSalaryUploadForm {
+        internal static string analyzed_salary_upload_form {
             get {
-                return ResourceManager.GetString("AnalyzedSalaryUploadForm", resourceCulture);
+                return ResourceManager.GetString("analyzed_salary_upload_form", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Analyzed Salary Upload Management.
         /// </summary>
-        internal static string AnalyzedSalaryUploadManagement {
+        internal static string analyzed_salary_upload_management {
             get {
-                return ResourceManager.GetString("AnalyzedSalaryUploadManagement", resourceCulture);
+                return ResourceManager.GetString("analyzed_salary_upload_management", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Avoid incorrect **Matricule, Salary Codes, or missing details** in the modified file.
         /// </summary>
-        internal static string AvoidIncorrectMatriculeSalaryCodesOrMissingDetails {
+        internal static string avoid_incorrect_matricule_salary_codes_or_missing_details {
             get {
-                return ResourceManager.GetString("AvoidIncorrectMatriculeSalaryCodesOrMissingDetails", resourceCulture);
+                return ResourceManager.GetString("avoid_incorrect_matricule_salary_codes_or_missing_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to button to analyze uploaded salary data.
         /// </summary>
-        internal static string buttonToAnalyzeUploadedSalaryData {
+        internal static string button_to_analyze_uploaded_salary_data {
             get {
-                return ResourceManager.GetString("buttonToAnalyzeUploadedSalaryData", resourceCulture);
+                return ResourceManager.GetString("button_to_analyze_uploaded_salary_data", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to button to check previously analyzed results.
         /// </summary>
-        internal static string buttonToCheckPreviouslyAnalyzedResults {
+        internal static string button_to_check_previously_analyzed_results {
             get {
-                return ResourceManager.GetString("buttonToCheckPreviouslyAnalyzedResults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges.
-        /// </summary>
-        internal static string Charges {
-            get {
-                return ResourceManager.GetString("Charges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click on.
-        /// </summary>
-        internal static string ClickOn {
-            get {
-                return ResourceManager.GetString("ClickOn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click the.
-        /// </summary>
-        internal static string ClickThe {
-            get {
-                return ResourceManager.GetString("ClickThe", resourceCulture);
+                return ResourceManager.GetString("button_to_check_previously_analyzed_results", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Debits the total salary amount from the selected source account and credits the members&apos; accounts.
         /// </summary>
-        internal static string DebitsTheTotalSalaryAmountFromTheSelectedSourceAccount {
+        internal static string debits_the_total_salary_amount_from_the_selected_source_account {
             get {
-                return ResourceManager.GetString("DebitsTheTotalSalaryAmountFromTheSelectedSourceAccount", resourceCulture);
+                return ResourceManager.GetString("debits_the_total_salary_amount_from_the_selected_source_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete invalid uploads to maintain clean and accurate records.
         /// </summary>
-        internal static string DeleteInvalidUploadsToMaintainClean {
+        internal static string delete_invalid_uploads_to_maintain_clean {
             get {
-                return ResourceManager.GetString("DeleteInvalidUploadsToMaintainClean", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deposit.
-        /// </summary>
-        internal static string Deposit {
-            get {
-                return ResourceManager.GetString("Deposit", resourceCulture);
+                return ResourceManager.GetString("delete_invalid_uploads_to_maintain_clean", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Edit analyzed salary records for corrections or updates when necessary.
         /// </summary>
-        internal static string EditAnalyzedSalaryRecordsForCorrections {
+        internal static string edit_analyzed_salary_records_for_corrections {
             get {
-                return ResourceManager.GetString("EditAnalyzedSalaryRecordsForCorrections", resourceCulture);
+                return ResourceManager.GetString("edit_analyzed_salary_records_for_corrections", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure all uploaded salary files are accurate and in the correct format.
         /// </summary>
-        internal static string EnsureAllUploadedSalaryFilesAreAccurate {
+        internal static string ensure_all_uploaded_salary_files_are_accurate {
             get {
-                return ResourceManager.GetString("EnsureAllUploadedSalaryFilesAreAccurate", resourceCulture);
+                return ResourceManager.GetString("ensure_all_uploaded_salary_files_are_accurate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure modifications match the **original format** to prevent mapping errors.
         /// </summary>
-        internal static string EnsureModificationsMatchTheOriginalFormat {
+        internal static string ensure_modifications_match_the_original_format {
             get {
-                return ResourceManager.GetString("EnsureModificationsMatchTheOriginalFormat", resourceCulture);
+                return ResourceManager.GetString("ensure_modifications_match_the_original_format", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure sufficient funds are available in the source account for salary and standing order payments.
         /// </summary>
-        internal static string EnsureSufficientFundsAreAvailable {
+        internal static string ensure_sufficient_funds_are_available {
             get {
-                return ResourceManager.GetString("EnsureSufficientFundsAreAvailable", resourceCulture);
+                return ResourceManager.GetString("ensure_sufficient_funds_are_available", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure uploaded files match payroll records.
         /// </summary>
-        internal static string EnsureUploadedFilesMatchPayrollRecords {
+        internal static string ensure_uploaded_files_match_payroll_records {
             get {
-                return ResourceManager.GetString("EnsureUploadedFilesMatchPayrollRecords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute salary.
-        /// </summary>
-        internal static string ExecuteSalary {
-            get {
-                return ResourceManager.GetString("ExecuteSalary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execution reason.
-        /// </summary>
-        internal static string ExecutionReason {
-            get {
-                return ResourceManager.GetString("ExecutionReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File category.
-        /// </summary>
-        internal static string FileCategory {
-            get {
-                return ResourceManager.GetString("FileCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File name.
-        /// </summary>
-        internal static string FileName {
-            get {
-                return ResourceManager.GetString("FileName", resourceCulture);
+                return ResourceManager.GetString("ensure_uploaded_files_match_payroll_records", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to File upload reference.
         /// </summary>
-        internal static string FileUploadReference {
+        internal static string file_upload_reference {
             get {
-                return ResourceManager.GetString("FileUploadReference", resourceCulture);
+                return ResourceManager.GetString("file_upload_reference", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IMPORTANT TIPS.
+        ///   Looks up a localized string similar to Gross Salary.
         /// </summary>
-        internal static string IMPORTANT_TIPS {
+        internal static string gross_salary {
             get {
-                return ResourceManager.GetString("IMPORTANT_TIPS", resourceCulture);
+                return ResourceManager.GetString("gross_salary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to L.INT.
         /// </summary>
-        internal static string L_INT {
+        internal static string l_int {
             get {
-                return ResourceManager.GetString("L_INT", resourceCulture);
+                return ResourceManager.GetString("l_int", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to L.Rep.
         /// </summary>
-        internal static string L_Rep {
+        internal static string l_rep {
             get {
-                return ResourceManager.GetString("L_Rep", resourceCulture);
+                return ResourceManager.GetString("l_rep", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to L.VAT.
         /// </summary>
-        internal static string L_VAT {
+        internal static string l_vat {
             get {
-                return ResourceManager.GetString("L_VAT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Matricule.
-        /// </summary>
-        internal static string Matricule {
-            get {
-                return ResourceManager.GetString("Matricule", resourceCulture);
+                return ResourceManager.GetString("l_vat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Monitor the **status of uploaded files** to track verification and approval stages.
         /// </summary>
-        internal static string MonitorTheStatusOfUploadedFiles {
+        internal static string monitor_the_status_of_uploaded_files {
             get {
-                return ResourceManager.GetString("MonitorTheStatusOfUploadedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("monitor_the_status_of_uploaded_files", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No salary uploads found.
         /// </summary>
-        internal static string NoSalaryUploadsFound {
+        internal static string no_salary_uploads_found {
             get {
-                return ResourceManager.GetString("NoSalaryUploadsFound", resourceCulture);
+                return ResourceManager.GetString("no_salary_uploads_found", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to N.Salary.
         /// </summary>
-        internal static string NSalary {
+        internal static string nsalary {
             get {
-                return ResourceManager.GetString("NSalary", resourceCulture);
+                return ResourceManager.GetString("nsalary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Processes automatic transfers for members with linked standing orders.
         /// </summary>
-        internal static string ProcessesAutomaticTransfersForMembersWithLinkedStandingOrders {
+        internal static string processes_automatic_transfers_for_members_with_linked_standing_orders {
             get {
-                return ResourceManager.GetString("ProcessesAutomaticTransfersForMembersWithLinkedStandingOrders", resourceCulture);
+                return ResourceManager.GetString("processes_automatic_transfers_for_members_with_linked_standing_orders", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to P.Shares.
         /// </summary>
-        internal static string PShares {
+        internal static string pshares {
             get {
-                return ResourceManager.GetString("PShares", resourceCulture);
+                return ResourceManager.GetString("pshares", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to P.Shares.
         /// </summary>
-        internal static string P_Shares {
+        internal static string p_shares {
             get {
-                return ResourceManager.GetString("P_Shares", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference.
-        /// </summary>
-        internal static string Reference {
-            get {
-                return ResourceManager.GetString("Reference", resourceCulture);
+                return ResourceManager.GetString("p_shares", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Regularly verify analyzed results against payroll to ensure accuracy.
         /// </summary>
-        internal static string RegularlyVerifyAnalyzedResults {
+        internal static string regularly_verify_analyzed_results {
             get {
-                return ResourceManager.GetString("RegularlyVerifyAnalyzedResults", resourceCulture);
+                return ResourceManager.GetString("regularly_verify_analyzed_results", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Remove outdated or incorrect files with caution.
         /// </summary>
-        internal static string RemoveOutdatedOrIncorrectFilesWithCaution {
+        internal static string remove_outdated_or_incorrect_files_with_caution {
             get {
-                return ResourceManager.GetString("RemoveOutdatedOrIncorrectFilesWithCaution", resourceCulture);
+                return ResourceManager.GetString("remove_outdated_or_incorrect_files_with_caution", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Retrieve uploaded files anytime for reference.
         /// </summary>
-        internal static string RetrieveUploadedFilesAnytimeForReference {
+        internal static string retrieve_uploaded_files_anytime_for_reference {
             get {
-                return ResourceManager.GetString("RetrieveUploadedFilesAnytimeForReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Risks.
-        /// </summary>
-        internal static string Risks {
-            get {
-                return ResourceManager.GetString("Risks", resourceCulture);
+                return ResourceManager.GetString("retrieve_uploaded_files_anytime_for_reference", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Run Salary Analysis.
         /// </summary>
-        internal static string RunSalaryAnalysis {
+        internal static string run_salary_analysis {
             get {
-                return ResourceManager.GetString("RunSalaryAnalysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Salary.
-        /// </summary>
-        internal static string Salary {
-            get {
-                return ResourceManager.GetString("Salary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Salary analysis.
-        /// </summary>
-        internal static string SalaryAnalysis {
-            get {
-                return ResourceManager.GetString("SalaryAnalysis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Salary processing.
-        /// </summary>
-        internal static string SalaryProcessing {
-            get {
-                return ResourceManager.GetString("SalaryProcessing", resourceCulture);
+                return ResourceManager.GetString("run_salary_analysis", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to SALARY EXECUTION.
         /// </summary>
-        internal static string SALARY_EXECUTION {
+        internal static string salary_execution {
             get {
-                return ResourceManager.GetString("SALARY_EXECUTION", resourceCulture);
+                return ResourceManager.GetString("salary_execution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary Execution Summary.
+        /// </summary>
+        internal static string salary_execution_summary {
+            get {
+                return ResourceManager.GetString("salary_execution_summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary processing.
+        /// </summary>
+        internal static string salary_processing {
+            get {
+                return ResourceManager.GetString("salary_processing", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to SALARY SUMMARY.
         /// </summary>
-        internal static string SALARY_SUMMARY {
+        internal static string salary_summary {
             get {
-                return ResourceManager.GetString("SALARY_SUMMARY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Savings.
-        /// </summary>
-        internal static string Savings {
-            get {
-                return ResourceManager.GetString("Savings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select an account.
-        /// </summary>
-        internal static string SelectAnAccount {
-            get {
-                return ResourceManager.GetString("SelectAnAccount", resourceCulture);
+                return ResourceManager.GetString("salary_summary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select an analysed file to re-upload.
         /// </summary>
-        internal static string SelectAnAnalysedFileToReUpload {
+        internal static string select_an_analysed_file_to_re_upload {
             get {
-                return ResourceManager.GetString("SelectAnAnalysedFileToReUpload", resourceCulture);
+                return ResourceManager.GetString("select_an_analysed_file_to_re_upload", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select a system analysed file.
         /// </summary>
-        internal static string SelectASystemAnalysedFile {
+        internal static string select_asystem_analysed_file {
             get {
-                return ResourceManager.GetString("SelectASystemAnalysedFile", resourceCulture);
+                return ResourceManager.GetString("select_asystem_analysed_file", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select modify analysed salary file to map with the system analyzed selected above.
         /// </summary>
-        internal static string SelectModifyAnalysedSalaryFileToMapWithTheSystemAnalyzedSelectedAbove {
+        internal static string select_modify_analysed_salary_file_to_map_with_the_system_analyzed_selected_above {
             get {
-                return ResourceManager.GetString("SelectModifyAnalysedSalaryFileToMapWithTheSystemAnalyzedSelectedAbove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select source account.
-        /// </summary>
-        internal static string SelectSourceAccount {
-            get {
-                return ResourceManager.GetString("SelectSourceAccount", resourceCulture);
+                return ResourceManager.GetString("select_modify_analysed_salary_file_to_map_with_the_system_analyzed_selected_above" +
+                        "", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Select the correct system-analyzed file** from the list before uploading the modified version.
         /// </summary>
-        internal static string SelectTheCorrectSystemAnalyzedFile {
+        internal static string select_the_correct_system_analyzed_file {
             get {
-                return ResourceManager.GetString("SelectTheCorrectSystemAnalyzedFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Shares.
-        /// </summary>
-        internal static string Shares {
-            get {
-                return ResourceManager.GetString("Shares", resourceCulture);
+                return ResourceManager.GetString("select_the_correct_system_analyzed_file", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to S.Order.
         /// </summary>
-        internal static string SOrder {
+        internal static string sorder {
             get {
-                return ResourceManager.GetString("SOrder", resourceCulture);
+                return ResourceManager.GetString("sorder", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Standing orders.
         /// </summary>
-        internal static string StandingOrders {
+        internal static string standing_orders {
             get {
-                return ResourceManager.GetString("StandingOrders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected source account will be debited to cover both salary payments and standing orders.
-        /// </summary>
-        internal static string TheSelectedSourceAccountWillBeDebited {
-            get {
-                return ResourceManager.GetString("TheSelectedSourceAccountWillBeDebited", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This action cannot be undone. Please verify all details before proceeding.
-        /// </summary>
-        internal static string ThisActionCannotBeUndone {
-            get {
-                return ResourceManager.GetString("ThisActionCannotBeUndone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TIPS.
-        /// </summary>
-        internal static string TIPS {
-            get {
-                return ResourceManager.GetString("TIPS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tips &amp; Best Practices.
-        /// </summary>
-        internal static string TipsBestPractices {
-            get {
-                return ResourceManager.GetString("TipsBestPractices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to to check existing analyzed salary files.
-        /// </summary>
-        internal static string toCheckExistingAnalyzedSalaryFiles {
-            get {
-                return ResourceManager.GetString("toCheckExistingAnalyzedSalaryFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total charges.
-        /// </summary>
-        internal static string TotalCharges {
-            get {
-                return ResourceManager.GetString("TotalCharges", resourceCulture);
+                return ResourceManager.GetString("standing_orders", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total loan interest.
         /// </summary>
-        internal static string TotalLoanInterest {
+        internal static string total_loan_interest {
             get {
-                return ResourceManager.GetString("TotalLoanInterest", resourceCulture);
+                return ResourceManager.GetString("total_loan_interest", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total loan repayment.
         /// </summary>
-        internal static string TotalLoanRepayment {
+        internal static string total_loan_repayment {
             get {
-                return ResourceManager.GetString("TotalLoanRepayment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total members.
-        /// </summary>
-        internal static string TotalMembers {
-            get {
-                return ResourceManager.GetString("TotalMembers", resourceCulture);
+                return ResourceManager.GetString("total_loan_repayment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total net salary.
         /// </summary>
-        internal static string TotalNetSalary {
+        internal static string total_net_salary {
             get {
-                return ResourceManager.GetString("TotalNetSalary", resourceCulture);
+                return ResourceManager.GetString("total_net_salary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total preference shares.
         /// </summary>
-        internal static string TotalPreferenceShares {
+        internal static string total_preference_shares {
             get {
-                return ResourceManager.GetString("TotalPreferenceShares", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total savings.
-        /// </summary>
-        internal static string TotalSavings {
-            get {
-                return ResourceManager.GetString("TotalSavings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total shares.
-        /// </summary>
-        internal static string TotalShares {
-            get {
-                return ResourceManager.GetString("TotalShares", resourceCulture);
+                return ResourceManager.GetString("total_preference_shares", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Total standing order amount.
         /// </summary>
-        internal static string TotalStandingOrderAmount {
+        internal static string total_standing_order_amount {
             get {
-                return ResourceManager.GetString("TotalStandingOrderAmount", resourceCulture);
+                return ResourceManager.GetString("total_standing_order_amount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload analyzed salary file.
+        ///   Looks up a localized string similar to to check existing analyzed salary files.
         /// </summary>
-        internal static string UploadAnalyzedSalaryFile {
+        internal static string to_check_existing_analyzed_salary_files {
             get {
-                return ResourceManager.GetString("UploadAnalyzedSalaryFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upload and manage **system-analyzed salary files** for verification and modifications before processing final payroll updates.
-        /// </summary>
-        internal static string UploadAndManageSystemAnalyzedSalaryFiles {
-            get {
-                return ResourceManager.GetString("UploadAndManageSystemAnalyzedSalaryFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploaded by.
-        /// </summary>
-        internal static string UploadedBy {
-            get {
-                return ResourceManager.GetString("UploadedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploaded files.
-        /// </summary>
-        internal static string UploadedFiles {
-            get {
-                return ResourceManager.GetString("UploadedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploaded on.
-        /// </summary>
-        internal static string UploadedOn {
-            get {
-                return ResourceManager.GetString("UploadedOn", resourceCulture);
+                return ResourceManager.GetString("to_check_existing_analyzed_salary_files", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Uploaded salary files.
         /// </summary>
-        internal static string UploadedSalaryFiles {
+        internal static string uploaded_salary_files {
             get {
-                return ResourceManager.GetString("UploadedSalaryFiles", resourceCulture);
+                return ResourceManager.GetString("uploaded_salary_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload analyzed salary file.
+        /// </summary>
+        internal static string upload_analyzed_salary_file {
+            get {
+                return ResourceManager.GetString("upload_analyzed_salary_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload and manage **system-analyzed salary files** for verification and modifications before processing final payroll updates.
+        /// </summary>
+        internal static string upload_and_manage_system_analyzed_salary_files {
+            get {
+                return ResourceManager.GetString("upload_and_manage_system_analyzed_salary_files", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Upload, manage, and review salary files seamlessly. Use the options below to upload new files or access existing ones.
         /// </summary>
-        internal static string UploadManageAndReviewSalaryFilesSeamlessly {
+        internal static string upload_manage_and_review_salary_files_seamlessly {
             get {
-                return ResourceManager.GetString("UploadManageAndReviewSalaryFilesSeamlessly", resourceCulture);
+                return ResourceManager.GetString("upload_manage_and_review_salary_files_seamlessly", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Upload new analyzed file.
         /// </summary>
-        internal static string UploadNewAnalyzedFile {
+        internal static string upload_new_analyzed_file {
             get {
-                return ResourceManager.GetString("UploadNewAnalyzedFile", resourceCulture);
+                return ResourceManager.GetString("upload_new_analyzed_file", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use search filters to quickly locate specific employee salary records.
         /// </summary>
-        internal static string UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords {
+        internal static string use_search_filters_to_quickly_locate_specific_employee_salary_records {
             get {
-                return ResourceManager.GetString("UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use the.
-        /// </summary>
-        internal static string UseThe {
-            get {
-                return ResourceManager.GetString("UseThe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Verify regularly.
-        /// </summary>
-        internal static string VerifyRegularly {
-            get {
-                return ResourceManager.GetString("VerifyRegularly", resourceCulture);
+                return ResourceManager.GetString("use_search_filters_to_quickly_locate_specific_employee_salary_records", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records.
         /// </summary>
-        internal static string ViewAnalyzeAndManageEmployeeSalary {
+        internal static string view_analyze_and_manage_employee_salary {
             get {
-                return ResourceManager.GetString("ViewAnalyzeAndManageEmployeeSalary", resourceCulture);
+                return ResourceManager.GetString("view_analyze_and_manage_employee_salary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View file records and insights.
         /// </summary>
-        internal static string ViewFileRecordsAndInsights {
+        internal static string view_file_records_and_insights {
             get {
-                return ResourceManager.GetString("ViewFileRecordsAndInsights", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View files.
-        /// </summary>
-        internal static string ViewFiles {
-            get {
-                return ResourceManager.GetString("ViewFiles", resourceCulture);
+                return ResourceManager.GetString("view_file_records_and_insights", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View Result Of Analyzed Salary.
         /// </summary>
-        internal static string ViewResultOfAnalyzedSalary {
+        internal static string view_result_of_analyzed_salary {
             get {
-                return ResourceManager.GetString("ViewResultOfAnalyzedSalary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View uploaded files.
-        /// </summary>
-        internal static string ViewUploadedFiles {
-            get {
-                return ResourceManager.GetString("ViewUploadedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
+                return ResourceManager.GetString("view_result_of_analyzed_salary", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You are about to execute salary payments and process standing orders. Please review the details before confirming.
         /// </summary>
-        internal static string YouAreAboutToExecuteSalaryPayments {
+        internal static string you_are_about_to_execute_salary_payments {
             get {
-                return ResourceManager.GetString("YouAreAboutToExecuteSalaryPayments", resourceCulture);
+                return ResourceManager.GetString("you_are_about_to_execute_salary_payments", resourceCulture);
             }
         }
     }

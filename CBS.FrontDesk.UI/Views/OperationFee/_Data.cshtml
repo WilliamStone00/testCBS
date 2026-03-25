@@ -1,11 +1,11 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee>
     @using Resources
 <fieldset class="fieldset-custom">
     <legend>Charges listing</legend>
     @if (Model.Count == 0)
     {
         <div class="text-center my-3">
-            <p>No fee type is created</p>
+            <p>@GlobalOperationFee.no_fee_type_is_created</p>
         </div>
     }
     else
@@ -14,11 +14,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalOperationFee.Name</th>
-                        <th>@GlobalOperationFee.Type</th>
-                        <th>@GlobalOperationFee.Applied</th>
-                        <th>@GlobalOperationFee.Entity</th>
-                        <th>@GlobalOperationFee.DescriptionLc</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.Type</th>
+                        <th>@GlobalShared.applied</th>
+                        <th>@GlobalShared.entity</th>
+                        <th>@GlobalShared.Description</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -31,21 +31,21 @@
                             <td style="width:10%">
                                 @if (d.IsAppliesOnHoliday)
                                 {
-                                    <span class="badge bg-info">@GlobalOperationFee.OnlyOnHolidays</span>
+                                    <span class="badge bg-info">@GlobalOperationFee.only_on_holidays</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalOperationFee.NormalDays</span>
+                                    <span class="badge bg-warning">@GlobalShared.normal_days</span>
                                 }
                             </td>
                             <td style="width:10%">
                                 @if (d.IsMoralPerson)
                                 {
-                                    <span class="badge bg-info">@GlobalOperationFee.Moral</span>
+                                    <span class="badge bg-info">@GlobalShared.moral</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalOperationFee.Physical</span>
+                                    <span class="badge bg-warning">@GlobalShared.physical</span>
                                 }
                             </td>
                             <td style="width:35%">@d.Description</td>

@@ -1,23 +1,23 @@
-﻿@*@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@*@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
     @using Resources
 
     <fieldset class="fieldset-custom">
-        <legend id="select_base">@GlobalSalaryUpload.SalaryUploadForm</legend>
+        <legend id="select_base">@GlobalSalaryUpload.salary_upload_form</legend>
         <div class="card-body">
             @using (Html.BeginForm("SalaryFile", "SalaryUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
             {
                 <div class="row mt-2 gy-4">
                     <div class="col-md-12">
-                        <label class="form-label">@GlobalSalaryUpload.SalaryType:</label>
+                        <label class="form-label">@GlobalShared.salary_type:</label>
 
                         <div class="d-flex align-items-center">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="salaryTypeCivil" name="AddSalaryUploadModelCommand.SalaryType" value="CivilServants" required />
-                                <label class="form-check-label" for="salaryTypeCivil">@GlobalSalaryUpload.CivilServants</label>
+                                <label class="form-check-label" for="salaryTypeCivil">@GlobalShared.civil_servants</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
-                                <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                                <label class="form-check-label" for="salaryTypePrivate">@GlobalShared.private_institutions</label>
                             </div>
 
                         </div>
@@ -28,7 +28,7 @@
                         <div class="form-floating form-floating-outline">
                             <input type="file" id="file" name="AddSalaryUploadModelCommand.File" class="form-control" required />
                             @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.File, "", new { @class = "text-danger " })
-                            <label>@GlobalSalaryUpload.SelectSalaryFile</label>
+                            <label>@GlobalSalaryUpload.select_salary_file</label>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
 }
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalSalaryUpload.SalaryUploadForm</legend>
+    <legend id="select_base">@GlobalSalaryUpload.salary_upload_form</legend>
 
     <div class="card-body">
         @using (Html.BeginForm("SalaryFile", "SalaryUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -63,45 +63,45 @@
             <div class="row mt-2 gy-4">
                 <!-- Salary Type -->
                 <div class="col-md-12">
-                    <label class="form-label">@GlobalSalaryUpload.SalaryType:</label>
+                    <label class="form-label">@GlobalShared.salary_type:</label>
 
                     <div class="d-flex flex-wrap align-items-center gap-3" aria-describedby="help-salarytype">
-                        <div class="form-check form-check-inline" title="Use this for Government/Civil Service payroll files.">
+                        <div class="form-check form-check-inline" title="@GlobalSalaryUpload.use_this_for_governmentcivil_service_payroll_files.">
                             <input class="form-check-input" type="radio"
                                    id="salaryTypeCivil"
                                    name="AddSalaryUploadModelCommand.SalaryType"
                                    value="CivilServants" required
                                    @(selectedType == "CivilServants" ? "checked" : null) />
                             <label class="form-check-label" for="salaryTypeCivil">
-                                @GlobalSalaryUpload.CivilServants
+                                @GlobalShared.civil_servants
                             </label>
                         </div>
 
-                        <div class="form-check form-check-inline" title="Use this for companies and private institutions payroll files.">
+                        <div class="form-check form-check-inline" title="@GlobalSalaryUpload.use_this_for_companies_and_private_institutions_payroll_files.">
                             <input class="form-check-input" type="radio"
                                    id="salaryTypePrivate"
                                    name="AddSalaryUploadModelCommand.SalaryType"
                                    value="PrivateInstitutions" required
                                    @(selectedType == "PrivateInstitutions" ? "checked" : null) />
                             <label class="form-check-label" for="salaryTypePrivate">
-                                @GlobalSalaryUpload.PrivateInstitutions
+                                @GlobalShared.private_institutions
                             </label>
                         </div>
 
-                        <div class="form-check form-check-inline" title="Use this for bulk standing orders. You must also pick a source account.">
+                        <div class="form-check form-check-inline" title="@GlobalSalaryUpload.use_this_for_bulk_standing_orders_you_must_also_pick_a_source_account.">
                             <input class="form-check-input" type="radio"
                                    id="salaryTypeStanding"
                                    name="AddSalaryUploadModelCommand.SalaryType"
                                    value="StandingOrder" required
                                    @(selectedType == "StandingOrder" ? "checked" : null) />
                             <label class="form-check-label" for="salaryTypeStanding">
-                                Standing Order
+                                @GlobalSalaryUpload.standing_order
                             </label>
                         </div>
                     </div>
                     <small id="help-salarytype" class="text-muted d-block mt-1">
-                        Selecting <strong>Standing Order</strong> requires choosing a <em>source account</em>.
-                        For <strong>Private institutions</strong>, a source account is optional.
+                        @Html.Raw(@GlobalSalaryUpload.selecting_standing_order_requires_choosing_a_source_account).
+                        @Html.Raw(@GlobalSalaryUpload.for_private_institutions_a_source_account_is_optional).
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.SalaryType, "", new { @class = "text-danger" })
                 </div>
@@ -117,7 +117,7 @@
                         <label for="branchId">@GlobalShared.Branch_Name</label>
                     </div>
                     <small id="help-branch" class="text-muted d-block mt-1">
-                        Choose the branch that owns this upload.
+                        @GlobalSalaryUpload.choose_the_branch_that_owns_this_upload.
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.BranchId, "", new { @class = "text-danger" })
                 </div>
@@ -130,11 +130,11 @@
                             new SelectList(ViewBag.StandingOrderSourceAccountOptions, "Value", "Text"),
                             new { @class = "form-control select2", @search = "true", id = "standingSourceCoa", aria_describedby = "help-standing" }
                         )
-                        <label for="standingSourceCoa">Source Chart of Account</label>
+                        <label for="standingSourceCoa">@GlobalSalaryUpload.source_chart_of_account</label>
                     </div>
                     <small id="help-standing" class="text-muted d-block mt-1">
-                        Required for <strong>Standing Order</strong>. Optional for <strong>Private institutions</strong>.
-                        Hidden for <strong>Civil servants</strong>.
+                        @Html.Raw(@GlobalSalaryUpload.required_for_standing_order_optional_for_private_institutions).
+                        @Html.Raw(@GlobalSalaryUpload.hidden_for_civil_servants).
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.StandingOrderSourceChartOfAccountId, "", new { @class = "text-danger" })
                 </div>
@@ -149,33 +149,33 @@
                                accept=".xlsx,.csv"
                                aria-describedby="help-file"
                                required />
-                        <label for="file">@GlobalSalaryUpload.SelectSalaryFile</label>
+                        <label for="file">@GlobalSalaryUpload.select_salary_file</label>
                     </div>
                     <small id="help-file" class="text-muted d-block mt-1">
-                        Allowed: <code>.xlsx</code> or <code>.csv</code>. Please use the official template — do not change headers or column order.
+                        @Html.Raw(@GlobalSalaryUpload.allowed_xlsx_or_csv_please_use_the_official_template_do_not_change_headers_or_column_order).
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.File, "", new { @class = "text-danger" })
                 </div>
 
                 <!-- Visibility: Public / Private (Private default) -->
                 <div class="col-md-12">
-                    <label class="form-label">Visibility to other branches:</label>
+                    <label class="form-label">@GlobalSalaryUpload.visibility_to_other_branches:</label>
                     <div class="d-flex flex-wrap align-items-center gap-3" aria-describedby="help-visibility">
-                        <div class="form-check form-check-inline" title="Visible to all branches.">
+                        <div class="form-check form-check-inline" title="@GlobalSalaryUpload.visible_to_all_branches.">
                             @Html.RadioButton("AddSalaryUploadModelCommand.PrivateView", "false",
                                 !isPrivateDefault,
                                 new { @class = "form-check-input", id = "visPublic" })
-                            <label class="form-check-label" for="visPublic">Public</label>
+                            <label class="form-check-label" for="visPublic">@GlobalShared._public</label>
                         </div>
-                        <div class="form-check form-check-inline" title="Visible only within your branch (and authorized Head Office).">
+                        <div class="form-check form-check-inline" title="@GlobalSalaryUpload.visible_only_within_your_branch_and_authorized_head_office.">
                             @Html.RadioButton("AddSalaryUploadModelCommand.PrivateView", "true",
                                 isPrivateDefault,
                                 new { @class = "form-check-input", id = "visPrivate" })
-                            <label class="form-check-label" for="visPrivate">Private</label>
+                            <label class="form-check-label" for="visPrivate">@GlobalShared._private</label>
                         </div>
                     </div>
                     <small id="help-visibility" class="text-muted d-block mt-1">
-                        Select <strong>Private</strong> to restrict access to your branch; <strong>Public</strong> to allow other branches to view.
+                        @Html.Raw(@GlobalSalaryUpload.select_private_to_restrict_access_to_your_branch_public_to_allow_other_branches_to_view).
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.PrivateView, "", new { @class = "text-danger" })
                 </div>

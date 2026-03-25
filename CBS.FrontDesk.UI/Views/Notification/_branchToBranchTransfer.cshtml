@@ -1,4 +1,4 @@
-﻿@*@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@*@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @using Resources
 
 <div class="card-body">
@@ -21,12 +21,12 @@
             if (ViewBag.AccountNotFound)
             {
 
-                <legend id="select_base" class="text-bg-danger">@GlobalNotification.BranchToBranchCashTransfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+                <legend id="select_base" class="text-bg-danger">@GlobalNotification.branch_to_branch_cash_transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
             }
             else
             {
 
-                <legend id="select_base">@GlobalNotification.BranchToBranchCashTransfer @Model.BranchToBranchTransfer.Accountinfor</legend>
+                <legend id="select_base">@GlobalNotification.branch_to_branch_cash_transfer @Model.BranchToBranchTransfer.Accountinfor</legend>
             }
 
             <div class="row mt-2 gy-4">
@@ -37,7 +37,7 @@
                             <div class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-6">
                                 <div>
                                     <h3 class="mb-3">XAF @Model.CashReplenimentRequestdto.AmountApproved.ToString("N")</h3>
-                                    <p class="mb-0">@GlobalNotification.AmountAuthorizedBy @Model.CashReplenimentRequestdto.TempId2 </p>
+                                    <p class="mb-0">@GlobalNotification.amount_authorized_by @Model.CashReplenimentRequestdto.TempId2 </p>
 
                                 </div>
                                 <div class="avatar me-sm-6">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-6" hidden="hidden">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalNotification.TotalAmount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.CashReplenimentRequestdto.AmountApproved">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="BranchToBranchTransfer.ReferenceId" value="@Model.BranchToBranchTransfer.ReferenceId">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalNotification.Balance: 0</span>
+                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: 0</span>
                     </div>
                 </div>
 
@@ -158,7 +158,7 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BranchToBranchTransfer.Description, new { @class = "form-control", @style = "height: 70px;" })
                         @Html.ValidationMessageFor(m => m.BranchToBranchTransfer.Description, "", new { @class = "text-danger " })
-                        <label for="formValidationDob">@GlobalNotification.BranchToBranchTransferDescription</label>
+                        <label for="formValidationDob">@GlobalNotification.branch_to_branch_transfer_description</label>
                     </div>
                 </div>
 

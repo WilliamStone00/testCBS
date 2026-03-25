@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.GetBalance
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.GetBalance
+    @using Resources
 @{
     ViewBag.Title = "Member / Loan Reconciliation";
 }
@@ -9,11 +10,11 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-swap-horizontal-bold me-2"></i> Member And Loan Balance Reconciliation
+                    <i class="mdi mdi-swap-horizontal-bold me-2"></i> @GlobalReconciliation.member_and_loan_balance_reconciliation
                 </h1>
                 <p class="card-text">
-                    Use this page to quickly check balances and reconcile either a member account or a loan account.
-                    Choose the mode (Member or Loan), pick the account type and branch, then inspect balances and branch account details.
+                    @GlobalReconciliation.use_this_page_to_quickly_check_balances_and_reconcile_either_a_member_account_or_a_loan_account.
+                    @GlobalReconciliation.choose_the_mode_member_or_loan_pick_the_account_type_and_branch_then_inspect_balances_and_branch_account_details.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -24,7 +25,7 @@
 <!-- Tips -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i>  Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i>  @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReconTips" aria-expanded="false" aria-controls="collapseReconTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,63 +35,63 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h6 class="text-primary mb-3">Workflow Guide</h6>
+                    <h6 class="text-primary mb-3">@GlobalShared.workflow_guide</h6>
                     <div class="steps">
                         <div class="step-item mb-3">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">1</div>
                             <div class="step-content d-inline-block">
-                                <strong>Select Branch</strong>
-                                <div class="small text-muted">Choose the branch you want to reconcile</div>
+                                <strong>@GlobalShared.Select_Branch</strong>
+                                <div class="small text-muted">@GlobalReconciliation.choose_the_branch_you_want_to_reconcile</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">2</div>
                             <div class="step-content d-inline-block">
-                                <strong>Choose Mode</strong>
-                                <div class="small text-muted">Select Member for account balances or Loan for loan balances</div>
+                                <strong>@GlobalShared.choose_mode</strong>
+                                <div class="small text-muted">@GlobalReconciliation.select_member_for_account_balances_or_loan_for_loan_balances</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">3</div>
                             <div class="step-content d-inline-block">
-                                <strong>Select Branch Account</strong>
-                                <div class="small text-muted">Choose the specific GL account for reconciliation</div>
+                                <strong>@GlobalShared.select_branch_account</strong>
+                                <div class="small text-muted">@GlobalReconciliation.choose_the_specific_gl_account_for_reconciliation</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">4</div>
                             <div class="step-content d-inline-block">
-                                <strong>Select Account Type</strong>
-                                <div class="small text-muted">Choose the specific account type to view balances</div>
+                                <strong>@GlobalShared.select_account_type</strong>
+                                <div class="small text-muted">@GlobalReconciliation.choose_the_specific_account_type_to_view_balances</div>
                             </div>
                         </div>
                         <div class="step-item">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">5</div>
                             <div class="step-content d-inline-block">
-                                <strong>Get Balance & Reconcile</strong>
-                                <div class="small text-muted">Get the balance and proceed with reconciliation</div>
+                                <strong>@GlobalReconciliation.get_balance_reconcile</strong>
+                                <div class="small text-muted">@GlobalReconciliation.get_the_balance_and_proceed_with_reconciliation</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="text-primary mb-3">Quick Reference</h6>
+                    <h6 class="text-primary mb-3">@GlobalShared.quick_reference</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="mdi mdi-account-circle-outline text-success me-2"></i>
-                            <strong>Member Mode:</strong> For savings, checking, and deposit accounts
+                            <strong>@GlobalShared.member_mode:</strong> @GlobalReconciliation.for_savings_checking_and_deposit_accounts
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-cash-usd-outline text-warning me-2"></i>
-                            <strong>Loan Mode:</strong> For personal, business, and mortgage loans
+                            <strong>@GlobalShared.loan_mode:</strong> @GlobalReconciliation.for_personal_business_and_mortgage_loans
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-alert-circle-outline text-info me-2"></i>
-                            <strong>Validation:</strong> All steps must be completed in sequence
+                            <strong>@GlobalShared.Validation:</strong> @GlobalReconciliation.all_steps_must_be_completed_in_sequence
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-shield-check-outline text-success me-2"></i>
-                            <strong>Security:</strong> Balances are fetched in real-time from core systems
+                            <strong>@GlobalShared.Security:</strong> @GlobalReconciliation.balances_are_fetched_in_realtime_from_core_systems
                         </li>
                     </ul>
                 </div>
@@ -99,7 +100,7 @@
             <div class="mt-3 p-3 bg-light rounded">
                 <div class="small text-muted">
                     <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-                    <strong>Pro Tip:</strong> Complete each step sequentially. Use the Get Balance button when ready, and Reset if you need to start over. Reconciliation is only available after balance is loaded.
+                    <strong>@GlobalShared.Pro_Tip:</strong> @GlobalReconciliation.complete_each_step_sequentially_use_the_get_balance_button_when_ready_and_reset_if_you_need_to_start_over_reconciliation_is_only_available_after_balance_is_loaded.
                 </div>
             </div>
         </div>
@@ -109,7 +110,7 @@
 <!-- Progress Indicator -->
 <div class="card mb-3" id="progressCard">
     <div class="card-body">
-        <h6 class="text-primary mb-3"><i class="mdi mdi-progress-check me-1"></i>Reconciliation Progress</h6>
+        <h6 class="text-primary mb-3"><i class="mdi mdi-progress-check me-1"></i>@GlobalReconciliation.reconciliation_progress</h6>
         <div class="progress mb-2" style="height: 8px;">
             <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -117,31 +118,31 @@
             <div class="col">
                 <div class="step-indicator" data-step="1">
                     <i class="mdi mdi-office-building-outline fs-5 mb-1 text-muted"></i>
-                    <div>Select Branch</div>
+                    <div>@GlobalShared.Select_Branch</div>
                 </div>
             </div>
             <div class="col">
                 <div class="step-indicator" data-step="2">
                     <i class="mdi mdi-account-circle-outline fs-5 mb-1 text-muted"></i>
-                    <div>Choose Mode</div>
+                    <div>@GlobalShared.choose_mode</div>
                 </div>
             </div>
             <div class="col">
                 <div class="step-indicator" data-step="3">
                     <i class="mdi mdi-bank-outline fs-5 mb-1 text-muted"></i>
-                    <div>Branch Account</div>
+                    <div>@GlobalShared.Branch_Account</div>
                 </div>
             </div>
             <div class="col">
                 <div class="step-indicator" data-step="4">
                     <i class="mdi mdi-chart-bar fs-5 mb-1 text-muted"></i>
-                    <div>Account Type</div>
+                    <div>@GlobalShared.Account_type</div>
                 </div>
             </div>
             <div class="col">
                 <div class="step-indicator" data-step="5">
                     <i class="mdi mdi-calculator fs-5 mb-1 text-muted"></i>
-                    <div>Get Balance</div>
+                    <div>@GlobalShared.get_balance</div>
                 </div>
             </div>
         </div>
@@ -150,23 +151,23 @@
 
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Reconciliation Setup</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@GlobalReconciliation.reconciliation_setup</h5>
 
         <div class="row g-3 align-items-start">
             <!-- Branch Selection -->
             <div class="col-12">
                 <div class="card border-primary">
                     <div class="card-header bg-light">
-                        <h6 class="mb-0 text-primary"><i class="mdi mdi-office-building-outline me-2"></i>Step 1: Select Branch</h6>
+                        <h6 class="mb-0 text-primary"><i class="mdi mdi-office-building-outline me-2"></i>@GlobalShared.Step 1: @GlobalShared.Select_Branch</h6>
                     </div>
                     <div class="card-body">
-                        <label for="BranchId" class="form-label fw-semibold">🏢 Select Branch</label>
+                        <label for="BranchId" class="form-label fw-semibold">🏢 @GlobalShared.Select_Branch</label>
                         @Html.DropDownListFor(m => m.BranchId,
                             new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name"),
-                            "--- Select Branch ---",
+                            $"--- {@GlobalShared.Select_Branch} ---",
                             new { @class = "form-control select2", id = "BranchId" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                        <div class="mt-1 small text-muted">Choose a branch to continue and load branch accounts.</div>
+                    <div class="mt-1 small text-muted">@GlobalReconciliation.choose_a_branch_to_continue_and_load_branch_accounts.</div>
                     </div>
                 </div>
             </div>
@@ -175,27 +176,27 @@
             <div class="col-12">
                 <div class="card border-primary">
                     <div class="card-header bg-light">
-                        <h6 class="mb-0 text-primary"><i class="mdi mdi-account-circle-outline me-2"></i>Step 2: Choose Reconciliation Mode</h6>
+                        <h6 class="mb-0 text-primary"><i class="mdi mdi-account-circle-outline me-2"></i>@GlobalShared.Step 2: @GlobalReconciliation.choose_reconciliation_mode</h6>
                     </div>
                     <div class="card-body">
-                        <label class="form-label fw-semibold">Choose Mode</label>
+                        <label class="form-label fw-semibold">@GlobalShared.choose_mode</label>
                         <div class="d-flex gap-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="reconMode" id="modeMember" value="member" checked>
                                 <label class="form-check-label ms-2" for="modeMember">
-                                    <i class="mdi mdi-account-circle-outline me-1"></i>Member Accounts
+                                    <i class="mdi mdi-account-circle-outline me-1"></i>@GlobalReconciliation.member_accounts
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="reconMode" id="modeLoan" value="loan">
                                 <label class="form-check-label ms-2" for="modeLoan">
-                                    <i class="mdi mdi-cash-usd-outline me-1"></i>Loan Accounts
+                                    <i class="mdi mdi-cash-usd-outline me-1"></i>@GlobalShared.loan_accounts
                                 </label>
                             </div>
                         </div>
                         <div class="mt-2 small text-muted">
-                            <span id="modeHelpMember" class="text-success"><strong>Member:</strong> Savings, Loan, Teller accounts</span>
-                            <span id="modeHelpLoan" class="text-warning d-none"><strong>Loan:</strong> Main_Loan, Project_Loans</span>
+                            <span id="modeHelpMember" class="text-success"><strong>@GlobalShared.Member:</strong> @GlobalReconciliation.savings_loan_teller_accounts</span>
+                            <span id="modeHelpLoan" class="text-warning d-none"><strong>@GlobalShared.Loan:</strong> @GlobalReconciliation.mainloan_projectloans</span>
                         </div>
                     </div>
                 </div>
@@ -208,27 +209,27 @@
                     <div class="card border-primary h-100">
                         <div class="card-header bg-light">
                             <h6 class="mb-0 text-primary">
-                                <i class="mdi mdi-chart-bar me-2"></i>Step 3: Select Account Type & Get Balance
+                                <i class="mdi mdi-chart-bar me-2"></i>@GlobalShared.Step 3: @GlobalReconciliation.select_account_type_get_balance
                             </h6>
                         </div>
 
                         <div class="card-body">
                             <div id="memberAccountSection">
-                                <label for="AccountType" class="form-label fw-semibold">Select Member Account Type</label>
+                                <label for="AccountType" class="form-label fw-semibold">@GlobalShared.Select_member_account_type</label>
                                 @Html.DropDownListFor(m => m.AccountType,
                                              new SelectList(new List<SelectListItem>(), "Value", "Text"),
-                                             "--- First Select Branch ---",
+                                             $"--- {@GlobalShared.First_select_Branch} ---",
                                              new { @class = "form-control select2", id = "AccountType", disabled = "disabled" })
                                 @Html.ValidationMessageFor(m => m.AccountType, "", new { @class = "text-danger" })
                                 <div class="mt-1 small text-muted">
                                     <span id="accountTypeLoading" class="text-info d-none">
-                                        <i class="mdi mdi-loading mdi-spin me-1"></i>Loading member account types...
+                                        <i class="mdi mdi-loading mdi-spin me-1"></i>@GlobalReconciliation.loading_member_account_types...
                                     </span>
                                     <span id="accountTypeReady" class="d-none">
-                                        <i class="mdi mdi-check-circle-outline text-success me-1"></i>Select an account type to view balance
+                                        <i class="mdi mdi-check-circle-outline text-success me-1"></i>@GlobalReconciliation.select_an_account_type_to_view_balance
                                     </span>
                                     <span id="accountTypeInitial">
-                                        <i class="mdi mdi-information-outline me-1"></i>Select a branch first to load account types
+                                        <i class="mdi mdi-information-outline me-1"></i>@GlobalReconciliation.select_a_branch_first_to_load_account_types
                                     </span>
                                 </div>
                             </div>
@@ -237,35 +238,35 @@
                                 <!-- Loading indicator for loan accounts -->
                                 <div class="mb-2 small">
                                     <span id="loanAccountLoading" class="text-info d-none">
-                                        <i class="mdi mdi-loading mdi-spin me-1"></i>Loading loan account types...
+                                        <i class="mdi mdi-loading mdi-spin me-1"></i>@GlobalReconciliation.loading_loan_account_types...
                                     </span>
                                     <span id="loanAccountReady" class="text-success d-none">
-                                        <i class="mdi mdi-check-circle-outline me-1"></i>Select a loan account type
+                                        <i class="mdi mdi-check-circle-outline me-1"></i>@GlobalReconciliation.select_a_loan_account_type
                                     </span>
                                     <span id="loanAccountInitial">
-                                        <i class="mdi mdi-information-outline me-1"></i>Select a branch first to load loan account types
+                                        <i class="mdi mdi-information-outline me-1"></i>@GlobalReconciliation.select_a_branch_first_to_load_loan_account_types
                                     </span>
                                 </div>
 
                                 <!-- Taxable radio buttons -->
                                 <div class="mb-2">
-                                    <label class="form-label fw-semibold">Taxable?</label>
+                                    <label class="form-label fw-semibold">@GlobalShared.taxable?</label>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.IsTaxable, true, new { @class = "form-check-input", id = "IsTaxableTrue" })
-                                        <label class="form-check-label" for="IsTaxableTrue">Is Taxable</label>
+                                        <label class="form-check-label" for="IsTaxableTrue">@GlobalShared.is_taxable</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.IsTaxable, false, new { @class = "form-check-input", id = "IsTaxableFalse" })
-                                        <label class="form-check-label" for="IsTaxableFalse">Not Taxable</label>
+                                        <label class="form-check-label" for="IsTaxableFalse">@GlobalShared.not_taxable</label>
                                     </div>
                                     @Html.ValidationMessageFor(m => m.IsTaxable, "", new { @class = "text-danger small d-block" })
                                 </div>
 
                                 <!-- Loan account type dropdown -->
-                                <label for="LoanType" class="form-label fw-semibold">Select Loan Account Type</label>
+                                <label for="LoanType" class="form-label fw-semibold">@GlobalShared.select_loan_account_type</label>
                                 @Html.DropDownListFor(m => m.LoanType,
                                     new SelectList(new List<SelectListItem>(), "Value", "Text"),
-                                    "--- First Select Branch ---",
+                                    $"--- {@GlobalShared.First_select_Branch} ---",
                                     new { @class = "form-control select2", id = "LoanType", disabled = "disabled" })
                                 @Html.ValidationMessageFor(m => m.LoanType, "", new { @class = "text-danger" })
                             </div>
@@ -274,12 +275,12 @@
                             <div id="balanceInfo" class="mt-3 d-none" aria-live="polite">
                                 <div class="card bg-light text-black">
                                     <div class="card-body p-3">
-                                        <h6 class="card-title mb-2 text-primary"><i class="mdi mdi-information-outline me-1"></i> Account Information</h6>
+                                        <h6 class="card-title mb-2 text-primary"><i class="mdi mdi-information-outline me-1"></i> @GlobalShared.Account_Information</h6>
                                         <div class="row small">
-                                            <div class="col-6"><strong>Count:</strong></div>
+                                            <div class="col-6"><strong>@GlobalShared.count:</strong></div>
                                             <div class="col-6" id="accountIdDisplay">-</div>
 
-                                            <div class="col-6 mt-2"><strong>Balance:</strong></div>
+                                            <div class="col-6 mt-2"><strong>@GlobalShared.Balance:</strong></div>
                                             <div class="col-6 mt-2" id="balanceDisplay">-</div>
                                         </div>
                                     </div>
@@ -290,10 +291,10 @@
                             <div id="balanceActions" class="mt-3 d-none">
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                                     <button type="button" id="btnGetBalance" class="btn btn-primary">
-                                        <i class="mdi mdi-calculator me-1"></i>Get Balance
+                                        <i class="mdi mdi-calculator me-1"></i>@GlobalShared.get_balance
                                     </button>
                                     <button type="button" id="btnResetBalance" class="btn btn-outline-secondary">
-                                        <i class="mdi mdi-refresh me-1"></i>Reset
+                                        <i class="mdi mdi-refresh me-1"></i>@GlobalShared.Reset
                                     </button>
                                 </div>
                             </div>
@@ -306,25 +307,25 @@
                     <div class="card border-primary h-100">
                         <div class="card-header bg-light d-flex justify-content-between align-items-center">
                             <h6 class="mb-0 text-primary">
-                                <i class="mdi mdi-bank-outline me-2"></i>Step 4: Select Branch Account
+                                <i class="mdi mdi-bank-outline me-2"></i>@GlobalShared.Step 4: @GlobalShared.select_branch_account
                             </h6>
                         </div>
 
                         <div class="card-body">
-                            <label for="BranchAccountId" class="form-label fw-semibold">Branch Account Reference</label>
+                            <label for="BranchAccountId" class="form-label fw-semibold">@GlobalShared.branch_account_reference</label>
                             @Html.DropDownList("BranchAccountId",
-                                new List<SelectListItem> { new SelectListItem { Text = "--- Select Branch Account ---", Value = "" } },
+                                new List<SelectListItem> { new SelectListItem { Text = $"--- {@GlobalShared.select_branch_account} ---", Value = "" } },
                                 new { @class = "form-control select2", id = "BranchAccountId" })
-                            <div class="mt-2 small text-muted">
-                                <i class="mdi mdi-information-outline me-1"></i>
-                                This account will be used for reconciliation adjustments
-                            </div>
+                        <div class="mt-2 small text-muted">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            @GlobalReconciliation.this_account_will_be_used_for_reconciliation_adjustments
+                        </div>
 
                             <!-- Reconciliation Button -->
                             <div id="reconciliationActions" class="mt-3 d-none">
                                 <div class="d-grid">
                                     <button type="button" id="btnReconcile" class="btn btn-primary">
-                                        <i class="mdi mdi-check-circle-outline me-1"></i>Reconcile
+                                        <i class="mdi mdi-check-circle-outline me-1"></i>@GlobalShared.reconcile
                                     </button>
                                 </div>
                             </div>
@@ -341,7 +342,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Branch Account Details</h5>
+                <h5 class="modal-title">@GlobalShared.branch_account_details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="branchAccountModalBody">

@@ -1,82 +1,83 @@
-﻿<div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Account Status Requests</h5>
+@using Resources
+<div class="card p-3 shadow mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> @GlobalMemberAccountMan.account_status_requests</h5>
 
     <!-- Column Visibility Controls -->
     <div class="mb-4">
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <span class="fw-bold text-muted me-2">
                 <i class="mdi mdi-view-column me-1"></i>
-                Show/Hide Columns:
+                @GlobalShared.show /@GlobalShared.hide_columns:
             </span>
             <div class="d-flex gap-2 flex-wrap">
                 <!-- Requested On Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colRequestedOn" checked data-column="0" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colRequestedOn" style="cursor: pointer;">Requested On</label>
+                    <label class="form-check-label fw-medium" for="colRequestedOn" style="cursor: pointer;">@GlobalShared.requested_on</label>
                 </div>
 
                 <!-- Member Ref Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colMemberRef" checked data-column="1" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colMemberRef" style="cursor: pointer;">Member Ref</label>
+                    <label class="form-check-label fw-medium" for="colMemberRef" style="cursor: pointer;">@GlobalShared.Member_ref</label>
                 </div>
 
                 <!-- Member Name Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colMemberName" checked data-column="2" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colMemberName" style="cursor: pointer;">Member Name</label>
+                    <label class="form-check-label fw-medium" for="colMemberName" style="cursor: pointer;">@GlobalShared.Member_name</label>
                 </div>
 
                 <!-- Account Number Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colAccountNumber" checked data-column="3" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colAccountNumber" style="cursor: pointer;">Account Number</label>
+                    <label class="form-check-label fw-medium" for="colAccountNumber" style="cursor: pointer;">@GlobalShared.Account_Number</label>
                 </div>
 
                 <!-- Account Type Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colAccountType" checked data-column="4" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colAccountType" style="cursor: pointer;">Account Type</label>
+                    <label class="form-check-label fw-medium" for="colAccountType" style="cursor: pointer;">@GlobalShared.Account_type</label>
                 </div>
 
                 <!-- Action Column (Hidden by default) -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colAction" data-column="5" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium text-muted" for="colAction" style="cursor: pointer;">Action</label>
+                    <label class="form-check-label fw-medium text-muted" for="colAction" style="cursor: pointer;">@GlobalShared.Action</label>
                 </div>
 
                 <!-- Status Column (Hidden by default) -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colStatus" data-column="6" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium text-muted" for="colStatus" style="cursor: pointer;">Status</label>
+                    <label class="form-check-label fw-medium text-muted" for="colStatus" style="cursor: pointer;">@GlobalShared.Status</label>
                 </div>
 
                 <!-- Branch Column (Hidden by default) -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colBranch" data-column="7" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium text-muted" for="colBranch" style="cursor: pointer;">Branch</label>
+                    <label class="form-check-label fw-medium text-muted" for="colBranch" style="cursor: pointer;">@GlobalShared.Branch</label>
                 </div>
 
                 <!-- Requested By Column (Hidden by default) -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colRequestedBy" data-column="8" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium text-muted" for="colRequestedBy" style="cursor: pointer;">Requested By</label>
+                    <label class="form-check-label fw-medium text-muted" for="colRequestedBy" style="cursor: pointer;">@GlobalShared.Requested_by</label>
                 </div>
 
                 <!-- Actions Column -->
                 <div class="form-check form-switch">
                     <input class="form-check-input column-toggle" type="checkbox" role="switch"
                            id="colActions" checked data-column="9" style="cursor: pointer;">
-                    <label class="form-check-label fw-medium" for="colActions" style="cursor: pointer;">Actions</label>
+                    <label class="form-check-label fw-medium" for="colActions" style="cursor: pointer;">@GlobalShared.Actions</label>
                 </div>
             </div>
         </div>
@@ -84,17 +85,17 @@
         <!-- Quick Actions -->
         <div class="d-flex gap-2 mt-2">
             <button type="button" class="btn btn-sm btn-outline-primary" id="showAllColumns">
-                <i class="mdi mdi-eye me-1"></i>Show All
+                <i class="mdi mdi-eye me-1"></i>@GlobalShared.show_all
             </button>
             <button type="button" class="btn btn-sm btn-outline-secondary" id="resetColumns">
-                <i class="mdi mdi-refresh me-1"></i>Reset to Default
+                <i class="mdi mdi-refresh me-1"></i>@GlobalShared.reset_to_default
             </button>
         </div>
 
         <small class="text-muted mt-2 d-block">
             <i class="mdi mdi-information-outline"></i>
-            <span class="fw-medium">First 5 columns + Actions shown by default.</span>
-            Use the switches above to customize your view. Hidden columns appear dimmed.
+            <span class="fw-medium">@GlobalMemberAccountMan.first_5_columns_actions_shown_by_default.</span>
+            @GlobalMemberAccountMan.use_the_switches_above_to_customize_your_view_hidden_columns_appear_dimmed.
         </small>
     </div>
 
@@ -114,15 +115,15 @@
             </colgroup>
             <thead class="table-light">
                 <tr>
-                    <th>Requested On</th>
-                    <th>Member Ref</th>
-                    <th>Member Name</th>
-                    <th>Account Number</th>
-                    <th>Account Type</th>
-                    <th>Action</th>
-                    <th>Status</th>
-                    <th>Branch</th>
-                    <th>Requested By</th>
+                    <th>@GlobalShared.requested_on</th>
+                    <th>@GlobalShared.Member_ref</th>
+                    <th>@GlobalShared.Member_name</th>
+                    <th>@GlobalShared.Account_Number</th>
+                    <th>@GlobalShared.Account_type</th>
+                    <th>@GlobalShared.Action</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Branch</th>
+                    <th>@GlobalShared.Requested_by</th>
                     <th style="width: 120px;">Actions</th>
                 </tr>
             </thead>

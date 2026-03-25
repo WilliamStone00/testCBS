@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@using Resources
 @using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "memberAccountBalanceAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }))
 {
     <div class="container-fluid">
@@ -8,15 +9,15 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-primary">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-bank me-2"></i>Select Account
+                            <i class="mdi mdi-bank me-2"></i>@GlobalShared.Select_account
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="accountDropdown" class="form-label">Choose Account</label>
+                                <label for="accountDropdown" class="form-label">@GlobalShared.choose_account</label>
                                 <select id="accountDropdown" class="form-select" required>
-                                    <option value="" data-balance="0">-- Select Account --</option>
+                                    <option value="" data-balance="0">-- @GlobalShared.Select_account --</option>
                                     @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
                                     {
                                         foreach (var acc in Model.CustomerAccounts)
@@ -40,7 +41,7 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-warning">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-pencil-outline me-2"></i>Balance Adjustment
+                            <i class="mdi mdi-pencil-outline me-2"></i>@GlobalShared.balance_adjustment
                         </h5>
                     </div>
                     <div class="card-body">
@@ -57,8 +58,7 @@
                                 <div class="col-md-12">
                                     <div class="alert alert-info small" role="alert">
                                         <i class="mdi mdi-information-outline me-1"></i>
-                                        Please select whether the adjustment is a <strong>Debit</strong> (reduces balance) or a
-                                        <strong>Credit</strong> (increases balance). Then, specify the amount of balance difference to be adjusted.
+                                        @Html.Raw(@GlobalMemberAdjustmentConsole.please_select_whether_the_adjustment_is_a_debit_reduces_balance_or_a_credit_increases_balance_then_specify_the_amount_of_balance_difference_to_be_adjusted).
                                     </div>
                                 </div>
                             </div>
@@ -68,11 +68,11 @@
                                     @Html.LabelFor(m => m.BalanceSenseDifference, "Adjustment Type", new { @class = "form-label d-block" })
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.BalanceSenseDifference, "DEBIT", new { @class = "form-check-input", id = "balanceDebit", required = "required" })
-                                        <label class="form-check-label" for="balanceDebit">Debit</label>
+                                        <label class="form-check-label" for="balanceDebit">@GlobalShared.Debit</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(m => m.BalanceSenseDifference, "CREDIT", new { @class = "form-check-input", id = "balanceCredit", required = "required" })
-                                        <label class="form-check-label" for="balanceCredit">Credit</label>
+                                        <label class="form-check-label" for="balanceCredit">@GlobalShared.Credit</label>
                                     </div>
                                     @Html.ValidationMessageFor(m => m.BalanceSenseDifference, "", new { @class = "text-danger small" })
                                 </div>
@@ -83,7 +83,7 @@
                                     @Html.LabelFor(m => m.NewBalance, "Amount Of Balance Differences To Be Adjusted", new { @class = "form-label" })
                                     @Html.TextBoxFor(m => m.NewBalance,
 new { @class = "form-control", type = "number", step = "0.01", required = "required", placeholder = "Enter new balance" })
-                                    <div class="invalid-feedback">Please enter a valid new balance</div>
+                                    <div class="invalid-feedback">@GlobalMemberAdjustmentConsole.please_enter_a_valid_new_balance</div>
                                     @Html.ValidationMessageFor(m => m.NewBalance, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -94,7 +94,7 @@ new { @class = "form-control", type = "number", step = "0.01", required = "requi
                                     @Html.LabelFor(m => m.Reason, "Reason for Adjustment", new { @class = "form-label" })
                                     @Html.TextAreaFor(m => m.Reason,
 new { @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this adjustment" })
-                                    <div class="invalid-feedback">Please provide a reason</div>
+                                    <div class="invalid-feedback">@GlobalShared.please_provide_a_reason</div>
                                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -104,10 +104,10 @@ new { @class = "form-control", rows = "3", required = "required", placeholder = 
                                 <div class="col-12">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="mdi mdi-close me-1"></i>Cancel
+                                            <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                                         </button>
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-content-save-check me-1"></i>Submit Adjustment
+                                            <i class="mdi mdi-content-save-check me-1"></i>@GlobalShared.submit_adjustment
                                         </button>
                                     </div>
                                 </div>

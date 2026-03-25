@@ -1,8 +1,8 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.TrialBalanceReconciliationData
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.Reconciliation.TrialBalanceReconciliationData
  @{
     var selectedValue = Model.IsMemberBalanceGreater ? "surplus" : "deficit";
 }
-
+@using Resources
 <div class="modal fade" id="reconciliationResultModal" tabindex="-1" aria-hidden="true"
      data-branchid="@Model.BranchId" data-branchaccountid="@Model.BranchAccountId">
     <div class="modal-dialog modal-xl">
@@ -13,7 +13,7 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
-                                <i class="mdi mdi-scale-balance me-2"></i> Trial Balance Reconciliation Result
+                                <i class="mdi mdi-scale-balance me-2"></i> @GlobalReconciliation.trial_balance_reconciliation_result
                             </h1>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -28,7 +28,7 @@
                 <!-- Tips Section -->
                 <div class="card mb-2">
                     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-                        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips</span>
+                        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalShared.Tips</span>
                         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseReconGuidance" aria-expanded="false"
                                 aria-controls="collapseReconGuidance">
@@ -39,18 +39,18 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h6 class="text-primary">Understanding the Difference</h6>
+                                    <h6 class="text-primary">@GlobalReconciliation.understanding_the_difference</h6>
                                     <ul class="list-unstyled">
-                                        <li><i class="mdi mdi-check-circle text-success me-2"></i><strong>Surplus:</strong> Member balance is greater than trial balance</li>
-                                        <li><i class="mdi mdi-alert-circle text-warning me-2"></i><strong>Deficit:</strong> Trial balance is greater than member balance</li>
+                                        <li><i class="mdi mdi-check-circle text-success me-2"></i><strong>@GlobalShared.Surplus:</strong> @GlobalReconciliation.member_balance_is_greater_than_trial_balance</li>
+                                        <li><i class="mdi mdi-alert-circle text-warning me-2"></i><strong>@GlobalShared.Deficit:</strong> @GlobalReconciliation.trial_balance_is_greater_than_member_balance</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
-                                    <h6 class="text-primary">Next Steps</h6>
+                                    <h6 class="text-primary">@GlobalShared.next_steps</h6>
                                     <ul class="list-unstyled">
-                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Select the appropriate GL account</li>
-                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Choose surplus or deficit</li>
-                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>Review and confirm reconciliation</li>
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>@GlobalReconciliation.select_the_appropriate_gl_account</li>
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>@GlobalReconciliation.choose_surplus_or_deficit</li>
+                                        <li><i class="mdi mdi-arrow-right-circle me-2"></i>@GlobalReconciliation.review_and_confirm_reconciliation</li>
                                     </ul>
                                 </div>
                             </div>
@@ -63,26 +63,26 @@
                     <div class="col-md-6">
                         <div class="card h-100">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="mdi mdi-calculator me-2"></i>Balance Comparison</h6>
+                                <h6 class="mb-0"><i class="mdi mdi-calculator me-2"></i>@GlobalReconciliation.balance_comparison</h6>
                             </div>
                             <div class="card-body">
                                 <div class="row text-center">
                                     <div class="col-4">
                                         <div class="border-end">
                                             <h5 class="text-warning">@Model.AccountType</h5>
-                                            <small class="text-muted">Account Type Selected</small>
+                                            <small class="text-muted">@GlobalReconciliation.account_type_selected</small>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="border-end">
                                             <h5 class="text-primary">@Model.MemberBalance.ToString("N2")</h5>
-                                            <small class="text-muted">Member Balance</small>
+                                            <small class="text-muted">@GlobalShared.Member_Balance</small>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div>
                                             <h5 class="text-info">@Model.TrialBalanceBalance.ToString("N2")</h5>
-                                            <small class="text-muted">Trial Balance</small>
+                                            <small class="text-muted">@GlobalShared.Trial_Balance</small>
                                         </div>
                                     </div>
                                 </div>
@@ -102,24 +102,24 @@
                     <div class="col-md-6">
                         <div class="card h-100">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>Reconciliation Details</h6>
+                                <h6 class="mb-0"><i class="mdi mdi-information-outline me-2"></i>@GlobalReconciliation.reconciliation_details</h6>
                             </div>
                             <div class="card-body">
                                 <table class="table table-sm table-borderless mb-0">
                                     <tr>
-                                        <td><strong>Branch Reference:</strong></td>
+                                        <td><strong>@GlobalShared.branch_reference:</strong></td>
                                         <td>@Model.BRANCHName</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Branch Account Ref.:</strong></td>
+                                        <td><strong>@GlobalShared.branch_account_ref.:</strong></td>
                                         <td>@Model.BranchAccountName</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Trial Side:</strong></td>
+                                        <td><strong>@GlobalShared.trial_side:</strong></td>
                                         <td><span class="badge bg-secondary">@Model.TrialSide</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Status:</strong></td>
+                                        <td><strong>@GlobalShared.Status:</strong></td>
                                         <td>
                                             <span class="badge @(Model.MemberBalance == Model.TrialBalanceBalance ? "bg-success" : "bg-warning")">
                                                 @(Model.MemberBalance == Model.TrialBalanceBalance ? "Balanced" : "Needs Adjustment")
@@ -153,7 +153,7 @@
                             <!-- Accounting Date Field -->
                             <div class="col-12 col-md-4 d-flex flex-column align-items-md-end">
                                 <label for="AccountingDay" class="form-label mb-1">
-                                    📅 Accounting Date
+                                    📅 @GlobalShared.Accounting_Date
                                 </label>
                                 @Html.TextBoxFor(
                                     m => m.AccountingDate,
@@ -179,16 +179,16 @@
                 {
                     <div class="card" id="adjustmentCard">
                         <div class="card-header bg-light">
-                            <h6 class="mb-0"><i class="mdi mdi-adjust me-2"></i>Reconciliation Adjustmen</h6>
+                            <h6 class="mb-0"><i class="mdi mdi-adjust me-2"></i>@GlobalReconciliation.reconciliation_adjustmen</h6>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="DiffBranchAccountId" class="form-label fw-semibold">Select GL Account for Adjustment</label>
+                                        <label for="DiffBranchAccountId" class="form-label fw-semibold">@GlobalReconciliation.select_gl_account_for_adjustment</label>
                                         @Html.DropDownListFor(m => m.DiffBranchAccountId,
                                             new SelectList(ViewBag.DiifBrachAccounts ?? new List<SelectListItem>(), "Id", "Name"),
-                                            "--- Select Branch Account ---",
+                                            $"--- {@GlobalShared.select_branch_account} ---",
                                             new
                                                  {
                                                 @class = "form-control select2",
@@ -197,13 +197,13 @@
                                                 data_val_required = "GL Account is required"
                                             })
                                         @Html.ValidationMessageFor(m => m.DiffBranchAccountId, "", new { @class = "text-danger" })
-                                        <div class="form-text">Choose the GL account to apply the adjustment</div>
+                                    <div class="form-text">@GlobalReconciliation.choose_the_gl_account_to_apply_the_adjustment</div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label fw-semibold">Adjustment Type</label>
+                                        <label class="form-label fw-semibold">@GlobalShared.Adjustment_Type</label>
                                                                            
                                             <div class="mt-2" role="radiogroup" aria-label="Adjustment type" aria-readonly="true">
                                                 <div class="form-check form-check-inline">
@@ -217,7 +217,7 @@
                                                            checked="checked"
                                                            disabled="disabled" />
                                                     <label class="form-check-label text-success" for="surplus">
-                                                        <i class="mdi mdi-plus-circle-outline me-1"></i>Surplus
+                                                        <i class="mdi mdi-plus-circle-outline me-1"></i>@GlobalShared.Surplus
                                                     </label>
                                                 </div>
 
@@ -232,7 +232,7 @@
                                                            @(selectedValue == "deficit" ? "checked=\"checked\"" : "")
                                                            disabled="disabled" />
                                                     <label class="form-check-label text-warning" for="deficit">
-                                                        <i class="mdi mdi-minus-circle-outline me-1"></i>Deficit
+                                                        <i class="mdi mdi-minus-circle-outline me-1"></i>@GlobalShared.Deficit
                                                     </label>
                                                 </div>
 
@@ -244,16 +244,16 @@
                                         <div class="form-text">
                                             @if (Model.IsMemberBalanceGreater)
                                             {
-                                                <span class="text-success">Member balance is greater - typically use Surplus</span>
+                                                <span class="text-success">@GlobalReconciliation.member_balance_is_greater_typically_use_surplus</span>
                                             }
                                             else
                                             {
-                                                <span class="text-warning">Trial balance is greater - typically use Deficit</span>
+                                        <span class="text-warning">@GlobalReconciliation.trial_balance_is_greater_typically_use_deficit</span>
                                             }
                                         </div>
                                         <hr />
                                         <div>
-                                            <strong>Difference Amount:</strong>
+                                            <strong>@GlobalShared.Difference_Amount:</strong>
                                             <span class="fs-5 ms-2 @(Model.IsMemberBalanceGreater ? "text-success" : "text-warning")">
                                                 @Math.Abs(Model.MemberBalance - Model.TrialBalanceBalance).ToString("N2")
                                             </span>
@@ -265,7 +265,7 @@
                             @* Reconcile button aligned to the right *@
                             <div class="d-flex justify-content-end mt-4">
                                 <button type="button" id="btnFinalReconcile" class="btn btn-primary">
-                                    <i class="mdi mdi-check-all me-1"></i>Reconcile
+                                    <i class="mdi mdi-check-all me-1"></i>@GlobalShared.reconcile
                                 </button>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                 {
                     <div class="alert alert-success text-center">
                         <i class="mdi mdi-check-circle-outline me-2 fs-4"></i>
-                        <strong>Balances are already reconciled!</strong> No adjustment needed.
+                        <strong>@GlobalReconciliation.balances_are_already_reconciled!</strong> @GlobalReconciliation.no_adjustment_needed.
                     </div>
                 }
 

@@ -1,27 +1,27 @@
-﻿@using Resources
+@using Resources
 
 @model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentSubTeller
 
 <fieldset class="fieldset-custom">
-    <legend>@GlobalRemittance.RequestFilters</legend>
+    <legend>@GlobalShared.request_filters</legend>
     <hr />
     <div class="row g-4">
         <div class="col-md-6">
-            <label for="branchInput">@GlobalRemittance.Branch</label>
-            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalRemittance.SelectBranch+"---", new { @class = "form-control select2", @id = "branchInput" })
+            <label for="branchInput">@GlobalShared.Branch</label>
+            @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "id", "name"), "---"+ @GlobalShared.Select_Branch+"---", new { @class = "form-control select2", @id = "branchInput" })
         </div>
         <div class="col-md-6">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label for="dateFromInput">@GlobalRemittance.DateFrom</label>
+                    <label for="dateFromInput">@GlobalShared.date_from</label>
                     <div class="input-group">
-                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="@GlobalRemittance.DateFrom">
+                        <input type="date" id="dateFromInput" class="form-control shadow-box date-picker" placeholder="@GlobalShared.date_from">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="dateToInput">@GlobalRemittance.DateTo</label>
+                    <label for="dateToInput">@GlobalShared.date_to</label>
                     <div class="input-group">
-                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="@GlobalRemittance.DateTo">
+                        <input type="date" id="dateToInput" class="form-control shadow-box date-picker" placeholder="@GlobalShared.date_to">
                         <button class="btn btn-primary btn-sm" onclick="SearchByDates('_CashReplenishmentSubTellerData','datalistingview','SubTellerCashRequisition')">@GlobalShared.Search</button>
 
                     </div>

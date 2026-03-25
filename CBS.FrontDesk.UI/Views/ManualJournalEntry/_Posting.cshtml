@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntryPayload
+@model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntryPayload
 @using Resources
 @{
     ViewBag.Title = "Manual Journal Entry";
@@ -15,11 +15,11 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold text-primary mb-0">
                     <i class="mdi mdi-book-plus-outline me-2"></i>
-                    Manual Journal Entry
+                    @GlobalShared.manual_journal_entry
                 </h4>
 
                 <div class="col-md-4 text-end">
-                    <label class="form-label fw-bold me-2">Accounting Date</label>
+                    <label class="form-label fw-bold me-2">@GlobalShared.Accounting_Date</label>
                     @Html.TextBoxFor(m => m.AccountingDate,
                         new
                         {
@@ -40,7 +40,7 @@
                 <div class="form-check form-switch mb-1">
                     <input class="form-check-input" type="checkbox" id="enableInterbranch">
                     <label class="form-check-label fw-bold" for="enableInterbranch">
-                        Enable Interbranch Transaction
+                        @GlobalManualJournalEntry.enable_interbranch_transaction
                     </label>
                 </div>
 
@@ -58,7 +58,7 @@
 
 
                     <div class="col-md-6" id="counterpartyBranchDiv" style="display:none;">
-                        <label for="CounterpartyBranchId" class="form-label fw-bold">Counterparty Branch</label>
+                        <label for="CounterpartyBranchId" class="form-label fw-bold">@GlobalShared.Counterparty_Branch</label>
                         @Html.DropDownList(
                             "CounterpartyBranchId",
                             new SelectList(ViewBag.CounterBranches, "Id", "Name", Model?.CounterpartyBranchId),
@@ -74,17 +74,17 @@
                 <table class="table table-bordered align-middle text-center" id="myDataTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="width:30%">Account</th>
-                            <th style="width:30%">Narration</th>
-                            <th style="width:15%">Debit</th>
-                            <th style="width:15%">Credit</th>
-                            <th style="width:10%">Actions</th>
+                            <th style="width:30%">@GlobalShared.Account</th>
+                            <th style="width:30%">@GlobalShared.Narration</th>
+                            <th style="width:15%">@GlobalShared.Debit</th>
+                            <th style="width:15%">@GlobalShared.Credit</th>
+                            <th style="width:10%">@GlobalShared.Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                     <tfoot class="table-light fw-bold">
                         <tr>
-                            <td colspan="2" class="text-end">Totals:</td>
+                            <td colspan="2" class="text-end">@GlobalShared.Totals:</td>
                             <td id="totalDebit" class="text-end">0.00</td>
                             <td id="totalCredit" class="text-end">0.00</td>
                             <td></td>
@@ -94,24 +94,24 @@
             </div>
 
             <div class="text-end mt-2">
-                <span id="difference" class="fw-bold text-danger">Difference: 0.00</span>
+                <span id="difference" class="fw-bold text-danger">@GlobalShared.Difference: 0.00</span>
             </div>
 
             <!-- ================= ACTION BUTTONS ================= -->
             <div class="mt-3 d-flex justify-content-between">
                 <div>
                     <button type="button" class="btn btn-outline-primary" id="addRowBtn">
-                        <i class="mdi mdi-plus"></i> Add Row
+                        <i class="mdi mdi-plus"></i> @GlobalShared.Add_Row
                     </button>
                     <button type="button" class="btn btn-outline-danger" id="clearRowsBtn">
-                        <i class="mdi mdi-trash-can-outline"></i> Clear All Rows
+                        <i class="mdi mdi-trash-can-outline"></i> @GlobalShared.clear_all_rows
                     </button>
                 </div>
             </div>
 
             <!-- ================= MEMO ================= -->
             <div class="mt-4">
-                <label class="form-label fw-bold" for="Payload_Memo">Remark / Notes</label>
+                <label class="form-label fw-bold" for="Payload_Memo">@GlobalShared.Remark / @GlobalShared.Notes</label>
                 @Html.TextAreaFor(
                     m => m.Payload.Memo,
                     new
@@ -128,7 +128,7 @@
             <div class="mt-4 text-end">
                 <button type="submit" id="postEntriesBtn" class="btn btn-primary px-4" disabled>
                     <i class="mdi mdi-check-circle-outline me-1"></i>
-                    Post Entries
+                    @GlobalShared.post_entries
                 </button>
             </div>
         </div>

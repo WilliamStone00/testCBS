@@ -117,34 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="IsThisRoleTeller" xml:space="preserve">
-    <value>Ce rôle est-il caissier</value>
-  </data>
-  <data name="MenuText" xml:space="preserve">
-    <value>Texte du menu</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
-  </data>
-  <data name="NoPermisionAssociatedToSelectedRole" xml:space="preserve">
-    <value>Aucune autorisation associée au rôle sélectionné</value>
-  </data>
-  <data name="PermisionAssociatedToRole" xml:space="preserve">
-    <value>Autorisations associées au rôle</value>
-  </data>
-  <data name="Teller" xml:space="preserve">
-    <value>Caissier</value>
-  </data>
-  <data name="ViewPermissions" xml:space="preserve">
-    <value>Afficher les autorisations</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
-  </data>
 </root>

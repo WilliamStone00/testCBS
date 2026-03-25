@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
+@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
 @using Resources
 
 <fieldset class="fieldset-custom">
@@ -10,10 +10,10 @@
               
           <div class="card-body text-center">
               <h1 class="card-title text-primary fw-bold mb-2">
-                  <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose Details
+                  <i class="mdi mdi-bank-transfer me-2"></i> @GlobalPcmfLoanPurpose.pcmf_loan_purpose_details
               </h1>
               <p class="card-text text-muted mb-1">
-                  Detailed view of PCMF loan purpose entry
+                  @GlobalPcmfLoanPurpose.detailed_view_of_pcmf_loan_purpose_entry
               </p>
           </div>
           
@@ -24,7 +24,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <p class="card-text text-muted mb-0">
-                            Detailed view of PCMF loan purpose entry
+                            @GlobalPcmfLoanPurpose.detailed_view_of_pcmf_loan_purpose_entry
                         </p>
                     </div>
                     <div class="col-auto">
@@ -42,7 +42,7 @@
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-header bg-white border-bottom">
                         <h6 class="mb-0 text-primary">
-                            <i class="mdi mdi-information-outline me-2"></i>Basic Information
+                            <i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Basic_Information
                         </h6>
                     </div>
                     <div class="card-body p-0">
@@ -54,31 +54,31 @@
                                         <td><span class="badge bg-secondary">@Model.Id</span></td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">Key</td>
+                                        <td class="fw-bold text-muted">@GlobalPcmfLoanPurpose.key</td>
                                         <td><code>@Model.PcmfPurposeKey</code></td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">Name (English)</td>
+                                        <td class="fw-bold text-muted">@GlobalShared.Name (@GlobalShared.English)</td>
                                         <td>@Model.NameEn</td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">Name (French)</td>
+                                        <td class="fw-bold text-muted">@GlobalShared.Name (@GlobalShared.French)</td>
                                         <td>@Model.NameFr</td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">LT Group Code</td>
+                                        <td class="fw-bold text-muted">@GlobalPcmfLoanPurpose.lt_group_code</td>
                                         <td><span class="badge bg-info text-dark">@Model.LtGroupCode</span></td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">MT Group Code</td>
+                                        <td class="fw-bold text-muted">@GlobalPcmfLoanPurpose.mt_group_code</td>
                                         <td><span class="badge bg-info text-dark">@Model.MtGroupCode</span></td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">CT Group Code</td>
+                                        <td class="fw-bold text-muted">@GlobalPcmfLoanPurpose.ct_group_code</td>
                                         <td><span class="badge bg-info text-dark">@Model.CtGroupCode</span></td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="fw-bold text-muted">OD Group Code</td>
+                                        <td class="fw-bold text-muted">@GlobalPcmfLoanPurpose.od_group_code</td>
                                         <td><span class="badge bg-info text-dark">@Model.OdGroupCode</span></td>
                                     </tr>
                                 </tbody>
@@ -93,7 +93,7 @@
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-header bg-white border-bottom">
                         <h6 class="mb-0 text-primary">
-                            <i class="mdi mdi-text-box-outline me-2"></i>Descriptions
+                            <i class="mdi mdi-text-box-outline me-2"></i>@GlobalShared.descriptions
                         </h6>
                     </div>
                     <div class="card-body p-0">
@@ -101,7 +101,7 @@
                             <table class="table table-sm table-borderless mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="fw-bold text-muted align-top" style="width: 45%;">English Description</td>
+                                        <td class="fw-bold text-muted align-top" style="width: 45%;">@GlobalShared.english_description</td>
                                         <td>
                                             <div class="description-content text-wrap" style="max-height: 150px; overflow-y: auto;">
                                                 @if (!string.IsNullOrWhiteSpace(Model.DescriptionEn))
@@ -110,13 +110,13 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="text-muted fst-italic">No description provided</span>
+                                                <span class="text-muted fst-italic">@GlobalShared.no_description_provided</span>
                                                 }
                                             </div>
                                         </td>
                                     </tr>
                                     <tr class="border-top">
-                                        <td class="fw-bold text-muted align-top">French Description</td>
+                                        <td class="fw-bold text-muted align-top">@GlobalShared.french_description</td>
                                         <td>
                                             <div class="description-content text-wrap" style="max-height: 150px; overflow-y: auto;">
                                                 @if (!string.IsNullOrWhiteSpace(Model.DescriptionFr))
@@ -125,7 +125,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="text-muted fst-italic">Aucune description fournie</span>
+                                                <span class="text-muted fst-italic">@GlobalPcmfLoanPurpose.aucune_description_fournie</span>
                                                 }
                                             </div>
                                         </td>
@@ -141,12 +141,12 @@
 
     <!-- Footer Actions -->
     <div class="modal-footer border-top-0 pt-3">
-                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
-                     <i class="mdi mdi-close me-1"></i> Close
-                </button>
+        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+            <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
+        </button>
         <button type="button" class="btn btn-primary"
                 onclick="ShowModal('@Model.Id', '_CreateEditPcmfLoanPurpose', 'PcmfLoanPurpose', 'edit')">
-            <i class="mdi mdi-pencil me-1"></i>Edit
+            <i class="mdi mdi-pencil me-1"></i>@GlobalShared.Edit
         </button>
     </div>
             

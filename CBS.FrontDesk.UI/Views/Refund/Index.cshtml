@@ -1,5 +1,6 @@
-﻿
+
 @model  CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
+    @using Resources
 @{
     ViewBag.Title = "Loan Repayment";
 }
@@ -11,7 +12,7 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-cog-outline me-2"></i> Loan Refundement
+            <i class="mdi mdi-cog-outline me-2"></i> @GlobalRefund.loan_refundement
         </h1>
 
         @*<div class="alert alert-info mt-3 py-2">
@@ -23,7 +24,7 @@
 
 <div class="card shadow p-3 mb-2">
     <h5 class="text-primary mb-2">
-        <i class="mdi mdi-filter-outline me-1"></i> ADVANCE FILTERS
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.ADVANCE_FILTERS
     </h5>
 
     <form id="loanRepaymentFilterForm" autocomplete="off" method="post">
@@ -38,7 +39,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold">
-                            Show Branch Filter
+                            @GlobalShared.Show_Branch_Filter
                         </label>
                     </div>
                 </div>
@@ -48,7 +49,7 @@
                         <input class="form-check-input" type="checkbox" id="toggleDateFilters"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')" />
                         <label class="form-check-label fw-bold">
-                            Show Date Filters
+                            @GlobalShared.Show_Date_Filters
                         </label>
                     </div>
                 </div>
@@ -56,10 +57,10 @@
 
             <!-- ================= BRANCH FILTER ================= -->
             <div id="branchFilter" class="d-none mb-1">
-                <label class="form-label fw-bold">Branch</label>
+                <label class="form-label fw-bold">@GlobalShared.Branch</label>
                 @Html.DropDownList("BranchId",
                     new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                    "--- Select Branch ---",
+                    $"--- {@GlobalShared.Select_Branch} ---",
                     new { @class = "form-control select2", id = "BranchId" })
             </div>
 
@@ -67,11 +68,11 @@
             <div id="dateFilters" class="d-none mb-1">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                         <input type="date" id="StartDate" name="StartDate" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                         <input type="date" id="EndDate" name="EndDate" class="form-control" />
                     </div>
                 </div>
@@ -81,21 +82,21 @@
             <div class="row mb-1">
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Loan ID</label>
+                    <label class="form-label fw-bold">@GlobalShared.Loan_ID</label>
                     <input type="text" id="LoanId" name="LoanId"
                            class="form-control"
                            placeholder="Enter Loan ID" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Member Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                     <input type="text" id="CustomerId" name="CustomerId"
                            class="form-control"
                            placeholder="Enter Customer ID" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Transaction Code</label>
+                    <label class="form-label fw-bold">@GlobalShared.transaction_code</label>
                     <input type="text" id="TransactionCode" name="TransactionCode"
                            class="form-control"
                            placeholder="Enter Transaction Code" />
@@ -107,18 +108,18 @@
             <div class="row mb-1">
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Payment Method</label>
+                    <label class="form-label fw-bold">@GlobalShared.payment_method</label>
                     @Html.DropDownList("PaymentMethod",
                         new SelectList(ViewBag.PaymentMethods, "Value", "Text"),
-                        "Select Payment Method",
+                        $"{@GlobalShared.select_payment_method}",
                         new { @class = "form-control select2", id = "PaymentMethod" })
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Payment Channel</label>
+                    <label class="form-label fw-bold">@GlobalRefund.payment_channel</label>
                     @Html.DropDownList("PaymentChannel",
                         new SelectList(ViewBag.PaymentChannels, "Value", "Text"),
-                        "Select Payment Channel",
+                        $"{@GlobalRefund.select_payment_channel}",
                         new { @class = "form-control select2", id = "PaymentChannel" })
                 </div>
 
@@ -132,7 +133,7 @@
                         @Html.CheckBox("IsCompleted", false,
                             new { @class = "form-check-input", id = "IsCompleted" })
                         <label class="form-check-label fw-bold" for="IsCompleted">
-                            Completed
+                            @GlobalShared.Completed
                         </label>
                     </div>
                 </div>
@@ -142,7 +143,7 @@
                         @Html.CheckBox("IsReversal", false,
                             new { @class = "form-check-input", id = "IsReversal" })
                         <label class="form-check-label fw-bold" for="IsReversal">
-                            Reversal
+                            @GlobalShared.reversal
                         </label>
                     </div>
                 </div>
@@ -152,7 +153,7 @@
                         @Html.CheckBox("CheckPartialFlowRepayment", false,
                             new { @class = "form-check-input", id = "CheckPartialFlowRepayment" })
                         <label class="form-check-label fw-bold" for="CheckPartialFlowRepayment">
-                            Partial Flow Repayment
+                            @GlobalRefund.partial_flow_repayment
                         </label>
                     </div>
                 </div>
@@ -166,21 +167,21 @@
             <div class="col-12 col-md-4">
                 <button id="applyFilterBtn" type="submit"
                         class="btn btn-primary btn-sm w-100">
-                    <i class="mdi mdi-magnify me-1"></i> Apply Filters
+                    <i class="mdi mdi-magnify me-1"></i> @GlobalShared.Apply_filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button type="reset"
                         class="btn btn-secondary btn-sm w-100">
-                    <i class="mdi mdi-refresh me-1"></i> Reset Filters
+                    <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Reset_Filters
                 </button>
             </div>
 
             <div class="col-12 col-md-4">
                 <button type="button" id="btnExport"
                         class="btn btn-success btn-sm w-100">
-                    <i class="mdi mdi-export me-1"></i> Export
+                    <i class="mdi mdi-export me-1"></i> @GlobalShared.Export
                 </button>
             </div>
         </div>
@@ -191,7 +192,7 @@
 <div class="card mb-1">
     <div class="card-body d-flex justify-content-end align-items-center">
         <button id="btnPushRefund" class="btn btn-primary mb-2">
-            <i class="mdi mdi-cash-plus me-1"></i> Push Refund
+            <i class="mdi mdi-cash-plus me-1"></i> @GlobalRefund.push_refund
         </button>
     </div>
 </div>
@@ -210,7 +211,7 @@
             <div class="modal-header">
                 <h5 class="modal-title text-primary">
                     <i class="mdi mdi-calendar-range me-2"></i>
-                    Partial Flow Date Filter
+                    @GlobalRefund.partial_flow_date_filter
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -219,12 +220,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Start Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                         <input type="date" id="ModalStartDate" name="ModalStartDate" class="form-control" />
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">End Date</label>
+                        <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                         <input type="date" id="ModalEndDate" name="ModalEndDate" class="form-control" />
                     </div>
                 </div>
@@ -234,12 +235,12 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm"
                         data-bs-dismiss="modal">
-                    Cancel
+                    @GlobalShared.Cancel
                 </button>
 
                 <button type="button" class="btn btn-primary btn-sm"
                         id="applyFilterlBtn">
-                    Apply Filter
+                    @GlobalShared.Apply_Filter
                 </button>
             </div>
 

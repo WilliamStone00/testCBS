@@ -1,73 +1,74 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Penalty
+@model CBS.FrontDesk.Data.Entity.LoanConf.Penalty
+@using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "Penalty", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
-        <div class="row mt-2 gy-4">
-            <div class="col-md-8">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.penaltyType, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.penaltyType, "", new { @class = "text-danger" })
-                    <label>Penalty type</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.penaltyName, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.penaltyName, "", new { @class = "text-danger" })
-                    <label>Penalty name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.percentage, "", new { @class = "text-danger" })
-                    <label>Percentage</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.daysToApplyPenalty, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.daysToApplyPenalty, "", new { @class = "text-danger" })
-                    <label>Days to apply penalty</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextBoxFor(m => m.flateAmount, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.flateAmount, "", new { @class = "text-danger" })
-                    <label>Flat amount</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.isRate, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Use rate</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.TextAreaFor(m => m.description, new { @class = "form-control"})
-                    @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
-                    <label>Description</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating form-floating-outline">
-                    @Html.DropDownListFor(m => m.accountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
-                    @Html.ValidationMessageFor(m => m.accountingRuleId, "", new { @class = "text-danger " })
-                    <label>Accounting role</label>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.isEnabled, new { @class = "form-check-input" })
-                    <label class="form-check-label" for="isActive">Enable</label>
-                </div>
+    <div class="row mt-2 gy-4">
+        <div class="col-md-8">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.penaltyType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.penaltyType, "", new { @class = "text-danger" })
+                <label>@GlobalShared.penalty_type</label>
             </div>
         </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        <div class="col-md-4">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.penaltyName, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.penaltyName, "", new { @class = "text-danger" })
+                <label>@GlobalPenalty.penalty_name</label>
+            </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.percentage, "", new { @class = "text-danger" })
+                <label>@GlobalShared.Percentage</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.daysToApplyPenalty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.daysToApplyPenalty, "", new { @class = "text-danger" })
+                <label>@GlobalShared.days_to_apply_penalty</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating form-floating-outline">
+                @Html.TextBoxFor(m => m.flateAmount, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.flateAmount, "", new { @class = "text-danger" })
+                <label>@GlobalShared.flat_amount</label>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.isRate, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">@GlobalShared.use_rate</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.TextAreaFor(m => m.description, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
+                <label>@GlobalShared.Description</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating form-floating-outline">
+                @Html.DropDownListFor(m => m.accountingRuleId, new SelectList(ViewBag.Roles, "id", "ruleName"), "---Select accounting roles---", new { @class = "form-control select2", @search = "true" })
+                @Html.ValidationMessageFor(m => m.accountingRuleId, "", new { @class = "text-danger " })
+                <label>@GlobalPenalty.accounting_role</label>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-check">
+                @Html.CheckBoxFor(m => m.isEnabled, new { @class = "form-check-input" })
+                <label class="form-check-label" for="isActive">@GlobalShared.Enable</label>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary me-2">@GlobalShared.Save</button>
+        <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
+    </div>
     }
 </div>

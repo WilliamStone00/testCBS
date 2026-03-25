@@ -1,11 +1,11 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OldLoanAccountingMaping
+@model CBS.FrontDesk.Data.Entity.SavingProducts.OldLoanAccountingMaping
 @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "OldLoanAccountingMaping", FormMethod.Post,
         new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <fieldset class="fieldset-custom">
-            <legend>@GlobalOldLoanAccountingMaping.OldLoanAccountingMaping</legend>
+            <legend>@GlobalOldLoanAccountingMaping.old_loan_accounting_maping</legend>
             @Html.HiddenFor(model => model.Id)
 
             <div class="row mt-2 gy-4">
@@ -38,7 +38,7 @@
                             new { @class = "form-control select2", id = "LoanTypeName" }
                         )
                         @Html.ValidationMessageFor(m => m.LoanTypeName, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectLoanType</label>
+                        <label>@GlobalShared.Select_Loan_Type</label>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForCapital, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForCapitalAmount</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_capital_amount</label>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForInterest, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForInterestAmount</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_interest_amount</label>
                     </div>
                 </div>
 
@@ -78,7 +78,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForVAT, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForVatAmount</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_vat_amount</label>
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanOneYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanOneYear</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_provision_more_than_one_year</label>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanTwoYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanTwoYears</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_provision_more_than_two_years</label>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanThreeYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanThreeYears</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_provision_more_than_three_years</label>
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@
                             new { @class = "form-control select2 branch-account" }
                         )
                         @Html.ValidationMessageFor(m => m.ChartOfAccountIdForProvisionMoreThanFourYear, "", new { @class = "text-danger " })
-                        <label>@GlobalOldLoanAccountingMaping.SelectAccountLedgerForProvisionMoreThanFourYears</label>
+                        <label>@GlobalOldLoanAccountingMaping.select_account_ledger_for_provision_more_than_four_years</label>
                     </div>
                 </div>
 

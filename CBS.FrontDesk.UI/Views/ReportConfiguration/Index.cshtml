@@ -1,18 +1,19 @@
-﻿@*@{
+@*@{
         ViewBag.Title = "Report Configuration";
     }*@
 
 
 <!-- Header -->
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold">
-                    <i class="mdi mdi-cog-outline me-2"></i> REPORT CONFIGURATION
+                    <i class="mdi mdi-cog-outline me-2"></i> @GlobalReportConfiguration.report_configuration
                 </h1>
                 <p class="card-text text-muted">
-                    Manage all report components: Definitions, Sections, Lines and Line Mappings.
+                    @GlobalReportConfiguration.manage_all_report_components_definitions_sections_lines_and_line_mappings.
                 </p>
                 <hr class="my-3" style="border-top: 2px solid rgba(0, 0, 0, 0.1);">
             </div>
@@ -23,7 +24,7 @@
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Managing Report Configuration</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalReportConfiguration.tips_for_managing_report_configuration</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,19 +35,19 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i>
-                    <strong>Definitions:</strong> Provide clear identifiers and report types.
+                    <strong>@GlobalShared.Definitions:</strong> @GlobalReportConfiguration.provide_clear_identifiers_and_report_types.
                 </li>
                 <li>
                     <i class="mdi mdi-view-list-outline text-success me-2"></i>
-                    <strong>Sections:</strong> Organize your reports by logical areas or categories.
+                    <strong>@GlobalShared.sections:</strong> @GlobalReportConfiguration.organize_your_reports_by_logical_areas_or_categories.
                 </li>
                 <li>
                     <i class="mdi mdi-file-tree-outline text-warning me-2"></i>
-                    <strong>Lines:</strong> Configure your calculations, values, and formulas accurately.
+                    <strong>@GlobalShared.lines:</strong> @GlobalReportConfiguration.configure_your_calculations_values_and_formulas_accurately.
                 </li>
                 <li>
                     <i class="mdi mdi-link-variant text-info me-2"></i>
-                    <strong>Line Mappings:</strong> Match and map your data correctly for consistent outputs.
+                    <strong>@GlobalShared.line_mappings:</strong> @GlobalReportConfiguration.match_and_map_your_data_correctly_for_consistent_outputs.
                 </li>
             </ul>
         </div>
@@ -70,7 +71,7 @@
                    @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
                    data-params='{"path":"definition","partialView":"ReportConfiguration/ReportDefinition/_List"}'
                    *@>
-                    <i class="mdi mdi-file-document-box-outline me-1"></i> Definition
+                    <i class="mdi mdi-file-document-box-outline me-1"></i> @GlobalShared.definition
                 </a>
             </li>
 
@@ -81,7 +82,7 @@
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_section', 'ReportConfiguration/ReportSection/_List', 0, 'sectionContainer',null,'section')"
                    @*data-url="@Url.Action("InitializeData", "ReportConfiguration")"
                    data-params='{"path":"section","partialView":"ReportConfiguration/ReportSection/_List"}'*@>
-                    <i class="mdi mdi-view-list-outline me-1"></i> Section
+                    <i class="mdi mdi-view-list-outline me-1"></i> @GlobalShared.section
                 </a>
             </li>
 
@@ -92,7 +93,7 @@
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line', 'ReportConfiguration/ReportLine/_List', 0, 'lineContainer',null,'line')">
                     @* data-url="@Url.Action("InitializeData", "ReportConfiguration")"
                         data-params='{"path":"line","partialView":"ReportConfiguration/ReportLine/_List"}'>*@
-                    <i class="mdi mdi-format-line-weight me-1"></i> Line
+                    <i class="mdi mdi-format-line-weight me-1"></i> @GlobalShared.line
                 </a>
             </li>
 
@@ -102,10 +103,10 @@
                    href="#mappingContainer"
                    onclick="LoadDataGen('ReportConfiguration', 'myDataTable_line_mapping', 'ReportConfiguration/ReportLineMapping/_List', 0, 'mappingContainer',null,'line_mapping')">
                     @*    data-url="@Url.Action("InitializeData", "ReportConfiguration")"
-                        data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'*@
+        data-params='{"path":"line_mapping","partialView":"ReportConfiguration/ReportLineMapping/_List"}'*@
 
 
-                    <i class="mdi mdi-link-variant me-1"></i> Mapping
+                    <i class="mdi mdi-link-variant me-1"></i> @GlobalShared.Mapping
                 </a>
             </li>
         </ul>
@@ -143,7 +144,7 @@
             <div class="modal-body" id="reportModalBody">
                 <div class="text-center p-3">
                     <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2 text-muted">Loading...</p>
+                    <p class="mt-2 text-muted">@GlobalShared.Loading...</p>
                 </div>
             </div>
 

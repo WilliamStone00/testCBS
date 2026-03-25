@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 
 
@@ -8,12 +8,12 @@
             <div class="mb-3 border-2">
                 <div class="form-wrapper">
                     <fieldset class="fieldset-custom">
-                        <legend>@GlobalMembersFSeries.TRANSACTIONS</legend>
+                        <legend>@GlobalShared.Transactions</legend>
                         <div class="change-group">
                             <div class="row mt-2 gy-4">
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
-                                        <span class="formatted-amount shadow-box float-start">@GlobalMembersFSeries.MembersName: @Model.Customer.name</span>
+                                        <span class="formatted-amount shadow-box float-start">@GlobalShared.Members_name: @Model.Customer.name</span>
                                     </div>
                                 </div>
                                 @*<div class="col-md-6">
@@ -26,7 +26,7 @@
                                     @if (!Model.Transactions.Any())
                                     {
                                         <div class="text-center my-3">
-                                            <p>@GlobalMembersFSeries.NoTransactionAreAvailableFor @Model.Customer.name</p>
+                                            <p>@GlobalMembersFSeries.no_transaction_are_available_for @Model.Customer.name</p>
                                         </div>
                                     }
                                     else
@@ -35,14 +35,14 @@
                                             <table class="table table-hover" id="myDataTable">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>@GlobalMembersFSeries.Date</th>
-                                                        <th>@GlobalMembersFSeries.AccountNumber</th>
-                                                        <th>@GlobalMembersFSeries.Fee</th>
-                                                        <th>@GlobalMembersFSeries.Credit</th>
-                                                        <th>@GlobalMembersFSeries.Debit</th>
-                                                        <th>@GlobalMembersFSeries.Balance</th>
-                                                        <th>@GlobalMembersFSeries.AccountType</th>
-                                                        <th>@GlobalMembersFSeries.Receipts</th>
+                                                        <th>@GlobalShared.Date</th>
+                                                        <th>@GlobalShared.Account_Number</th>
+                                                        <th>@GlobalShared.Fee</th>
+                                                        <th>@GlobalShared.Credit</th>
+                                                        <th>@GlobalShared.Debit</th>
+                                                        <th>@GlobalShared.Balance</th>
+                                                        <th>@GlobalShared.Account_type</th>
+                                                        <th>@GlobalShared.receipts</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -62,7 +62,7 @@
                                                             <td>@transaction.Balance.ToString("#,##0.0")</td>
                                                             <td>@transaction.Account.AccountType</td>
                                                             <td>
-                                                                <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="@GlobalMembersFSeries.PrintReceiptWithReference @transaction.TransactionReference">
+                                                                <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('MembersFSeries', '@transaction.Id','receipts','ReportParameterLess')" data-bs-toggle="tooltip" title="@GlobalMembersFSeries.print_receipt_with_reference @transaction.TransactionReference">
                                                                     <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                                 </a>
                                                             </td>

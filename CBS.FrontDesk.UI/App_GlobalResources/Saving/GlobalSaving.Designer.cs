@@ -61,83 +61,38 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account number.
-        /// </summary>
-        internal static string AccountNumber {
-            get {
-                return ResourceManager.GetString("AccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All NETWORK MEMBERS ACCOUNTS.
         /// </summary>
-        internal static string All_NETWORK_MEMBERS_ACCOUNTS {
+        internal static string all_network_members_accounts {
             get {
-                return ResourceManager.GetString("All_NETWORK_MEMBERS_ACCOUNTS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
+                return ResourceManager.GetString("all_network_members_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Load all network members accounts.
         /// </summary>
-        internal static string LoadAllNetworkMembersAccounts {
+        internal static string load_all_network_members_accounts {
             get {
-                return ResourceManager.GetString("LoadAllNetworkMembersAccounts", resourceCulture);
+                return ResourceManager.GetString("load_all_network_members_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Load local members accounts.
         /// </summary>
-        internal static string LoadLocalMembersAccounts {
+        internal static string load_local_members_accounts {
             get {
-                return ResourceManager.GetString("LoadLocalMembersAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference.
-        /// </summary>
-        internal static string Reference {
-            get {
-                return ResourceManager.GetString("Reference", resourceCulture);
+                return ResourceManager.GetString("load_local_members_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Search by account number or member&apos;s name or telephone number.
         /// </summary>
-        internal static string SearchByAccountNumberOrMembersNameOrTelephoneNumber {
+        internal static string search_by_account_number_or_members_name_or_telephone_number {
             get {
-                return ResourceManager.GetString("SearchByAccountNumberOrMembersNameOrTelephoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telephone number.
-        /// </summary>
-        internal static string TelephoneNumber {
-            get {
-                return ResourceManager.GetString("TelephoneNumber", resourceCulture);
+                return ResourceManager.GetString("search_by_account_number_or_members_name_or_telephone_number", resourceCulture);
             }
         }
     }

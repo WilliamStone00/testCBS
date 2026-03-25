@@ -1,18 +1,18 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.MemberShareMonthUpload
+@model CBS.FrontDesk.Data.Entity.AccountingV2.SharedMonth.MemberShareMonthUpload
 @{
     ViewBag.Title = "Shared Month Details";
 }
-
+@using Resources
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 order-0 order-md-1">
         <div class="card">
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-cabinet me-2"></i> Share Month Summary
+                    <i class="mdi mdi-file-cabinet me-2"></i> @GlobalSalaryUpload.share_month_summary
                 </h1>
                 <p class="card-text text-muted">
-                    View, analyze and manage share month summaries efficiently.
+                    @GlobalSalaryUpload.view_analyze_and_manage_share_month_summaries_efficiently.
                 </p>
                 @*<div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="text-start">
@@ -32,7 +32,7 @@
             <!-- Tips Section -->
             <div class="card mb-2">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> TIPS</span>
+                    <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalarySummaryTips" aria-expanded="false" aria-controls="collapseSalarySummaryTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -40,14 +40,14 @@
                 <div id="collapseSalarySummaryTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> Use the <strong>"Run Share Month Analysis"</strong> button to analyze uploaded share month data.</li>
-                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> Click the <strong>"View Result Of Analyzed Share Month"</strong> button to check previously analyzed results.</li>
-                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> Ensure all uploaded share month files are accurate and in the correct format (e.g., Excel, CSV).</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> Regularly verify analyzed results against records to ensure accuracy.</li>
-                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> Use search filters to quickly locate specific member share month records.</li>
-                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> Address anomalies like incorrect amounts or missing records promptly.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> Edit analyzed share month records for corrections or updates when necessary.</li>
-                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> Delete invalid uploads to maintain clean and accurate records.</li>
+                            <li><i class="mdi mdi-file-document-outline text-primary me-2"></i> @Html.Raw(@GlobalSalaryUpload.use_the_run_share_month_analysis_button_to_analyze_uploaded_share_month_data).</li>
+                            <li><i class="mdi mdi-eye-outline text-primary me-2"></i> @Html.Raw(@GlobalSalaryUpload.click_the_view_result_of_analyzed_share_month_button_to_check_previously_analyzed_results).</li>
+                            <li><i class="mdi mdi-alert-outline text-warning me-2"></i> @GlobalSalaryUpload.ensure_all_uploaded_share_month_files_are_accurate_and_in_the_correct_format_eg_excel_csv.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryUpload.regularly_verify_analyzed_results_against_records_to_ensure_accuracy.</li>
+                            <li><i class="mdi mdi-database-search-outline text-primary me-2"></i> @GlobalSalaryUpload.use_search_filters_to_quickly_locate_specific_member_share_month_records.</li>
+                            <li><i class="mdi mdi-alert-decagram-outline text-danger me-2"></i> @GlobalSalaryUpload.address_anomalies_like_incorrect_amounts_or_missing_records_promptly.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> @GlobalSalaryUpload.edit_analyzed_share_month_records_for_corrections_or_updates_when_necessary.</li>
+                            <li><i class="mdi mdi-delete-outline text-danger me-2"></i> @GlobalSalaryUpload.delete_invalid_uploads_to_maintain_clean_and_accurate_records.</li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-chart-bar me-1"></i> Share Month Analysis
+                            <i class="mdi mdi-chart-bar me-1"></i> @GlobalSalaryUpload.share_month_analysis
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -76,12 +76,12 @@
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
                                             <a type="button" href="/BulkOperation/Listing" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> Go to Bulk Operation
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalSalaryUpload.go_to_bulk_operation
                                             </a>
                                             <a type="button"
-                                               href="/SharedMonthSimulation/GenerateExcelSheet?fileId=@Model.Id"class="btn btn-label-info btn-sm me-2"
+                                               href="/SharedMonthSimulation/GenerateExcelSheet?fileId=@Model.Id" class="btn btn-label-info btn-sm me-2"
                                                data-bs-toggle="tooltip">
-                                                <i class="mdi mdi-download mdi-18px"></i> Generate File for bulk Operation
+                                                <i class="mdi mdi-download mdi-18px"></i> @GlobalSalaryUpload.generate_file_for_bulk_operation
                                             </a>
 
                                         </div>
@@ -95,7 +95,7 @@
                                                     <div class="accordion-item">
                                                         <h2 class="accordion-header" id="overallSummaryHeading">
                                                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overallSummary" aria-expanded="true" aria-controls="overallSummary">
-                                                                <i class="mdi mdi-chart-pie me-2"></i> Overall Share Month Summary
+                                                                <i class="mdi mdi-chart-pie me-2"></i> @GlobalSalaryUpload.overall_share_month_summary
                                                             </button>
                                                         </h2>
                                                         <div id="overallSummary" class="accordion-collapse collapse show" aria-labelledby="overallSummaryHeading" data-bs-parent="#summaryAccordion">
@@ -104,7 +104,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-body text-center">
-                                                                                <h6 class="card-title text-primary">Total Members</h6>
+                                                                                <h6 class="card-title text-primary">@GlobalShared.Total_members</h6>
                                                                                 <p class="card-text fs-4 fw-bold text-info">
                                                                                     @Model.TotalMember.ToString("N0")
                                                                                 </p>
@@ -114,7 +114,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-body text-center">
-                                                                                <h6 class="card-title text-primary">Total Amount</h6>
+                                                                                <h6 class="card-title text-primary">@GlobalShared.Total_amount</h6>
                                                                                 <p class="card-text fs-4 fw-bold text-success">
                                                                                     @Model.TotalAmount.ToString("N1")
                                                                                 </p>
@@ -145,17 +145,17 @@
                                                                         <div class="card shadow-sm border-0">
                                                                             <div class="card-header bg-light">
                                                                                 <h6 class="card-title mb-0">
-                                                                                    <i class="mdi mdi-account-group me-2"></i> Upload Details
+                                                                                    <i class="mdi mdi-account-group me-2"></i> @GlobalSalaryUpload.upload_details
                                                                                 </h6>
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <div class="row">
                                                                                     <div class="col-md-4">
-                                                                                        <p class="mb-1"><strong>Uploaded By:</strong></p>
+                                                                                        <p class="mb-1"><strong>@GlobalShared.Uploaded_By:</strong></p>
                                                                                         <p class="text-muted">@Model.UploadedBy</p>
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <p class="mb-1"><strong>Upload Date:</strong></p>
+                                                                                        <p class="mb-1"><strong>@GlobalShared.upload_date:</strong></p>
                                                                                         <p class="text-muted">@Model.UploadedAt.ToString("dd/MM/yyyy HH:mm")</p>
                                                                                     </div>
                                                                                     @*<div class="col-md-3">
@@ -163,7 +163,7 @@
                                                                                         <p class="text-muted">@Model.FileType</p>
                                                                                     </div>*@
                                                                                     <div class="col-md-4">
-                                                                                        <p class="mb-1"><strong>Month:</strong></p>
+                                                                                        <p class="mb-1"><strong>@GlobalShared.Month:</strong></p>
                                                                                         <p class="text-muted">@Model.Month @Model.Date.ToString()</p>
                                                                                     </div>
                                                                                 </div>
@@ -179,7 +179,7 @@
                                                                             <div class="card shadow-sm border-0">
                                                                                 <div class="card-header bg-light">
                                                                                     <h6 class="card-title mb-0">
-                                                                                        <i class="mdi mdi-format-list-bulleted me-2"></i> Member Share Month Details
+                                                                                        <i class="mdi mdi-format-list-bulleted me-2"></i> @GlobalSalaryUpload.member_share_month_details
                                                                                     </h6>
                                                                                 </div>
                                                                                 <div class="card-body p-0">
@@ -187,9 +187,9 @@
                                                                                         <thead class="table-light">
                                                                                             <tr>
                                                                                                 <th>#</th>
-                                                                                                <th>Member Reference</th>
-                                                                                                <th>Member Name</th>
-                                                                                                <th>Share Month Amount</th>
+                                                                                                <th>@GlobalShared.Member_reference</th>
+                                                                                                <th>@GlobalShared.Member_name</th>
+                                                                                                <th>@GlobalSalaryUpload.share_month_amount</th>
                                                                                             </tr>
                                                                                         </thead>
                                                                                         <tbody>
@@ -207,7 +207,7 @@
                                                                                         </tbody>
                                                                                         <tfoot class="table-light">
                                                                                             <tr>
-                                                                                                <td colspan="3" class="text-end fw-bold">Total:</td>
+                                                                                                <td colspan="3" class="text-end fw-bold">@GlobalShared.Total:</td>
                                                                                                 <td class="fw-bold text-success">@Model.TotalAmount.ToString("N1")</td>
                                                                                             </tr>
                                                                                         </tfoot>
@@ -220,7 +220,7 @@
                                                                             <div class="text-center my-5">
                                                                                 <div class="text-muted">
                                                                                     <i class="mdi mdi-file-remove-outline mdi-48px"></i>
-                                                                                    <p class="mt-2">No share month records found.</p>
+                                                                                    <p class="mt-2">@GlobalSalaryUpload.no_share_month_records_found.</p>
                                                                                 </div>
                                                                             </div>
                                                                         }
@@ -234,7 +234,7 @@
                                                     <div class="accordion-item mb-2">
                                                         <h2 class="accordion-header" id="branchSummaryHeading">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#branchSummary" aria-expanded="false" aria-controls="branchSummary">
-                                                                <i class="mdi mdi-office-building me-2"></i> Branch Information
+                                                                <i class="mdi mdi-office-building me-2"></i> @GlobalShared.Branch_Information
                                                             </button>
                                                         </h2>
                                                         <div id="branchSummary" class="accordion-collapse collapse" aria-labelledby="branchSummaryHeading" data-bs-parent="#summaryAccordion">
@@ -243,15 +243,15 @@
                                                                     <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0 h-100">
                                                                             <div class="card-header bg-light">
-                                                                                <h6 class="card-title mb-0">Branch Details</h6>
+                                                                                <h6 class="card-title mb-0">@GlobalSalaryUpload.branch_details</h6>
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <div class="mb-3">
-                                                                                    <label class="form-label fw-bold">Branch Name:</label>
+                                                                                    <label class="form-label fw-bold">@GlobalShared.Branch_Name:</label>
                                                                                     <p class="text-primary">@Model.BranchName</p>
                                                                                 </div>
                                                                                 <div class="mb-3">
-                                                                                    <label class="form-label fw-bold">Branch Code:</label>
+                                                                                    <label class="form-label fw-bold">@GlobalShared.Branch_Code:</label>
                                                                                     <p class="text-muted">@Model.BranchCode</p>
                                                                                 </div>
                                                                                 @*<div class="mb-3">
@@ -264,27 +264,27 @@
                                                                     <div class="col-md-6">
                                                                         <div class="card shadow-sm border-0 h-100">
                                                                             <div class="card-header bg-light">
-                                                                                <h6 class="card-title mb-0">Upload Summary</h6>
+                                                                                <h6 class="card-title mb-0">@GlobalSalaryUpload.upload_summary</h6>
                                                                             </div>
                                                                             <div class="card-body">
                                                                                 <div class="mb-3">
-                                                                                    <label class="form-label fw-bold">Total Records:</label>
+                                                                                    <label class="form-label fw-bold">@GlobalShared.Total_Records:</label>
                                                                                     <div class="d-flex align-items-center">
                                                                                         <span class="badge bg-info rounded-pill me-2">@(Model?.Lines?.Count ?? 0)</span>
                                                                                         <span>member records</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="mb-3">
-                                                                                    <label class="form-label fw-bold">Total Amount:</label>
+                                                                                    <label class="form-label fw-bold">@GlobalShared.Total_amount:</label>
                                                                                     <div class="d-flex align-items-center">
                                                                                         <i class="mdi mdi-cash-multiple text-success me-2"></i>
                                                                                         <span class="fs-5 fw-bold text-success">@Model.TotalAmount.ToString("N1") FCFA</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="mb-3">
-                                                                                    <label class="form-label fw-bold">Processing Status:</label>
+                                                                                    <label class="form-label fw-bold">@GlobalShared.Processing_Status:</label>
                                                                                     <div>
-                                                                                        <span class="badge bg-success rounded-pill">Completed</span>
+                                                                                        <span class="badge bg-success rounded-pill">@GlobalShared.Completed</span>
                                                                                         <small class="text-muted ms-2">@Model.UploadedAt.ToString("dd MMM yyyy")</small>
                                                                                     </div>
                                                                                 </div>

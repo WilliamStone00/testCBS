@@ -1,20 +1,20 @@
-﻿@{
+@{
     ViewBag.Title = "Role GL Resolution Management";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-account-cog-outline me-2"></i> Role GL Resolution Management
+                    <i class="mdi mdi-account-cog-outline me-2"></i> @GlobalRoleGlResolution.role_gl_resolution_management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure GL account mappings for different roles in transaction processing.
+                    @GlobalRoleGlResolution.configure_gl_account_mappings_for_different_roles_in_transaction_processing.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Ensures automated posting to correct GL accounts based on transaction roles.
+                    @GlobalRoleGlResolution.ensures_automated_posting_to_correct_gl_accounts_based_on_transaction_roles.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Understanding Role GL Resolution</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalRoleGlResolution.understanding_role_gl_resolution</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,11 +33,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-account-cash text-primary me-2"></i> <strong>Teller Role:</strong> Maps to cash handling GL accounts for teller transactions.</li>
-                <li><i class="mdi mdi-safe text-success me-2"></i> <strong>Vault Role:</strong> Maps to vault GL accounts for cash storage and movement.</li>
-                <li><i class="mdi mdi-account-switch text-warning me-2"></i> <strong>Liaison Role:</strong> Maps to inter-branch GL accounts for fund transfers.</li>
-                <li><i class="mdi mdi-bank text-info me-2"></i> <strong>Branch Role:</strong> Maps to internal branch ledger accounts.</li>
-                <li><i class="mdi mdi-shuffle-variant text-danger me-2"></i> <strong>Scope Levels:</strong> Configure at Global, Affiliate, or Branch level for granular control.</li>
+                <li><i class="mdi mdi-account-cash text-primary me-2"></i> <strong>@GlobalShared.teller_role:</strong> @GlobalRoleGlResolution.maps_to_cash_handling_gl_accounts_for_teller_transactions.</li>
+                <li><i class="mdi mdi-safe text-success me-2"></i> <strong>@GlobalRoleGlResolution.vault_role:</strong> @GlobalRoleGlResolution.maps_to_vault_gl_accounts_for_cash_storage_and_movement.</li>
+                <li><i class="mdi mdi-account-switch text-warning me-2"></i> <strong>@GlobalRoleGlResolution.liaison_role:</strong> @GlobalRoleGlResolution.maps_to_interbranch_gl_accounts_for_fund_transfers.</li>
+                <li><i class="mdi mdi-bank text-info me-2"></i> <strong>@GlobalRoleGlResolution.branch_role:</strong> @GlobalRoleGlResolution.maps_to_internal_branch_ledger_accounts.</li>
+                <li><i class="mdi mdi-shuffle-variant text-danger me-2"></i> <strong>@GlobalShared.scope_levels:</strong> @GlobalRoleGlResolution.configure_at_global_affiliate_or_branch_level_for_granular_control.</li>
             </ul>
         </div>
     </div>
@@ -46,13 +46,13 @@
 <!-- Action Buttons -->
 <div class="card shadow p-3 mb-4">
     <div class="card-body d-flex justify-content-between align-items-center">
-        <h5 class="text-primary mb-0"><i class="mdi mdi-cog-outline me-1"></i> Role GL Resolution Configuration</h5>
+        <h5 class="text-primary mb-0"><i class="mdi mdi-cog-outline me-1"></i> @GlobalRoleGlResolution.role_gl_resolution_configuration</h5>
         <div>
             <button type="button" class="btn btn-primary" onclick="openRoleGlResolutionForm()">
-                <i class="mdi mdi-plus-circle-outline me-1"></i> Add New Resolution
+                <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalRoleGlResolution.add_new_resolution
             </button>
             <button type="button" class="btn btn-outline-secondary" onclick="loadRoleGlResolutions()">
-                <i class="mdi mdi-refresh me-1"></i> Refresh
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -72,14 +72,14 @@
             <div id="roleGlResolutionLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Loading, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalShared.Loading_please_wait...</p>
                 </div>
             </div>
 
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title text-primary" id="roleGlResolutionModalLabel">
-                    <i class="mdi mdi-account-cog-outline me-2"></i> Role GL Resolution
+                    <i class="mdi mdi-account-cog-outline me-2"></i> @GlobalRoleGlResolution.role_gl_resolution
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

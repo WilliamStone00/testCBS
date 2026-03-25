@@ -4714,4 +4714,163 @@
   <data name="subreport_type" xml:space="preserve">
     <value />
   </data>
+  <data name="field" xml:space="preserve">
+    <value />
+  </data>
+  <data name="old" xml:space="preserve">
+    <value />
+  </data>
+  <data name="changed_by" xml:space="preserve">
+    <value />
+  </data>
+  <data name="adjustment_history" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rejection_reason" xml:space="preserve">
+    <value />
+  </data>
+  <data name="policy_fields" xml:space="preserve">
+    <value />
+  </data>
+  <data name="financial_fields" xml:space="preserve">
+    <value />
+  </data>
+  <data name="please_wait" xml:space="preserve">
+    <value />
+  </data>
+  <data name="waivers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="corrections" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exclusions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="formatted" xml:space="preserve">
+    <value />
+  </data>
+  <data name="next_installment_date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="timeline_fields" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_adjustment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exclusion" xml:space="preserve">
+    <value />
+  </data>
+  <data name="quick_search" xml:space="preserve">
+    <value />
+  </data>
+  <data name="adjustment_scope" xml:space="preserve">
+    <value />
+  </data>
+  <data name="old_balance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="requested_at" xml:space="preserve">
+    <value />
+  </data>
+  <data name="adjustment_requests" xml:space="preserve">
+    <value />
+  </data>
+  <data name="enter_loan_id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="requested" xml:space="preserve">
+    <value />
+  </data>
+  <data name="data" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loading_product_details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="registered_loan_products" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pcmf_population" xml:space="preserve">
+    <value />
+  </data>
+  <data name="header_card" xml:space="preserve">
+    <value />
+  </data>
+  <data name="updates" xml:space="preserve">
+    <value />
+  </data>
+  <data name="month_s" xml:space="preserve">
+    <value />
+  </data>
+  <data name="display_order" xml:space="preserve">
+    <value />
+  </data>
+  <data name="testing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="extraction_result" xml:space="preserve">
+    <value />
+  </data>
+  <data name="file_upload_details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="no_downloaded_files_found" xml:space="preserve">
+    <value />
+  </data>
+  <data name="payments_receipts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="filter_by_transaction_reference" xml:space="preserve">
+    <value />
+  </data>
+  <data name="branch_account_details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="show_branch_account_details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="select_branch_account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="select_account_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="loan_reconciliation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="choose_mode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="members_management" xml:space="preserve">
+    <value />
+  </data>
+  <data name="data_listings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="configuration_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="select_operation_event" xml:space="preserve">
+    <value />
+  </data>
+  <data name="user_account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="update_kind" xml:space="preserve">
+    <value />
+  </data>
+  <data name="change_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="report_name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="report_code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="any" xml:space="preserve">
+    <value />
+  </data>
 </root>

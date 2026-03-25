@@ -1,12 +1,12 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime>
+@model List<CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime>
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalPasswordPolicyManagement.PASSWORD_POLICY_CONFIGURATIONS</legend>
+    <legend id="select_base">@GlobalPasswordPolicyManagement.password_policy_configurations</legend>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p>@GlobalPasswordPolicyManagement.NoPasswordPolicyConfigurationsDefined.</p>
+            <p>@GlobalPasswordPolicyManagement.no_password_policy_configurations_defined.</p>
         </div>
     }
     else
@@ -15,13 +15,13 @@
             <table class="table table-hover table-bordered align-middle" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.ConfigurationScope</th>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.IdleTimeout</th>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.LoginAttempts</th>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.ResetAfterDays</th>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.BlockInactiveDays</th>
-                        <th style="width: 30%;">@GlobalPasswordPolicyManagement.PasswordRules</th>
-                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.Options</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.configuration_scope</th>
+                        <th style="width: 10%;">@GlobalShared.idle_timeout</th>
+                        <th style="width: 10%;">@GlobalShared.login_attempts</th>
+                        <th style="width: 10%;">@GlobalShared.reset_after_days</th>
+                        <th style="width: 10%;">@GlobalPasswordPolicyManagement.block_inactive_days</th>
+                        <th style="width: 30%;">@GlobalShared.password_rules</th>
+                        <th style="width: 10%;">@GlobalShared.Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,7 @@
                             <td>
                                 @if (item.IsCentral)
                                 {
-                                    <span class="badge bg-primary">@GlobalPasswordPolicyManagement.Central</span>
+                                    <span class="badge bg-primary">@GlobalShared.central</span>
                                 }
                                 else
                                 {
@@ -55,7 +55,7 @@
                                         }
                                         @if (item.PasswordPolicies.Count > 5)
                                         {
-                                            <li class="text-muted">...@GlobalPasswordPolicyManagement.andMore</li>
+                                            <li class="text-muted">...@GlobalShared.and_more</li>
                                         }
                                     </ul>
                                 }

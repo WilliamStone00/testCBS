@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.NumConfig
 @using Resources
 
 <div class="modal-body">
@@ -8,13 +8,13 @@
         @Html.HiddenFor(m => m.Id)
 
         <div class="mt-2">
-            <h4 class="mb-3 text-primary">@ChequeManagements.configName</h4>
+            <h4 class="mb-3 text-primary">@GlobalShared.config_name</h4>
 
             <div class="row g-2">
                 <div class="col-md-6">
                     <div class="form-floating">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Configuration name", id = "name" })
-                        <label>@ChequeManagements.configName</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = $"{@GlobalShared.configuration_name}", id = "name" })
+                        <label>@GlobalShared.config_name</label>
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -22,9 +22,9 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches ?? new List<object>(), "Id", "Name"),
-                            "--- " + @GlobalUserManagement.SelectBranch + " ---",
+                            "--- " + @GlobalShared.SelectBranch + " ---",
                             new { @class = "form-control select2", id = "branchId" })
-                        <label>@GlobalUserManagement.SelectBranch</label>
+                        <label>@GlobalShared.SelectBranch</label>
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -32,30 +32,30 @@
 
             <hr />
 
-            <h5 class="mb-2">Number Components & Positions</h5>
+            <h5 class="mb-2">@GlobalNumConfig.number_components_positions</h5>
 
             <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" id="toggleNumericPositions" />
                 <label class="form-check-label fw-bold" for="toggleNumericPositions">
-                    Show numeric position inputs
+                    @GlobalNumConfig.show_numeric_position_inputs
                 </label>
             </div>
 
             <div id="numericPositions" class="row g-2 mb-2" style="display:none;">
                 <div class="col-md-3">
-                    <label class="form-label">Bank Code Position</label>
+                    <label class="form-label">@GlobalNumConfig.bank_code_position</label>
                     @Html.TextBoxFor(m => m.BankCodePosition, new { @class = "form-control", id = "bankCodePosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Branch Code Position</label>
+                    <label class="form-label">@GlobalNumConfig.branch_code_position</label>
                     @Html.TextBoxFor(m => m.BranchCodePosition, new { @class = "form-control", id = "branchCodePosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Year Position</label>
+                    <label class="form-label">@GlobalNumConfig.year_position</label>
                     @Html.TextBoxFor(m => m.YearPosition, new { @class = "form-control", id = "yearPosition", @readonly = "readonly" })
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Serial Number Position</label>
+                    <label class="form-label">@GlobalNumConfig.serial_number_position</label>
                     @Html.TextBoxFor(m => m.SerialNumberPosition, new { @class = "form-control", id = "seriaNumberPosition", @readonly = "readonly" })
                 </div>
             </div>
@@ -69,25 +69,25 @@
                 </div>
             </div>*@
 
-            <p class="mb-1">Arrange components visually (drag to reorder). Drag-and-drop overrides numeric inputs automatically.</p>
+        <p class="mb-1">@GlobalNumConfig.components_visually_drag_to_reorder_draganddrop_overrides_numeric_inputs_automatically.</p>
 
             <div id="dragZone" class="drag-zone mb-3">
-                <div class="draggable" data-variable="BankCode">🏦 Bank Code</div>
-                <div class="draggable" data-variable="BranchCode">🏢 Branch Code</div>
-                <div class="draggable" data-variable="Year">📅 Year</div>
-                <div class="draggable" data-variable="SerialNumber">#️⃣ Serial Number</div>
+                <div class="draggable" data-variable="BankCode">🏦 @GlobalShared.Bank_Code</div>
+                <div class="draggable" data-variable="BranchCode">🏢 @GlobalShared.Branch_Code</div>
+                <div class="draggable" data-variable="Year">📅 @GlobalShared.Year</div>
+                <div class="draggable" data-variable="SerialNumber">#️⃣ @GlobalShared.Serial_Number</div>
             </div>
 
             <div class="text-end">
                 @if (Model?.Id == null)
                 {
-                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @ChequeManagements.Save</button>
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save me-1"></i> @GlobalShared.Save</button>
                     <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i>Update</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary me-2"><i class="mdi mdi-refresh"></i>@GlobalShared.Update</button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">@GlobalShared.Close</button>
                 }
             </div>
         </div>

@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
-
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
+@using Resources
 @{
     ViewBag.Title = "Loss Declaration Request";
 }
@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Loss Declaration Request
+                    @GlobalLossManagement.loss_declaration_request
                 </h5>
             </div>
             <div class="card-body">
@@ -27,26 +27,26 @@
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
                             <i class="mdi mdi-information-outline me-2"></i>
-                            Basic Information
+                            @GlobalShared.Basic_Information
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label" for="CustomerID">Customer ID</label>
+                                    <label class="form-label" for="CustomerID">@GlobalShared.Customer_ID</label>
                                     @Html.TextBoxFor(model => model.CustomerID, new { @class = "form-control", @readonly = "readonly" })
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label" for="CheckBookID">Checkbook ID</label>
+                                    <label class="form-label" for="CheckBookID">@GlobalShared.CheckBook_ID</label>
                                     @Html.TextBoxFor(model => model.CheckBookID, new { @class = "form-control", @readonly = "readonly" })
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label" for="CheckLeafID">Check Leaf ID</label>
+                                    <label class="form-label" for="CheckLeafID">@GlobalShared.Check_Leaf_ID</label>
                                     @Html.TextBoxFor(model => model.CheckLeafID, new { @class = "form-control", @readonly = "readonly" })
                                 </div>
                             </div>
@@ -59,16 +59,16 @@
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
                             <i class="mdi mdi-alert-circle-outline me-2"></i>
-                            Loss Details
+                            @GlobalLossManagement.loss_details
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="BranchID">Branch</label>
+                                    <label class="form-label" for="BranchID">@GlobalShared.Branch</label>
                                     <select class="form-select" id="BranchID" name="BranchID" required>
-                                        <option value="">Select Branch</option>
+                                        <option value="">@GlobalShared.Select_Branch</option>
                                         <option value="BR001">Main Branch - BR001</option>
                                         <option value="BR002">Downtown Branch - BR002</option>
                                         <option value="BR003">Westside Branch - BR003</option>
@@ -76,20 +76,20 @@
                                         <option value="BR005">North Branch - BR005</option>
                                         <option value="BR006">South Branch - BR006</option>
                                     </select>
-                                    <div class="invalid-feedback">Please select a branch.</div>
+                                    <div class="invalid-feedback">@GlobalShared.Please_select_a_branch.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="LossReason">Loss Reason</label>
+                                    <label class="form-label" for="LossReason">@GlobalLossManagement.loss_reason</label>
                                     <select class="form-select" id="LossReason" name="LossReason" required>
-                                        <option value="">Select Loss Reason</option>
-                                        <option value="Misplaced or Lost">Misplaced or Lost</option>
-                                        <option value="Stolen">Stolen</option>
-                                        <option value="Damaged/Destroyed">Damaged/Destroyed</option>
-                                        <option value="Others">Others</option>
+                                        <option value="">@GlobalShared.select_loss_reason</option>
+                                        <option value="Misplaced or Lost">@GlobalLossManagement.misplaced_or_lost</option>
+                                        <option value="Stolen">@GlobalShared.stolen</option>
+                                        <option value="Damaged/Destroyed">@GlobalShared.damaged/@GlobalShared.destroyed</option>
+                                        <option value="Others">@GlobalShared.others</option>
                                     </select>
-                                    <div class="invalid-feedback">Please select loss reason.</div>
+                                    <div class="invalid-feedback">@GlobalLossManagement.please_select_loss_reason.</div>
                                 </div>
                             </div>
                         </div>
@@ -97,24 +97,24 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="LossDate">Loss Date</label>
+                                    <label class="form-label" for="LossDate">@GlobalLossManagement.loss_date</label>
                                     @Html.TextBoxFor(model => model.LossDate, new { @class = "form-control", type = "date", required = "required" })
-                                    <div class="invalid-feedback">Please select loss date.</div>
+                                <div class="invalid-feedback">@GlobalLossManagement.please_select_loss_date.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label" for="LossLocation">Loss Location</label>
-                                    @Html.TextBoxFor(model => model.LossLocation, new { @class = "form-control", required = "required", placeholder = "Enter location where loss occurred" })
-                                    <div class="invalid-feedback">Please enter loss location.</div>
+                                    <label class="form-label" for="LossLocation">@GlobalLossManagement.loss_location</label>
+                                    @Html.TextBoxFor(model => model.LossLocation, new { @class = "form-control", required = "required", placeholder = $"{@GlobalLossManagement.enter_location_where_loss_occurred}" })
+                                <div class="invalid-feedback">@GlobalLossManagement.please_enter_loss_location.</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="Description">Description</label>
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", required = "required", placeholder = "Provide detailed description of the loss incident..." })
-                            <div class="invalid-feedback">Please enter description.</div>
+                            <label class="form-label" for="Description">@GlobalShared.Description</label>
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", required = "required", placeholder = $"{@GlobalLossManagement.provide_detailed_description_of_the_loss_incident}..." })
+                        <div class="invalid-feedback">@GlobalLossManagement.please_enter_description.</div>
                         </div>
                     </div>
                 </div>
@@ -124,19 +124,19 @@
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
                             <i class="mdi mdi-lightbulb-on-outline me-2"></i>
-                            Client Suggestion
+                            @GlobalShared.client_suggestion
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label" for="ClientSuggestion">Client Suggestion</label>
+                            <label class="form-label" for="ClientSuggestion">@GlobalShared.client_suggestion</label>
                             <select class="form-select" id="ClientSuggestion" name="ClientSuggestion" required>
-                                <option value="">Select Action</option>
-                                <option value="Cancel">Cancel</option>
-                                <option value="Block">Block</option>
-                                <option value="Reprint">Reprint</option>
+                                <option value="">@GlobalShared.Select_Action</option>
+                                <option value="Cancel">@GlobalShared.Cancel</option>
+                                <option value="Block">@GlobalShared.block</option>
+                                <option value="Reprint">@GlobalShared.reprint</option>
                             </select>
-                            <div class="invalid-feedback">Please select client suggestion.</div>
+                            <div class="invalid-feedback">@GlobalLossManagement.please_select_client_suggestion.</div>
                         </div>
                     </div>
                 </div>
@@ -146,18 +146,18 @@
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
                             <i class="mdi mdi-account-outline me-2"></i>
-                            Reported By
+                            @GlobalShared.reported_by
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label" for="LossReportedBy">Reported By</label>
+                            <label class="form-label" for="LossReportedBy">@GlobalShared.reported_by</label>
                             <select class="form-select" id="LossReportedBy" name="LossReportedBy" required onchange="toggleThirdPartySection()">
-                                <option value="">Select Reporter</option>
-                                <option value="Owner">Owner</option>
-                                <option value="ThirdParty">Third Party</option>
+                                <option value="">@GlobalShared.select_reporter</option>
+                                <option value="Owner">@GlobalShared.Owner</option>
+                                <option value="ThirdParty">@GlobalShared.third_party</option>
                             </select>
-                            <div class="invalid-feedback">Please select who reported the loss.</div>
+                            <div class="invalid-feedback">@GlobalLossManagement.please_select_who_reported_the_loss.</div>
                         </div>
 
                         <!-- Third Party Information Section (Initially Hidden) -->
@@ -165,18 +165,18 @@
                             <hr>
                             <h6 class="mb-3">
                                 <i class="mdi mdi-account-details-outline me-2"></i>
-                                Third Party Information
+                                @GlobalShared.third_party_information
                             </h6>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label" for="ThirdPartyName">Third Party Name</label>
+                                        <label class="form-label" for="ThirdPartyName">@GlobalShared.third_party_name</label>
                                         @Html.TextBoxFor(model => model.ThirdPartyName, new { @class = "form-control", placeholder = "Enter full name" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label" for="ThirdPartyNationalID">National ID Number</label>
+                                        <label class="form-label" for="ThirdPartyNationalID">@GlobalShared.National_ID_Number</label>
                                         @Html.TextBoxFor(model => model.ThirdPartyNationalID, new { @class = "form-control", placeholder = "Enter national ID number" })
                                     </div>
                                 </div>
@@ -184,19 +184,19 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label" for="ThirdPartyIDExpiry">ID Expiry Date</label>
+                                        <label class="form-label" for="ThirdPartyIDExpiry">@GlobalShared.id_expiry_date</label>
                                         @Html.TextBoxFor(model => model.ThirdPartyIDExpiry, new { @class = "form-control", type = "date" })
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label" for="ThirdPartyDeliveryDate">Delivered Date</label>
+                                        <label class="form-label" for="ThirdPartyDeliveryDate">@GlobalShared.delivered_date</label>
                                         @Html.TextBoxFor(model => model.ThirdPartyDeliveryDate, new { @class = "form-control", type = "date" })
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label" for="ThirdPartyIssueLocation">Issued Location</label>
+                                        <label class="form-label" for="ThirdPartyIssueLocation">@GlobalLossManagement.issued_location</label>
                                         @Html.TextBoxFor(model => model.ThirdPartyIssueLocation, new { @class = "form-control", placeholder = "Enter issue location" })
                                     </div>
                                 </div>
@@ -210,7 +210,7 @@
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
                             <i class="mdi mdi-status me-2"></i>
-                            Status Information
+                            @GlobalShared.Status_Information
                         </h6>
                     </div>
                     <div class="card-body">
@@ -219,12 +219,12 @@
                                 <div class="mb-3">
                                     <label class="form-label">Current Status</label>
                                     <input type="text" class="form-control" value="Pending" readonly>
-                                    <small class="text-muted">Loss declaration will be reviewed by the branch</small>
+                                    <small class="text-muted">@GlobalLossManagement.loss_declaration_will_be_reviewed_by_the_branch</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Created Date</label>
+                                    <label class="form-label">@GlobalShared.Created_Date</label>
                                     <input type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" readonly>
                                 </div>
                             </div>
@@ -236,10 +236,10 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-send me-1"></i> Submit Loss Declaration
+                            <i class="mdi mdi-send me-1"></i> @GlobalLossManagement.submit_loss_declaration
                         </button>
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-                            <i class="mdi mdi-close me-1"></i> Cancel
+                            <i class="mdi mdi-close me-1"></i> @GlobalShared.Cancel
                         </button>
                     </div>
                 </div>

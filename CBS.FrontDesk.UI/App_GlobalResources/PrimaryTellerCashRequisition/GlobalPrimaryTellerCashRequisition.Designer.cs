@@ -61,227 +61,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new request.
-        /// </summary>
-        internal static string AddNewRequest {
-            get {
-                return ResourceManager.GetString("AddNewRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval note.
-        /// </summary>
-        internal static string ApprovalNote {
-            get {
-                return ResourceManager.GetString("ApprovalNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check to approve.
-        /// </summary>
-        internal static string CheckToApprove {
-            get {
-                return ResourceManager.GetString("CheckToApprove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data listings.
-        /// </summary>
-        internal static string DataListings {
-            get {
-                return ResourceManager.GetString("DataListings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date from.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiated by.
-        /// </summary>
-        internal static string InitiatedBy {
-            get {
-                return ResourceManager.GetString("InitiatedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to into operation.
-        /// </summary>
-        internal static string intoOperation {
-            get {
-                return ResourceManager.GetString("intoOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No data found.
-        /// </summary>
-        internal static string NoDataFound {
-            get {
-                return ResourceManager.GetString("NoDataFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pending Requests.
-        /// </summary>
-        internal static string PendingRequests {
-            get {
-                return ResourceManager.GetString("PendingRequests", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Primary teller cash requisition.
-        /// </summary>
-        internal static string PrimaryTellerCashRequisition {
-            get {
-                return ResourceManager.GetString("PrimaryTellerCashRequisition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Primary Tellers Requests.
         /// </summary>
-        internal static string PrimaryTellersRequests {
+        internal static string primary_tellers_requests {
             get {
-                return ResourceManager.GetString("PrimaryTellersRequests", resourceCulture);
+                return ResourceManager.GetString("primary_tellers_requests", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PRIMARY-TELLER CASH REQUEST VALIDATION.
         /// </summary>
-        internal static string PRIMARY_TELLER_CASH_REQUEST_VALIDATION {
+        internal static string primary_teller_cash_request_validation {
             get {
-                return ResourceManager.GetString("PRIMARY_TELLER_CASH_REQUEST_VALIDATION", resourceCulture);
+                return ResourceManager.GetString("primary_teller_cash_request_validation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested amount.
+        ///   Looks up a localized string similar to Primary teller cash requisition.
         /// </summary>
-        internal static string RequestedAmount {
+        internal static string primary_teller_cash_requisition {
             get {
-                return ResourceManager.GetString("RequestedAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request filters.
-        /// </summary>
-        internal static string RequestFilters {
-            get {
-                return ResourceManager.GetString("RequestFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request form.
-        /// </summary>
-        internal static string RequestForm {
-            get {
-                return ResourceManager.GetString("RequestForm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request note.
-        /// </summary>
-        internal static string RequestNote {
-            get {
-                return ResourceManager.GetString("RequestNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request validation.
-        /// </summary>
-        internal static string RequestValidation {
-            get {
-                return ResourceManager.GetString("RequestValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total amount.
-        /// </summary>
-        internal static string TotalAmount {
-            get {
-                return ResourceManager.GetString("TotalAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View pending requests.
-        /// </summary>
-        internal static string ViewPendingRequests {
-            get {
-                return ResourceManager.GetString("ViewPendingRequests", resourceCulture);
+                return ResourceManager.GetString("primary_teller_cash_requisition", resourceCulture);
             }
         }
     }

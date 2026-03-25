@@ -1,16 +1,16 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
+@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
     @using Resources
 <fieldset class="fieldset-custom">
     <div class="table-responsive">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalMenuMaster.MenuOrder</th> <!-- 👈 New column -->
-                    <th>@GlobalMenuMaster.Name</th>
-                    <th>@GlobalMenuMaster.Controller</th>
+                    <th>@GlobalMenuMaster.menu_order</th> <!-- 👈 New column -->
+                    <th>@GlobalShared.Name</th>
+                    <th>@GlobalMenuMaster.controller</th>
                     <th>@GlobalShared.Action</th>
                     <th>@GlobalShared.Status</th>
-                    <th>@GlobalMenuMaster.Description</th>
+                    <th>@GlobalShared.Description</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
@@ -26,13 +26,13 @@
                             @if (d.IsVisible)
                             {
                                 <label class="ql-color-purple">
-                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalMenuMaster.Visible</span>
+                                    <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.visible</span>
                                 </label>
                             }
                             else
                             {
                                 <label class="ql-color-purple">
-                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalMenuMaster.None</span>
+                                    <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.None</span>
                                 </label>
                             }
                         </td>

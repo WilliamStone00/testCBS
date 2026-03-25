@@ -26,7 +26,7 @@ namespace CBS.FrontDesk.UI.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = Resources.GlobalHome.AboutInformation;
+            ViewBag.Message = Resources.GlobalHome.use_this_area_to_provide_additional_information;
             
             return View();
         }
@@ -39,7 +39,7 @@ namespace CBS.FrontDesk.UI.Controllers
         
         public ActionResult Contact()
         {
-            ViewBag.Message = Resources.GlobalHome.AboutInformation;
+            ViewBag.Message = Resources.GlobalHome.use_this_area_to_provide_additional_information;
 
             return View();
         }

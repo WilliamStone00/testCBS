@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
+@model CBS.FrontDesk.Data.Entity.LoanConf.PcmfLoanPurpose
 @using Resources
 @using System.Web.Mvc
 
@@ -19,7 +19,7 @@
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary">
                                 <i class="mdi mdi-bank-transfer me-2"></i>
-                                @(string.IsNullOrWhiteSpace(Model?.Id) ? "Create PCMF Loan Purpose" : "Update PCMF Loan Purpose")
+                                @(string.IsNullOrWhiteSpace(Model?.Id) ? $"{@GlobalPcmfLoanPurpose.create_pcmf_loan_purpose}" : $"{@GlobalPcmfLoanPurpose.update_pcmf_loan_purpose}")
                             </h1>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -33,9 +33,9 @@
                     <div class="form-floating">
                         @Html.DropDownListFor(m => m.PcmfPurposeKey,
                             (IEnumerable<SelectListItem>)ViewBag.LtGroupOptions,
-                            "Select Pcmf Purpose Key",
+                            $"{@GlobalPcmfLoanPurpose.select_pcmf_purpose_key}",
                             new { @class = "form-control select2",disabled = "disabled" })
-                        <label>Pcmf Purpose Key</label>
+                        <label>@GlobalPcmfLoanPurpose.pcmf_purpose_key</label>
                         @Html.ValidationMessageFor(m => m.PcmfPurposeKey, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                             maxlength = "200",
                             @required = "required"
                         })
-                        <label>Name (English)</label>
+                        <label>@GlobalShared.Name (@GlobalShared.English)</label>
                         @Html.ValidationMessageFor(m => m.NameEn, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                             maxlength = "200",
                             @required = "required"
                         })
-                        <label>Name (French)</label>
+                        <label>@GlobalShared.Name (@GlobalShared.French)</label>
                         @Html.ValidationMessageFor(m => m.NameFr, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                        placeholder = "Lt Group Code",
                       @readonly = "readonly"
                    })
-                        <label>Lt Group Code</label>
+                        <label>@GlobalPcmfLoanPurpose.lt_group_code</label>
                        @* @Html.ValidationMessageFor(m => m.LtGroupCode, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                        placeholder = "Mt Group Code",
                         @readonly = "readonly"
                    })
-                        <label>Mt Group Code</label>
+                        <label>@GlobalPcmfLoanPurpose.mt_group_code</label>
                        @* @Html.ValidationMessageFor(m => m.MtGroupCode, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                        placeholder = "Ct Group Code",
                        @readonly = "readonly"
                    })
-                        <label>Ct Group Code</label>
+                        <label>@GlobalPcmfLoanPurpose.ct_group_code</label>
                         @*@Html.ValidationMessageFor(m => m.CtGroupCode, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
@@ -125,18 +125,18 @@
                        placeholder = "Od Group Code",
                        @readonly = "readonly"
                      })
-                        <label>Od Group Code</label>
+                        <label>@GlobalPcmfLoanPurpose.od_group_code</label>
                        @* @Html.ValidationMessageFor(m => m.OdGroupCode, "", new { @class = "text-danger" })*@
                     </div>
                 </div>
 
                   <div class="col-md-6">
-                      <label class="form-label fw-bold">Description Note in English</label>
-                      @Html.TextAreaFor(m => m.DescriptionEn, new { @class = "form-control", rows = "10", placeholder = "PCMF Description in English notes..." })
+                      <label class="form-label fw-bold">@GlobalPcmfLoanPurpose.description_note_in_english</label>
+                      @Html.TextAreaFor(m => m.DescriptionEn, new { @class = "form-control", rows = "10", placeholder = $"{@GlobalPcmfLoanPurpose.pcmf_description_in_english_notes}..." })
                  </div>
                    <div class="col-md-6">
-                      <label class="form-label fw-bold">Description Note in French</label>
-                      @Html.TextAreaFor(m => m.DescriptionFr, new { @class = "form-control", rows = "10", placeholder = "PCMF Description in French notes..." })
+                       <label class="form-label fw-bold">@GlobalPcmfLoanPurpose.description_note_in_french</label>
+                      @Html.TextAreaFor(m => m.DescriptionFr, new { @class = "form-control", rows = "10", placeholder = $"{@GlobalPcmfLoanPurpose.pcmf_description_in_french_notes}..." })
                   </div>
                 <hr />
                 <!-- Status -->
@@ -145,7 +145,7 @@
                         <div class="form-check">
                             @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
                             <label class="form-check-label fw-bold ms-2" for="isActive">
-                                Active Status
+                                @GlobalShared.Active_Status
                             </label>
                         </div>
                     </div>
@@ -165,11 +165,11 @@
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary me-2">
-                        <i class="mdi mdi-refresh me-1"></i> Update
-                    </button>
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Update
+            </button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                        Close
+                        @GlobalShared.Close
                     </button>
                 }
             </div>

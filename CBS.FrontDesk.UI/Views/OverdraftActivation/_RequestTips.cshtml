@@ -1,9 +1,10 @@
-﻿<div class="row mb-2">
+@using Resources
+<div class="row mb-2">
     <div class="col-12">
         <div class="card border-primary shadow-sm">
             <div class="card-header bg-light text-primary fw-bold d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="mdi mdi-information-outline me-2"></i> Overdraft Activation Guidelines
+                    <i class="mdi mdi-information-outline me-2"></i> @GlobalOverdraftActivation.overdraft_activation_guidelines
                 </span>
                 <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#overdraftGuidelinesBody">
                     <i class="mdi mdi-chevron-down"></i>
@@ -17,72 +18,72 @@
                         <!-- 📄 Config Reference -->
                         <li class="mb-2">
                             <i class="mdi mdi-cog-outline text-secondary me-2"></i>
-                            <strong>Facility Config:</strong> Select a valid <code>OverdraftFacilityConfigId</code> to apply applicable limits, interest rules, and eligibility policies.
+                            <strong>@GlobalShared.facility_config:</strong> @Html.Raw(@GlobalOverdraftActivation.select_a_valid_overdraftfacilityconfigid_to_apply_applicable_limits_interest_rules_and_eligibility_policies).
                         </li>
 
                         <!-- 👤 Customer & Branch -->
                         <li class="mb-2">
                             <i class="mdi mdi-account-outline text-info me-2"></i>
-                            <strong>Customer Details:</strong> Provide valid <code>CustomerId</code>. The system will auto-fill <code>CustomerName</code> and associated branch details upon lookup.
+                            <strong>@GlobalShared.customer_details:</strong> @Html.Raw(@GlobalOverdraftActivation.provide_valid_customerid_the_system_will_autofill_customername_and_associated_branch_details_upon_lookup).
                         </li>
 
                         <!-- 🏦 Primary Account -->
                         <li class="mb-2">
                             <i class="mdi mdi-bank text-success me-2"></i>
-                            <strong>Primary Account:</strong> Choose the account to enable overdraft. It must be active, valid, and compatible with the selected facility config.
+                            <strong>@GlobalShared.Primary_Account:</strong> @GlobalOverdraftActivation.choose_the_account_to_enable_overdraft_it_must_be_active_valid_and_compatible_with_the_selected_facility_config.
                         </li>
 
                         <!-- 💰 Limit & Interest -->
                         <li class="mb-2">
                             <i class="mdi mdi-cash-multiple text-warning me-2"></i>
-                            <strong>Requested Limit:</strong> Should not exceed the configured maximum. Always align with salary or credit score where applicable.
+                            <strong>@GlobalShared.requested_limit:</strong> @GlobalOverdraftActivation.should_not_exceed_the_configured_maximum_always_align_with_salary_or_credit_score_where_applicable.
                         </li>
 
                         <li class="mb-2">
                             <i class="mdi mdi-percent-outline text-danger me-2"></i>
-                            <strong>Interest Settings:</strong> Specify either <code>FlatInterestRate</code> or <code>PayAsYouGoInterest</code>. System will calculate charges accordingly.
+                            <strong>@GlobalShared.interest_settings:</strong> @Html.Raw(@GlobalOverdraftActivation.specify_either_flatinterestrate_or_payasyougointerest_system_will_calculate_charges_accordingly).
                         </li>
 
                         <!-- 🔁 Recovery -->
                         <li class="mb-2">
                             <i class="mdi mdi-refresh-circle text-primary me-2"></i>
-                            <strong>Auto Recovery:</strong> Enabling <code>AutoRecoverOnDeposit</code> allows the system to recover overdrawn balances automatically upon deposit.
+                            <strong>@GlobalShared.auto_recovery:</strong> @Html.Raw(@GlobalOverdraftActivation.enabling_autorecoverondeposit_allows_the_system_to_recover_overdrawn_balances_automatically_upon_deposit).
                         </li>
 
                         <!-- 🔗 Recovery Accounts -->
                         <li class="mb-2">
                             <i class="mdi mdi-link-variant text-muted me-2"></i>
-                            <strong>Recovery Source Accounts:</strong> Multi-select list of accounts to recover from. Usually includes main savings, salary, or designated income channels.
+                            <strong>@GlobalOverdraftActivation.recovery_source_accounts:</strong> @GlobalOverdraftActivation.multiselect_list_of_accounts_to_recover_from_usually_includes_main_savings_salary_or_designated_income_channels.
                         </li>
 
                         <!-- 🧾 Salary Based OD -->
                         <li class="mb-2">
                             <i class="mdi mdi-briefcase-account text-info me-2"></i>
-                            <strong>Salary-Based OD:</strong> If <code>IsSalaryOverdraftAccount</code> is enabled, a <code>LinkedSalaryAccountId</code> must be provided for reference.
+                            <strong>@GlobalOverdraftActivation.salary_based_od:</strong> @Html.Raw(@GlobalOverdraftActivation.if_issalaryoverdraftaccount_is_enabled_a_linkedsalaryaccountid_must_be_provided_for_reference).
                         </li>
 
                         <!-- 🔁 Auto Provisioning -->
                         <li class="mb-2">
                             <i class="mdi mdi-calendar-sync text-success me-2"></i>
-                            <strong>Auto-Provision:</strong> Optional feature. If enabled, overdraft is re-provisioned every <code>AutoProvisionFrequencyInDays</code>. Useful for recurring credit lines.
+                            <strong>@GlobalShared.auto_provision:</strong> @Html.Raw(@GlobalOverdraftActivation.optional_feature_if_enabled_overdraft_is_reprovisioned_every_autoprovisionfrequencyindays_useful_for_recurring_credit_lines).
                         </li>
 
                         <!-- 📅 Expiry Logic -->
                         <li class="mb-2">
                             <i class="mdi mdi-calendar-alert text-warning me-2"></i>
-                            <strong>Expiry Date:</strong> Required field that defines the duration the overdraft is active. Extensions may require re-approval.
+                            <strong>@GlobalShared.Expiry_Date:</strong> @GlobalOverdraftActivation.required_field_that_defines_the_duration_the_overdraft_is_active_extensions_may_require_reapproval.
                         </li>
 
                         <!-- 🧮 Salary Guidance -->
                         <li class="mb-2">
                             <i class="mdi mdi-cash-100 text-success me-2"></i>
-                            <strong>Average Salary:</strong> Mandatory for salary-based overdrafts. Used in calculating max allowed limit and eligibility.
+                            <strong>@GlobalShared.average_salary:</strong> @GlobalOverdraftActivation.mandatory_for_salarybased_overdrafts_used_in_calculating_max_allowed_limit_and_eligibility.
                         </li>
 
                         <!-- ⚠️ Compliance Reminder -->
                         <li class="mb-2">
                             <i class="mdi mdi-alert-octagon-outline text-danger me-2"></i>
-                            <strong>Important:</strong> Ensure all submitted requests follow internal credit risk, regulatory, and approval workflow protocols.
+                            <strong>@GlobalShared.Important:</strong> @GlobalOverdraftActivation.ensure_all_submitted_requests_follow_internal_credit_risk_regulatory_and_approval_workflow_protocols.
                         </li>
                     </ul>
 
@@ -90,7 +91,7 @@
 
                     <p class="text-muted mb-0">
                         <i class="mdi mdi-shield-check-outline me-2"></i>
-                        Validate overdraft parameters with internal policy, product definition, and risk assessment teams before approval.
+                        @GlobalOverdraftActivation.validate_overdraft_parameters_with_internal_policy_product_definition_and_risk_assessment_teams_before_approval.
                     </p>
                 </div>
             </div>

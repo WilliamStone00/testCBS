@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 
@@ -17,7 +17,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-file-document-outline me-2"></i>
-                        @GlobalManuallyJournalEntry.PASSINGJOURNALENTRYFOR  (@Session["BranchName"].ToString().ToUpper()).
+                        @GlobalManuallyJournalEntry.passing_journal_entry_for  (@Session["BranchName"].ToString().ToUpper()).
                     </button>
                 </h2>
     
@@ -34,8 +34,8 @@
                                             <table class="table table-hover" id="AccountingEventxxDataTable">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>@GlobalManuallyJournalEntry.RuleName</th>
-                                                        <th>@GlobalManuallyJournalEntry.LevelOfExecution</th>
+                                                        <th>@GlobalShared.rule_name</th>
+                                                        <th>@GlobalManuallyJournalEntry.level_of_execution</th>
                                                         <th>@GlobalShared.Action</th>
                                                     </tr>
                                                 </thead>

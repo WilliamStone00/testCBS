@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
     @using Resources
 @{
     ViewBag.Title = "ManuallyJournalEntry";
@@ -7,7 +7,7 @@
 
 <div class="card mb-12">
     <div class="card-header">
-        <h5 class="card-title mb-0">@GlobalManuallyJournalEntry.INITIATEJOURNALENTRY</h5>
+        <h5 class="card-title mb-0">@GlobalManuallyJournalEntry.initiate_journal_entry</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -33,16 +33,16 @@
                                         <div class="row mt-2 gy-4">
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectEligibleBranches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BranchId, new SelectList(ViewBag.ListOfEligibleBranch == null ? "" : ViewBag.ListOfEligibleBranch, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.select_eligible_branches + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.BranchId, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.BranchId</label>
+                                                    <label>@GlobalShared.Branch_ID</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectAccount + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.EntryTempData.AccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "---" + @GlobalShared.Select_account + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.AccountId, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.AccountName</label>
+                                                    <label>@GlobalShared.Account_Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -50,22 +50,22 @@
                                                     @Html.TextBoxFor(m => m.EntryTempData.AccountBalance, new { @class = "form-control shadow-input-boxes", @value = "", @readonly = true })
 
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.AccountBalance, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.CurrentBalance</label>
+                                                    <label>@GlobalShared.Current_balance</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.TextBoxFor(model => model.EntryTempData.ValueDate, new { @class = "form-control date-picker", placeholder = @GlobalManuallyJournalEntry.FromDate })
+                                                    @Html.TextBoxFor(model => model.EntryTempData.ValueDate, new { @class = "form-control date-picker", placeholder = @GlobalShared.From_Date })
                                                     @Html.ValidationMessageFor(model => model.EntryTempData.ValueDate, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.ValueDate</label>
+                                                    <label>@GlobalManuallyJournalEntry.value_date</label>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="EntryTempData.AccountCategoryId" id="EntryTempData_AccountCategoryId" value="" />
                                             <div class="col-md-12">
                                                 <div class="form-floating form-floating-outline">
-                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @GlobalManuallyJournalEntry.SelectDirection + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
+                                                    @Html.DropDownListFor(m => m.EntryTempData.BookingDirection, new SelectList(ViewBag.BookingDirections == null ? "" : ViewBag.BookingDirections, "Text", "Value"), "---" + @GlobalShared.select_direction + "---", new { @class = "form-control select2 shadow-input-boxes", @search = "true" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.BookingDirection, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.BookingDirection</label>
+                                                    <label>@GlobalManuallyJournalEntry.booking_direction</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -73,7 +73,7 @@
 
                                                     @Html.TextBoxFor(m => m.EntryTempData.Amount, new { @class = "form-control shadow-input-boxes" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.Amount, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.Amount</label>
+                                                    <label>@GlobalShared.Amount</label>
                                                 </div>
                                             </div>
 
@@ -81,7 +81,7 @@
                                                 <div class="form-floating form-floating-outline">
                                                     @Html.TextAreaFor(m => m.EntryTempData.Description, new { @class = "form-control shadow-input-boxes", @style = "height: 100px;" })
                                                     @Html.ValidationMessageFor(m => m.EntryTempData.Description, "", new { @class = "text-danger" })
-                                                    <label>@GlobalManuallyJournalEntry.Reason</label>
+                                                    <label>@GlobalShared.Reason</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                         @Html.HiddenFor(m => m.EntryTempData.AccountNumber, new { @class = "form-control" })
                                         <div class="mt-4">
                                             <button type="button" onclick="addToBasket()" class="btn btn-primary addToBasket">
-                                                @GlobalManuallyJournalEntry.AddEntry &nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
+                                                @GlobalShared.add_entry &nbsp; &nbsp; <i class="mdi mdi-plus-box-multiple"></i>
                                             </button>
                                             <input type="hidden" name="Action" value="insert" id="Action" />
                                         </div>
@@ -117,11 +117,11 @@
                     <table id="DataEntrybasketTable" class="display" style="width:100%">
                         <thead>
                             <tr>
-                                <th>@GlobalManuallyJournalEntry.AccountNumber</th>
-                                <th>@GlobalManuallyJournalEntry.AccountName</th>
-                                <th>@GlobalManuallyJournalEntry.Description</th>
-                                <th>@GlobalManuallyJournalEntry.Debit</th>
-                                <th>@GlobalManuallyJournalEntry.Credit</th>
+                                <th>@GlobalShared.AccountNumber</th>
+                                <th>@GlobalShared.Account_Name</th>
+                                <th>@GlobalShared.Description</th>
+                                <th>@GlobalShared.Debit</th>
+                                <th>@GlobalShared.Credit</th>
                                 <th>@GlobalShared.Action</th>
                             </tr>
                         </thead>
@@ -129,15 +129,15 @@
                         <thead>
                             <tr>
                      
-                                <th colspan="2">@GlobalManuallyJournalEntry.TotalDebit:<p id="totalDebit"></p></th>
-                                <th colspan="2">@GlobalManuallyJournalEntry.TotalCredit:<p id="totalCredit"></p></th>
-                                <th colspan="2">@GlobalManuallyJournalEntry.Difference:<p id="balance"></p></th>
+                                <th colspan="2">@GlobalShared.Total_Debit:<p id="totalDebit"></p></th>
+                                <th colspan="2">@GlobalShared.Total_Credit:<p id="totalCredit"></p></th>
+                                <th colspan="2">@GlobalShared.Difference:<p id="balance"></p></th>
                             </tr>
                         </thead>
                     </table>
                     <div class="shift-right">
                         <button type="button" onclick="submitBasket()" class="btn btn-primary" id="saveToDB">
-                            @GlobalManuallyJournalEntry.PostEntries&nbsp; &nbsp; <i class="mdi mdi-database"></i>
+                            @GlobalShared.post_entries&nbsp; &nbsp; <i class="mdi mdi-database"></i>
                         </button>
 
                         <br />

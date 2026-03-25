@@ -1,11 +1,11 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanDeliquencyConfiguration>
+@model List<CBS.FrontDesk.Data.Entity.LoanConf.LoanDeliquencyConfiguration>
     @using Resources
 <fieldset class="fieldset-custom">
-    <legend>Data</legend>
+    <legend>@GlobalShared.data</legend>
     @if (Model.Count == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalLoanDeliquencyConfiguration.NoLoanLoanDeliquencyConfigurationTypeIsCreated</p>
+            <p>@GlobalLoanDeliquencyConfiguration.no_loan_loan_deliquency_configuration_type_is_created</p>
         </div>
     }
     else
@@ -14,16 +14,16 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalLoanDeliquencyConfiguration.Name</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.From</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.To</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.Status</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.SMSMembers</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.AM_Score</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.Fine</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.SMSTeam</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.EmailTeam</th>
-                        <th>@GlobalLoanDeliquencyConfiguration.CreditO</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.From</th>
+                        <th>@GlobalShared.to</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.sms_members</th>
+                        <th>@GlobalLoanDeliquencyConfiguration.am_score</th>
+                        <th>@GlobalShared.fine</th>
+                        <th>@GlobalShared.sms_team</th>
+                        <th>@GlobalShared.email_team</th>
+                        <th>@GlobalLoanDeliquencyConfiguration.credit_o</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -38,61 +38,61 @@
                             <td style="width:8%">
                                 @if (d.SendSMStoClient)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                            <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                            <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:8%">
                                 @if (d.AffectScoring)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                                    <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:8%">
                                 @if (d.ApplyFine)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                                    <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:8%">
                                 @if (d.SendSMS)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                                    <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:8%">
                                 @if (d.SendMail)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                                    <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:8%">
                                 @if (d.ReportToCreditOffice)
                                 {
-                                    <span class="badge bg-info">@GlobalLoanDeliquencyConfiguration.Yes</span>
+                                    <span class="badge bg-info">@GlobalShared.Yes</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning">@GlobalLoanDeliquencyConfiguration.No</span>
+                                    <span class="badge bg-warning">@GlobalShared.No</span>
                                 }
                             </td>
                             <td style="width:15%">

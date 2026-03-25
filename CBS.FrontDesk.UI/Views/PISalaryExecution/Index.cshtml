@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @{
     ViewBag.Title = "Analyzed PI Salary Upload";
 }
@@ -8,10 +8,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalSalaryExecution.AnalyzedSalaryUploadManagement
+                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalPISalaryExecution.analyzed_salary_upload_management
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalSalaryExecution.UploadAndManageSystemAnalyzedSalaryFiles.
+                    @GlobalPISalaryExecution.upload_and_manage_system_analyzed_salary_files.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -19,7 +19,7 @@
             <!-- Tips Section -->
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryExecution.TIPS</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryUploadTips" aria-expanded="false" aria-controls="collapseSalaryUploadTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -27,11 +27,11 @@
                 <div id="collapseSalaryUploadTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryExecution.SelectTheCorrectSystemAnalyzedFile.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalSalaryExecution.EnsureModificationsMatchTheOriginalFormat.</li>
-                            <li><i class="mdi mdi-view-list-outline text-primary me-2"></i> @GlobalSalaryExecution.ClickOn <strong>@GlobalSalaryExecution.ViewUploadedFiles</strong> @GlobalSalaryExecution.toCheckExistingAnalyzedSalaryFiles.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalSalaryExecution.AvoidIncorrectMatriculeSalaryCodesOrMissingDetails.</li>
-                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> @GlobalSalaryExecution.MonitorTheStatusOfUploadedFiles.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPISalaryExecution.select_the_correct_system_analyzed_file.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalPISalaryExecution.ensure_modifications_match_the_original_format.</li>
+                            <li><i class="mdi mdi-view-list-outline text-primary me-2"></i> @GlobalShared.click_on <strong>@GlobalShared.view_uploaded_files</strong> @GlobalPISalaryExecution.to_check_existing_analyzed_salary_files.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalPISalaryExecution.avoid_incorrect_matricule_salary_codes_or_missing_details.</li>
+                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> @GlobalPISalaryExecution.monitor_the_status_of_uploaded_files.</li>
                         </ul>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryExecution.UploadAnalyzedSalaryFile
+                            <i class="mdi mdi-file-upload me-1"></i> @GlobalPISalaryExecution.upload_analyzed_salary_file
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -59,8 +59,8 @@
                                 <div class="change-group">
                                     <div class="card mb-3">
                                         <div class="card-body d-flex justify-content-end align-items-center">
-                                            <a href="/PISalaryExecution/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalSalaryExecution.ViewUploadedFiles">
-                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalSalaryExecution.ViewUploadedFiles
+                                            <a href="/PISalaryExecution/UploadedSalaryFiles" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.view_uploaded_files">
+                                                <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.view_uploaded_files
                                             </a>
                                         </div>
                                     </div>

@@ -1,7 +1,7 @@
 ﻿@model CBS.FrontDesk.Data.Entity.LoanConf.Loan
 @using Resources
 @{
-    ViewBag.Title = @GlobalLoanApplication.LoanApplicationDetails;
+    ViewBag.Title = GlobalShared.loan_application_details;
     var SavingCoverage = (Model.LoanApplication.SavingAccountCoverageRate / 100) * Model.RequestedAmount;
     var totalRefinancing = Model.RequestedAmount + Model.RestructuredBalance;
 }
@@ -11,18 +11,18 @@
         <tbody>
             <!-- General Information -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.GeneralInformation</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.General_Information</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.MembersCode:</td>
+                <td class="font-weight-bold">@GlobalShared.Members_Code:</td>
                 <td>@Model.LoanApplication.CustomerId</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanApplicationCode:</td>
+                <td class="font-weight-bold">@GlobalLoan.loan_application_code:</td>
                 <td>@Model.Id</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanApplicationType:</td>
+                <td class="font-weight-bold">@GlobalShared.loan_application_type:</td>
                 <td>
                     @if (@Model.LoanApplication.LoanApplicationType != "Normal")
                     {
@@ -31,14 +31,14 @@
                     }
                     else
                     {
-                        <span class="badge bg-primary text-white">@GlobalLoanApplication.NewLoan</span>
+                        <span class="badge bg-primary text-white">@GlobalShared.New_Loan</span>
                     }
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanType:</td>
+                <td class="font-weight-bold">@GlobalShared.Loan_Type:</td>
                 <td>
-                    @if (Model.LoanType=="Main_Loan")
+                    @if (Model.LoanType == "Main_Loan")
                     {
                         <span class="badge bg-primary text-white">@Model.LoanType</span>
                     }
@@ -49,25 +49,25 @@
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanCategory:</td>
+                <td class="font-weight-bold">@GlobalShared.Loan_Category:</td>
                 <td>@Model.LoanCategory</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.TargetedPopulation:</td>
+                <td class="font-weight-bold">@GlobalShared.targeted_population:</td>
                 <td>@Model.LoanTarget</td>
             </tr>
 
             <!-- General Information -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.ProductInformation</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Product_Information</td>
             </tr>
 
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ProductCode:</td>
+                <td class="font-weight-bold">@GlobalShared.Product_Code:</td>
                 <td>@Model.LoanApplication.LoanProduct.ProductCode</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ProductName:</td>
+                <td class="font-weight-bold">@GlobalShared.Product_Name:</td>
                 <td>@Model.LoanApplication.LoanProduct.ProductName</td>
             </tr>
             @*<tr>
@@ -77,48 +77,48 @@
 
             <!-- Application Details -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.ApplicationDetails</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.application_details</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ApplicationDate:</td>
-                <td>@Model.LoanApplication.ApplicationDate.Value?.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                <td class="font-weight-bold">@GlobalShared.Application_Date:</td>
+                <td>@Model.LoanApplication.ApplicationDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ApprovalDate:</td>
-                <td>@Model.LoanApplication.ApprovalDate.Value?.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                <td class="font-weight-bold">@GlobalShared.Approval_date:</td>
+                <td>@Model.LoanApplication.ApprovalDate.Value.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.DisbursementDate:</td>
+                <td class="font-weight-bold">@GlobalShared.disbursement_date:</td>
                 <td>@Model.DisbursementDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ApplicationManage:</td>
+                <td class="font-weight-bold">@GlobalShared.application_manage:</td>
                 <td>@Model.LoanManager</td>
             </tr>
 
             <!-- Application Details -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.MigrationStatus</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.migration_status</td>
             </tr>
             <tr>
                 <td class="font-weight-bold">Migrated Loan:</td>
                 <td>
-                    @if (Model.LoanApplication?.IsUpload==true)
+                    @if (Model.LoanApplication?.IsUpload == true)
                     {
-                        <span class="badge bg-primary text-white">@GlobalLoanApplication.TSCLoan</span>
+                        <span class="badge bg-primary text-white">@GlobalShared.tsc_loan</span>
                     }
                     else
                     {
-                        <span class="badge bg-warning text-dark">@GlobalLoanApplication.MigratedLoan</span>
+                        <span class="badge bg-warning text-dark">@GlobalShared.migrated_loan</span>
                     }
                 </td>
             </tr>
             <!-- Loan Status -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.LoanStatus</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Loan_Status</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ApprovalStatus:</td>
+                <td class="font-weight-bold">@GlobalShared.Approval_status:</td>
                 <td>
                     <span class="badge bg-@(Model.LoanApplication.IsApproved ? "success" : "danger")">
                         @(Model.LoanApplication.IsApproved ? "Approved" : "Pending")
@@ -126,74 +126,74 @@
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.DisbursementStatus:</td>
+                <td class="font-weight-bold">@GlobalShared.Disbursement_Status:</td>
                 <td>@(Model.LoanApplication.IsDisbursed ? "Yes" : "No")</td>
             </tr>
             <!-- Refinancing Details -->
             @if (Model.LoanApplication.LoanApplicationType == "Refinancing")
             {
                 <tr class="table-primary">
-                    <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.RefinancingDetails</td>
+                    <td colspan="2" class="font-weight-bold text-center">@GlobalShared.refinancing_details</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.RequestedAmount:</td>
+                    <td class="font-weight-bold">@GlobalShared.Requested_Amount:</td>
                     <td>@Model.RequestedAmount.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.RestructuredBalance:</td>
+                    <td class="font-weight-bold">@GlobalShared.restructured_balance:</td>
                     <td>@Model.RestructuredBalance.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.RefinancedAmount:</td>
+                    <td class="font-weight-bold">@GlobalShared.refinanced_amount:</td>
                     <td>@totalRefinancing.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr class="table-secondary">
-                    <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.OldLoanInformation</td>
+                    <td colspan="2" class="font-weight-bold text-center">@GlobalShared.old_loan_information</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.OldLoanAmount:</td>
+                    <td class="font-weight-bold">@GlobalShared.old_loan_amount:</td>
                     <td>@Model.LoanApplication.OldLoanAmount.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.OldLoanCapital:</td>
+                    <td class="font-weight-bold">@GlobalShared.old_loan_capital:</td>
                     <td>@Model.LoanApplication.OldLoanCapital.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.OldLoanInterest:</td>
+                    <td class="font-weight-bold">@GlobalShared.old_loan_interest:</td>
                     <td>@Model.LoanApplication.OldLoanInterest.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.OldLoanVAT:</td>
+                    <td class="font-weight-bold">@GlobalShared.old_loan_vat:</td>
                     <td>@Model.LoanApplication.OldLoanVat.ToString("#,##0.0") FCFA</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">@GlobalLoanApplication.OldLoanPenalty:</td>
+                    <td class="font-weight-bold">@GlobalShared.old_loan_penalty:</td>
                     <td>@Model.LoanApplication.OldLoanPenalty.ToString("#,##0.0") FCFA</td>
                 </tr>
             }
             <!-- Interest Payment Details -->
             <!-- Loan Details -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.LoanDetails</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Loan_Details</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanProductID:</td>
+                <td class="font-weight-bold">@GlobalShared.loan_product_id:</td>
                 <td>@Model.LoanApplication.LoanProductId</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.TotalLoanAmount:</td>
+                <td class="font-weight-bold">@GlobalShared.Total_Loan_Amount:</td>
                 <td><strong>@Model.LoanApplication.Amount.ToString("#,##0.0") FCFA</strong></td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.InterestRate:</td>
+                <td class="font-weight-bold">@GlobalShared.Interest_Rate:</td>
                 <td>@Model.InterestRate.ToString("#,##0.0")%</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.LoanManager:</td>
+                <td class="font-weight-bold">@GlobalShared.loan_manager:</td>
                 <td>@Model.LoanManager</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.Fees:</td>
+                <td class="font-weight-bold">@GlobalShared.Fees:</td>
                 <td>
                     @if (Model.LoanApplication.LoanApplicationFees.Any())
                     {
@@ -206,56 +206,56 @@
                             }
                         </ul>
                         <div>
-                            <strong>Total Fee Amount:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.0") + " FCFA")<br />
-                            <strong>Total Amount Paid:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.0") + " FCFA")
+                            <strong>@GlobalShared.Total_Fee_Amount:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.FeeAmount).ToString("#,##0.0") + " FCFA")<br />
+                            <strong>@GlobalShared.Total_Amount_Paid:</strong> @(Model.LoanApplication.LoanApplicationFees.Sum(f => f.AmountPaid).ToString("#,##0.0") + " FCFA")
                         </div>
                     }
                     else
                     {
-                        <span class="text-muted">@GlobalLoanApplication.NoFeeAdded.</span>
+                        <span class="text-muted">@GlobalShared.No_Fee_Added.</span>
                     }
                 </td>
             </tr>
 
             <!-- Downpayments and Coverage Section -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.DownpaymentsAndCoverage</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.downpayments_and_coverage</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.TotalDownPaymentProvided:</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.total_down_payment_provided:</td>
                 <td><strong>@Model.LoanApplication.DownPaymentCoverageAmountProvided.ToString("#,##0.0") FCFA</strong></td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ShareCoveredAmount:</td>
+                <td class="font-weight-bold">@GlobalShared.share_covered_amount:</td>
                 <td>@Model.LoanApplication.ShareAccountCoverageAmount.ToString("#,##0.0") FCFA</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.SavingCoverageProvided:</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.saving_coverage_provided:</td>
                 <td>@Model.LoanApplication.SavingAccountCoverageRate.ToString("#,##0.0")% of @Model.RequestedAmount.ToString("#,##0"): [@SavingCoverage.ToString("#,##0")] FCFA</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.WasPreferenceShareAccountUsedAsCoverage?</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.was_preference_share_account_used_as_coverage?</td>
                 <td>
                     @if (Model.LoanApplication.IsPreferenceShareAccountCoverageAmount)
                     {
-                        <span class="badge bg-primary text-white">@GlobalLoanApplication.YESCoverageAmount: @Model.LoanApplication.PreferenceShareAccountCoverageAmount.ToString("#,##0.0")</span>
+                        <span class="badge bg-primary text-white">@GlobalLoanApplication.yes_coverage_amount: @Model.LoanApplication.PreferenceShareAccountCoverageAmount.ToString("#,##0.0")</span>
                     }
                     else
                     {
-                        <span class="badge bg-warning text-dark">@GlobalLoanApplication.No</span>
+                        <span class="badge bg-warning text-dark">@GlobalShared.No</span>
                     }
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.WasDepositAccountUsedAsCoverage?</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.was_deposit_account_used_as_coverage?</td>
                 <td>
                     @if (Model.LoanApplication.IsDepositAccountCoverageAmount)
                     {
-                        <span class="badge bg-primary text-white">@GlobalLoanApplication.YESCoverageAmount: @Model.LoanApplication.DepositAccountCoverageAmount.ToString("#,##0.0")</span>
+                        <span class="badge bg-primary text-white">@GlobalLoanApplication.yes_coverage_amount: @Model.LoanApplication.DepositAccountCoverageAmount.ToString("#,##0.0")</span>
                     }
                     else
                     {
-                        <span class="badge bg-warning text-dark">@GlobalLoanApplication.No</span>
+                        <span class="badge bg-warning text-dark">@GlobalShared.No</span>
                     }
                 </td>
             </tr>
@@ -264,22 +264,22 @@
 
             <!-- Additional Details -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.AdditionalDetails</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Additional_Details</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.VATRate:</td>
+                <td class="font-weight-bold">@GlobalShared.Vat_rate:</td>
                 <td>@Model.VatRate.ToString("#,##0.0")%</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.GracePeriodBeforeFirstInstallment:</td>
-                <td>@Model.LoanApplication.GracePeriodBeforeFirstPayment @GlobalLoanApplication.monthsBeforeFirstInstallment</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.grace_period_before_first_installment:</td>
+                <td>@Model.LoanApplication.GracePeriodBeforeFirstPayment @GlobalLoanApplication.months_before_first_installment</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.GracePeriodAfterLoanDueDate:</td>
-                <td>@Model.LoanApplication.GracePeriodAfterMaturityDate @GlobalLoanApplication.daysAfterMaturityDate</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.grace_period_after_loan_due_date:</td>
+                <td>@Model.LoanApplication.GracePeriodAfterMaturityDate @GlobalLoanApplication.days_after_maturity_date</td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.ApprovalStatus:</td>
+                <td class="font-weight-bold">@GlobalShared.Approval_status:</td>
                 <td>
                     @if (Model.LoanApplication.IsApproved)
                     {
@@ -294,32 +294,32 @@
                 </td>
             </tr>
             <tr>
-                <td class="font-weight-bold">@GlobalLoanApplication.HasTheLoanBeenApproved?</td>
+                <td class="font-weight-bold">@GlobalLoanApplication.has_the_loan_been_approved?</td>
                 <td>
                     @if (Model.LoanApplication.IsApproved)
                     {
-                        <span class="badge bg-primary text-white">@GlobalLoanApplication.Approved</span>
+                        <span class="badge bg-primary text-white">@GlobalShared.Approved</span>
                     }
                     else
                     {
-                        <span class="badge bg-warning text-dark">@GlobalLoanApplication.Pending</span>
+                        <span class="badge bg-warning text-dark">@GlobalShared.Pending</span>
                     }
                 </td>
             </tr>
             <!-- Guarantors Section -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.Guarantors</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Guarantors</td>
             </tr>
             @if (Model.LoanApplication.Guarantors?.Any() == true)
             {
                 foreach (var guarantor in Model.LoanApplication.Guarantors)
                 {
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.GuarantorName:</td>
+                        <td class="font-weight-bold">@GlobalShared.guarantor_name:</td>
                         <td>@guarantor.GuarantorName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.GuarantorRelationship:</td>
+                        <td class="font-weight-bold">@GlobalShared.guarantor_relationship:</td>
                         <td>@guarantor.Relationship</td>
                     </tr>
                 }
@@ -327,24 +327,24 @@
             else
             {
                 <tr>
-                    <td colspan="2" class="text-center text-muted">@GlobalLoanApplication.NoGuarantorsProvided.</td>
+                    <td colspan="2" class="text-center text-muted">@GlobalShared.no_guarantors_provided.</td>
                 </tr>
             }
 
             <!-- Collateral Section -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.Collateral</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Collateral</td>
             </tr>
             @if (Model.LoanApplication.Collateras?.Any() == true)
             {
                 foreach (var collateral in Model.LoanApplication.Collateras)
                 {
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.CollateralType:</td>
+                        <td class="font-weight-bold">@GlobalShared.collateral_type:</td>
                         <td>@collateral.Location</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.CollateralValue:</td>
+                        <td class="font-weight-bold">@GlobalShared.collateral_value:</td>
                         <td>@collateral.Amount.ToString("#,##0.0") FCFA</td>
                     </tr>
                 }
@@ -352,37 +352,37 @@
             else
             {
                 <tr>
-                    <td colspan="2" class="text-center text-muted">@GlobalLoanApplication.NoCollateralProvided.</td>
+                    <td colspan="2" class="text-center text-muted">@GlobalShared.no_collateral_provided.</td>
                 </tr>
             }
 
 
             <!-- Attached Documents -->
             <tr class="table-primary">
-                <td colspan="2" class="font-weight-bold text-center">@GlobalLoanApplication.AttachedDocuments</td>
+                <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Attached_Documents</td>
             </tr>
             @if (Model.LoanApplication.DocumentAttachedToLoans?.Any() == true)
             {
                 foreach (var document in Model.LoanApplication.DocumentAttachedToLoans)
                 {
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.DocumentName:</td>
+                        <td class="font-weight-bold">@GlobalShared.Document_Name:</td>
                         <td>@document.FileName @document.FileExtension</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalLoanApplication.UploadedDate:</td>
+                        <td class="font-weight-bold">@GlobalShared.Uploaded_Date:</td>
                         <td>@document.Date.ToString("dd/MM/yyyy hh:mm:ss")</td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold">Open:</td>
-                        <td><a href="@($"{document.FilePath}")" target="_blank" class="btn btn-sm btn-primary">@GlobalLoanApplication.ReadContent</a></td>
+                        <td><a href="@($"{document.FilePath}")" target="_blank" class="btn btn-sm btn-primary">@GlobalShared.Read_Content</a></td>
                     </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="2" class="text-center text-muted">@GlobalLoanApplication.NoDocumentsAttached.</td>
+                    <td colspan="2" class="text-center text-muted">@GlobalShared.No_Documents_Attached.</td>
                 </tr>
             }
 

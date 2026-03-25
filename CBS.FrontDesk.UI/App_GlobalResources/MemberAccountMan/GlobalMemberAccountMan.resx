@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="account_status_filters" xml:space="preserve">
+    <value>Account Status Filters</value>
+  </data>
+  <data name="account_status_requests" xml:space="preserve">
+    <value>Account Status Requests</value>
+  </data>
+  <data name="account_status_request_details" xml:space="preserve">
+    <value>Account Status Request Details</value>
+  </data>
+  <data name="always_refresh_data_to_ensure_youre_viewing_the_latest_requests" xml:space="preserve">
+    <value>Always refresh data to ensure you're viewing the latest requests</value>
+  </data>
+  <data name="changes_take_effect_on_the_specified_date" xml:space="preserve">
+    <value>Changes take effect on the specified date</value>
+  </data>
+  <data name="changing_the_status_will_trigger_workflow_actions" xml:space="preserve">
+    <value>Changing the status will trigger workflow actions</value>
+  </data>
+  <data name="complete_information_about_the_account_status_change_request" xml:space="preserve">
+    <value>Complete information about the account status change request</value>
+  </data>
+  <data name="filter_requests_by_specific_branch_to_focus_on_your_location" xml:space="preserve">
+    <value>Filter requests by specific branch to focus on your location</value>
+  </data>
+  <data name="first_5_columns_actions_shown_by_default" xml:space="preserve">
+    <value>First 5 columns + Actions shown by default</value>
+  </data>
+  <data name="manage_account_status_changes_approvals_and_track_workflow_history" xml:space="preserve">
+    <value>Manage account status changes, approvals, and track workflow history</value>
+  </data>
+  <data name="member_account_management" xml:space="preserve">
+    <value>Member Account Management</value>
+  </data>
+  <data name="monitor_requests_from_pending_to_applied_status" xml:space="preserve">
+    <value>Monitor requests from Pending to Applied status</value>
+  </data>
+  <data name="please_provide_a_detailed_reason_for_this_status_change" xml:space="preserve">
+    <value>Please provide a detailed reason for this status change</value>
+  </data>
+  <data name="request_timeline" xml:space="preserve">
+    <value>Request Timeline</value>
+  </data>
+  <data name="search_using_member_id_or_account_number" xml:space="preserve">
+    <value>Search using member ID or account number</value>
+  </data>
+  <data name="select_the_new_status_for_this_request" xml:space="preserve">
+    <value>Select the new status for this request</value>
+  </data>
+  <data name="status_tracking" xml:space="preserve">
+    <value>Status Tracking</value>
+  </data>
+  <data name="status_update_form" xml:space="preserve">
+    <value>Status Update Form</value>
+  </data>
+  <data name="update_the_status_of_this_account_request_select_the_new_status_and_provide_a_reason" xml:space="preserve">
+    <value>Update the status of this account request. Select the new status and provide a reason</value>
+  </data>
+  <data name="use_the_switches_above_to_customize_your_view_hidden_columns_appear_dimmed" xml:space="preserve">
+    <value>Use the switches above to customize your view. Hidden columns appear dimmed</value>
+  </data>
+  <data name="view_and_manage_account_status_requests_approve_reject_or_monitor_account_status_changes" xml:space="preserve">
+    <value>View and manage account status requests. Approve, reject, or monitor account status changes</value>
+  </data>
+</root>

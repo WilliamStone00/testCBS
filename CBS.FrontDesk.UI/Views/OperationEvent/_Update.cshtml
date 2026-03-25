@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.OperationEvent
+@model CBS.FrontDesk.Data.Entity.Accounting.OperationEvent
     @using Resources
 <div class="card-body">
 
@@ -9,14 +9,14 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.OperationEventName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.OperationEventName, "", new { @class = "text-danger" })
-                    <label>>@GlobalOperationEvent.Name</label>
+                    <label>>@GlobalShared.Name</label>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label class="form-check-label">>@GlobalOperationEvent.Description</label>
+                    <label class="form-check-label">>@GlobalShared.Description</label>
                 </div>
             </div>
            

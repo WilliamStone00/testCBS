@@ -1,4 +1,4 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MobileMoneyCashTopup>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MobileMoneyCashTopup>
 <style>
     table {
         table-layout: auto;
@@ -10,11 +10,11 @@
 </style>
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Data listings</legend>
+    <legend id="select_base">@GlobalShared.data_listings</legend>
     @if (Model.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalMobileMoneyCashTopup.NoDataFound</p>
+            <p>@GlobalShared.no_data_found</p>
         </div>
     }
     else
@@ -23,13 +23,13 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalMobileMoneyCashTopup.Date</th>
-                        <th>@GlobalMobileMoneyCashTopup.Amount</th>
-                        <th>@GlobalMobileMoneyCashTopup.Operator</th>
-                        <th>@GlobalMobileMoneyCashTopup.Source</th>
-                        <th>@GlobalMobileMoneyCashTopup.Branch</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.Amount</th>
+                        <th>@GlobalShared._operator</th>
+                        <th>@GlobalShared.source</th>
+                        <th>@GlobalShared.Branch</th>
                         <th>@GlobalShared.Status</th>
-                        <th>@GlobalMobileMoneyCashTopup.InitiatedBy</th>
+                        <th>@GlobalShared.Initiated_By</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>

@@ -1,24 +1,24 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee
+@model CBS.FrontDesk.Data.Entity.SavingProducts.OperationFee
      @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "OperationFee", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
     {
         <fieldset class="fieldset-custom">
-            <legend>@GlobalOperationFee.OperationFeeDetails</legend>
+            <legend>@GlobalOperationFee.operation_fee_details</legend>
 
             @Html.HiddenFor(model => model.Id)
 
             <!-- Basic Information -->
             <div class="row mt-2 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.BASIC_INFORMATION
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName."></i>
+                    @GlobalShared.Basic_Information
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.provide_the_basic_details_of_the_operation_fee_such_as_its_name."></i>
                 </h5>
                 <div class="col-md-12 mb-3">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                        <label>@GlobalOperationFee.Name</label>
+                        <label>@GlobalShared.Name</label>
                     </div>
                 </div>
             </div>
@@ -26,31 +26,31 @@
             <!-- Fee Type and Application -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.FEE_CALCULATION_TYPE
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectHowTheFeeWillBeCalculated."></i>
+                    @GlobalOperationFee.fee_calculation_type
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.select_how_the_fee_will_be_calculated."></i>
                 </h5>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.FeeType, "Rate", new { @class = "form-check-input shadow-input-boxes", id = "rateOption" })
-                        <label class="form-check-label" for="rateOption">@GlobalOperationFee.FeeIsCalculatedAsRate (%)</label>
+                        <label class="form-check-label" for="rateOption">@GlobalOperationFee.fee_is_calculated_as_rate (%)</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.FeeType, "Range", new { @class = "form-check-input shadow-input-boxes", id = "rangeOption" })
-                        <label class="form-check-label" for="rangeOption">@GlobalOperationFee.FeeIsCalculatedOnRanges</label>
+                        <label class="form-check-label" for="rangeOption">@GlobalOperationFee.fee_is_calculated_on_ranges</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsAppliesOnHoliday, new { @class = "form-check-input", id = "IsAppliesOnHoliday" })
-                        <label class="form-check-label" for="IsAppliesOnHoliday">@GlobalOperationFee.AppliedOnHolidays</label>
+                        <label class="form-check-label" for="IsAppliesOnHoliday">@GlobalOperationFee.applied_on_holidays</label>
                     </div>
                 </div>
                 <div class="col-6 mb-3">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsMoralPerson, new { @class = "form-check-input", id = "IsMoralPerson" })
-                        <label class="form-check-label" for="IsMoralPerson">@GlobalOperationFee.ApplicableForMoralPersons</label>
+                        <label class="form-check-label" for="IsMoralPerson">@GlobalOperationFee.applicable_for_moral_persons</label>
                     </div>
                 </div>
             </div>
@@ -59,20 +59,20 @@
             <!-- Operation Fee Type -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.REGULAR_OPERATIONS_FEE_TYPE
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheTypeOfOperationFeeApplicable."></i>
+                    @GlobalOperationFee.regular_operations_fee_type
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.select_the_type_of_operation_fee_applicable."></i>
                 </h5>
                 <!-- Operation Fee Type options -->
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "MemberShip", new { @class = "form-check-input shadow-input-boxes", id = "MemberShip" })
-                        <label class="form-check-label" for="MemberShip">@GlobalOperationFee.Membership</label>
+                        <label class="form-check-label" for="MemberShip">@GlobalOperationFee.membership</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "Operation", new { @class = "form-check-input shadow-input-boxes", id = "Operation" })
-                        <label class="form-check-label" for="Operation">@GlobalOperationFee.NormalCashOperation</label>
+                        <label class="form-check-label" for="Operation">@GlobalOperationFee.normal_cash_operation</label>
                     </div>
                 </div>
 
@@ -103,14 +103,14 @@
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "DailyCollections", new { @class = "form-check-input shadow-input-boxes", id = "DailyCollections" })
-                        <label class="form-check-label" for="DailyCollections">@GlobalOperationFee.DailyCollections</label>
+                        <label class="form-check-label" for="DailyCollections">@GlobalOperationFee.daily_collections</label>
                     </div>
                 </div>
                 <!-- ✅ New Option: Daily Saver Registration Fee -->
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "DailySaverRegistrationFee", new { @class = "form-check-input shadow-input-boxes", id = "DailySaverRegistrationFee" })
-                        <label class="form-check-label" for="DailySaverRegistrationFee">Daily Saver Registration/Onboarding Fee</label>
+                        <label class="form-check-label" for="DailySaverRegistrationFee">@GlobalOperationFee.daily_saver_registration_onboarding_fee</label>
                     </div>
                 </div>
             </div>
@@ -118,20 +118,20 @@
             <!-- Operation Fee Type -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.SALARY_FEE_TYPE
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheTypeOfSalaryFeeApplicable"></i>
+                    @GlobalOperationFee.salary_fee_type
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.select_the_type_of_salary_fee_applicable"></i>
                 </h5>
                 <!-- Operation Fee Type options -->
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "CivilServants", new { @class = "form-check-input shadow-input-boxes", id = "CivilServants" })
-                        <label class="form-check-label" for="CivilServants">@GlobalOperationFee.CivilServants</label>
+                        <label class="form-check-label" for="CivilServants">@GlobalShared.civil_servants</label>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.OperationFeeType, "PrivateInstitutions", new { @class = "form-check-input shadow-input-boxes", id = "PrivateInstitutions" })
-                        <label class="form-check-label" for="PrivateInstitutions">@GlobalOperationFee.PrivateInstitutions</label>
+                        <label class="form-check-label" for="PrivateInstitutions">@GlobalOperationFee.private_institutions</label>
                     </div>
                 </div>
                 @*<div class="col-6">
@@ -150,8 +150,8 @@
 
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.REMITTANCE_FEE_TYPE
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.SelectTheApplicableFeeTypeForThRemittanceTransaction."></i>
+                    @GlobalOperationFee.remittance_fee_type
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.select_the_applicable_fee_type_for_th_remittance_transaction."></i>
                 </h5>
                 <!-- Operation Fee Type options -->
                 <div class="col-6">
@@ -208,21 +208,21 @@
             <!-- Additional Charges -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.ADDITIONAL_CHARGES
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded."></i>
+                    @GlobalOperationFee.additional_charges
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.define_any_extra_charges_that_apply_when_the_limit_is_exceeded."></i>
                 </h5>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumExtraCharge, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumExtraCharge, "", new { @class = "text-danger" })
-                        <label>@GlobalOperationFee.FlatExtraChargeOnExceedingLimit</label>
+                        <label>@GlobalOperationFee.flat_extra_charge_on_exceeding_limit</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MaximumRateAboveMaximumRange, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MaximumRateAboveMaximumRange, "", new { @class = "text-danger" })
-                        <label>@GlobalOperationFee.PercentageExtraChargeOnExceedingLimit</label>
+                        <label>@GlobalOperationFee.percentage_extra_charge_on_exceeding_limit</label>
                     </div>
                 </div>
             </div>
@@ -230,14 +230,14 @@
             <!-- Description -->
             <div class="row mt-3 gy-3">
                 <h5 class="border-bottom pb-2 mb-3">
-                    @GlobalOperationFee.DESCRIPTION
-                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.ProvideADetailedDescriptionForThisFeeType."></i>
+                    @GlobalShared.Description
+                    <i class="fa fa-info-circle text-muted" title="@GlobalOperationFee.provide_adetailed_description_for_this_fee_type."></i>
                 </h5>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 90px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label for="formValidationDob">@GlobalOperationFee.FeeDescription</label>
+                        <label for="formValidationDob">@GlobalOperationFee.fee_description</label>
                     </div>
                 </div>
             </div>

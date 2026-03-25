@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <div class="form-wrapper">
     <!-- Member Details & Mobile Money Source Selection -->
@@ -8,7 +8,7 @@
             <div class="col-md-6">
                 <div class="form-floating">
                     <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
-                        @GlobalMobileMoneyBackOffice.MembersName: <strong>@Model.Customer.name</strong>
+                        @GlobalShared.Members_name: <strong>@Model.Customer.name</strong>
                     </span>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                                 new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyMTN" })
                             <label class="form-check-label shadow-input-boxes" for="MobileMoneyMTN"
                                    style="background-color: yellow; color: black;">
-                                @GlobalMobileMoneyBackOffice.MobileMoneyMTN
+                                @GlobalMobileMoneyBackOffice.mobile_money_mtn
                             </label>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                                 new { @class = "form-check-input shadow-input-boxes", id = "MobileMoneyORANGE" })
                             <label class="form-check-label shadow-input-boxes" for="MobileMoneyORANGE"
                                    style="background-color: orange; color: white;">
-                                @GlobalMobileMoneyBackOffice.MobileMoneyOrange
+                                @GlobalMobileMoneyBackOffice.mobile_money_orange
                             </label>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             new { @class = "form-control shadow-input-boxes", @id = "customerId" })
                         @Html.ValidationMessageFor(m => m.AddNoneCashMobileMoneyCommand.MemberReference, "",
                             new { @class = "text-danger " })
-                        <label>@GlobalMobileMoneyBackOffice.MMOMNoneMemberReference</label>
+                        <label>@GlobalMobileMoneyBackOffice.mmomnone_member_reference</label>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                             new { @class = "form-control shadow-input-boxes", @id = "MemberName" })
                         @Html.ValidationMessageFor(m => m.AddNoneCashMobileMoneyCommand.CustomerName, "",
                             new { @class = "text-danger " })
-                        <label>@GlobalMobileMoneyBackOffice.RepresentativeName</label>
+                        <label>@GlobalShared.Representative_Name</label>
                     </div>
                 </div>
 
@@ -77,7 +77,7 @@
                             new { @class = "form-control shadow-input-boxes", @id = "TelephoneNumber" })
                         @Html.ValidationMessageFor(m => m.AddNoneCashMobileMoneyCommand.TelephoneNumber, "",
                             new { @class = "text-danger " })
-                        <label>@GlobalMobileMoneyBackOffice.PhoneNumber</label>
+                        <label>@GlobalShared.Phone_Number</label>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
                             new { @class = "form-control shadow-input-boxes", @id = "TellerCode" })
                         @Html.ValidationMessageFor(m => m.AddNoneCashMobileMoneyCommand.TellerCode, "",
                             new { @class = "text-danger " })
-                        <label>@GlobalMobileMoneyBackOffice.TillCode</label>
+                        <label>@GlobalShared.Till_Code</label>
                     </div>
                 </div>
 
@@ -96,9 +96,9 @@
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.AddNoneCashMobileMoneyCommand.Note,
-                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalMobileMoneyBackOffice.EnterReasonForTransaction, style = "height: 70px;" })
+                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalMobileMoneyBackOffice.enter_reason_for_transaction, style = "height: 70px;" })
                         @Html.ValidationMessageFor(m => m.AddNoneCashMobileMoneyCommand.Note, "", new { @class = "text-danger " })
-                        <label for="Note">@GlobalMobileMoneyBackOffice.TransactionNoteReason</label>
+                        <label for="Note">@GlobalMobileMoneyBackOffice.transaction_note_reason</label>
                     </div>
                 </div>
                 <!-- Bulk Deposit Table -->
@@ -107,13 +107,13 @@
                         <thead class="table-light">
                             <tr>
                                 <th style="display:none;">ProductID</th>
-                                <th>@GlobalMobileMoneyBackOffice.Accounts</th>
-                                <th>@GlobalMobileMoneyBackOffice.Balance</th>
-                                <th>@GlobalMobileMoneyBackOffice.Amount</th>
-                                <th style="display:block">@GlobalMobileMoneyBackOffice.Fee</th>
-                                <th>@GlobalMobileMoneyBackOffice.Total</th>
-                                <th>@GlobalMobileMoneyBackOffice.Confirm</th>
-                                <th style="display:none">@GlobalMobileMoneyBackOffice.Inc</th>
+                                <th>@GlobalShared.Accounts</th>
+                                <th>@GlobalShared.Balance</th>
+                                <th>@GlobalShared.Amount</th>
+                                <th style="display:block">@GlobalShared.Fee</th>
+                                <th>@GlobalShared.Total</th>
+                                <th>@GlobalShared.Confirm</th>
+                                <th style="display:none">@GlobalShared.Inc</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,7 +143,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4" style="text-align: right;"><strong>@GlobalMobileMoneyBackOffice.Total:</strong></td>
+                                <td colspan="4" style="text-align: right;"><strong>@GlobalShared.Total:</strong></td>
                                 <td id="tableTotal">0</td>
                             </tr>
                         </tfoot>
@@ -155,7 +155,7 @@
             <div class="header-buttons mt-4 float-end">
                 <input type="hidden" name="OperationType" value="MobileMoneyNoneCashIn" id="OperationType" />
                 <button type="submit" id="submit" class="btn btn-primary me-2" onclick="PostMobileMoney()">
-                    <i class="fas fa-save me-1"></i> @GlobalMobileMoneyBackOffice.Post
+                    <i class="fas fa-save me-1"></i> @GlobalShared.Post
                 </button>
                 @*<button type="button" id="reprint" class="btn btn-secondary me-2" onclick="Reprint()">
                         <i class="fas fa-print me-1"></i> Re-print

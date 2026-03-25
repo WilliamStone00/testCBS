@@ -1,24 +1,24 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalSalaryExecution.AnalyzedSalaryUploadForm</legend>
+    <legend id="select_base">@GlobalSalaryExecution.analyzed_salary_upload_form</legend>
     <div class="card-body">
         @using (Html.BeginForm("UploadAnalysedSalaryFile", "SalaryExecution", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, new SelectList(ViewBag.Files, "Value", "Text"), "---"+ @GlobalSalaryExecution.SelectAnAnalysedFileToReUpload + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, new SelectList(ViewBag.Files, "Value", "Text"), "---"+ @GlobalSalaryExecution.select_an_analysed_file_to_re_upload + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.UploadAnalysedSalaryCommand.UploadFileId, "", new { @class = "text-danger " })
-                        <label>@GlobalSalaryExecution.SelectASystemAnalysedFile.</label>
+                        <label>@GlobalSalaryExecution.select_asystem_analysed_file.</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         <input type="file" id="file" name="UploadAnalysedSalaryCommand.File" class="form-control" required />
                         @Html.ValidationMessageFor(m => m.UploadAnalysedSalaryCommand.File, "", new { @class = "text-danger " })
-                    <label>@GlobalSalaryExecution.SelectModifyAnalysedSalaryFileToMapWithTheSystemAnalyzedSelectedAbove.</label>
+                    <label>@GlobalSalaryExecution.select_modify_analysed_salary_file_to_map_with_the_system_analyzed_selected_above.</label>
                     </div>
                 </div>
 

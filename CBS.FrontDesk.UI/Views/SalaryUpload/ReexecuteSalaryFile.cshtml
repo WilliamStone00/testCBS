@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @{
     ViewBag.Title = "Salary Upload";
 }
@@ -9,13 +9,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-file-refresh-outline me-2"></i> Salary Reexecution Management
+                    <i class="mdi mdi-file-refresh-outline me-2"></i> @GlobalSalaryUpload.salary_reexecution_management
                 </h1>
                 <p class="card-text text-danger">
-                    This interface is designated exclusively for the controlled reexecution of previously uploaded
-                    salary batches that did not reach full processing completion due to system, validation,
-                    or transactional interruptions. It serves as a corrective operational environment to ensure
-                    financial accuracy, regulatory compliance, and audit traceability in payroll postings.
+                    @GlobalSalaryUpload.this_interface_is_designated_exclusively_for_the_controlled_reexecution_of_previously_uploaded_salary.
                 </p>
 
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -25,7 +22,7 @@
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                     <span>
-                        <i class="mdi mdi-information-outline me-2"></i> Salary Reexecution Compliance Guidelines
+                        <i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryUpload.salary_reexecution_compliance_guidelines
                     </span>
                     <button class="btn btn-light btn-sm"
                             type="button"
@@ -43,59 +40,53 @@
 
                             <li>
                                 <i class="mdi mdi-shield-check-outline text-success me-2"></i>
-                                <strong>Authorized Usage Only:</strong>
-                                Salary reexecution must be performed exclusively by authorized personnel
-                                in compliance with internal payroll controls and segregation-of-duties policies.
+                                <strong>@GlobalSalaryUpload.authorized_usage_only:</strong>
+                                @GlobalSalaryUpload.salary_reexecution_must_be_performed_exclusively_by_authorized_personnel_in_compliance_with_internal_payroll_controls_and_segregationofduties_policies.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-file-document-check-outline text-primary me-2"></i>
-                                <strong>Original Batch Validation:</strong>
-                                Confirm that the salary batch already exists in the system and was only
-                                partially processed. This interface must not be used for new salary uploads.
+                                <strong>@GlobalSalaryUpload.original_batch_validation:</strong>
+                                @GlobalSalaryUpload.confirm_that_the_salary_batch_already_exists_in_the_system_and_was_only_partially_processed_this_interface_must_not_be_used_for_new_salary_uploads.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-alert-octagon-outline text-warning me-2"></i>
-                                <strong>Duplicate Transaction Prevention:</strong>
-                                Reexecution must be initiated strictly for unprocessed salary records.
-                                Ensure that previously successful postings will not be reposted.
+                                <strong>@GlobalSalaryUpload.duplicate_transaction_prevention:</strong>
+                                @GlobalSalaryUpload.reexecution_must_be_initiated_strictly_for_unprocessed_salary_records.
+                                @GlobalSalaryUpload.ensure_that_previously_successful_postings_will_not_be_reposted.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-bank-outline text-info me-2"></i>
-                                <strong>Branch and GL Account Verification:</strong>
-                                Select and validate the correct Branch and corresponding General Ledger (GL)
-                                Account to prevent accounting misstatements and reconciliation issues.
+                                <strong>@GlobalSalaryUpload.branch_and_gl_account_verification:</strong>
+                                @GlobalSalaryUpload.select_and_validate_the_correct_branch_and_corresponding_general_ledger_gl_account_to_prevent_accounting_misstatements_and_reconciliation_issues.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-clipboard-text-search-outline text-secondary me-2"></i>
-                                <strong>Reexecution File Integrity:</strong>
-                                The uploaded file must strictly comply with the approved salary reexecution template
-                                (Salary Code, Matricule, Employee Name, Net Salary, etc.).
-                                Any deviation may result in validation failure.
+                                <strong>@GlobalSalaryUpload.reexecution_file_integrity:</strong>
+                                @GlobalSalaryUpload.the_uploaded_file_must_strictly_comply_with_the_approved_salary_reexecution_template_salary_code_matricule_employee_name_net_salary_etc.
+                                @GlobalSalaryUpload.any_deviation_may_result_in_validation_failure.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-history text-dark me-2"></i>
-                                <strong>Audit Trail & Traceability:</strong>
-                                All reexecution actions are logged for audit purposes.
-                                Users may be required to provide justification for reprocessing during reviews.
+                                <strong>@GlobalSalaryUpload.audit_trail_traceability:</strong>
+                                @GlobalSalaryUpload.all_reexecution_actions_are_logged_for_audit_purposes.
+                                @GlobalSalaryUpload.users_may_be_required_to_provide_justification_for_reprocessing_during_reviews.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-scale-balance text-primary me-2"></i>
-                                <strong>Post-Execution Reconciliation:</strong>
-                                Upon completion, reconcile salary totals against approved payroll reports
-                                and accounting balances to ensure financial accuracy.
+                                <strong>@GlobalSalaryUpload.postexecution_reconciliation:</strong>
+                                @GlobalSalaryUpload.upon_completion_reconcile_salary_totals_against_approved_payroll_reports_and_accounting_balances_to_ensure_financial_accuracy.
                             </li>
 
                             <li>
                                 <i class="mdi mdi-view-list-outline text-success me-2"></i>
-                                <strong>Processing Status Monitoring:</strong>
-                                Use the <strong>View List</strong> functionality to track execution status,
-                                identify pending records, and confirm successful completion.
+                                <strong>@GlobalSalaryUpload.processing_status_monitoring:</strong>
+                                @Html.Raw(@GlobalSalaryUpload.use_the_view_list_functionality_to_track_execution_status_identify_pending_records_and_confirm_successful_completion).
                             </li>
 
                         </ul>
@@ -115,7 +106,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> Salary Reexecution File Upload
+                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryUpload.salary_reexecution_file_upload
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -129,8 +120,8 @@
                                             <a type="button" href="/SalaryUpload/ReexecuteSalaries" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
                                                 <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
-                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ReexecututionUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.UploadNewSalaryFile">
-                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewFile
+                                            <a type="button" onclick="AddORUpdateGen(null,'datalistingview','_ReexecututionUploadForm','new','SalaryUpload')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.upload_new_salary_file">
+                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.upload_new_file
                                             </a>
                                         </div>
                                     </div>

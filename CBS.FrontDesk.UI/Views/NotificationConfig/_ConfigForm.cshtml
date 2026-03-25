@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfig
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfig
 @using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig
 @using Resources
 
@@ -18,14 +18,14 @@
     @Html.HiddenFor(m => m.AvailablePlaceholders) 
 
 <div class="card shadow p-3">
-    <h5 class="text-primary"> Notification Template Configuration </h5>
+    <h5 class="text-primary"> @GlobalNotificationConfig.notification_template_configuration </h5>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="text-primary">Notification Template for: <span class="text-dark">@Model.NotificationType</span></h6>
+        <h6 class="text-primary">@GlobalNotificationConfig.notification_template_for: <span class="text-dark">@Model.NotificationType</span></h6>
 
         <div class="d-flex align-items-center">
             <div class="form-check form-switch me-3">
                 @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "IsActive" })
-                <label class="form-check-label" for="IsActive">Is Active</label>
+                <label class="form-check-label" for="IsActive">@GlobalShared.Is_Active</label>
             </div>
         </div>
     </div>
@@ -39,14 +39,14 @@
     @if (placeholders.Any())
     {
         <div class="alert alert-info">
-            <p class="mb-1"><strong>Available Placeholders:</strong></p>
+            <p class="mb-1"><strong>@GlobalNotificationConfig.available_placeholders:</strong></p>
             <div class="d-flex flex-wrap" id="placeholderContainer">
                 @foreach (var placeholder in placeholders)
                 {
                     <code class="me-2 mb-1 p-1 bg-light border rounded placeholder-tag" style="cursor: pointer;" title="@placeholder.Value">@placeholder.Text</code>
                 }
             </div>
-            <small class="text-muted"> Click a placeholder to insert it into the template body.</small>
+            <small class="text-muted"> @GlobalNotificationConfig.click_a_placeholder_to_insert_it_into_the_template_body.</small>
         </div>
     }
 
@@ -54,7 +54,7 @@
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", id = "name" })
-                <label for="name">Name</label>
+                <label for="name">@GlobalShared.Name</label>
                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -62,7 +62,7 @@
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.TriggerEvent, new { @class = "form-control", placeholder = "Trigger Event", id = "triggerEvent" })
-                <label for="triggerEvent">Trigger Event</label>
+                <label for="triggerEvent">@GlobalNotificationConfig.trigger_event</label>
                 @Html.ValidationMessageFor(m => m.TriggerEvent, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -70,7 +70,7 @@
         <div class="col-12">
             <div class="form-floating">
                 @Html.TextAreaFor(m => m.NotificationTemplate, new { @class = "form-control", placeholder = "Template Body", style = "height:80px;", id = "notificationTemplate" })
-                <label for="notificationTemplate">Template Body</label>
+                <label for="notificationTemplate">@GlobalNotificationConfig.template_body</label>
                 @Html.ValidationMessageFor(m => m.NotificationTemplate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -78,60 +78,60 @@
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description", id = "description" })
-                <label for="description">Template Description</label>
+                <label for="description">@GlobalNotificationConfig.template_description</label>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control", placeholder = "Purpose", id = "purpose" })
-                <label for="purpose">Template Purpose</label>
+                <label for="purpose">@GlobalNotificationConfig.template_purpose</label>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.ScheduleCron, new { @class = "form-control", placeholder = "Schedule CRON", id = "scheduleCron" })
-                <label for="scheduleCron">Schedule (CRON)</label>
-                <small class="form-text text-muted">Optional: cron expression for scheduled notifications.</small>
+                <label for="scheduleCron">@GlobalShared.schedule (CRON)</label>
+                <small class="form-text text-muted">@GlobalNotificationConfig.optional_cron_expression_for_scheduled_notifications.</small>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.DaysBeforeExpiry, new { @class = "form-control", type = "number", min = "0", placeholder = "Days Before Expiry", id = "daysBeforeExpiry" })
-                <label for="daysBeforeExpiry">Days Before Expiry</label>
+                <label for="daysBeforeExpiry">@GlobalShared.days_before_expiry</label>
             </div>
         </div>
 
         <div class="col-md-3 d-flex align-items-center">
             <div class="form-check mt-2">
                 @Html.CheckBoxFor(m => m.RequiresApproval, new { @class = "form-check-input", id = "requiresApproval" })
-                <label class="form-check-label" for="requiresApproval">Requires Approval</label>
+                <label class="form-check-label" for="requiresApproval">@GlobalShared.requires_approval</label>
             </div>
         </div>
 
         <div class="col-12">
             <div class="form-floating">
                 @Html.TextAreaFor(m => m.ConditionExpression, new { @class = "form-control", placeholder = "Condition Expression", style = "height:80px;", id = "conditionExpression" })
-                <label for="conditionExpression">Condition Expression</label>
-                <small class="form-text text-muted">Optional: expression that must evaluate to true to send.</small>
+                <label for="conditionExpression">@GlobalNotificationConfig.condition_expression</label>
+                <small class="form-text text-muted">@GlobalNotificationConfig.optional_expression_that_must_evaluate_to_true_to_send.</small>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Audience, new { @class = "form-control", placeholder = "Audience", id = "audience" })
-                <label for="audience">Audience</label>
-                <small class="form-text text-muted">E.g. Customer, Staff, Admin</small>
+                <label for="audience">@GlobalShared.audience</label>
+                <small class="form-text text-muted">@GlobalShared.eg_customer_staff_admin</small>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.Channel, new { @class = "form-control", placeholder = "Channel", id = "channel" })
-                <label for="channel">Channel</label>
-                <small class="form-text text-muted">E.g. Email, SMS, Push</small>
+                <label for="channel">@GlobalShared.channel</label>
+                <small class="form-text text-muted">@GlobalNotificationConfig.eg_email_sms_push</small>
             </div>
         </div>
     </div>
@@ -140,19 +140,19 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <small class="text-muted">Placeholders in use will be stored in AvailablePlaceholders</small>
+            <small class="text-muted">@GlobalNotificationConfig.placeholders_in_use_will_be_stored_in_availableplaceholders</small>
         </div>
 
         <div>
-            <button type="button" id="resetConfigBtn" class="btn btn-outline-secondary me-2">Reset</button>
+            <button type="button" id="resetConfigBtn" class="btn btn-outline-secondary me-2">@GlobalShared.Reset</button>
 
             @if (!string.IsNullOrWhiteSpace(Model.Id))
             {
-                <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">Delete Template</button>
+                <button type="button" id="deleteConfigBtn" class="btn btn-danger me-2">@GlobalShared.delete_template</button>
             }
 
             <button type="submit" id="saveConfigBtn" class="btn btn-primary shadow-sm px-4">
-                <i class="fas fa-save me-1"></i> Save Changes
+                <i class="fas fa-save me-1"></i> @GlobalShared.Save_Changes
             </button>
         </div>
     </div>

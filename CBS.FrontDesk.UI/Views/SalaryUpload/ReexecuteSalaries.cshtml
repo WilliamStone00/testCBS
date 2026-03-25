@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "File Upload Management";
 }
 @using Resources;
@@ -89,12 +89,12 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-file-upload-outline me-2"></i> Salary Analyses Reexecution
+                    <i class="mdi mdi-file-upload-outline me-2"></i> @GlobalSalaryUpload.salary_analyses_reexecution
                 </h1>
-                <p class="card-text text-muted mb-1">Search, filter, and manage uploaded files across all branches.</p>
+                <p class="card-text text-muted mb-1">@GlobalSalaryUpload.search_filter_and_manage_uploaded_files_across_all_branches.</p>
                 <p class="card-text text-warning fw-semibold">
                     <b>
-                        <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters to narrow by date, type, category, privacy, and more.
+                        <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalSalaryUpload.use_the_filters_to_narrow_by_date_type_category_privacy_and_more.
                     </b>
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -106,7 +106,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using Filters Effectively</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalSalaryUpload.tips_for_using_filters_effectively</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUploadTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -114,13 +114,13 @@
     <div id="collapseUploadTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>Branch:</strong> Focus on files uploaded in a specific branch.</li>
-                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>Date:</strong> Filter by upload date range.</li>
-                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>Type & Category:</strong> Quickly drill into file types (PDF/CSV/XLSX) and categories (Salary, Standing Orders, etc.).</li>
-                <li><i class="mdi mdi-shield-outline text-dark me-2"></i> <strong>Privacy:</strong> Toggle private/public uploads.</li>
-                <li><i class="mdi mdi-account-outline text-secondary me-2"></i> <strong>Uploader:</strong> See files by a specific user.</li>
-                <li><i class="mdi mdi-file-search-outline text-warning me-2"></i> <strong>Quick Search:</strong> Use the table search to find by file name, code, status, etc.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Export your filtered result to Excel.</li>
+                <li><i class="mdi mdi-map-marker-outline text-success me-2"></i> <strong>@GlobalShared.Branch:</strong> @GlobalSalaryUpload.focus_on_files_uploaded_in_a_specific_branch.</li>
+                <li><i class="mdi mdi-calendar-month-outline text-primary me-2"></i> <strong>@GlobalShared.Date:</strong> @GlobalSalaryUpload.filter_by_upload_date_range.</li>
+                <li><i class="mdi mdi-tag-multiple-outline text-info me-2"></i> <strong>@GlobalSalaryUpload.type_category:</strong> @GlobalSalaryUpload.quickly_drill_into_file_types_pdfcsvxlsx_and_categories_salary_standing_orders_etc.</li>
+                <li><i class="mdi mdi-shield-outline text-dark me-2"></i> <strong>@GlobalSalaryUpload.privacy:</strong> @GlobalSalaryUpload.toggle_privatepublic_uploads.</li>
+                <li><i class="mdi mdi-account-outline text-secondary me-2"></i> <strong>@GlobalShared.Uploader:</strong> @GlobalSalaryUpload.see_files_by_a_specific_user.</li>
+                <li><i class="mdi mdi-file-search-outline text-warning me-2"></i> <strong>@GlobalShared.quick_search:</strong> @GlobalSalaryUpload.use_the_table_search_to_find_by_file_name_code_status_etc.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalSalaryUpload.export_your_filtered_result_to_excel.</li>
             </ul>
         </div>
     </div>
@@ -131,8 +131,8 @@
         <a type="button" href="/SalaryUpload/ReexecuteSalaries" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="@GlobalShared.ViewList">
             <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
         </a>
-        <a type="button" href="/SalaryUpload/ReexecuteSalaryFile" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.UploadNewSalaryFile">
-            <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewFile
+        <a type="button" href="/SalaryUpload/ReexecuteSalaryFile" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="@GlobalSalaryUpload.upload_new_salary_file">
+            <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.upload_new_file
         </a>
     </div>
 </div>
@@ -141,7 +141,7 @@
     <!-- Filters Section (minimizable) -->
     <div class="card mb-2 shadow-sm">
         <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-            <span><i class="mdi mdi-filter-outline me-2"></i> Advanced Filters</span>
+            <span><i class="mdi mdi-filter-outline me-2"></i> @GlobalShared.Advanced_filters</span>
             <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedFilters" aria-expanded="true" aria-controls="collapseAdvancedFilters">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -155,18 +155,18 @@
                     <div class="row mb-3">
                         <div class="col-md-4 form-check">
                             <input type="checkbox" class="form-check-input" id="byBranch" />
-                            <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                            <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.Filter_by_Branch</label>
                         </div>
                         <div class="col-md-4 form-check">
                             <input type="checkbox" class="form-check-input" id="byDate" />
-                            <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+                            <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date</label>
                         </div>
                     </div>
 
                     <!-- Branch Filter -->
                     <div id="branchFilterSection" class="row mb-2" style="display:none;">
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Select Branch</label>
+                            <label class="form-label fw-bold">@GlobalShared.Select_Branch</label>
                             @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
                         </div>
                     </div>
@@ -186,11 +186,11 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-1">
-                            <label class="form-label fw-bold">File Type</label>
+                            <label class="form-label fw-bold">@GlobalShared.File_Type</label>
                             <select class="form-select shadow-sm" id="fileType" name="fileType">
-                                <option value="">--- Select Type ---</option>
-                                <option value="Analysis">Analysed Files</option>
-                                <option value="SalaryReExecution">Reexecuted File</option>
+                                <option value="">--- @GlobalShared.select_type ---</option>
+                                <option value="Analysis">@GlobalSalaryUpload.analysed_files</option>
+                                <option value="SalaryReExecution">@GlobalSalaryUpload.reexecuted_file</option>
                             </select>
                         </div>
                     </div>
@@ -201,8 +201,8 @@
                 <!-- Action Buttons -->
                 <div class="row mt-2">
                     <div class="col-md-12 d-flex">
-                        <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-                        <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+                        <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
+                        <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
                     </div>
                 </div>
 
@@ -213,7 +213,7 @@
     <!-- Filters Section -->
 
     <div id="fileUploadDataCard" class="card p-3 shadow mb-1" style="display:none">
-        <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> File Upload Results</h5>
+        <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> @GlobalSalaryUpload.file_upload_results</h5>
         <div class="table-responsive">
             <div class="card-body" id="datalistingview">
                 @Html.Partial("_FileUploadData")

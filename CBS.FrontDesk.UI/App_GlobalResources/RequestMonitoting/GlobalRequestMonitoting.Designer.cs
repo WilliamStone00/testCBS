@@ -63,234 +63,126 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Analyze rate-limited access attempts across branches and IPs. Use date and branch filters to target specific requests.
         /// </summary>
-        internal static string AnalyzeRateLimitedAccessAttempts {
+        internal static string analyze_rate_limited_access_attempts {
             get {
-                return ResourceManager.GetString("AnalyzeRateLimitedAccessAttempts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply filters.
-        /// </summary>
-        internal static string ApplyFilters {
-            get {
-                return ResourceManager.GetString("ApplyFilters", resourceCulture);
+                return ResourceManager.GetString("analyze_rate_limited_access_attempts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Auto-refreshes every 1 minute.
         /// </summary>
-        internal static string AutoRefreshesEvery1Minute {
+        internal static string auto_refreshes_every1_minute {
             get {
-                return ResourceManager.GetString("AutoRefreshesEvery1Minute", resourceCulture);
+                return ResourceManager.GetString("auto_refreshes_every1_minute", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Blocked vs non-blocked.
         /// </summary>
-        internal static string BlockedVsNonBlocked {
+        internal static string blocked_vs_non_blocked {
             get {
-                return ResourceManager.GetString("BlockedVsNonBlocked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End date.
-        /// </summary>
-        internal static string EndDate {
-            get {
-                return ResourceManager.GetString("EndDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export to excel.
-        /// </summary>
-        internal static string ExportToExcel {
-            get {
-                return ResourceManager.GetString("ExportToExcel", resourceCulture);
+                return ResourceManager.GetString("blocked_vs_non_blocked", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Filtered by branch.
         /// </summary>
-        internal static string FilteredByBranch {
+        internal static string filtered_by_branch {
             get {
-                return ResourceManager.GetString("FilteredByBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filters.
-        /// </summary>
-        internal static string Filters {
-            get {
-                return ResourceManager.GetString("Filters", resourceCulture);
+                return ResourceManager.GetString("filtered_by_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Hourly request trends.
         /// </summary>
-        internal static string HourlyRequestTrends {
+        internal static string hourly_request_trends {
             get {
-                return ResourceManager.GetString("HourlyRequestTrends", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last refreshed.
-        /// </summary>
-        internal static string LastRefreshed {
-            get {
-                return ResourceManager.GetString("LastRefreshed", resourceCulture);
+                return ResourceManager.GetString("hourly_request_trends", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loading detailed logs, please wait.
         /// </summary>
-        internal static string LoadingDetailedLogsPleaseWait {
+        internal static string loading_detailed_logs_please_wait {
             get {
-                return ResourceManager.GetString("LoadingDetailedLogsPleaseWait", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Location.
-        /// </summary>
-        internal static string Location {
-            get {
-                return ResourceManager.GetString("Location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to never.
-        /// </summary>
-        internal static string never {
-            get {
-                return ResourceManager.GetString("never", resourceCulture);
+                return ResourceManager.GetString("loading_detailed_logs_please_wait", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Request Log Listing.
         /// </summary>
-        internal static string RequestLogListing {
+        internal static string request_log_listing {
             get {
-                return ResourceManager.GetString("RequestLogListing", resourceCulture);
+                return ResourceManager.GetString("request_log_listing", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Request Monitoring Dashboard.
         /// </summary>
-        internal static string RequestMonitoringDashboard {
+        internal static string request_monitoring_dashboard {
             get {
-                return ResourceManager.GetString("RequestMonitoringDashboard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start date.
-        /// </summary>
-        internal static string StartDate {
-            get {
-                return ResourceManager.GetString("StartDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        internal static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
+                return ResourceManager.GetString("request_monitoring_dashboard", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top 10 IP activities.
         /// </summary>
-        internal static string Top10IPActivities {
+        internal static string top10_ipactivities {
             get {
-                return ResourceManager.GetString("Top10IPActivities", resourceCulture);
+                return ResourceManager.GetString("top10_ipactivities", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top count.
         /// </summary>
-        internal static string TopCount {
+        internal static string top_count {
             get {
-                return ResourceManager.GetString("TopCount", resourceCulture);
+                return ResourceManager.GetString("top_count", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top IPs.
         /// </summary>
-        internal static string TopIPs {
+        internal static string top_ips {
             get {
-                return ResourceManager.GetString("TopIPs", resourceCulture);
+                return ResourceManager.GetString("top_ips", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top paths.
         /// </summary>
-        internal static string TopPaths {
+        internal static string top_paths {
             get {
-                return ResourceManager.GetString("TopPaths", resourceCulture);
+                return ResourceManager.GetString("top_paths", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top users.
         /// </summary>
-        internal static string TopUsers {
+        internal static string top_users {
             get {
-                return ResourceManager.GetString("TopUsers", resourceCulture);
+                return ResourceManager.GetString("top_users", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Top x.
         /// </summary>
-        internal static string TopX {
+        internal static string top_x {
             get {
-                return ResourceManager.GetString("TopX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User.
-        /// </summary>
-        internal static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("top_x", resourceCulture);
             }
         }
     }

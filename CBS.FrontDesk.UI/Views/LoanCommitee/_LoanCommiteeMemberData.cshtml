@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
 @using Resources
 
 @if (Model != null && Model.LoanCommiteeMembers.Any())
@@ -16,8 +16,8 @@
         <table class="table table-hover" id="myDataTable_commitee_members">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalLoanCommitee.Name</th>
-                    <th>@GlobalLoanCommitee.Member</th>
+                    <th>@GlobalShared.Name</th>
+                    <th>@GlobalShared.Member</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
             </thead>

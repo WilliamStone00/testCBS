@@ -1,5 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
 @using CBS.FrontDesk.Data.Entity.SalaryManagement
+@using Resources
 @{
     // helpers/locals
     var nowUtc = DateTime.UtcNow;
@@ -40,7 +41,7 @@
 
     <h5 class="fw-bold text-primary mb-2">
         <i class="mdi mdi-account-plus-outline me-1"></i>
-        @(hasActiveTemp ? "Non-Member Already Activated" : "Register / Activate Non-Member & Generate TempPayCode")
+        @(hasActiveTemp ? $"{@GlobalSalaryProcessed.non_member_already_activated}" : $"{@GlobalSalaryProcessed.register_activate_nonmember_generate_temppaycode}")
     </h5>
 
     <div id="nmAlert" class="d-none"></div>
@@ -51,9 +52,9 @@
         <div class="alert alert-info py-2">
             <div>
                 <i class="mdi mdi-information-outline me-1"></i>
-                Fill KYC and submit. A temporary payment code will be generated for this non-member.
+                @GlobalSalaryProcessed.fill_kyc_and_submit_a_temporary_payment_code_will_be_generated_for_this_nonmember.
             </div>
-            <div class="nm-hint mt-1">Expiry defaults to <strong>now + 48h (UTC)</strong>. Adjust if needed.</div>
+            <div class="nm-hint mt-1">@Html.Raw(@GlobalSalaryProcessed.expiry_defaults_to_now_48h_utc_adjust_if_needed).</div>
         </div>
 
         using (Html.BeginForm("RegisterNonMemberAndGenerateTempCode", "SalaryProcessed", FormMethod.Post, new { id = "nmForm", autocomplete = "off" }))
@@ -70,50 +71,50 @@
                 @* ================= Identity ================= *@
                 <div class="col-12 mt-1">
                     <h6 class="fw-bold text-tsc border-bottom pb-1">
-                        <i class="mdi mdi-account-badge-outline me-1"></i> Identity
+                        <i class="mdi mdi-account-badge-outline me-1"></i> @GlobalShared.Identity
                     </h6>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">First Name</label>
+                    <label class="form-label fw-bold">@GlobalShared.First_Name</label>
                     <input class="form-control" name="Kyc.FirstName" value="@(kyc?.FirstName ?? "")" required />
                     @Html.ValidationMessage("Kyc.FirstName", null, new { @class = "text-danger small" })
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Last Name</label>
+                    <label class="form-label fw-bold">@GlobalShared.Last_Name</label>
                     <input class="form-control" name="Kyc.LastName" value="@(kyc?.LastName ?? "")" required />
                     @Html.ValidationMessage("Kyc.LastName", null, new { @class = "text-danger small" })
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">CNI / ID No.</label>
+                    <label class="form-label fw-bold">@GlobalSalaryProcessed.cni_id_no.</label>
                     <input class="form-control mono" name="Kyc.CNI" value="@(kyc?.CNI ?? "")" />
                     @Html.ValidationMessage("Kyc.CNI", null, new { @class = "text-danger small" })
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Issued Date</label>
+                    <label class="form-label fw-bold">@GlobalShared.Issued_Date</label>
                     <input class="form-control" type="date" name="Kyc.IssuedDate" value="@(kyc?.IssuedDate ?? "")" />
                     @Html.ValidationMessage("Kyc.IssuedDate", null, new { @class = "text-danger small" })
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Expiry Date</label>
+                    <label class="form-label fw-bold">@GlobalShared.Expiry_Date</label>
                     <input class="form-control" type="date" name="Kyc.ExpiryDate" value="@(kyc?.ExpiryDate ?? "")" />
                     @Html.ValidationMessage("Kyc.ExpiryDate", null, new { @class = "text-danger small" })
                 </div>
 
                 <div class="col-md-5">
-                    <label class="form-label fw-bold">Place of Issue</label>
+                    <label class="form-label fw-bold">@GlobalShared.Place_of_Issue</label>
                     <input class="form-control" name="Kyc.PlaceOfIssued" value="@(kyc?.PlaceOfIssued ?? "")" />
                     @Html.ValidationMessage("Kyc.PlaceOfIssued", null, new { @class = "text-danger small" })
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label fw-bold">Place of Birth</label>
+                    <label class="form-label fw-bold">@GlobalShared.Place_of_Birth</label>
                     <input class="form-control" name="Kyc.PlaceOfBirth" value="@(kyc?.PlaceOfBirth ?? "")" />
                     @Html.ValidationMessage("Kyc.PlaceOfBirth", null, new { @class = "text-danger small" })
                 </div>
 
                 <div class="col-md-2">
-                    <label class="form-label fw-bold">Date of Birth</label>
+                    <label class="form-label fw-bold">@GlobalShared.Date_of_birth</label>
                     <input class="form-control" type="date" name="Kyc.DOB" value="@(kyc?.DOB?.ToString("yyyy-MM-dd") ?? "")" />
                     @Html.ValidationMessage("Kyc.DOB", null, new { @class = "text-danger small" })
                 </div>
@@ -121,20 +122,20 @@
                 @* ================= Contact & Address ================= *@
                 <div class="col-12 mt-2">
                     <h6 class="fw-bold text-tsc border-bottom pb-1">
-                        <i class="mdi mdi-home-city-outline me-1"></i> Contact & Address
+                        <i class="mdi mdi-home-city-outline me-1"></i> @GlobalSalaryProcessed.contact_address
                     </h6>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Phone</label>
+                        <label class="form-label fw-bold">@GlobalShared.Phone</label>
                         <input class="form-control" name="Kyc.Phone" value="@(kyc?.Phone ?? "")" />
-                        <div class="nm-hint">Include country code if international.</div>
+                        <div class="nm-hint">@GlobalSalaryProcessed.include_country_code_if_international.</div>
                         @Html.ValidationMessage("Kyc.Phone", null, new { @class = "text-danger small" })
                     </div>
 
                     <div class="col-md-9">
-                        <label class="form-label fw-bold">Address</label>
+                        <label class="form-label fw-bold">@GlobalShared.Address</label>
                         <input class="form-control" name="Kyc.Address" value="@(kyc?.Address ?? "")" />
                         @Html.ValidationMessage("Kyc.Address", null, new { @class = "text-danger small" })
                     </div>
@@ -144,17 +145,17 @@
                 @* ================= Location ================= *@
                 <div class="col-12 mt-2">
                     <h6 class="fw-bold text-tsc border-bottom pb-1">
-                        <i class="mdi mdi-map-marker-outline me-1"></i> Location
+                        <i class="mdi mdi-map-marker-outline me-1"></i> @GlobalShared.Location
                     </h6>
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Country</label>
+                    <label class="form-label fw-bold">@GlobalShared.Country</label>
                     @if (ViewBag.Countries != null)
                     {
                         @Html.DropDownList("Kyc.CountryId",
                        new SelectList(ViewBag.Countries, "Id", "Name"),
-                            "--- Select Country ---", new { @class = "form-select select2", id = "nmCountry", data_placeholder = "--- Select ---" })
+                            $"--- {@GlobalShared.Select_Country} ---", new { @class = "form-select select2", id = "nmCountry", data_placeholder = "--- Select ---" })
                     }
                     else
                     {
@@ -163,12 +164,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Region</label>
+                    <label class="form-label fw-bold">@GlobalShared.Region</label>
                     @if (ViewBag.Regions != null)
                     {
                         @Html.DropDownList("Kyc.RegionId",
                        new SelectList(ViewBag.Regions, "Id", "Name"),
-                            "--- Select Region ---", new { @class = "form-select select2", id = "nmRegion", data_placeholder = "--- Select ---" })
+                            $"--- {@GlobalShared.Select_Region} ---", new { @class = "form-select select2", id = "nmRegion", data_placeholder = "--- Select ---" })
                     }
                     else
                     {
@@ -177,12 +178,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Division</label>
+                    <label class="form-label fw-bold">@GlobalShared.Division</label>
                     @if (ViewBag.Divisions != null)
                     {
                         @Html.DropDownList("Kyc.DivisionId",
                        new SelectList(ViewBag.Divisions, "Id", "Name"),
-                            "--- Select Division ---", new { @class = "form-select select2", id = "nmDivision", data_placeholder = "--- Select ---" })
+                            $"--- {@GlobalShared.Select_Division} ---", new { @class = "form-select select2", id = "nmDivision", data_placeholder = "--- Select ---" })
                     }
                     else
                     {
@@ -191,12 +192,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Sub-Division</label>
+                    <label class="form-label fw-bold">@GlobalShared.SubDivision</label>
                     @if (ViewBag.SubDivisions != null)
                     {
                         @Html.DropDownList("Kyc.SubDivisionId",
                        new SelectList(ViewBag.SubDivisions, "Id", "Name"),
-                            "--- Select Sub-Division ---", new { @class = "form-select select2", id = "nmSubDivision", data_placeholder = "--- Select ---" })
+                            $"--- {@GlobalSalaryProcessed.select_subdivision} ---", new { @class = "form-select select2", id = "nmSubDivision", data_placeholder = "--- Select ---" })
                     }
                     else
                     {
@@ -205,12 +206,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Town</label>
+                    <label class="form-label fw-bold">@GlobalShared.Town</label>
                     @if (ViewBag.Towns != null)
                     {
                         @Html.DropDownList("Kyc.TownId",
                        new SelectList(ViewBag.Towns, "Id", "Name"),
-                            "--- Select Town ---", new { @class = "form-select select2", id = "nmTown", data_placeholder = "--- Select ---" })
+                            $"--- {@GlobalShared.Select_Town} ---", new { @class = "form-select select2", id = "nmTown", data_placeholder = "--- Select ---" })
                     }
                     else
                     {
@@ -219,12 +220,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Language</label>
+                    <label class="form-label fw-bold">@GlobalShared.Language</label>
                     @if (ViewBag.Languages != null)
                     {
                         @Html.DropDownList("Kyc.Language",
                        new SelectList(ViewBag.Languages, "Text", "Value"),
-                            "--- Select Language ---", new { @class = "form-select select2", id = "nmLanguage" })
+                            $"--- {@GlobalShared.Select_Language} ---", new { @class = "form-select select2", id = "nmLanguage" })
                     }
                     else
                     {
@@ -235,29 +236,29 @@
                 @* ================= Execution Context ================= *@
                 <div class="col-12 mt-2">
                     <h6 class="fw-bold text-tsc border-bottom pb-1">
-                        <i class="mdi mdi-key-variant me-1"></i> TempPayCode
+                        <i class="mdi mdi-key-variant me-1"></i> @GlobalSalaryProcessed.temp_pay_code
                     </h6>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">TempPayCode Expiry (UTC)</label>
+                    <label class="form-label fw-bold">@GlobalSalaryProcessed.temp_pay_code_expiry (UTC)</label>
                     <input class="form-control" type="datetime-local" name="ExpiresAt" value="@DtLocal(expiryToUse)" />
-                    <div class="nm-hint">If empty, server defaults to now + 48h (UTC).</div>
+                    <div class="nm-hint">@GlobalSalaryProcessed.if_empty_server_defaults_to_now_48h_utc.</div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Branch</label>
+                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
                     <input class="form-control" value="@($"{Model?.BranchCode ?? ""} / {Model?.BranchId ?? ""}")" disabled />
-                    <div class="nm-hint">Provided by salary extract.</div>
+                    <div class="nm-hint">@GlobalSalaryProcessed.provided_by_salary_extract.</div>
                 </div>
             </div>
 
             <div class="d-flex mt-3">
                 <button type="submit" id="nmSubmit" class="btn btn-success">
-                    <span class="btn-text"><i class="mdi mdi-content-save-outline"></i> Register & Generate Code</span>
+                    <span class="btn-text"><i class="mdi mdi-content-save-outline"></i> @GlobalSalaryProcessed.register_generate_code</span>
                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
                 <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Cancel
+                    <i class="mdi mdi-close"></i> @GlobalShared.Cancel
                 </button>
             </div>
         }
@@ -269,26 +270,26 @@
         <!-- ================= Existing TempPayCode / Revoke ================= -->
         <div class="alert alert-warning py-2">
             <i class="mdi mdi-alert-decagram-outline me-1"></i>
-            This entry already has an active TempPayCode. You may revoke it below.
+            @GlobalSalaryProcessed.this_entry_already_has_an_active_temppaycode_you_may_revoke_it_below.
         </div>
 
         <div class="row g-3">
             <div class="col-md-6">
                 <table class="table table-sm table-bordered kv mb-0">
                     <tbody>
-                        <tr><th>TempPayCode Id</th><td class="mono">@Model.LastTempPayCodeId</td></tr>
-                        <tr><th>Status</th><td>@(Model.LastTempPayCodeStatus ?? "—")</td></tr>
-                        <tr><th>Expires At</th><td>@(Model.LastTempPayCodeExpiresAt.ToString("dd/MM/yyyy HH:mm"))</td></tr>
-                        <tr><th>Non-Member Ref</th><td class="mono">@Model.NonMemberReference</td></tr>
+                        <tr><th>@GlobalSalaryProcessed.temp_pay_code_id</th><td class="mono">@Model.LastTempPayCodeId</td></tr>
+                        <tr><th>@GlobalShared.Status</th><td>@(Model.LastTempPayCodeStatus ?? "—")</td></tr>
+                        <tr><th>@GlobalShared.expires_at</th><td>@(Model.LastTempPayCodeExpiresAt.ToString("dd/MM/yyyy HH:mm"))</td></tr>
+                        <tr><th>@GlobalSalaryProcessed.non_member_ref</th><td class="mono">@Model.NonMemberReference</td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="col-md-6">
                 <table class="table table-sm table-bordered kv mb-0">
                     <tbody>
-                        <tr><th>Beneficiary</th><td>@Model.MemberName</td></tr>
-                        <tr><th>Amount</th><td>@Money(Model.NetSalary) FCFA</td></tr>
-                        <tr><th>Branch</th><td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td></tr>
+                        <tr><th>@GlobalShared.Beneficiary</th><td>@Model.MemberName</td></tr>
+                        <tr><th>@GlobalShared.Amount</th><td>@Money(Model.NetSalary) FCFA</td></tr>
+                        <tr><th>@GlobalShared.Branch</th><td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -301,17 +302,17 @@
             <input type="hidden" name="TempPayCodeIds[0]" value="@(Model?.LastTempPayCodeId ?? "")" />
 
             <div class="mt-3">
-                <label class="form-label fw-bold">Reason (for audit)</label>
-                <textarea class="form-control" name="Reason" rows="3" placeholder="Why are you revoking this code?"></textarea>
+                <label class="form-label fw-bold">@GlobalSalaryProcessed.reason_for_audit</label>
+                <textarea class="form-control" name="Reason" rows="3" placeholder="@GlobalSalaryProcessed.why_are_you_revoking_this_code?"></textarea>
             </div>
 
             <div class="d-flex mt-3">
                 <button type="submit" id="revokeBtn" class="btn btn-danger">
-                    <span class="btn-text"><i class="mdi mdi-block-helper"></i> Revoke TempPayCode</span>
+                    <span class="btn-text"><i class="mdi mdi-block-helper"></i> @GlobalSalaryProcessed.revoke_temppaycode</span>
                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
                 <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close"></i> Close
+                    <i class="mdi mdi-close"></i> @GlobalShared.Close
                 </button>
             </div>
         }

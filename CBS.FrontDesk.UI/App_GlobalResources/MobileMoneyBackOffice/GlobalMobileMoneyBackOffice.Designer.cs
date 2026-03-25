@@ -61,344 +61,227 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accounts.
-        /// </summary>
-        internal static string Accounts {
-            get {
-                return ResourceManager.GetString("Accounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to and credit those funds to the respective member&apos;s account.
         /// </summary>
-        internal static string AndCreditThoseFundsToTheRespectiveMembersAccount {
+        internal static string and_credit_those_funds_to_the_respective_members_account {
             get {
-                return ResourceManager.GetString("AndCreditThoseFundsToTheRespectiveMembersAccount", resourceCulture);
+                return ResourceManager.GetString("and_credit_those_funds_to_the_respective_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Back Office - None Cash Mobile Money Cash-In.
         /// </summary>
-        internal static string BackOfficeNoneCashMobileMoneyCashIn {
+        internal static string back_office_none_cash_mobile_money_cash_in {
             get {
-                return ResourceManager.GetString("BackOfficeNoneCashMobileMoneyCashIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BACK OFFICE - NONE CASH MOBILE MONEY CASH-IN.
-        /// </summary>
-        internal static string BACK_OFFICE_NONE_CASH_MOBILE_MONEY_CASH_IN {
-            get {
-                return ResourceManager.GetString("BACK_OFFICE_NONE_CASH_MOBILE_MONEY_CASH_IN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm.
-        /// </summary>
-        internal static string Confirm {
-            get {
-                return ResourceManager.GetString("Confirm", resourceCulture);
+                return ResourceManager.GetString("back_office_none_cash_mobile_money_cash_in", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Ensure the deposit was made into the branch&apos;s Mobile Money Float Account** before processing.
         /// </summary>
-        internal static string EnsureTheDepositWasMadeIntoTheBranchsMobileMoneyFloatAccount {
+        internal static string ensure_the_deposit_was_made_into_the_branchs_mobile_money_float_account {
             get {
-                return ResourceManager.GetString("EnsureTheDepositWasMadeIntoTheBranchsMobileMoneyFloatAccount", resourceCulture);
+                return ResourceManager.GetString("ensure_the_deposit_was_made_into_the_branchs_mobile_money_float_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Enter a clear transaction note** specifying the reason for the cash-in.
         /// </summary>
-        internal static string EnterAClearTransactionNote {
+        internal static string enter_aclear_transaction_note {
             get {
-                return ResourceManager.GetString("EnterAClearTransactionNote", resourceCulture);
+                return ResourceManager.GetString("enter_aclear_transaction_note", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter member reference number.
         /// </summary>
-        internal static string EnterMemberReferenceNumber {
+        internal static string enter_member_reference_number {
             get {
-                return ResourceManager.GetString("EnterMemberReferenceNumber", resourceCulture);
+                return ResourceManager.GetString("enter_member_reference_number", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter reason for transaction....
         /// </summary>
-        internal static string EnterReasonForTransaction {
+        internal static string enter_reason_for_transaction {
             get {
-                return ResourceManager.GetString("EnterReasonForTransaction", resourceCulture);
+                return ResourceManager.GetString("enter_reason_for_transaction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the 10-digit Member Reference Number. This includes a 3-digit Branch Code followed by a 7-digit Member Code.
         /// </summary>
-        internal static string EnterThe10DigitMemberReferenceNumber {
+        internal static string enter_the10_digit_member_reference_number {
             get {
-                return ResourceManager.GetString("EnterThe10DigitMemberReferenceNumber", resourceCulture);
+                return ResourceManager.GetString("enter_the10_digit_member_reference_number", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Enter the correct Teller Code** to process the cash-in transaction.
         /// </summary>
-        internal static string EnterTheCorrectTellerCodeToProcess {
+        internal static string enter_the_correct_teller_code_to_process {
             get {
-                return ResourceManager.GetString("EnterTheCorrectTellerCodeToProcess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee.
-        /// </summary>
-        internal static string Fee {
-            get {
-                return ResourceManager.GetString("Fee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inc.
-        /// </summary>
-        internal static string Inc {
-            get {
-                return ResourceManager.GetString("Inc", resourceCulture);
+                return ResourceManager.GetString("enter_the_correct_teller_code_to_process", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to It allows staff to process **member deposits made into the branch&apos;s Mobile Money Float Account**.
         /// </summary>
-        internal static string ItAllowsStaffToProcessMemberDeposits {
+        internal static string it_allows_staff_to_process_member_deposits {
             get {
-                return ResourceManager.GetString("ItAllowsStaffToProcessMemberDeposits", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member&apos;s name.
-        /// </summary>
-        internal static string MembersName {
-            get {
-                return ResourceManager.GetString("MembersName", resourceCulture);
+                return ResourceManager.GetString("it_allows_staff_to_process_member_deposits", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MM/OM none member reference.
         /// </summary>
-        internal static string MMOMNoneMemberReference {
+        internal static string mmomnone_member_reference {
             get {
-                return ResourceManager.GetString("MMOMNoneMemberReference", resourceCulture);
+                return ResourceManager.GetString("mmomnone_member_reference", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Mobile Money Cash-In Guidelines.
         /// </summary>
-        internal static string MobileMoneyCashInGuidelines {
+        internal static string mobile_money_cash_in_guidelines {
             get {
-                return ResourceManager.GetString("MobileMoneyCashInGuidelines", resourceCulture);
+                return ResourceManager.GetString("mobile_money_cash_in_guidelines", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Mobile money MTN.
         /// </summary>
-        internal static string MobileMoneyMTN {
+        internal static string mobile_money_mtn {
             get {
-                return ResourceManager.GetString("MobileMoneyMTN", resourceCulture);
+                return ResourceManager.GetString("mobile_money_mtn", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Mobile money Orange.
         /// </summary>
-        internal static string MobileMoneyOrange {
+        internal static string mobile_money_orange {
             get {
-                return ResourceManager.GetString("MobileMoneyOrange", resourceCulture);
+                return ResourceManager.GetString("mobile_money_orange", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **No additional approval is required**, as the deposit was made directly by the member.
         /// </summary>
-        internal static string NoAdditionalApprovalIsRequired {
+        internal static string no_additional_approval_is_required {
             get {
-                return ResourceManager.GetString("NoAdditionalApprovalIsRequired", resourceCulture);
+                return ResourceManager.GetString("no_additional_approval_is_required", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No withdrawals can be processed from this interface.
         /// </summary>
-        internal static string NoWithdrawalsCanBeProcessedFromThisInterface {
+        internal static string no_withdrawals_can_be_processed_from_this_interface {
             get {
-                return ResourceManager.GetString("NoWithdrawalsCanBeProcessedFromThisInterface", resourceCulture);
+                return ResourceManager.GetString("no_withdrawals_can_be_processed_from_this_interface", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Once submitted, **transactions cannot be reversed without proper authorization**.
         /// </summary>
-        internal static string OnceSubmittedTransactionsCannotBeReversed {
+        internal static string once_submitted_transactions_cannot_be_reversed {
             get {
-                return ResourceManager.GetString("OnceSubmittedTransactionsCannotBeReversed", resourceCulture);
+                return ResourceManager.GetString("once_submitted_transactions_cannot_be_reversed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Only deposits (Cash-In) are allowed. Withdrawals cannot be processed from this interface.**.
         /// </summary>
-        internal static string OnlyDepositsAreAllowed {
+        internal static string only_deposits_are_allowed {
             get {
-                return ResourceManager.GetString("OnlyDepositsAreAllowed", resourceCulture);
+                return ResourceManager.GetString("only_deposits_are_allowed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform secure cash deposits into member accounts. Follow the guidelines outlined in the Help Tips section above.
         /// </summary>
-        internal static string PerformSecureCashDepositsIntoMemberAccounts {
+        internal static string perform_secure_cash_deposits_into_member_accounts {
             get {
-                return ResourceManager.GetString("PerformSecureCashDepositsIntoMemberAccounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone number.
-        /// </summary>
-        internal static string PhoneNumber {
-            get {
-                return ResourceManager.GetString("PhoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Post.
-        /// </summary>
-        internal static string Post {
-            get {
-                return ResourceManager.GetString("Post", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Representative name.
-        /// </summary>
-        internal static string RepresentativeName {
-            get {
-                return ResourceManager.GetString("RepresentativeName", resourceCulture);
+                return ResourceManager.GetString("perform_secure_cash_deposits_into_member_accounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Search for the member&apos;s account** using their **10-digit reference number**.
         /// </summary>
-        internal static string SearchForTheMembersAccount {
+        internal static string search_for_the_members_account {
             get {
-                return ResourceManager.GetString("SearchForTheMembersAccount", resourceCulture);
+                return ResourceManager.GetString("search_for_the_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Select the correct Mobile Money Operator (MTN or Orange)**.
         /// </summary>
-        internal static string SelectTheCorrectMobileMoneyOperator {
+        internal static string select_the_correct_mobile_money_operator {
             get {
-                return ResourceManager.GetString("SelectTheCorrectMobileMoneyOperator", resourceCulture);
+                return ResourceManager.GetString("select_the_correct_mobile_money_operator", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **The accountant must immediately process the transaction** by **crediting the member&apos;s account and debiting the float account.**.
         /// </summary>
-        internal static string TheAccountantMustImmediatelyProcessTheTransaction {
+        internal static string the_accountant_must_immediately_process_the_transaction {
             get {
-                return ResourceManager.GetString("TheAccountantMustImmediatelyProcessTheTransaction", resourceCulture);
+                return ResourceManager.GetString("the_accountant_must_immediately_process_the_transaction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to This interface is exclusively for **back-office cash-in operations**.
         /// </summary>
-        internal static string ThisInterfaceIsExclusivelyForBackOffice {
+        internal static string this_interface_is_exclusively_for_back_office {
             get {
-                return ResourceManager.GetString("ThisInterfaceIsExclusivelyForBackOffice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Till code.
-        /// </summary>
-        internal static string TillCode {
-            get {
-                return ResourceManager.GetString("TillCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total.
-        /// </summary>
-        internal static string Total {
-            get {
-                return ResourceManager.GetString("Total", resourceCulture);
+                return ResourceManager.GetString("this_interface_is_exclusively_for_back_office", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction Note (Reason).
         /// </summary>
-        internal static string TransactionNoteReason {
+        internal static string transaction_note_reason {
             get {
-                return ResourceManager.GetString("TransactionNoteReason", resourceCulture);
+                return ResourceManager.GetString("transaction_note_reason", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Verify the amount entered, including any applicable fees, before confirming.**.
         /// </summary>
-        internal static string VerifyTheAmountEnteredIncludingAnyApplicableFeesBeforeConfirming {
+        internal static string verify_the_amount_entered_including_any_applicable_fees_before_confirming {
             get {
-                return ResourceManager.GetString("VerifyTheAmountEnteredIncludingAnyApplicableFeesBeforeConfirming", resourceCulture);
+                return ResourceManager.GetString("verify_the_amount_entered_including_any_applicable_fees_before_confirming", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to **Verify the member&apos;s details** (Name, Telephone Number, and Member Reference) before proceeding.
         /// </summary>
-        internal static string VerifyTheMembersDetails {
+        internal static string verify_the_members_details {
             get {
-                return ResourceManager.GetString("VerifyTheMembersDetails", resourceCulture);
+                return ResourceManager.GetString("verify_the_members_details", resourceCulture);
             }
         }
     }

@@ -1,13 +1,14 @@
-﻿<!-- Table Section -->
+<!-- Table Section -->
+@using Resources
 <div class="table-responsive">
     <table id="overdraftConfigTable" class="table table-striped table-bordered table-hover">
         <thead class="table-light">
             <tr>
-                <th>Product</th>
-                <th>Max OD %</th>
-                <th>Fee Rate (%)</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
+                <th>@GlobalShared.Product</th>
+                <th>@GlobalOverdraftFacilityConfig.max_od %</th>
+                <th>@GlobalOverdraftFacilityConfig.fee_rate (%)</th>
+                <th>@GlobalShared.Status</th>
+                <th class="text-center">@GlobalShared.Actions</th>
             </tr>
         </thead>
         <tbody>

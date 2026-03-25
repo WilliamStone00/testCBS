@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.RoleGlResolution.RoleGlResolutionModel
+@model CBS.FrontDesk.Data.Entity.AccountingV2.RoleGlResolution.RoleGlResolutionModel
 @using Resources
 
 @using (Html.BeginForm("CreateOrUpdate", "RoleGlResolution", FormMethod.Post,
@@ -8,24 +8,24 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            @Html.LabelFor(m => m.Scope, "Scope Level", new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.Scope, $"{@GlobalShared.scope_level}", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.Scope,
                 new SelectList(ViewBag.Scopes, "Value", "Text"),
-                "--- Select Scope ---",
+                $"--- {@GlobalRoleGlResolution.select_scope} ---",
                 new
                      {
                     @class = "form-control select2",
                     required = "required",
-                    data_placeholder = "Select Scope Level"
+                    data_placeholder = $"{@GlobalRoleGlResolution.select_scope_level}"
                 })
             @Html.ValidationMessageFor(m => m.Scope, "", new { @class = "text-danger small" })
-            <small class="form-text text-muted">Determines the applicability level of this resolution</small>
+            <small class="form-text text-muted">@GlobalRoleGlResolution.determines_the_applicability_level_of_this_resolution</small>
         </div>
 
         <div class="col-md-6 mb-3" id="ScopeIdGroup" style="display: none;">
-            @Html.LabelFor(m => m.ScopeId, "Scope Reference", new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.ScopeId, $"{@GlobalRoleGlResolution.scope_reference}", new { @class = "form-label fw-bold" })
             <select id="BranchScopeId" name="ScopeId" class="form-control select2" data-placeholder="Select Scope Reference">
-                <option value="">--- Select Scope Reference ---</option>
+                <option value="">--- @GlobalRoleGlResolution.select_scope_reference ---</option>
             </select>
             @Html.ValidationMessageFor(m => m.ScopeId, "", new { @class = "text-danger small" })
         </div>
@@ -35,25 +35,25 @@
         <div class="col-md-6 mb-3">
             @Html.LabelFor(m => m.RoleId, "Transaction Role", new { @class = "form-label fw-bold" })
             <select id="RoleId" name="RoleId" class="form-control select2" required data-placeholder="Select Transaction Role">
-                <option value="">--- Select Role ---</option>
+                <option value="">--- @GlobalShared.select_role ---</option>
             </select>
             @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger small" })
-            <small class="form-text text-muted">The functional role in transaction processing</small>
+        <small class="form-text text-muted">@GlobalRoleGlResolution.the_functional_role_in_transaction_processing</small>
         </div>
 
         <div class="col-md-6 mb-3">
-            @Html.LabelFor(m => m.BranchAccountId, "GL Account", new { @class = "form-label fw-bold" })
+            @Html.LabelFor(m => m.BranchAccountId, $"{@GlobalShared.gl_account}", new { @class = "form-label fw-bold" })
             @Html.DropDownListFor(m => m.BranchAccountId,
                 Enumerable.Empty<SelectListItem>(),
-                "--- Select GL Account ---",
+                $"--- {@GlobalShared.Select_GL_Account} ---",
                 new
                      {
                     @class = "form-control select2",
                     required = "required",
-                    data_placeholder = "Select GL Account"
+                    data_placeholder = $"{@GlobalShared.Select_GL_Account}"
                 })
             @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger small" })
-            <small class="form-text text-muted">The GL account to use for this role</small>
+            <small class="form-text text-muted">@GlobalRoleGlResolution.the_gl_account_to_use_for_this_role</small>
         </div>
     </div>
 
@@ -61,11 +61,11 @@
         <div class="col-12">
             <div class="d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close me-1"></i>Cancel
+                    <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                 </button>
                 <button type="submit" class="btn btn-primary">
                     <i class="mdi mdi-content-save-check me-1"></i>
-                    @(string.IsNullOrEmpty(Model.Id) ? "Create Resolution" : "Update Resolution")
+                    @(string.IsNullOrEmpty(Model.Id) ? $"{@GlobalRoleGlResolution.create_resolution}" : $"{@GlobalRoleGlResolution.update_resolution}")
                 </button>
             </div>
         </div>

@@ -1,10 +1,10 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 @using Resources
 <fieldset class="fieldset-custom">
     @if (!Model.Transfers.Any())
     {
         <div class="text-center my-3">
-            <p>@GlobalOperation.NoTransferIsAvailableForTheMainTime</p>
+            <p>@GlobalOperation.no_transfer_is_available_for_the_main_time</p>
         </div>
     }
     else
@@ -16,12 +16,12 @@
             <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalOperation.Date</th>
-                        <th>@GlobalOperation.SendingAccount</th>
-                        <th>@GlobalOperation.ReceivingAccount</th>
-                        <th>@GlobalOperation.Amount</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalOperation.sending_account</th>
+                        <th>@GlobalOperation.receiving_account</th>
+                        <th>@GlobalShared.Amount</th>
                         <th>@GlobalShared.Status</th>
-                        <th>@GlobalOperation.Initiator</th>
+                        <th>@GlobalShared.Initiator</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -49,7 +49,7 @@
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">@GlobalOperation.Unknown</span>
+                                    <span class="badge bg-secondary">@GlobalShared.Unknown</span>
                                 }
                             </td>
                             <td style="width:30%">@d.InitiatedByUSerName</td>

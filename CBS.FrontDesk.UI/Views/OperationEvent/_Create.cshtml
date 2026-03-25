@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.OperationEvent
+@model CBS.FrontDesk.Data.Entity.Accounting.OperationEvent
     @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "OperationEvent", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -8,28 +8,28 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.OperationEventName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.OperationEventName, "", new { @class = "text-danger" })
-                    <label>@GlobalOperationEvent.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.EventCode, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.EventCode, "", new { @class = "text-danger" })
-                    <label>>@GlobalOperationEvent.EventCode</label>
+                    <label>>@GlobalShared.event_code</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>>@GlobalOperationEvent.Description</label>
+                    <label>>@GlobalShared.Description</label>
                 </div>
             </div>
 
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.CheckBoxFor(m => m.HasMultipleEntries, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">&nbsp;&nbsp; &nbsp;&nbsp;>@GlobalOperationEvent.CheckThisBoxIfEventHasMultipleEntries</label>
+                        <label class="form-check-label" for="isActive">&nbsp;&nbsp; &nbsp;&nbsp;>@GlobalOperationEvent.check_this_box_if_event_has_multiple_entries</label>
                     </div>
                    
                 </div>

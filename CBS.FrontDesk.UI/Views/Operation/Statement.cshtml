@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
     @using Resources
 @{
     ViewBag.Title = "Member's statement";
@@ -9,7 +9,7 @@
             @if (@Model.Customer == null)
             {
                 <div class="text-center my-3">
-                    <p>@GlobalOperation.ErrorOcuredWhileGettingMember</p>
+                    <p>@GlobalOperation.error_ocured_while_getting_member</p>
                 </div>
             }
             else
@@ -26,8 +26,8 @@
                                 <div class="d-flex justify-content-center">
                                     <!-- Center-align text -->
                                     <div class="fw-bold fs-4">
-                                        @GlobalOperation.MEMBERS_CASH_DESK_OPERATIONS
-                                        <small style="color: blue;">@GlobalOperation.SelectedAccount: @Model.AccountType, @GlobalOperation.AccountNumber: @Model.AccountNumber</small>
+                                        @GlobalOperation.members_cash_desk_operations
+                                        <small style="color: blue;">@GlobalOperation.selected_account: @Model.AccountType, @GlobalShared.Account_Number: @Model.AccountNumber</small>
                                     </div>
                                 </div>
                             </button>
@@ -47,10 +47,10 @@
                                         <div class="card mb-3 border-2">
                                             <div class="card-body d-sm-flex d-block">
                                                 <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="@GlobalOperation.ExportMembersAccount @Model.AccountNumber @GlobalOperation.statements">
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="ExportFile('Operation', null,'GetReport', '@Model.AccountNumber', 'List', 'customer_account_transaction', null,'customer_account_transaction','DownloadExcelFile',null,'@Model.AccountNumber')" data-bs-toggle="tooltip" title="@GlobalOperation.export_members_account @Model.AccountNumber @GlobalShared.statements">
                                                         <span class="tf-icons mdi mdi-file-excel mdi-18px"></span>
                                                     </a>
-                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('Operation', '@Model.AccountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="@GlobalOperation.printMembersAccount @Model.AccountNumber @GlobalOperation.statements">
+                                                    <a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="PrintSingleObject('Operation', '@Model.AccountNumber','customer_account_transaction_rpt','ReportParameterLess')" data-bs-toggle="tooltip" title="@GlobalOperation.print_members_account @Model.AccountNumber @GlobalShared.statements">
                                                         <span class="tf-icons mdi mdi-printer mdi-18px"></span>
                                                     </a>
                                                 </div>

@@ -117,31 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Account number</value>
-  </data>
-  <data name="All_NETWORK_MEMBERS_ACCOUNTS" xml:space="preserve">
+  <data name="all_network_members_accounts" xml:space="preserve">
     <value>All NETWORK MEMBERS ACCOUNTS</value>
   </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="LoadAllNetworkMembersAccounts" xml:space="preserve">
+  <data name="load_all_network_members_accounts" xml:space="preserve">
     <value>Load all network members accounts</value>
   </data>
-  <data name="LoadLocalMembersAccounts" xml:space="preserve">
+  <data name="load_local_members_accounts" xml:space="preserve">
     <value>Load local members accounts</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Reference</value>
-  </data>
-  <data name="SearchByAccountNumberOrMembersNameOrTelephoneNumber" xml:space="preserve">
+  <data name="search_by_account_number_or_members_name_or_telephone_number" xml:space="preserve">
     <value>Search by account number or member's name or telephone number</value>
-  </data>
-  <data name="TelephoneNumber" xml:space="preserve">
-    <value>Telephone number</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
-﻿<div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Checkleaf Search Filters</h5>
+@using Resources
+<div class="card shadow p-3 mb-4">
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLossManagement.checkleaf_search_filters</h5>
     <form id="checkleafFilterForm">
         <div class="card p-3 mb-3 bg-light">
             <!-- Toggle switches for additional filters -->
@@ -7,19 +8,19 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleStatus" onclick="document.getElementById('statusFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleStatus">Show Status Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleStatus">@GlobalShared.Show_Status_Filter</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleCategory" onclick="document.getElementById('categoryFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleCategory">Show Category Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleCategory">@GlobalShared.show_category_filter</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDate" onclick="document.getElementById('dateFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDate">Show Date Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleDate">@GlobalShared.show_date_filter</label>
                     </div>
                 </div>
             </div>
@@ -27,12 +28,12 @@
             <!-- Default Filters -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Customer Member Reference</label>
-                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="Enter customer ID" />
+                    <label class="form-label fw-bold">@GlobalLossManagement.customer_member_reference</label>
+                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="@GlobalLossManagement.enter_customer_id" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Checkbook ID</label>
-                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="Enter specific checkbook ID" />
+                    <label class="form-label fw-bold">@GlobalShared.CheckBook_ID</label>
+                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="@GlobalLossManagement.enter_specific_checkbook_id" />
                 </div>
             </div>
 
@@ -40,14 +41,14 @@
             <div id="statusFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Checkleaf Status</label>
+                        <label class="form-label fw-bold">@GlobalLossManagement.checkleaf_status</label>
                         <select id="status" name="status" class="form-select">
-                            <option value="">All Status</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                            <option value="Blocked">Blocked</option>
-                            <option value="Lost">Lost</option>
-                            <option value="Suspended">Suspended</option>
+                            <option value="">@GlobalShared.All_status</option>
+                            <option value="Active">@GlobalShared.Active</option>
+                            <option value="Inactive">@GlobalShared.InActive</option>
+                            <option value="Blocked">@GlobalShared.Blocked</option>
+                            <option value="Lost">@GlobalShared.Lost</option>
+                            <option value="Suspended">@GlobalShared.suspended</option>
                         </select>
                     </div>
                 </div>
@@ -57,14 +58,14 @@
             <div id="categoryFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Checkleaf Category</label>
+                        <label class="form-label fw-bold">@GlobalLossManagement.checkleaf_category</label>
                         <select id="category" name="category" class="form-select">
-                            <option value="">All Categories</option>
-                            <option value="Personal">Personal</option>
-                            <option value="Business">Business</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Premium">Premium</option>
-                            <option value="Corporate">Corporate</option>
+                            <option value="">@GlobalShared.All_Categories</option>
+                            <option value="Personal">@GlobalShared.Personal</option>
+                            <option value="Business">@GlobalShared.business</option>
+                            <option value="Savings">@GlobalShared.Savings</option>
+                            <option value="Premium">@GlobalShared.premium</option>
+                            <option value="Corporate">@GlobalShared.Corporate</option>
                         </select>
                     </div>
                 </div>
@@ -74,11 +75,11 @@
             <div id="dateFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Issue Date From</label>
+                        <label class="form-label fw-bold">@GlobalShared.issue_date_from</label>
                         <input type="date" id="issueDateFrom" name="issueDateFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Issue Date To</label>
+                        <label class="form-label fw-bold">@GlobalShared.issue_date_to</label>
                         <input type="date" id="issueDateTo" name="issueDateTo" class="form-control" />
                     </div>
                 </div>
@@ -87,8 +88,8 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Search Checkleaves</button>
-                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset Filters</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.search_checkleaves</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset_Filters</button>
                 @* <button id="clearResultsBtn" class="btn btn-label-secondary w-100"><i class="mdi mdi-close"></i> Clear Results</button>*@
             </div>
         </div>

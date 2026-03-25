@@ -1,28 +1,28 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 @using Resources
 <fieldset class="fieldset-custom">
     @if (!Model.Transfers.Any())
     {
         <div class="text-center my-3">
-            <p>@GlobalOperation.NoPendingTransferAreAvailableForTheMoment</p>
+            <p>@GlobalOperation.no_pending_transfer_are_available_for_the_moment</p>
         </div>
     }
     else
     {
         <div class="table-responsive mb-3">
             <div class="card-header">
-                <h5 class="card-title">@GlobalOperation.Transfers</h5>
+                <h5 class="card-title">@GlobalShared.transfers</h5>
             </div>
 
             <table class="table table-hover table-striped table-bordered align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 15%;">@GlobalOperation.Date</th>
-                        <th style="width: 15%;">@GlobalOperation.SendingAccount</th>
-                        <th style="width: 15%;">@GlobalOperation.ReceivingAccount</th>
-                        <th style="width: 10%;">@GlobalOperation.Amount</th>
+                        <th style="width: 15%;">@GlobalShared.Date</th>
+                        <th style="width: 15%;">@GlobalOperation.sending_account</th>
+                        <th style="width: 15%;">@GlobalOperation.receiving_account</th>
+                        <th style="width: 10%;">@GlobalShared.Amount</th>
                         <th style="width: 10%;">@GlobalShared.Status</th>
-                        <th style="width: 25%;">@GlobalOperation.Initiator</th>
+                        <th style="width: 25%;">@GlobalShared.Initiator</th>
                         <th style="width: 10%;">@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -50,13 +50,13 @@
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">@GlobalOperation.Unknown</span>
+                                    <span class="badge bg-secondary">@GlobalShared.Unknown</span>
                                 }
                             </td>
                             <td>@d.InitiatedByUSerName</td>
                             <td>
                                 <a href="#" onclick="AddORUpdateGen('@d.Id','datalistingview','_TransferConfirmation','confirmation_request','Operation')"
-                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.SelectToApprove">
+                                   class="btn btn-sm btn-outline-primary" data-toggle="tooltip" data-placement="top" title="@GlobalShared.select_to_approve">
                                     @GlobalShared.Approve
                                 </a>
                             </td>

@@ -61,164 +61,56 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        internal static string Code {
-            get {
-                return ResourceManager.GetString("Code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Collect cash from member.
         /// </summary>
-        internal static string CollectCashFromMember {
+        internal static string collect_cash_from_member {
             get {
-                return ResourceManager.GetString("CollectCashFromMember", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Details.
-        /// </summary>
-        internal static string Details {
-            get {
-                return ResourceManager.GetString("Details", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Event code.
-        /// </summary>
-        internal static string EventCode {
-            get {
-                return ResourceManager.GetString("EventCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Expenses.
-        /// </summary>
-        internal static string Expenses {
-            get {
-                return ResourceManager.GetString("Expenses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Income.
-        /// </summary>
-        internal static string Income {
-            get {
-                return ResourceManager.GetString("Income", resourceCulture);
+                return ResourceManager.GetString("collect_cash_from_member", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Min-Max amount to manage.
         /// </summary>
-        internal static string MinMaxAmountToManage {
+        internal static string min_max_amount_to_manage {
             get {
-                return ResourceManager.GetString("MinMaxAmountToManage", resourceCulture);
+                return ResourceManager.GetString("min_max_amount_to_manage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No data available. Click below to add new.
         /// </summary>
-        internal static string NoDataAvailableClickToAddNew {
+        internal static string no_data_available_click_to_add_new {
             get {
-                return ResourceManager.GetString("NoDataAvailableClickToAddNew", resourceCulture);
+                return ResourceManager.GetString("no_data_available_click_to_add_new", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Other transaction details.
         /// </summary>
-        internal static string OtherTransactionDetails {
+        internal static string other_transaction_details {
             get {
-                return ResourceManager.GetString("OtherTransactionDetails", resourceCulture);
+                return ResourceManager.GetString("other_transaction_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Pay with member&apos;s account.
         /// </summary>
-        internal static string PayWithMembersAccount {
+        internal static string pay_with_members_account {
             get {
-                return ResourceManager.GetString("PayWithMembersAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Primary.
-        /// </summary>
-        internal static string Primary {
-            get {
-                return ResourceManager.GetString("Primary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("pay_with_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select member account.
         /// </summary>
-        internal static string SelectMemberAccount {
+        internal static string select_member_account {
             get {
-                return ResourceManager.GetString("SelectMemberAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source account.
-        /// </summary>
-        internal static string SourceAccount {
-            get {
-                return ResourceManager.GetString("SourceAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller.
-        /// </summary>
-        internal static string Teller {
-            get {
-                return ResourceManager.GetString("Teller", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller type.
-        /// </summary>
-        internal static string TellerType {
-            get {
-                return ResourceManager.GetString("TellerType", resourceCulture);
+                return ResourceManager.GetString("select_member_account", resourceCulture);
             }
         }
     }

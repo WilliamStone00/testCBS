@@ -1,22 +1,22 @@
-﻿@{
+@{
     ViewBag.Title = "Member Balances";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2 shadow-sm border-0">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-bank me-2"></i> Members Account Balances
+                    <i class="mdi mdi-bank me-2"></i> @GlobalMemberOrdinaryAccountsF8.members_account_balances
                 </h1>
                 <p class="card-text fs-6">
-                    This interface allows users to <strong>view, filter, and export</strong> detailed account balance information for registered members across various product types such as <span class="text-success">Savings</span>, <span class="text-info">Deposits</span>, and <span class="text-warning">Shares</span>.
+                    @Html.Raw(@GlobalMemberOrdinaryAccountsF8.this_interface_allows_users_to_view_filter_and_export_detailed_account_balance_information_for_registered_members_across_various_product_types_such_as_savings_deposits_and_shares).
                 </p>
                 <p class="card-text text-dark">
-                    The tool is optimized for <strong>back-office teams, accountants, auditors, and compliance officers</strong> who need to track member balances and perform reconciliation or analysis.
+                    @Html.Raw(@GlobalMemberOrdinaryAccountsF8.the_tool_is_optimized_for_backoffice_teams_accountants_auditors_and_compliance_officers_who_need_to_track_member_balances_and_perform_reconciliation_or_analysis).
                 </p>
                 <p class="card-text">
-                    Once filtered, you can <strong>export the results</strong> to a structured Excel file. All your generated downloads will appear below and remain available until you delete them manually.
+                    @Html.Raw(@GlobalMemberOrdinaryAccountsF8.once_filtered_you_can_export_the_results_to_a_structured_excel_file_all_your_generated_downloads_will_appear_below_and_remain_available_until_you_delete_them_manually).
                 </p>
                 <hr style="border: 2px solid rgba(0, 128, 0, 0.4);" />
             </div>
@@ -27,7 +27,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips for Filtering and Export</span>
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalMemberOrdinaryAccountsF8.tips_for_filtering_and_export</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -37,28 +37,28 @@
             <ul class="list-unstyled ms-2">
                 <li class="mb-2">
                     <i class="mdi mdi-home-map-marker text-primary me-2"></i>
-                    <span class="fw-bold">Branch:</span>
-                    Select a branch to filter results for members registered at that location.
+                    <span class="fw-bold">@GlobalShared.Branch:</span>
+                    @GlobalMemberOrdinaryAccountsF8.select_a_branch_to_filter_results_for_members_registered_at_that_location.
                 </li>
                 <li class="mb-2">
                     <i class="mdi mdi-cash-multiple text-success me-2"></i>
-                    <span class="fw-bold">Account Type:</span>
-                    Choose one or more product types (e.g., Saving, Deposit, Shares) to refine your search.
+                    <span class="fw-bold">@GlobalShared.Account_type:</span>
+                    @GlobalMemberOrdinaryAccountsF8.choose_one_or_more_product_types_eg_saving_deposit_shares_to_refine_your_search.
                 </li>
                 <li class="mb-2">
                     <i class="mdi mdi-file-export text-info me-2"></i>
-                    <span class="fw-bold">Export:</span>
-                    After applying filters, click <strong>Export to Excel</strong>. The system will prepare your file and list it in the downloaded files section below.
+                    <span class="fw-bold">@GlobalShared.Export:</span>
+                    @Html.Raw(@GlobalMemberOrdinaryAccountsF8.after_applying_filters_click_export_to_excel). @GlobalMemberOrdinaryAccountsF8.the_system_will_prepare_your_file_and_list_it_in_the_downloaded_files_section_below.
                 </li>
                 <li class="mb-2">
                     <i class="mdi mdi-download-box-outline text-secondary me-2"></i>
-                    <span class="fw-bold">Download:</span>
-                    Once prepared, your export file will appear in the grid view. Click on it to download.
+                    <span class="fw-bold">@GlobalShared.Download:</span>
+                    @GlobalMemberOrdinaryAccountsF8.once_prepared_your_export_file_will_appear_in_the_grid_view_click_on_it_to_download.
                 </li>
                 <li class="mb-2">
                     <i class="mdi mdi-trash-can-outline text-danger me-2"></i>
-                    <span class="fw-bold">Delete All:</span>
-                    If the grid becomes too heavy or you no longer need old exports, use the <strong>Delete All</strong> button to clear all your downloaded files.
+                    <span class="fw-bold">@GlobalShared.delete_all:</span>
+                    @Html.Raw(@GlobalMemberOrdinaryAccountsF8.if_the_grid_becomes_too_heavy_or_you_no_longer_need_old_exports_use_the_delete_all_button_to_clear_all_your_downloaded_files).
                 </li>
             </ul>
         </div>
@@ -69,22 +69,22 @@
 @using (Html.BeginForm("ExportMemberAccountBalances", "MemberOrdinaryAccountsF8", FormMethod.Post, new { id = "exportForm" }))
 {
     <div class="card shadow p-3 mb-2">
-        <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Filter Options</h5>
+        <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.filter_options</h5>
         <div class="card p-3 bg-light">
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Branch</label>
-                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2" })
+                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), $"--- {@GlobalShared.Select_Branch} ---", new { @class = "form-control select2" })
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Account Types</label>
+                    <label class="form-label fw-bold">@GlobalShared.Account_Types</label>
                     @Html.ListBox("AccountTypes", new MultiSelectList(ViewBag.AccountTypes, "Value", "Text"), new { @class = "form-control select2", multiple = "multiple" })
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">Account Profile</label>
-                    @Html.DropDownList("accountProfile", new SelectList(ViewBag.AccountProfiles, "Value", "Text"), "--- Select Profile ---", new { @class = "form-control select2", id = "accountProfile" })
+                    <label class="form-label fw-bold">@GlobalShared.account_profile</label>
+                    @Html.DropDownList("accountProfile", new SelectList(ViewBag.AccountProfiles, "Value", "Text"), $"--- {@GlobalShared.select_profile} ---", new { @class = "form-control select2", id = "accountProfile" })
                 </div>
             </div>
         </div>
@@ -92,10 +92,10 @@
         <div class="row mt-3">
             <div class="col-md-12 d-flex">
                 <button type="submit" id="exportBtn" class="btn btn-primary w-100 me-2">
-                    <i class="mdi mdi-file-export"></i> Export to Excel
+                    <i class="mdi mdi-file-export"></i> @GlobalShared.export_to_excel
                 </button>
                 <button type="button" id="reloadFilterBtn" class="btn btn-dark w-100">
-                    <i class="mdi mdi-refresh"></i> Reload
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reload
                 </button>
             </div>
         </div>
@@ -106,10 +106,10 @@
 <div class="card shadow-sm border-0 mb-2">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
         <h6 class="mb-0 text-dark">
-            <i class="mdi mdi-download-box-outline me-1"></i> Downloaded Files
+            <i class="mdi mdi-download-box-outline me-1"></i> @GlobalShared.downloaded_files
         </h6>
         <button class="btn btn-danger btn-sm" onclick="DeleteAllDownloads()">
-            <i class="mdi mdi-trash-can-outline me-1"></i> Delete All
+            <i class="mdi mdi-trash-can-outline me-1"></i> @GlobalShared.delete_all
         </button>
     </div>
     <div class="card-body p-3" id="downloadListContainer">

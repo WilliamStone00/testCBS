@@ -1,4 +1,4 @@
-﻿@model CBS.API.Helper.SessionAuth
+@model CBS.API.Helper.SessionAuth
 @using Resources
 @{
     Layout = "~/Views/Shared/_LoginMainCover.cshtml";
@@ -61,13 +61,13 @@
                 <span class="trust-soft">T R U S T S O F T</span>
                 <span class="credit">C R E D I T</span>
             </h5>
-            <small class="d-block mt-0"><i>@GlobalSession.SessionLockEnterRecoveryCode</i></small>
+            <small class="d-block mt-0"><i>@GlobalSession.session_lock_enter_recovery_code</i></small>
             <hr class="styled-hr" />
 
             <div class="alert alert-danger shadow-sm">
                 <i class="mdi mdi-lock-outline me-2"></i>
-                <strong>@GlobalSession.YourSessionWasLockedDueToInactivity.</strong>
-                <p class="mt-2 mb-0">@GlobalSession.PleaseEnterYourSessionRecoveryCodeToContinue.</p>
+                <strong>@GlobalSession.your_session_was_locked_due_to_inactivity.</strong>
+                <p class="mt-2 mb-0">@GlobalSession.please_enter_your_session_recovery_code_to_continue.</p>
             </div>
 
             <form id="recoveryForm" method="post">
@@ -81,18 +81,18 @@
                         placeholder = "Enter Your Session Recovery Code",
                         required = "required"
                     })
-                    <label for="SessionRecoveryCode">@GlobalSession.RecoveryCode</label>
+                    <label for="SessionRecoveryCode">@GlobalSession.recovery_code</label>
                     <div id="recoveryFeedback" class="mt-1 text-danger small"></div>
                 </div>
 
                 <button type="submit" class="btn btn-success d-grid w-100 mb-3">
-                    @GlobalSession.RecoverMySession
+                    @GlobalSession.recover_my_session
                 </button>
             </form>
 
             <div class="text-center mt-3">
                 <a href="@Url.Action("Login", "Authentication")" class="btn btn-outline-danger w-100">
-                    <i class="fas fa-arrow-left me-1"></i> @GlobalSession.ReturnToLoginPage
+                    <i class="fas fa-arrow-left me-1"></i> @GlobalSession.return_to_login_page
                 </a>
             </div>
         </div>

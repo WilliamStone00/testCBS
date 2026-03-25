@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig.NotificationConfig
 @using CBS.FrontDesk.Data.Entity.CheckManagementSystem.Configurations.NotificationConfig
 @using Resources
@@ -17,15 +17,15 @@
     <!-- Page Header -->
     <div class="card bg-light mb-3">
         <div class="card-body text-center">
-            <h1 class="card-title text-primary"><i class="mdi mdi-email-edit-outline me-2"></i> Notification Templates</h1>
-            <p class="card-text">Create and manage automated notification templates for different system events.</p>
+            <h1 class="card-title text-primary"><i class="mdi mdi-email-edit-outline me-2"></i> @GlobalNotificationConfig.notification_templates</h1>
+            <p class="card-text">@GlobalNotificationConfig.create_and_manage_automated_notification_templates_for_different_system_events.</p>
         </div>
     </div>
 
     <!-- Tips Section can be added here if desired -->
     <div class="card mb-3">
         <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-            <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR NOTIFICATION TEMPLATES</span>
+            <span><i class="mdi mdi-information-outline me-2"></i> @GlobalNotificationConfig.tips_for_notification_templates</span>
             <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNotificationTips" aria-expanded="false">
                 <i class="mdi mdi-chevron-down"></i>
             </button>
@@ -35,31 +35,31 @@
                 <ul>
                     <li>
                         <i class="mdi mdi-cogs text-primary me-2"></i>
-                        <strong>Start Here:</strong> Begin by selecting a scope. Choose 'Is Centralized' for a default template that applies to all branches. Uncheck it and select a specific 'Branch' to create a custom template that overrides the centralized one for that branch only.
+                        <strong>@GlobalShared.start_here:</strong> @GlobalNotificationConfig.begin_by_selecting_a_scope_choose_is_centralized_for_a_default_template_that_applies_to_all_branches_uncheck_it_and_select_a_specific_branch_to_create_a_custom_template_that_overrides_the_centralized_one_for_that_branch_only.
                     </li>
                     <li>
                         <i class="mdi mdi-magnify text-info me-2"></i>
-                        <strong>Load Template:</strong> After choosing your scope and the 'Notification Type', you must click the 'Load' button. This will fetch the specific template for you to edit or create a new one if it doesn't exist.
+                        <strong>@GlobalShared.load_template:</strong> @GlobalNotificationConfig.after_choosing_your_scope_and_the_notification_type_you_must_click_the_load_button_this_will_fetch_the_specific_template_for_you_to_edit_or_create_a_new_one_if_it_doesnt_exist.
                     </li>
                     <li>
                         <i class="mdi mdi-code-tags text-success me-2"></i>
-                        <strong>Using Placeholders:</strong> The 'Available Placeholders' are dynamic tags that will be automatically replaced with real data (like the client's name or account number) when the notification is sent. Simply **click on a placeholder** to copy it to your clipboard and then paste it into the 'Template Body' below.
+                        <strong>@GlobalNotificationConfig.using_placeholders:</strong> @GlobalNotificationConfig.the_available_placeholders_are_dynamic_tags_that_will_be_automatically_replaced_with_real_data_like_the_clients_name_or_account_number_when_the_notification_is_sent_simply_click_on_a_placeholder_to_copy_it_to_your_clipboard_and_then_paste_it_into_the_template_body_below.
                     </li>
                     <li>
                         <i class="mdi mdi-undo text-secondary me-2"></i>
-                        <strong>Reset Button:</strong> If you make changes to the template and want to start over, the 'Reset' button is your friend. It will discard your unsaved edits and reload the last saved version of the template.
+                        <strong>@GlobalShared.reset_button:</strong> @GlobalNotificationConfig.if_you_make_changes_to_the_template_and_want_to_start_over_the_reset_button_is_your_friend_it_will_discard_your_unsaved_edits_and_reload_the_last_saved_version_of_the_template.
                     </li>
                     <li>
                         <i class="mdi mdi-content-save text-warning me-2"></i>
-                        <strong>Save vs. Update:</strong> The 'Save Changes' button will either create a new template (if one didn't exist for your selected scope) or update the existing one with your changes.
+                        <strong>@GlobalNotificationConfig.save_vs_update:</strong> @GlobalNotificationConfig.the_save_changes_button_will_either_create_a_new_template_if_one_didnt_exist_for_your_selected_scope_or_update_the_existing_one_with_your_changes.
                     </li>
                     <li>
                         <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
-                        <strong>Deleting a Template:</strong> The 'Delete' button will only remove the **custom template** for the currently loaded scope. If you delete a branch-specific template, the system will fall back to using the centralized template for that branch. It does not delete the notification type itself.
+                        <strong>@GlobalShared.deleting_a_template:</strong> @GlobalNotificationConfig.the_delete_button_will_only_remove_the_custom_template_for_the_currently_loaded_scope_if_you_delete_a_branchspecific_template_the_system_will_fall_back_to_using_the_centralized_template_for_that_branch_it_does_not_delete_the_notification_type_itself.
                     </li>
                     <li>
                         <i class="mdi mdi-alert-circle-outline text-primary me-2"></i>
-                        <strong>Placeholder in Template:</strong> For a fluent UX just simply click on a place holder to add it to the templay we are building eg if we need the placeholder for user name we click on it instead of typing it manually into the text box
+                        <strong>@GlobalNotificationConfig.placeholder_in_template:</strong> @GlobalNotificationConfig.for_a_fluent_ux_just_simply_click_on_a_place_holder_to_add_it_to_the_templay_we_are_building_eg_if_we_need_the_placeholder_for_user_name_we_click_on_it_instead_of_typing_it_manually_into_the_text_box
                     </li>
                 </ul>
             </div>
@@ -68,32 +68,32 @@
 
     <!-- Configuration Selection Area -->
     <div class="card shadow p-3 mb-4">
-        <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> Select Notification to Configure</h5>
+        <h5 class="text-primary mb-3"><i class="mdi mdi-cogs me-1"></i> @GlobalNotificationConfig.select_notification_to_configure</h5>
         <div class="row align-items-end">
             <!-- Is Centralized Checkbox -->
             <div class="col-md-3">
                 <div class="form-check form-switch mb-3">
                     <input class="form-check-input" type="checkbox" id="isCentralized" checked>
-                    <label class="form-check-label fw-bold" for="isCentralized">Is Centralized?</label>
+                    <label class="form-check-label fw-bold" for="isCentralized">@GlobalShared.Is_Centralized?</label>
                 </div>
             </div>
 
             <!-- Branch Dropdown (Initially Hidden) -->
             <div class="col-md-4" id="branch-selection-container" style="display: none;">
-                <label class="form-label fw-bold">Select Branch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control select2", id = "branchId" })
+                <label class="form-label fw-bold">@GlobalShared.Select_Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), $"--- {@GlobalShared.Select_Branch} ---", new { @class = "form-control select2", id = "branchId" })
             </div>
 
             <!-- Notification Type Dropdown -->
             <div class="col-md-4">
-                <label class="form-label fw-bold">Select Notification Type</label>
+                <label class="form-label fw-bold">@GlobalShared.select_notification_type</label>
                 @* This uses the ViewBag.NotificationTypes loaded in the controller *@
-                @Html.DropDownList("NotificationType", new SelectList(ViewBag.NotificationTypes, "Value", "Text"), "--- Select Type ---", new { @class = "form-control select2", id = "notificationType" })
+                @Html.DropDownList("NotificationType", new SelectList(ViewBag.NotificationTypes, "Value", "Text"), $"--- {@GlobalShared.select_type} ---", new { @class = "form-control select2", id = "notificationType" })
             </div>
 
             <!-- Load Button -->
             <div class="col-md-1">
-                <button id="loadConfigBtn" class="btn btn-primary w-100">Load</button>
+                <button id="loadConfigBtn" class="btn btn-primary w-100">@GlobalShared.Load</button>
             </div>
         </div>
     </div>

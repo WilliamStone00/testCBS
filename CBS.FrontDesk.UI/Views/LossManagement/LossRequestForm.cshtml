@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
-
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.LossRequestDto
+@using Resources
 @{
     ViewBag.Title = "Loss Declaration Request";
    
@@ -15,7 +15,7 @@
             <div class="card-header">
                 <h5 class="card-title mb-0">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    Loss Declaration Request
+                    @GlobalLossManagement.loss_declaration_request
                 </h5>
             </div>
             <div class="card-body">
@@ -34,10 +34,10 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">
-                                <i class="mdi mdi-send me-1"></i> Submit Loss Declaration
+                                <i class="mdi mdi-send me-1"></i> @GlobalLossManagement.submit_loss_declaration
                             </button>
                             <a href="@Url.Action("Index","LossManagement")" class="btn btn-label-secondary">
-                                <i class="mdi mdi-close me-1"></i> Cancel
+                                <i class="mdi mdi-close me-1"></i> @GlobalShared.Cancel
                             </a>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
-
+@model CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">MOBILE MONEY CONFIGURATION</legend>
+    <legend id="select_base">@GlobalMobileMoneyConfigV2.mobile_money_configuration</legend>
     <div class="card-body">
         @using (Html.BeginForm("Create", "MobileMoneyConfigV2", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
@@ -11,7 +11,7 @@
             <!-- 🔹 HOLDER INFORMATION -->
             <!-- ========================= -->
             <fieldset class="border rounded p-3 mb-4">
-                <legend class="float-none w-auto px-2 text-primary fw-bold">Holder Information</legend>
+                <legend class="float-none w-auto px-2 text-primary fw-bold">@GlobalShared.holder_information</legend>
 
                 <div class="row gy-3">
                     <!-- Holder Name -->
@@ -19,7 +19,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Holder Name" })
                             @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                            <label for="Name">Holder Name</label>
+                            <label for="Name">@GlobalShared.holder_name</label>
                         </div>
                     </div>
 
@@ -28,7 +28,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
                             @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-                            <label for="Address">Address</label>
+                            <label for="Address">@GlobalShared.Address</label>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
             <!-- 🔹 MOBILE MONEY INFO -->
             <!-- ========================= -->
             <fieldset class="border rounded p-3 mb-4">
-                <legend class="float-none w-auto px-2 text-primary fw-bold">Mobile Money Info</legend>
+                <legend class="float-none w-auto px-2 text-primary fw-bold">@GlobalMobileMoneyConfigV2.mobile_money_info</legend>
 
                 <div class="row gy-3">
                     <!-- Operator Type -->
@@ -48,11 +48,11 @@
                             @Html.DropDownListFor(
                                 m => m.OperatorType,
                                 new SelectList(new List<string> { "MTN", "Orange", "Camtel" }),
-                                "--- Select Operator ---",
+                                $"--- {@GlobalShared.Select_Operator} ---",
                                 new { @class = "form-control select2", id = "OperatorType", @search = "true" }
                             )
                             @Html.ValidationMessageFor(m => m.OperatorType, "", new { @class = "text-danger" })
-                            <label for="OperatorType">Operator Type</label>
+                            <label for="OperatorType">@GlobalShared.operator_type</label>
                         </div>
                     </div>
 
@@ -61,7 +61,7 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.TelNumber, new { @class = "form-control", placeholder = "Merchant/MoMo Number" })
                             @Html.ValidationMessageFor(m => m.TelNumber, "", new { @class = "text-danger" })
-                            <label for="TelNumber">Merchant/MoMo/Orange Number</label>
+                            <label for="TelNumber">@GlobalMobileMoneyConfigV2.merchantmomoorange_number</label>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
             <!-- 🔹 ACCOUNTS GL INFO -->
             <!-- ========================= -->
             <fieldset class="border rounded p-3 mb-4">
-                <legend class="float-none w-auto px-2 text-primary fw-bold">Accounts GL Info</legend>
+                <legend class="float-none w-auto px-2 text-primary fw-bold">@GlobalMobileMoneyConfigV2.accounts_gl_info</legend>
 
                 <div class="row gy-3">
                     <!-- Branch -->
@@ -85,7 +85,7 @@
                                 new { @class = "form-control select2", id = "BranchId", @search = "true", @onchange = "LoadBranchAccounts(this.value)" }
                             )
                             @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                            <label for="BranchId">Select Branch</label>
+                            <label for="BranchId">@GlobalShared.Select_Branch</label>
                         </div>
                     </div>
 
@@ -95,11 +95,11 @@
                             @Html.DropDownListFor(
                                 m => m.BranchAccountId,
                                 new SelectList(ViewBag.Accounts, "Value", "Text"),
-                                "--- Select Branch Account ---",
+                                $"--- {@GlobalShared.select_branch_account} ---",
                                 new { @class = "form-control select2", @id = "BranchAccountId", @search = "true" }
                             )
                             @Html.ValidationMessageFor(m => m.BranchAccountId, "", new { @class = "text-danger" })
-                            <label for="BranchAccountId">Branch Account GL</label>
+                            <label for="BranchAccountId">@GlobalMobileMoneyConfigV2.branch_account_gl</label>
                         </div>
                     </div>
                 </div>
@@ -110,10 +110,10 @@
             <!-- 🔹 SETTINGS -->
             <!-- ========================= -->
             <fieldset class="border rounded p-3 mb-4">
-                <legend class="float-none w-auto px-2 text-primary fw-bold">Settings</legend>
+                <legend class="float-none w-auto px-2 text-primary fw-bold">@GlobalShared.settings</legend>
                 <div class="form-check ms-2 mt-1">
                     @Html.CheckBoxFor(m => m.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
-                    <label class="form-check-label ms-1" for="ActiveStatus">Active Status</label>
+                    <label class="form-check-label ms-1" for="ActiveStatus">@GlobalShared.Active_Status</label>
                 </div>
             </fieldset>
 
@@ -124,12 +124,12 @@
             <div class="mt-4 d-flex justify-content-end gap-2">
                 @if (ViewBag.Key != null)
                 {
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">@GlobalShared.Update</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">@GlobalShared.Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">@GlobalShared.Reset</button>
                 }
             </div>
         }

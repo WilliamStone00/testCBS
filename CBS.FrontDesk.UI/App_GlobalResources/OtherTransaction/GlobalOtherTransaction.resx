@@ -117,58 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="CollectCashFromMember" xml:space="preserve">
+  <data name="collect_cash_from_member" xml:space="preserve">
     <value>Collect cash from member</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="EventCode" xml:space="preserve">
-    <value>Event code</value>
-  </data>
-  <data name="Expenses" xml:space="preserve">
-    <value>Expenses</value>
-  </data>
-  <data name="Income" xml:space="preserve">
-    <value>Income</value>
-  </data>
-  <data name="MinMaxAmountToManage" xml:space="preserve">
+  <data name="min_max_amount_to_manage" xml:space="preserve">
     <value>Min-Max amount to manage</value>
   </data>
-  <data name="NoDataAvailableClickToAddNew" xml:space="preserve">
+  <data name="no_data_available_click_to_add_new" xml:space="preserve">
     <value>No data available. Click below to add new</value>
   </data>
-  <data name="OtherTransactionDetails" xml:space="preserve">
+  <data name="other_transaction_details" xml:space="preserve">
     <value>Other transaction details</value>
   </data>
-  <data name="PayWithMembersAccount" xml:space="preserve">
+  <data name="pay_with_members_account" xml:space="preserve">
     <value>Pay with member's account</value>
   </data>
-  <data name="Primary" xml:space="preserve">
-    <value>Primary</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
-  <data name="SelectMemberAccount" xml:space="preserve">
+  <data name="select_member_account" xml:space="preserve">
     <value>Select member account</value>
-  </data>
-  <data name="SourceAccount" xml:space="preserve">
-    <value>Source account</value>
-  </data>
-  <data name="Teller" xml:space="preserve">
-    <value>Teller</value>
-  </data>
-  <data name="TellerType" xml:space="preserve">
-    <value>Teller type</value>
   </data>
 </root>

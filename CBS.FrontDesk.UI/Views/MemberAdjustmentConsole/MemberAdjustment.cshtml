@@ -1,4 +1,4 @@
-﻿```cshtml
+```cshtml
 @using Resources
 @{
     ViewBag.Title = @GlobalIndividual.MemberOverview;
@@ -34,11 +34,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>FilterByBranch:</strong> Easily Segment Members By Operational Branch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalIndividual.RegistrationDates:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Filter_by_Branch:</strong> @GlobalMemberAdjustmentConsole.easily_segment_members_by_operational_branch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalShared.Registration_Date:</strong> @GlobalIndividual.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
                 <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalIndividual.GenderMaritalStatus:</strong> @GlobalIndividual.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
                 <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalIndividual.ApprovalLegalStatus:</strong> @GlobalIndividual.FilterApprovedMembersByLegalFormOrType.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalIndividual.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
             </ul>
         </div>
     </div>
@@ -47,7 +47,7 @@
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> @GlobalIndividual.MemberFilters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Member_Filters
     </h5>
 
     <form id="memberFilterForm">
@@ -59,7 +59,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleBranch"
                                onclick="document.getElementById('branchFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalIndividual.ShowBranchFilter</label>
+                        <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.show_date_filter</label>
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDates"
                                onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalIndividual.ShowDateFilters</label>
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.show_date_filter</label>
                     </div>
                 </div>
             </div>
@@ -91,19 +91,19 @@
             <!-- Default Filters -->
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalIndividual.MemberAccountNumber</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_account_number</label>
                     <input type="text" id="customerId" name="CustomerId" class="form-control"
                            placeholder="@GlobalIndividual.MemberAccountTemporalNumber" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">First Name</label>
+                    <label class="form-label fw-bold">@GlobalShared.First_Name</label>
                     <input type="text" id="firstName" name="FirstName" class="form-control"
                            placeholder="First Name" />
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label fw-bold">@GlobalIndividual.LastName</label>
+                    <label class="form-label fw-bold">@GlobalShared.Last_Name</label>
                     <input type="text" id="lastName" name="LastName" class="form-control"
-                           placeholder="@GlobalIndividual.LastName" />
+                           placeholder="@GlobalShared.Last_Name" />
                 </div>
             </div>
 
@@ -111,11 +111,11 @@
             <div id="branchFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Branch</label>
+                        <label class="form-label fw-bold">@GlobalShared.Branch</label>
                         @Html.DropDownList(
                             "Branch",
                             new SelectList(ViewBag.Branches, "Id", "Name"),
-                            "---Select Branch ---",
+                            $"---{@GlobalShared.Select_Branch} ---",
                             new { @class = "form-select select2", @id= "mainBranchId" }
                         )
                     </div>
@@ -126,32 +126,32 @@
             <div id="demographicFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalIndividual.Gender</label>
+                        <label class="form-label fw-bold">@GlobalShared.Gender</label>
                         <select id="gender" name="Gender" class="form-select">
                             <option value="">All</option>
-                            <option value="Female">@GlobalIndividual.Female</option>
-                            <option value="Male">@GlobalIndividual.Male</option>
-                            <option value="Group">@GlobalIndividual.Groups</option>
+                            <option value="Female">@GlobalShared.Female</option>
+                            <option value="Male">@GlobalShared.Male</option>
+                            <option value="Group">@GlobalShared.Groups</option>
                         </select>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Marital Status</label>
+                        <label class="form-label fw-bold">@GlobalShared.Marital_Status</label>
                         <select id="maritalStatus" name="MaritalStatus" class="form-select">
-                            <option value=""> All</option>
-                            <option value="Divorced">@GlobalIndividual.Divorced</option>
-                            <option value="Married">@GlobalIndividual.Married</option>
-                            <option value="Single">@GlobalIndividual.Single</option>
-                            <option value="Widowed">@GlobalIndividual.Widowed</option>
+                            <option value=""> @GlobalShared.All</option>
+                            <option value="Divorced">@GlobalShared.Divorced</option>
+                            <option value="Married">@GlobalShared.Married</option>
+                            <option value="Single">@GlobalShared.Single</option>
+                            <option value="Widowed">@GlobalShared.Widowed</option>
                         </select>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalIndividual.WorkingStatus</label>
+                        <label class="form-label fw-bold">@GlobalShared.Working_Status</label>
                         <select id="workingStatus" name="WorkingStatus" class="form-select">
-                            <option value="">All</option>
-                            <option value="Unemployed">@GlobalIndividual.Unemployed</option>
-                            <option value="Working">@GlobalIndividual.Working</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Unemployed">@GlobalShared.Unemployed</option>
+                            <option value="Working">@GlobalShared.Working</option>
                         </select>
                     </div>
                 </div>
@@ -161,48 +161,48 @@
             <div id="approvalFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalIndividual.MembershipApproval</label>
+                        <label class="form-label fw-bold">@GlobalShared.Membership_Approval</label>
                         <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
-                            <option value="">All</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Pending">@GlobalIndividual.Awaits_Validation</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Approved">@GlobalShared.Approved</option>
+                            <option value="Pending">@GlobalShared.Awaits_Validation</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@GlobalIndividual.LegalForm</label>
                         <select id="legalForm" name="LegalForm" class="form-select">
-                            <option value="">All</option>
-                            <option value="Moral_Person">Moral Person</option>
-                            <option value="Physical_Person">Physical Person</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Moral_Person">@GlobalShared.Moral_Person</option>
+                            <option value="Physical_Person">@GlobalShared.Physical_Person</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Members Profile</label>
+                        <label class="form-label fw-bold">@GlobalShared.Members_Profile</label>
                         <select id="customerType" name="CustomerType" class="form-select">
-                            <option value="">All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="AffiliateMemberSalaryAccount">@GlobalIndividual.AffiliateMemberSalary (TMAA)</option>
                             <option value="CivilServantsSalaryCollection">@GlobalIndividual.CivilServantsSalary (CSCA)</option>
-                            <option value="DailyCollection">@GlobalIndividual.DailyCollection (DCA)</option>
+                            <option value="DailyCollection">@GlobalShared.Daily_collection (DCA)</option>
                             <option value="DailySaver">@GlobalIndividual.DailySaver (DSA)</option>
-                            <option value="MemberAccount">@GlobalIndividual.MembersAccount (Serial number)</option>
+                            <option value="MemberAccount">@GlobalShared.Members_Account (Serial number)</option>
                             <option value="MobileMoneyMTN">@GlobalIndividual.MobileMoneyMTN (MTCA)</option>
                             <option value="MobileMoneyOrange">@GlobalIndividual.MobileMoneyOrange (OMCA)</option>
                             <option value="PreRegistredMember">@GlobalIndividual.PreRegisteredMembers (PRM)</option>
                             <option value="PrivateInstitutionSalaryCollection">@GlobalIndividual.PrivateInstitutionSalary (PICA)</option>
-                            <option value="Remittance">@GlobalIndividual.Remittance (RMCA)</option>
+                            <option value="Remittance">@GlobalShared.Remittance (RMCA)</option>
                             <option value="TemporalAccount">@GlobalIndividual.TemporalAccount (TEMP)</option>
                             <option value="UnknownSalaryMemberAccount">@GlobalIndividual.TemporalSalaryForMember (TMSA)</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalIndividual.AgeCategory</label>
+                        <label class="form-label fw-bold">@GlobalShared.Age_Category</label>
                         <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
-                            <option value="">All</option>
-                            <option value="Major">@GlobalIndividual.Major</option>
-                            <option value="Minor">@GlobalIndividual.Minor</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Major">@GlobalShared.Major</option>
+                            <option value="Minor">@GlobalShared.Minor</option>
                         </select>
                     </div>
                 </div>
@@ -212,22 +212,22 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalIndividual.DateOfBirthFrom</label>
+                        <label class="form-label fw-bold">@GlobalShared.Date_of_Birth_From</label>
                         <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalIndividual.DateOfBirthTo</label>
+                        <label class="form-label fw-bold">@GlobalShared.Date_of_Birth_To</label>
                         <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
                     </div>
                 </div>
 
                 <div class="row mb-0">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Created From</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                         <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Created To</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_To</label>
                         <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
                     </div>
                 </div>
@@ -238,7 +238,7 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button id="applyFilterBtn" class="btn btn-primary me-2 w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
                 <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100">
                     <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
@@ -288,7 +288,7 @@
             <div id="memberAdjustmentLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Applying adjustments, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalMemberAdjustmentConsole.applying_adjustments_please_wait...</p>
                 </div>
             </div>
 
@@ -298,10 +298,10 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="memberAdjustmentModalTitle">
-                                <i class="mdi mdi-account-edit-outline me-2"></i> Member Profile Adjustment
+                                <i class="mdi mdi-account-edit-outline me-2"></i> @GlobalMemberAdjustmentConsole.member_profile_adjustment
                             </h1>
                             <p class="card-text lead" id="memberAdjustmentModalDescription">
-                                Review and confirm changes to member details, account status, and category updates.
+                                @GlobalMemberAdjustmentConsole.review_and_confirm_changes_to_member_details_account_status_and_category_updates.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -312,7 +312,7 @@
             <!-- Tips Section -->
             <div class="card m-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> When to Use This</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.when_to_use_this</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjustmentTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -320,9 +320,9 @@
                 <div id="collapseAdjustmentTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>Profile Updates:</strong> Use for correcting member names, IDs, or categories.</li>
-                            <li><i class="mdi mdi-cash-check text-primary me-2"></i><strong>Account Adjustments:</strong> Update balance, membership status, or account activity.</li>
-                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>Exclusions:</strong> Not intended for loan modifications or financial rescheduling.</li>
+                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>@GlobalShared.profile_updates:</strong> @GlobalMemberAdjustmentConsole.use_for_correcting_member_names_ids_or_categories.</li>
+                            <li><i class="mdi mdi-cash-check text-primary me-2"></i><strong>@GlobalShared.account_adjustments:</strong> @GlobalMemberAdjustmentConsole.update_balance_membership_status_or_account_activity.</li>
+                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>@GlobalShared.exclusions:</strong> @GlobalMemberAdjustmentConsole.not_intended_for_loan_modifications_or_financial_rescheduling.</li>
                         </ul>
                     </div>
                 </div>
@@ -333,9 +333,9 @@
                 <div id="memberNameAdjustmentsContainer" class="details-grid">
                     <div class="loading-container text-center">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">@GlobalShared.Loading...</span>
                         </div>
-                        <p class="mt-2">Loading member adjustment details...</p>
+                        <p class="mt-2">@GlobalMemberAdjustmentConsole.loading_member_adjustment_details...</p>
                     </div>
                 </div>
             </div>
@@ -344,23 +344,23 @@
             <div class="modal-footer border-0 justify-content-between">
                 <div class="d-flex flex-row gap-4 flex-wrap">
                     <span class="text-muted fw-semibold">
-                        Member Reference: <span class="text-dark" id="memberReference">N/A</span>
+                        @GlobalShared.Member_reference: <span class="text-dark" id="memberReference">N/A</span>
                     </span>
                     <span class="text-muted fw-semibold">
-                        Member Name: <span class="text-dark" id="memberName">N/A</span>
+                        @GlobalShared.Member_name: <span class="text-dark" id="memberName">N/A</span>
                     </span>
                     <span class="text-muted fw-semibold">
-                        Branch: <span class="text-dark" id="branchName">N/A</span>
+                        @GlobalShared.Branch: <span class="text-dark" id="branchName">N/A</span>
                     </span>
                 </div>
 
                 <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
+                    <small class="text-muted">@GlobalShared.Powered_by FLX-CBS</small>
                 </div>
 
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Close
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
                     </button>
                 </div>
             </div>

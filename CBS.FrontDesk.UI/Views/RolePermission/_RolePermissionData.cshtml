@@ -1,16 +1,16 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
+@model List<CBS.FrontDesk.Data.Entity.MenuMaster>
 @using Resources
 <fieldset class="fieldset-custom">
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle mb-0" id="myDataTable">
             <thead class="table-light text-center">
                 <tr>
-                    <th style="width: 20%">@GlobalRolePermission.Name</th>
-                    <th style="width: 10%">@GlobalRolePermission.Controller</th>
+                    <th style="width: 20%">@GlobalShared.Name</th>
+                    <th style="width: 10%">@GlobalRolePermission.controller</th>
                     <th style="width: 10%">@GlobalShared.Action</th>
-                    <th style="width: 12%">@GlobalRolePermission.Group</th>
+                    <th style="width: 12%">@GlobalShared.Group</th>
                     <th style="width: 5%">@GlobalShared.Status</th>
-                    <th style="width: 30%">@GlobalRolePermission.Description</th>
+                    <th style="width: 30%">@GlobalShared.Description</th>
                     <th style="width: 13%">@GlobalShared.Actions</th>
                 </tr>
             </thead>
@@ -25,11 +25,11 @@
                         <td class="text-center">
                             @if (d.IsVisible)
                             {
-                                <span class="badge bg-label-primary text-uppercase fs-6">@GlobalRolePermission.Visible</span>
+                                <span class="badge bg-label-primary text-uppercase fs-6">@GlobalShared.visible</span>
                             }
                             else
                             {
-                        <span class="badge bg-label-dark text-uppercase fs-6">@GlobalRolePermission.None</span>
+                        <span class="badge bg-label-dark text-uppercase fs-6">@GlobalShared.None</span>
                             }
                         </td>
                         <td>@d.Description</td>

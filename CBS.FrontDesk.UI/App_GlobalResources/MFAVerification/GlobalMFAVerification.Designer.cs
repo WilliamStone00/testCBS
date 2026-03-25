@@ -61,74 +61,147 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to login.
+        ///   Looks up a localized string similar to Cancel &amp; Return to Login.
         /// </summary>
-        internal static string BackToLogin {
+        internal static string cancel_return_to_login {
             get {
-                return ResourceManager.GetString("BackToLogin", resourceCulture);
+                return ResourceManager.GetString("cancel_return_to_login", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the current code displayed in the app into the &quot;MFA Code&quot; input box above.
         /// </summary>
-        internal static string EnterTheCurrentCodeDisplayedInTheApp {
+        internal static string enter_the_current_code_displayed_in_the_app {
             get {
-                return ResourceManager.GetString("EnterTheCurrentCodeDisplayedInTheApp", resourceCulture);
+                return ResourceManager.GetString("enter_the_current_code_displayed_in_the_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter TOTP Code.
+        /// </summary>
+        internal static string enter_totp_code {
+            get {
+                return ResourceManager.GetString("enter_totp_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find the 6-digit code associated with your TSC account. It refreshes every 30 seconds.
+        /// </summary>
+        internal static string find_the_6digit_code_associated_with_your_tsc_account_it_refreshes_every_30_seconds {
+            get {
+                return ResourceManager.GetString("find_the_6digit_code_associated_with_your_tsc_account_it_refreshes_every_30_secon" +
+                        "ds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to Use TOTP.
+        /// </summary>
+        internal static string how_to_use_totp {
+            get {
+                return ResourceManager.GetString("how_to_use_totp", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to How to validate the MFA code.
         /// </summary>
-        internal static string HowToValidateTheMFACode {
+        internal static string how_to_validate_the_mfacode {
             get {
-                return ResourceManager.GetString("HowToValidateTheMFACode", resourceCulture);
+                return ResourceManager.GetString("how_to_validate_the_mfacode", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If the code is correct, you will be redirected or receive confirmation. If not, check the code on your app and try again.
         /// </summary>
-        internal static string IfTheCodeIsCorrectYouWillBeRedirectedOrReceiveConfirmation {
+        internal static string if_the_code_is_correct_you_will_be_redirected_or_receive_confirmation {
             get {
-                return ResourceManager.GetString("IfTheCodeIsCorrectYouWillBeRedirectedOrReceiveConfirmation", resourceCulture);
+                return ResourceManager.GetString("if_the_code_is_correct_you_will_be_redirected_or_receive_confirmation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Locate the code associated with your account. This code refreshes every 30 seconds.
         /// </summary>
-        internal static string LocateTheCodeAssociatedWithYourAccount {
+        internal static string locate_the_code_associated_with_your_account {
             get {
-                return ResourceManager.GetString("LocateTheCodeAssociatedWithYourAccount", resourceCulture);
+                return ResourceManager.GetString("locate_the_code_associated_with_your_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MFA code.
         /// </summary>
-        internal static string MFACode {
+        internal static string mfa_code {
             get {
-                return ResourceManager.GetString("MFACode", resourceCulture);
+                return ResourceManager.GetString("mfa_code", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MFA verification.
         /// </summary>
-        internal static string MFAVerification {
+        internal static string mfa_verification {
             get {
-                return ResourceManager.GetString("MFAVerification", resourceCulture);
+                return ResourceManager.GetString("mfa_verification", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Open the Google Authenticator app on your phone.
         /// </summary>
-        internal static string OpenTheGoogleAuthenticatorAppOnYourPhone {
+        internal static string open_the_google_authenticator_app_on_your_phone {
             get {
-                return ResourceManager.GetString("OpenTheGoogleAuthenticatorAppOnYourPhone", resourceCulture);
+                return ResourceManager.GetString("open_the_google_authenticator_app_on_your_phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the &lt;strong&gt;Google Authenticator&lt;/strong&gt; or &lt;strong&gt;Microsoft Authenticator&lt;/strong&gt; app on your phone.
+        /// </summary>
+        internal static string open_the_google_authenticator_or_microsoft_authenticator_app_on_your_phone {
+            get {
+                return ResourceManager.GetString("open_the_google_authenticator_or_microsoft_authenticator_app_on_your_phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to please enter your current code to continue.
+        /// </summary>
+        internal static string please_enter_your_current_code_to_continue {
+            get {
+                return ResourceManager.GetString("please_enter_your_current_code_to_continue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TOTP (Time-based One-Time Password).
+        /// </summary>
+        internal static string totp_timebased_onetime_password {
+            get {
+                return ResourceManager.GetString("totp_timebased_onetime_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type the current code above and click &lt;strong&gt;Verify Code&lt;/strong&gt;.
+        /// </summary>
+        internal static string type_the_current_code_above_and_click_verify_code {
+            get {
+                return ResourceManager.GetString("type_the_current_code_above_and_click_verify_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Code.
+        /// </summary>
+        internal static string verify_code {
+            get {
+                return ResourceManager.GetString("verify_code", resourceCulture);
             }
         }
     }

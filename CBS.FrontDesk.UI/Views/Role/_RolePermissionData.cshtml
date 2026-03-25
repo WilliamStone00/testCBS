@@ -1,11 +1,11 @@
-﻿@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
+@model CBS.FrontDesk.Data.Entity.RolePermissionManagement
 @using Resources
 <fieldset class="fieldset-custom">
 
     @if (Model.RolePermissions.Any())
     {<h4 class="mb-2">
             <i class="mdi mdi-lock-outline me-2"></i>
-            @GlobalRole.PermisionAssociatedToRole: @Model.RolePermissions.FirstOrDefault().roleName
+            @GlobalRole.permision_associated_to_role: @Model.RolePermissions.FirstOrDefault().roleName
         </h4>
 
     }
@@ -13,15 +13,15 @@
     {
         <h4 class="mb-2">
             <i class="mdi mdi-lock-outline me-2"></i>
-            @GlobalRole.NoPermisionAssociatedToSelectedRole.
+            @GlobalRole.no_permision_associated_to_selected_role.
         </h4>
     }
     <div class="table-responsive">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalRole.MenuText</th>
-                    <th>@GlobalRole.Description</th>
+                    <th>@GlobalRole.menu_text</th>
+                    <th>@GlobalShared.Description</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
             </thead>

@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
 @using Resources
 @{
@@ -25,13 +25,13 @@
         }
         <input type="hidden" name="ServiceOption" value="bankCashOutApproval" id="ServiceOption" />
         <fieldset class="fieldset-custom">
-            <legend id="select_base">@GlobalNotification.BankAccountsInformationPresent</legend>
+            <legend id="select_base">@GlobalNotification.bank_accounts_information_present</legend>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-floating form-floating-outline">
                         @Html.DropDownListFor(m => m.BankCashOut.FromAccountId, new SelectList(ViewBag.Accounts == null ? "" : ViewBag.Accounts, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "AccountId" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.FromAccountId, "", new { @class = "text-danger" })
-                        <label for="AccountId">@GlobalNotification.SelectBankAccount</label>
+                        <label for="AccountId">@GlobalNotification.select_bank_account</label>
                     </div>
                 </div>
 
@@ -41,8 +41,8 @@
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-end text-end">
                                     <h3 class="mb-3">XAF @Model.CashReplenimentRequest.AmountApproved</h3>
-                                    <p class="mb-0">@GlobalNotification.AmountAuthorizedBy @Model.BankCashOut.ApprovedBy</p>
-                                    <p class="mb-0">@GlobalNotification.OnThe @Model.BankCashOut.ApprovedDate</p>
+                                    <p class="mb-0">@GlobalNotification.amount_authorized_by @Model.BankCashOut.ApprovedBy</p>
+                                    <p class="mb-0">@GlobalShared.on_the @Model.BankCashOut.ApprovedDate</p>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-6" hidden="hidden">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalNotification.TotalAmount: 0.0</span>
+                        <span class="formatted-amount shadow-box" id="lblDepositRequest_amount">@GlobalShared.Total_amount: 0.0</span>
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalNoteAmount" value="0">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="totalProvision" value="@Model.BankCashOut.Amount">
                         <input type="hidden" class="form-control amount-input shadow-input-boxes" id="BranchToBranchTransfer.ReferenceId" value="@Model.BankCashOut.ReferenceId">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalNotification.Balance: 0</span>
+                        <span class="formatted-amount shadow-box" id="lblBalance">@GlobalShared.Balance: 0</span>
                     </div>
                 </div>
             </div>
@@ -157,14 +157,14 @@
             </div>
         </fieldset>
         <fieldset class="fieldset-custom">
-            <legend id="select_base">@GlobalNotification.BankCashOutIdentification</legend>
+            <legend id="select_base">@GlobalNotification.bank_cash_out_identification</legend>
             <div class="row">
                 <div class="col-md-6 mb-sm-4">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.BankCashOut.BankTransactionReference, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.BankTransactionReference, "", new { @class = "text-danger" })
 
-                        <label for="Amount"> @GlobalNotification.BankTransactionReference</label>
+                        <label for="Amount"> @GlobalNotification.bank_transaction_reference</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">
@@ -173,7 +173,7 @@
                         @Html.TextBoxFor(model => model.BankCashOut.ValueDate, new { @class = "form-control date-picker", @type = "datetime-local", @id = "html5-datetime-local-input" })
                         @Html.ValidationMessageFor(model => model.BankCashOut.ValueDate, "", new { @class = "text-danger" })
 
-                        <label for="ValueDate">@GlobalNotification.DateOfBankCashOut</label>
+                        <label for="ValueDate">@GlobalNotification.date_of_bank_cash_out</label>
                     </div>
 
                 </div>
@@ -186,7 +186,7 @@
                         @Html.ValidationMessageFor(model => model.BankCashOut.Description, "", new { @class = "text-danger" })
 
 
-                        <label>@GlobalNotification.Naration</label>
+                        <label>@GlobalShared.naration</label>
                     </div>
                 </div>
                 <div class="col-md-6 mb-sm-4">

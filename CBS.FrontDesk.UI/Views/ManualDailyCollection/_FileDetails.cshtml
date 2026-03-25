@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
+@model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
 @using Resources
 
 @{
@@ -39,8 +39,8 @@
     <div class="alert alert-danger d-flex align-items-start" role="alert">
         <i class="mdi mdi-alert-circle-outline me-2 mt-1"></i>
         <div>
-            <strong>Unable to load dashboard.</strong><br />
-            No data returned for this file upload.
+            <strong>@GlobalShared.unable_to_load_dashboard.</strong><br />
+            @GlobalManualDailyCollection.no_data_returned_for_this_file_upload.
         </div>
     </div>
 }
@@ -48,7 +48,7 @@ else
 {
     <!-- Header + chips -->
     <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
-        <h4 class="mb-2">Daily Collection — File Upload Dashboard</h4>
+        <h4 class="mb-2">@GlobalManualDailyCollection.daily_collection_file_upload_dashboard</h4>
         <div class="d-flex flex-wrap gap-2">
             <span class="badge bg-light text-dark border">
                 <i class="mdi mdi-identifier me-1"></i>@SafeStr(Model.FileUploadId)
@@ -73,7 +73,7 @@ else
                         </span>
                     </div>
                     <div>
-                        <div class="text-muted small">Total Amount</div>
+                        <div class="text-muted small">@GlobalShared.Total_amount</div>
                         <div class="fw-bold fs-4">@Money(amount)</div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ else
                         </span>
                     </div>
                     <div>
-                        <div class="text-muted small">Total Members</div>
+                        <div class="text-muted small">@GlobalShared.Total_members</div>
                         <div class="fw-bold fs-4">@members</div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@ else
                         </span>
                     </div>
                     <div>
-                        <div class="text-muted small">Branches Involved</div>
+                        <div class="text-muted small">@GlobalShared.branches_involved</div>
                         <div class="fw-bold fs-4">@branches</div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ else
                         </span>
                     </div>
                     <div>
-                        <div class="text-muted small">Avg / Member</div>
+                        <div class="text-muted small">@GlobalManualDailyCollection.avgmember</div>
                         <div class="fw-bold fs-4">@Money(avgPerMember)</div>
                     </div>
                 </div>
@@ -139,10 +139,10 @@ else
                         <strong>Collection Efficiency</strong>
                     </div>
                     <div class="text-muted small">
-                        Members: <strong>@members</strong> &nbsp;•&nbsp; Branches: <strong>@branches</strong>
+                        @GlobalShared.Members: <strong>@members</strong> &nbsp;•&nbsp; @GlobalShared.branches: <strong>@branches</strong>
                     </div>
                     <div class="mt-2">
-                        <span class="badge bg-light text-dark border">Avg / Member: <strong>@Money(avgPerMember)</strong></span>
+                        <span class="badge bg-light text-dark border">@GlobalManualDailyCollection.avgmember: <strong>@Money(avgPerMember)</strong></span>
                     </div>
                 </div>
             </div>
@@ -153,10 +153,10 @@ else
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <i class="mdi mdi-wallet-outline me-2 text-primary"></i>
-                        <strong>Amount Overview</strong>
+                        <strong>@GlobalShared.amount_overview</strong>
                     </div>
                     <div class="display-6 fw-bold">@Money(amount)</div>
-                    <div class="text-muted small">Total collected amount for this upload.</div>
+                    <div class="text-muted small">@GlobalManualDailyCollection.total_collected_amount_for_this_upload.</div>
                 </div>
             </div>
         </div>
@@ -166,12 +166,12 @@ else
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <i class="mdi mdi-information-outline me-2 text-secondary"></i>
-                        <strong>Context</strong>
+                        <strong>@GlobalShared.context</strong>
                     </div>
                     <div class="text-muted small">
-                        File ID: <strong>@SafeStr(Model.FileUploadId)</strong><br />
-                        Uploaded By: <strong>@SafeStr(Model.UploadedBy)</strong><br />
-                        Branch: <strong>@SafeStr(Model.BranchName)</strong>
+                        @GlobalShared.File_ID: <strong>@SafeStr(Model.FileUploadId)</strong><br />
+                        @GlobalShared.Uploaded_By: <strong>@SafeStr(Model.UploadedBy)</strong><br />
+                        @GlobalShared.Branch: <strong>@SafeStr(Model.BranchName)</strong>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@ else
 
     <div class="card shadow-sm">
         <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between">
-            <h6 class="mb-0"><i class="mdi mdi-format-list-bulleted me-1"></i> Details (@members)</h6>
+            <h6 class="mb-0"><i class="mdi mdi-format-list-bulleted me-1"></i> @GlobalShared.Details (@members)</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -193,10 +193,10 @@ else
                     </colgroup>
                     <thead class="table-light">
                         <tr>
-                            <th>Member Ref</th>
-                            <th>Name</th>
-                            <th>Member Branch</th>
-                            <th class="text-end">Amount</th>
+                            <th>@GlobalShared.Member_ref</th>
+                            <th>@GlobalShared.Name</th>
+                            <th>@GlobalShared.member_branch</th>
+                            <th class="text-end">@GlobalShared.Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -216,14 +216,14 @@ else
                         {
                             <tr>
                                 <td colspan="4" class="text-center text-muted py-4">
-                                    <i class="mdi mdi-file-search-outline me-1"></i> No file details found.
+                                    <i class="mdi mdi-file-search-outline me-1"></i> @GlobalShared.no_file_details_found.
                                 </td>
                             </tr>
                         }
                     </tbody>
                     <tfoot class="table-light">
                         <tr>
-                            <th colspan="3" class="text-end">Total</th>
+                            <th colspan="3" class="text-end">@GlobalShared.Total</th>
                             <th class="text-end">@Money(amount)</th>
                         </tr>
                     </tfoot>
@@ -258,7 +258,7 @@ else
     {
         <div class="alert alert-warning mt-3" role="alert">
             <i class="mdi mdi-alert-outline me-1"></i>
-            No members were included in this upload. Please verify your source file.
+            @GlobalManualDailyCollection.no_members_were_included_in_this_upload_please_verify_your_source_file.
         </div>
     }
 

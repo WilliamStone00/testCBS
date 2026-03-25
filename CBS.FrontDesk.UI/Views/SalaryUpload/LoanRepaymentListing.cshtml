@@ -1,6 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.FileDetailsDto
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.FileDetailsDto
 
-
+@using Resources
 @{
     ViewBag.Title = "Loan Repayment Execution";
 }
@@ -11,10 +11,10 @@
         <div class="card bg-light mb-3">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i>Loan Repayment Execution
+                    <i class="mdi mdi-cash-multiple me-2"></i>@GlobalSalaryUpload.loan_repayment_execution
                 </h1>
                 <p class="card-text">
-                    View and manage loan repayment executions, filter by various criteria and track execution status
+                    @GlobalSalaryUpload.view_and_manage_loan_repayment_executions_filter_by_various_criteria_and_track_execution_status
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Card -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentTips" aria-expanded="false" aria-controls="collapseLoanRepaymentTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,11 +34,11 @@
     <div id="collapseLoanRepaymentTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Status:</strong> Filter executions by their current status (Pending, Success, Failed, Refunded)</li>
-                <li><i class="mdi mdi-cash text-primary me-2"></i> <strong>Amount Range:</strong> Filter by principal or total repayment amount</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>Execution Date:</strong> Filter by date range when the execution occurred</li>
-                <li><i class="mdi mdi-bank text-secondary me-2"></i> <strong>Branch:</strong> Filter by specific branch or view all</li>
-                <li><i class="mdi mdi-file-document-outline text-warning me-2"></i> <strong>File Upload ID:</strong> Auto-populated from the clicked loan execution details</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Status:</strong> @GlobalSalaryUpload.filter_executions_by_their_current_status_pending_success_failed_refunded</li>
+                <li><i class="mdi mdi-cash text-primary me-2"></i> <strong>@GlobalShared.Amount_Range:</strong> @GlobalSalaryUpload.filter_by_principal_or_total_repayment_amount</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i> <strong>@GlobalShared.execution_date:</strong> @GlobalSalaryUpload.filter_by_date_range_when_the_execution_occurred</li>
+                <li><i class="mdi mdi-bank text-secondary me-2"></i> <strong>@GlobalShared.Branch:</strong> @GlobalSalaryUpload.filter_by_specific_branch_or_view_all</li>
+                <li><i class="mdi mdi-file-document-outline text-warning me-2"></i> <strong>@GlobalSalaryUpload.file_upload_id:</strong> @GlobalSalaryUpload.autopopulated_from_the_clicked_loan_execution_details</li>
             </ul>
         </div>
     </div>
@@ -49,7 +49,7 @@
 <!-- File Statistics Collapsible Card -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-chart-bar me-2"></i> File Statistics</span>
+        <span><i class="mdi mdi-chart-bar me-2"></i> @GlobalSalaryUpload.file_statistics</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFileStatistics" aria-expanded="true" aria-controls="collapseFileStatistics">
             <i class="mdi mdi-chevron-up"></i>
         </button>
@@ -63,7 +63,7 @@
             {
                 <div class="text-center py-4 text-muted">
                     <i class="mdi mdi-file-document-outline mdi-48px"></i>
-                    <p class="mt-2">Click on "Loan Execution Details" from any file to view statistics</p>
+                    <p class="mt-2">@GlobalSalaryUpload.click_on_loan_execution_details_from_any_file_to_view_statistics</p>
                 </div>
             }
             else
@@ -77,7 +77,7 @@
 <!-- Filters Card -->
 <div class="card shadow p-3 mb-4">
     <h5 class="text-primary mb-3">
-        <i class="mdi mdi-filter-outline me-1"></i> Loan Repayment Filters
+        <i class="mdi mdi-filter-outline me-1"></i> @GlobalSalaryUpload.loan_repayment_filters
     </h5>
 
     <form id="loanRepaymentFilterForm" autocomplete="off">
@@ -85,19 +85,19 @@
         <div class="card p-3 mb-3 bg-light">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Branch</label>
+                    <label class="form-label">@GlobalShared.Branch</label>
                     <div class="form-floating shadow-sm">
                         @Html.DropDownListFor(
                             m => m.BranchId,
                             new SelectList(ViewBag.Branches, "Id", "name"),
-                            "--- All Branches ---",
+                            $"--- {@GlobalShared.All_Branches} ---",
                             new { @class = "form-control select2", id = "branchId" }
                         )
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">File Upload ID</label>
+                    <label class="form-label fw-bold">@GlobalSalaryUpload.file_upload_id</label>
                     <input type="text"
                            id="fileUploadId"
                            name="FileUploadId"
@@ -116,56 +116,56 @@
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#statusFilter">
-                        <label class="form-check-label fw-bold">Status</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Status</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#paymentMethodFilter">
-                        <label class="form-check-label fw-bold">Payment Method</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.payment_method</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#paymentChannelFilter">
-                        <label class="form-check-label fw-bold">Payment Channel</label>
+                        <label class="form-check-label fw-bold">@GlobalSalaryUpload.payment_channel</label>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#salaryCodeFilter">
-                        <label class="form-check-label fw-bold">Salary Code</label>
+                        <label class="form-check-label fw-bold">@GlobalSalaryUpload.salary_code</label>
                     </div>
                 </div>
 
                 <div class="col-md-3 mt-2">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#memberRefFilter">
-                        <label class="form-check-label fw-bold">Member Reference</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Member_reference</label>
                     </div>
                 </div>
 
                 <div class="col-md-3 mt-2">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#transactionRefFilter">
-                        <label class="form-check-label fw-bold">Transaction Reference</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Transaction_Reference</label>
                     </div>
                 </div>
 
                 <div class="col-md-3 mt-2">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#loanIdFilter">
-                        <label class="form-check-label fw-bold">Loan ID</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Loan_ID</label>
                     </div>
                 </div>
 
                 <div class="col-md-3 mt-2">
                     <div class="form-check">
                         <input class="form-check-input filter-toggle" type="checkbox" data-target="#amountRangeFilter">
-                        <label class="form-check-label fw-bold">Amount Range</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Amount_Range</label>
                     </div>
                 </div>
 
@@ -178,22 +178,22 @@
                 <div id="statusFilter" class="col-md-4 d-none">
                     <label class="form-label fw-bold">Status</label>
                     <select name="Status" class="form-control">
-                        <option value="">All</option>
-                        <option>Pending</option>
-                        <option>Success</option>
-                        <option>Failed</option>
-                        <option>Refunded</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option>@GlobalShared.Pending</option>
+                        <option>@GlobalShared.Success</option>
+                        <option>@GlobalShared.Failed</option>
+                        <option>@GlobalSalaryUpload.refunded</option>
                     </select>
                 </div>
 
                 <!-- Payment Method -->
                 <div id="paymentMethodFilter" class="col-md-4 d-none">
-                    <label class="form-label fw-bold">Payment Method</label>
+                    <label class="form-label fw-bold">@GlobalShared.payment_method</label>
                     <select name="PaymentMethod" class="form-control">
-                        <option value="">All</option>
-                        <option>Bank Transfer</option>
-                        <option>Cash</option>
-                        <option>Cheque</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option>@GlobalSalaryUpload.bank_transfer</option>
+                        <option>@GlobalSalaryUpload.cash</option>
+                        <option>@GlobalShared.Cheque</option>
                     </select>
                 </div>
 
@@ -201,40 +201,40 @@
                 <div id="paymentChannelFilter" class="col-md-4 d-none">
                     <label class="form-label fw-bold">Payment Channel</label>
                     <select name="PaymentChannel" class="form-control">
-                        <option value="">All</option>
-                        <option>Online</option>
-                        <option>Branch</option>
-                        <option>Mobile</option>
+                        <option value="">@GlobalShared.All</option>
+                        <option>@GlobalShared.Online</option>
+                        <option>@GlobalShared.Branch</option>
+                        <option>@GlobalSalaryUpload.mobile</option>
                     </select>
                 </div>
 
                 <!-- Salary Code -->
                 <div id="salaryCodeFilter" class="col-md-4 d-none">
-                    <label class="form-label fw-bold">Salary Code</label>
+                    <label class="form-label fw-bold">@GlobalSalaryUpload.salary_code</label>
                     <input type="text" name="SalaryCode" class="form-control">
                 </div>
 
                 <!-- Member Reference -->
                 <div id="memberRefFilter" class="col-md-4 d-none">
-                    <label class="form-label fw-bold">Member Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                     <input type="text" name="MemberReference" class="form-control">
                 </div>
 
                 <!-- Transaction Reference -->
                 <div id="transactionRefFilter" class="col-md-4 d-none">
-                    <label class="form-label fw-bold">Transaction Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Transaction_Reference</label>
                     <input type="text" name="TransactionReference" class="form-control">
                 </div>
 
                 <!-- Loan ID -->
                 <div id="loanIdFilter" class="col-md-4 d-none">
-                    <label class="form-label fw-bold">Loan ID</label>
+                    <label class="form-label fw-bold">@GlobalShared.Loan_ID</label>
                     <input type="text" name="LoanId" class="form-control">
                 </div>
 
                 <!-- Amount Range -->
                 <div id="amountRangeFilter" class="col-md-6 d-none">
-                    <label class="form-label fw-bold">Amount Range</label>
+                    <label class="form-label fw-bold">@GlobalShared.Amount_Range</label>
                     <div class="row g-2">
                         <div class="col-6">
                             <input type="number" name="MinAmount" class="form-control" placeholder="Min">
@@ -253,10 +253,10 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
                 <button type="button" id="applyFilterBtn" class="btn btn-primary w-100 me-2">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
                 <button id="resetFilterBtn" type="button" class="btn btn-secondary w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>

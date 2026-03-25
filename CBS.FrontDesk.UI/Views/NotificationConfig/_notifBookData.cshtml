@@ -1,18 +1,18 @@
-﻿
+
 @using Resources
 <div class="card p-3 shadow mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>CheckBooks Notification Config</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i>@GlobalNotificationConfig.checkbooks_notification_config</h5>
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th>Name</th>
-                    <th>IsCentralised</th>
-                    <th>NotificationType</th>
-                    <th> Language </th>
-                    <th>Audience</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.Name</th>
+                    <th>@GlobalShared.Is_Centralised</th>
+                    <th>@GlobalNotificationConfig.notificationtype</th>
+                    <th>@GlobalShared.Language</th>
+                    <th>@GlobalShared.audience</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -32,7 +32,7 @@
                 <!-- Details content will be loaded here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@ChequeManagements.Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

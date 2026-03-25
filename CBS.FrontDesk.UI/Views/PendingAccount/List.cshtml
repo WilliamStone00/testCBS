@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountQuery
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountQuery
 @using Resources
 @{
     ViewBag.Title = "Account Request - Filters";
@@ -41,8 +41,8 @@
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center py-3">
-                <h1 class="card-title text-primary mb-1"><i class="mdi mdi-file-document-outline me-2"></i> Account Request Listing</h1>
-                <p class="card-text mb-0">Use this form to filter account requests before validation, approval or rejection.</p>
+                <h1 class="card-title text-primary mb-1"><i class="mdi mdi-file-document-outline me-2"></i> @GlobalPendingAccount.account_request_listing</h1>
+                <p class="card-text mb-0">@GlobalPendingAccount.use_this_form_to_filter_account_requests_before_validation_approval_or_rejection.</p>
                 <hr class="mt-3 mb-0" style="border: 2px solid rgba(128,128,128,.5);" />
             </div>
         </div>
@@ -52,7 +52,7 @@
 <!-- Tips (unchanged id fix) -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary py-2">
-        <span class="fw-semibold"><i class="mdi mdi-information-outline me-2"></i> Tips</span>
+        <span class="fw-semibold"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePendingAccountTips" aria-expanded="false" aria-controls="collapsePendingAccountTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -60,11 +60,11 @@
     <div id="collapsePendingAccountTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>Scope:</strong> Select the request scope to limit results.</li>
-                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>Affiliate / Branch:</strong> Filter by ownership.</li>
-                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>Status & Change Type:</strong> Pending/Approved/Rejected & Create/Update request.</li>
-                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>Created Dates (UTC):</strong> Filter by submission window.</li>
-                <li><i class="mdi mdi-translate-variant text-info me-2"></i><strong>Language:</strong> Prefer EN/FR naming when searching by Name.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i><strong>@GlobalShared.Scope:</strong> @GlobalPendingAccount.select_the_request_scope_to_limit_results.</li>
+                <li><i class="mdi mdi-account-box-multiple-outline text-primary me-2"></i><strong>@GlobalShared.Affiliate / @GlobalShared.Branch:</strong> @GlobalPendingAccount.filter_by_ownership.</li>
+                <li><i class="mdi mdi-filter-outline text-secondary me-2"></i><strong>@GlobalPendingAccount.status_change_type:</strong> @GlobalPendingAccount.pendingapprovedrejected_createupdate_request.</li>
+                <li><i class="mdi mdi-calendar-range text-info me-2"></i><strong>@GlobalShared.Created_Dates (UTC):</strong> @GlobalPendingAccount.filter_by_submission_window.</li>
+                <li><i class="mdi mdi-translate-variant text-info me-2"></i><strong>@GlobalShared.Language:</strong> @GlobalPendingAccount.prefer_en_fr_naming_when_searching_by_name.</li>
             </ul>
         </div>
     </div>
@@ -92,7 +92,7 @@
                     @Html.LabelFor(m => m.BranchId, "Branch", new { @class = "form-label fw-bold" })
                     @Html.DropDownListFor(m => m.BranchId,
                       new SelectList(ViewBag.Branches ?? new List<SelectListItem>(), "Id", "Name", Model?.BranchId),
-                      "--- Select Branch ---",
+                      $"--- {@GlobalShared.Select_Branch} ---",
                       new { @class = "form-select select2", id = "BranchId" })
                     @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
                 </div>
@@ -126,7 +126,7 @@
                     @Html.DropDownListFor(
                             m => m.Class,
                             new SelectList(ViewBag.Classes, "Value", "Text"),
-                            "--- Select Class ---",
+                            $"--- {@GlobalShared.select_class} ---",
                             new { @class = "form-select form-select-sm select2", id = "Class" })
                  
                     @Html.ValidationMessageFor(m => m.Class, "", new { @class = "text-danger" })
@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.ChangeType, "Change Type", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.ChangeType, $"{@GlobalShared.change_type}", new { @class = "form-label fw-bold" })
                     @Html.DropDownListFor(m => m.ChangeType,
                       new List<SelectListItem> {
                         new SelectListItem { Text = "All", Value = "" },
@@ -159,19 +159,19 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.UpdateReference, "Update Target (Id / Code)", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.UpdateReference, $"{@GlobalShared.update_target} (Id / Code)", new { @class = "form-label fw-bold" })
                     @Html.TextBoxFor(m => m.UpdateReference, new { @class = "form-control", placeholder = "Only for UpdateRequest", id = "UpdateReference" })
                     @Html.ValidationMessageFor(m => m.UpdateReference, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.Name, "Account Name (search)", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.Name, $"{@GlobalShared.Account_Name} ({@GlobalShared.Search})", new { @class = "form-label fw-bold" })
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Matches EN/FR based on Language", id = "Name" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.Language, "Preferred Name Language", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.Language, $"{@GlobalShared.preferred_name_language}", new { @class = "form-label fw-bold" })
                     @Html.DropDownListFor(m => m.Language,
                       new List<SelectListItem> {
                         new SelectListItem { Text = "Default", Value = "" },
@@ -183,13 +183,13 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.RequestedBy, "Requested By (user)", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.RequestedBy, $"{@GlobalShared.Requested_by} ({@GlobalShared.User})", new { @class = "form-label fw-bold" })
                     @Html.TextBoxFor(m => m.RequestedBy, new { @class = "form-control", placeholder = "Username / Id", id = "RequestedBy" })
                     @Html.ValidationMessageFor(m => m.RequestedBy, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-2">
-                    @Html.LabelFor(m => m.ApprovedBy, "Approved By (user)", new { @class = "form-label fw-bold" })
+                    @Html.LabelFor(m => m.ApprovedBy, $"{@GlobalShared.Approved_by} ({@GlobalShared.User})", new { @class = "form-label fw-bold" })
                     @Html.TextBoxFor(m => m.ApprovedBy, new { @class = "form-control", placeholder = "Username / Id", id = "ApprovedBy" })
                     @Html.ValidationMessageFor(m => m.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
@@ -200,23 +200,23 @@
         @* -------- DATE RANGE -------- *@
         <div class="mb-1">
             <div class="d-flex align-items-center justify-content-between">
-                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-calendar-range me-1"></i> Date Range (UTC)</h6>
+                <h6 class="text-muted fw-bold mb-2"><i class="mdi mdi-calendar-range me-1"></i> @GlobalShared.Date_Range (UTC)</h6>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="toggleCreatedDates"
                            onclick="document.getElementById('createdDateFilters').classList.toggle('d-none')" />
-                    <label class="form-check-label fw-bold" for="toggleCreatedDates">Show</label>
+                    <label class="form-check-label fw-bold" for="toggleCreatedDates">@GlobalShared.show</label>
                 </div>
             </div>
 
             <div id="createdDateFilters" class="d-none">
                 <div class="row g-2">
                     <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.CreatedFromUtc, "Created From (UTC)", new { @class = "form-label fw-bold" })
+                        @Html.LabelFor(m => m.CreatedFromUtc, $"{@GlobalShared.Created_From} (UTC)", new { @class = "form-label fw-bold" })
                         @Html.TextBoxFor(m => m.CreatedFromUtc, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", id = "CreatedFromUtc" })
                         @Html.ValidationMessageFor(m => m.CreatedFromUtc, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-6 mb-2">
-                        @Html.LabelFor(m => m.CreatedToUtc, "Created To (UTC)", new { @class = "form-label fw-bold" })
+                        @Html.LabelFor(m => m.CreatedToUtc, $"{@GlobalShared.Created_To} (UTC)", new { @class = "form-label fw-bold" })
                         @Html.TextBoxFor(m => m.CreatedToUtc, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", id = "CreatedToUtc" })
                         @Html.ValidationMessageFor(m => m.CreatedToUtc, "", new { @class = "text-danger" })
                     </div>
@@ -245,10 +245,10 @@
         <div class="row mt-2">
             <div class="col-md-12 d-flex gap-2">
                 <button id="applyAffiliateFilterBtn" type="submit" class="btn btn-primary w-100">
-                    <i class="mdi mdi-magnify"></i> Apply Filter
+                    <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                 </button>
                 <button id="resetAffiliateFilterBtn" type="button" class="btn btn-secondary w-100">
-                    <i class="mdi mdi-refresh"></i> Reset
+                    <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                 </button>
             </div>
         </div>
@@ -268,28 +268,28 @@
             <div id="accountRequestTLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none" style="z-index:1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary mb-0">Loading details…</p>
+                    <p class="fw-semibold text-primary mb-0">@GlobalShared.Loading_details…</p>
                 </div>
             </div>
             <div class="modal-header border-0">
-                <h6 class="modal-title fw-semibold" id="accountRequestTModalLabel">Account Request</h6>
+                <h6 class="modal-title fw-semibold" id="accountRequestTModalLabel">@GlobalShared.account_request</h6>
                 <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
                 <div id="accountRequestTContent">
                     <div class="text-center py-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
-                        <div class="text-muted">Loading...</div>
+                        <div class="text-muted">@GlobalShared.Loading...</div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer border-0 justify-content-between">
                 <div class="text-center w-100">
-                    <small class="text-muted">Powered by FLX-CBS</small>
+                    <small class="text-muted">@GlobalShared.Powered_by FLX-CBS</small>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Close
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
                     </button>
                 </div>
             </div>

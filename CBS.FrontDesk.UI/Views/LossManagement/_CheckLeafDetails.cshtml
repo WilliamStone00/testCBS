@@ -1,24 +1,24 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckLeafDetailDto
-
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckLeafDetailDto
+@using Resources
 <div class="checkleaf-details-modal">
     <div class="card">
         <div class="card-header bg-light">
             <h6 class="mb-0">
                 <i class="mdi mdi-eye-outline me-2"></i>
-                Check Leaf Details
+                @GlobalLossManagement.check_leaf_details
             </h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-4">Check Leaf ID:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Check_Leaf_ID:</dt>
                         <dd class="col-sm-8">@Model.CheckLeafId</dd>
 
-                        <dt class="col-sm-4">Checkbook ID:</dt>
+                        <dt class="col-sm-4">@GlobalShared.CheckBook_ID:</dt>
                         <dd class="col-sm-8">@Model.CheckBookId</dd>
 
-                        <dt class="col-sm-4">Status:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Status:</dt>
                         <dd class="col-sm-8">
                             @{
                                 var statusClass = Model.Status.ToLower() == "used" ? "bg-success" :
@@ -30,31 +30,31 @@
 
                         @if (!string.IsNullOrEmpty(Model.LeafNumber))
                         {
-                            <dt class="col-sm-4">Leaf Number:</dt>
+                            <dt class="col-sm-4">@GlobalLossManagement.leaf_number:</dt>
                             <dd class="col-sm-8">@Model.LeafNumber</dd>
                         }
                     </dl>
                 </div>
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-4">Customer ID:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Customer_ID:</dt>
                         <dd class="col-sm-8">@Model.CustomerId</dd>
 
-                        <dt class="col-sm-4">Account Number:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Account_Number:</dt>
                         <dd class="col-sm-8">@Model.AccountNumber</dd>
 
-                        <dt class="col-sm-4">Branch Code:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Branch_Code:</dt>
                         <dd class="col-sm-8">@Model.BranchCode</dd>
 
                         @if (Model.IssueDate.HasValue)
                         {
-                            <dt class="col-sm-4">Issue Date:</dt>
+                            <dt class="col-sm-4">@GlobalShared.Issue_Date:</dt>
                             <dd class="col-sm-8">@Model.IssueDate.Value.ToString("yyyy-MM-dd")</dd>
                         }
 
                         @if (Model.ExpiryDate.HasValue)
                         {
-                            <dt class="col-sm-4">Expiry Date:</dt>
+                            <dt class="col-sm-4">@GlobalShared.Expiry_Date:</dt>
                             <dd class="col-sm-8">@Model.ExpiryDate.Value.ToString("yyyy-MM-dd")</dd>
                         }
                     </dl>
@@ -66,7 +66,7 @@
                 <div class="col-12">
                     <div class="alert alert-info">
                         <i class="mdi mdi-information-outline me-2"></i>
-                        This check leaf belongs to checkbook <strong>@Model.CheckBookId</strong> and is currently <strong>@Model.Status</strong>.
+                        @GlobalLossManagement.this_check_leaf_belongs_to_checkbook <strong>@Model.CheckBookId</strong> @GlobalLossManagement.and_is_currently <strong>@Model.Status</strong>.
                     </div>
                 </div>
             </div>
@@ -79,10 +79,10 @@
             <button type="button"
                     class="btn btn-warning"
                     onclick="requestLossForCheckLeaf(@Model.CheckLeafId)">
-                <i class="mdi mdi-alert-outline me-1"></i> Report Loss for this Check Leaf
+                <i class="mdi mdi-alert-outline me-1"></i> @GlobalLossManagement.report_loss_for_this_check_leaf
             </button>
             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-                <i class="mdi mdi-close me-1"></i> Close
+                <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
             </button>
         </div>
     </div>

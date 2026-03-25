@@ -1,21 +1,21 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
 @using CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure
-
+@using Resources
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div>
             <h6 class="mb-0 text-primary">
-                <i class="mdi mdi-format-list-bulleted me-1"></i> Loan Products
+                <i class="mdi mdi-format-list-bulleted me-1"></i> @GlobalShared.loan_products
             </h6>
-            <small class="text-muted">Click Manage to preview or configure policies & accounting.</small>
+            <small class="text-muted">@GlobalLoanProduct.click_manage_to_preview_or_configure_policies_accounting.</small>
         </div>
 
         <div class="d-flex gap-2">
             <button type="button" class="btn btn-outline-primary btn-sm" onclick="loanProductReloadList()">
-                <i class="mdi mdi-refresh me-1"></i> Refresh
+                <i class="mdi mdi-refresh me-1"></i> @GlobalShared.Refresh
             </button>
             <button type="button" class="btn btn-primary btn-sm" onclick="openLoanProductCreateModal()">
-                <i class="mdi mdi-plus me-1"></i> Add New
+                <i class="mdi mdi-plus me-1"></i> @GlobalShared.ADD_NEW
             </button>
         </div>
     </div>
@@ -25,7 +25,7 @@
         {
             <div class="alert alert-info mb-0">
                 <i class="mdi mdi-information-outline me-1"></i>
-                No loan products found. Click <strong>Add New</strong> to create your first product.
+                @Html.Raw(@GlobalLoanProduct.no_loan_products_found_click_add_new_to_create_your_first_product).
             </div>
         }
         else
@@ -34,12 +34,12 @@
                 <table class="table table-sm table-striped table-hover align-middle w-100" id="loanProductsTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="min-width:120px;">Code</th>
-                            <th style="min-width:240px;">Product Name</th>
-                            <th style="min-width:160px;">Facility</th>
-                            <th style="min-width:140px;">PCMF Codes</th>
-                            <th style="min-width:110px;">Status</th>
-                            <th style="min-width:120px;" class="text-end">Actions</th>
+                            <th style="min-width:120px;">@GlobalShared.Code</th>
+                            <th style="min-width:240px;">@GlobalShared.Product_Name</th>
+                            <th style="min-width:160px;">@GlobalShared.facility</th>
+                            <th style="min-width:140px;">@GlobalLoanProduct.pcmf_codes</th>
+                            <th style="min-width:110px;">@GlobalShared.Status</th>
+                            <th style="min-width:120px;" class="text-end">@GlobalShared.Actions</th>
                         </tr>
                     </thead>
 
@@ -64,29 +64,29 @@
                                     @switch (p.LoanFacility)
                                     {
                                         case LoanFacilityType.Classic:
-                                            <span class="badge bg-label-primary">Classic</span>
+                                            <span class="badge bg-label-primary">@GlobalShared.classic</span>
                                             break;
                                         case LoanFacilityType.SSF:
                                             <span class="badge bg-label-info">SSF</span>
                                             break;
                                         case LoanFacilityType.Overdraft:
-                                            <span class="badge bg-label-warning">Overdraft</span>
+                                <span class="badge bg-label-warning">@GlobalShared.Overdraft</span>
                                             break;
                                         case LoanFacilityType.LineOfCredit:
-                                            <span class="badge bg-label-dark">Line of Credit</span>
+                                <span class="badge bg-label-dark">@GlobalLoanProduct.line_of_credit</span>
                                             break;
                                         default:
-                                            <span class="badge bg-secondary">Not Mapped</span>
+                                <span class="badge bg-secondary">@GlobalLoanProduct.not_mapped</span>
                                             break;
                                     }
                                 </td>
 
                                 <!-- PCMF Codes -->
                                 <td>
-                                    <span class="badge bg-label-secondary" title="PCMF Base Code">
+                                    <span class="badge bg-label-secondary" title="@GlobalLoanProduct.pcmf_base_code">
                                         @p.PcmfBaseCode
                                     </span>
-                                    <span class="badge bg-label-dark" title="PCMF Group Code">
+                                    <span class="badge bg-label-dark" title="@GlobalLoanProduct.pcmf_group_code">
                                         @p.PcmfGroupCode
                                     </span>
                                 </td>
@@ -95,11 +95,11 @@
                                 <td>
                                     @if (p.ActiveStatus)
                                     {
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="badge bg-success">@GlobalShared.Active</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">Inactive</span>
+                                <span class="badge bg-secondary">@GlobalShared.InActive</span>
                                     }
                                 </td>
 
@@ -110,7 +110,7 @@
                                         <button type="button"
                                                 class="btn btn-outline-primary btn-sm dropdown-toggle"
                                                 data-bs-toggle="dropdown">
-                                            <i class="mdi mdi-cog-outline me-1"></i> Manage
+                                            <i class="mdi mdi-cog-outline me-1"></i> @GlobalShared.manage
                                         </button>
 
                                         <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 230px;">
@@ -119,7 +119,7 @@
                                             <li class="mb-1">
                                                 <a class="btn btn-outline-primary btn-sm w-100 text-primary"
                                                    onclick="openLoanProductEditModal('@p.Id')">
-                                                    <i class="mdi mdi-pencil-outline me-2"></i> Edit (Simple)
+                                                    <i class="mdi mdi-pencil-outline me-2"></i> @GlobalShared.Edit (@GlobalShared.simple)
                                                 </a>
                                             </li>
 
@@ -127,7 +127,7 @@
                                             <li class="mb-1">
                                                 <a class="btn btn-outline-info btn-sm w-100 text-info"
                                                    onclick="openLoanProductManageModal('@p.Id','preview','_LoanProductPreview')">
-                                                    <i class="mdi mdi-eye-outline me-2"></i> Details
+                                                    <i class="mdi mdi-eye-outline me-2"></i> @GlobalShared.Details
                                                 </a>
                                             </li>
 
@@ -137,7 +137,7 @@
                                             <li class="mb-1">
                                                 <a class="btn btn-outline-warning btn-sm w-100 text-warning"
                                                    onclick="openLoanProductManageModal('@p.Id','policy','_Policy')">
-                                                    <i class="mdi mdi-shield-check-outline me-2"></i> Policy
+                                                    <i class="mdi mdi-shield-check-outline me-2"></i> @GlobalShared.policy
                                                 </a>
                                             </li>
 
@@ -145,7 +145,7 @@
                                             <li class="mb-1">
                                                 <a class="btn btn-outline-success btn-sm w-100 text-success"
                                                    onclick="openLoanProductManageModal('@p.Id','account_mapping','_LoanProductAccountingMapping')">
-                                                    <i class="mdi mdi-bank-outline me-2"></i> Accounting Mapping
+                                                    <i class="mdi mdi-bank-outline me-2"></i> @GlobalShared.accounting_mapping
                                                 </a>
                                             </li>
 
@@ -163,7 +163,7 @@
                                                 <li class="mb-1">
                                                     <a class="btn btn-outline-secondary btn-sm w-100 text-warning"
                                                        onclick="openLoanProductManageModal('@p.Id','overdraft','_OverdraftFacilityConfig')">
-                                                        <i class="mdi mdi-credit-card-outline me-2"></i> Facility Config
+                                                        <i class="mdi mdi-credit-card-outline me-2"></i> @GlobalLoanProduct.facility_config
                                                     </a>
                                                 </li>
                                             }
@@ -174,7 +174,7 @@
                                             <li>
                                                 <a class="btn btn-outline-danger btn-sm w-100 text-danger"
                                                    onclick="deleteLoanProduct('@p.Id')">
-                                                    <i class="mdi mdi-delete-outline me-2"></i> Delete
+                                                    <i class="mdi mdi-delete-outline me-2"></i> @GlobalShared.Delete
                                                 </a>
                                             </li>
 

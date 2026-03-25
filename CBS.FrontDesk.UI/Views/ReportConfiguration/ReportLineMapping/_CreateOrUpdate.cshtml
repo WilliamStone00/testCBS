@@ -1,7 +1,7 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping
+@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping
 @using CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping
 @using Newtonsoft.Json
-
+@using Resources
 @{
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
     Layout = null;
@@ -18,14 +18,14 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-link-variant me-2"></i> Report Line Mapping Management
+                    <i class="mdi mdi-link-variant me-2"></i> @GlobalReportConfiguration.report_line_mapping_management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure mapping rules used to associate GL accounts or ranges with specific report lines.
+                    @GlobalReportConfiguration.configure_mapping_rules_used_to_associate_gl_accounts_or_ranges_with_specific_report_lines.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Accurate mappings ensure correct account grouping and reliable financial reporting.
+                    @GlobalReportConfiguration.accurate_mappings_ensure_correct_account_grouping_and_reliable_financial_reporting.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -55,12 +55,12 @@
             <!-- COBAC Selection Section -->
             <div class="mb-4">
                 <h6 class="text-secondary fw-semibold mb-3">
-                    <i class="mdi mdi-database me-2"></i>COBAC Report Line Selection
+                    <i class="mdi mdi-database me-2"></i>@GlobalReportConfiguration.cobac_report_line_selection
                 </h6>
 
                 <div class="row g-3">
                     <div class="col-md-12">
-                        @Html.LabelFor(m => m.MainSection, "Financial Statement Section", new { @class = "form-label fw-semibold" })
+                        @Html.LabelFor(m => m.MainSection, $"{@GlobalReportConfiguration.financial_statement_section}", new { @class = "form-label fw-semibold" })
                         @Html.DropDownListFor(m => m.MainSection,
                             (IEnumerable<SelectListItem>)ViewBag.MainSections,
                             "Select section",
@@ -69,19 +69,19 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Sub Section</label>
+                        <label class="form-label fw-semibold">@GlobalShared.sub_section</label>
                         <select id="subSectionSelect" class="form-select select2" disabled>
-                            <option value="">Select main section first</option>
+                            <option value="">@GlobalReportConfiguration.select_main_section_first</option>
                         </select>
-                        <div class="form-text">Optional - filter by category group</div>
+                        <div class="form-text">@GlobalReportConfiguration.optional_filter_by_category_group</div>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Report Line <span class="text-danger">*</span></label>
                         <select name="LineId" id="LineId" class="form-select select2" required>
-                            <option value="">Select report line</option>
+                            <option value="">@GlobalReportConfiguration.select_report_line</option>
                         </select>
-                        <div class="form-text">Select the target COBAC report line</div>
+                        <div class="form-text">@GlobalReportConfiguration.select_the_target_cobac_report_line</div>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
             <!-- Match Configuration Section -->
             <div class="mb-4">
                 <h6 class="text-secondary fw-semibold mb-6">
-                    <i class="mdi mdi-compare me-2"></i>Match Configuration
+                    <i class="mdi mdi-compare me-2"></i>@GlobalShared.match_configuration
                 </h6>
 
                 <div class="row g-3">
@@ -109,7 +109,7 @@
                                 .Select(e => new { Value = (short)e, Text = e.ToString() }), "Value", "Text", (short)Model.MatchType),
                             "Select match type",
                             new { @class = "form-select select2", id = "MatchType" })
-                        <div class="form-text">Determines how accounts are matched</div>
+                        <div class="form-text">@GlobalReportConfiguration.determines_how_accounts_are_matched</div>
                     </div>
 
                     <div class="col-md-6" id="valueFieldContainer">
@@ -117,7 +117,7 @@
                         {
                             <label class="form-label fw-semibold">Account Code <span class="text-danger">*</span></label>
                             <select name="AccountCode" id="AccountCode" class="form-select select2">
-                                <option value="">Select account code</option>
+                                <option value="">@GlobalReportConfiguration.select_account_code</option>
                                 @if (ViewBag.AffiliateAccounts != null)
                                 {
                                     foreach (var item in ViewBag.AffiliateAccounts)
@@ -128,7 +128,7 @@
                                     }
                                 }
                             </select>
-                            <div class="form-text">Select the exact account code to map</div>
+                            <div class="form-text">@GlobalReportConfiguration.select_the_exact_account_code_to_map</div>
                         }
                         else if (Model.MatchType == ReportMatchType.CodePoste)
                         {
@@ -139,13 +139,13 @@
                                 placeholder = "e.g., EP01, RP02, etc."
                             })
                             @Html.ValidationMessageFor(m => m.CodePoste, "", new { @class = "text-danger small" })
-                            <div class="form-text">Enter the position code for mapping</div>
+                            <div class="form-text">@GlobalReportConfiguration.enter_the_position_code_for_mapping</div>
                         }
                         else
                         {
-                            <label class="form-label fw-semibold">Value <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">@GlobalShared.Value <span class="text-danger">*</span></label>
                             <select class="form-select select2" disabled>
-                                <option>Select match type first</option>
+                                <option>@GlobalReportConfiguration.select_match_type_first</option>
                             </select>
                         }
                     </div>
@@ -155,7 +155,7 @@
             <!-- Mapping Options Section -->
             <div>
                 <h6 class="text-secondary fw-semibold mb-3">
-                    <i class="mdi mdi-tune me-2"></i>Mapping Options
+                    <i class="mdi mdi-tune me-2"></i>@GlobalShared.mapping_options
                 </h6>
 
                 <div class="row g-3">
@@ -166,7 +166,7 @@
                                 .Select(e => new { Value = (short)e, Text = e.ToString() }), "Value", "Text", (short)Model.Side),
                             "Select side",
                             new { @class = "form-select select2" })
-                        <div class="form-text">Debit, Credit, or Both</div>
+                        <div class="form-text">@GlobalReportConfiguration.debit_credit_or_both</div>
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                 </button>
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="mdi mdi-close-circle-outline me-1"></i> Close
+                    <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Close
                 </button>
 
             </div>

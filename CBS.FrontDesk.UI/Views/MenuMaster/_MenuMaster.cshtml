@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MenuMaster
+@model CBS.FrontDesk.Data.Entity.MenuMaster
 @using Resources
 
 @using (Html.BeginForm("AddOrUpdate", "MenuMaster", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -11,69 +11,69 @@
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuText, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuText, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.MenuText</label>
+                        <label>@GlobalMenuMaster.menu_text</label>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ControllerName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ControllerName, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.ControllerName</label>
+                        <label>@GlobalMenuMaster.controller_name</label>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.ActionName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ActionName, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.ActionName</label>
+                        <label>@GlobalMenuMaster.action_name</label>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuOrder, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuOrder, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.MenuOrder</label>
+                        <label>@GlobalMenuMaster.menu_order</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.IconClass, new { @class = "form-control", placeholder = "tf-icons mdi mdi-chart-areaspline" })
                         @Html.ValidationMessageFor(m => m.IconClass, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.IconClass</label>
+                        <label>@GlobalMenuMaster.icon_class</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextBoxFor(m => m.MenuGroup, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.MenuGroup, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.GroupName</label>
+                        <label>@GlobalMenuMaster.group_name</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-check">
                         @Html.CheckBoxFor(m => m.IsVisible, new { @class = "form-check-input" })
-                        <label class="form-check-label" for="isActive">@GlobalMenuMaster.CheckToSetInVisibile</label>
+                        <label class="form-check-label" for="isActive">@GlobalMenuMaster.check_to_set_in_visibile</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.MenuMasters, "Value", "Text"), "---"+ @GlobalMenuMaster.SelectParentMenu + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.ParentId, new SelectList(ViewBag.MenuMasters, "Value", "Text"), "---"+ @GlobalMenuMaster.select_parent_menu + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.ParentId, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.SelectParentMenu</label>
+                        <label>@GlobalMenuMaster.select_parent_menu</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Tooltip, new { @class = "form-control", @style = "height: 100px;" })
                         @Html.ValidationMessageFor(m => m.Tooltip, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.Tooltips</label>
+                        <label>@GlobalMenuMaster.tooltips</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                        <label>@GlobalMenuMaster.Description</label>
+                        <label>@GlobalShared.Description</label>
                     </div>
                 </div>
             </div>

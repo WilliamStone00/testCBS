@@ -61,227 +61,119 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active status.
-        /// </summary>
-        internal static string ActiveStatus {
-            get {
-                return ResourceManager.GetString("ActiveStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add new committee.
         /// </summary>
-        internal static string AddNewCommittee {
+        internal static string add_new_committee {
             get {
-                return ResourceManager.GetString("AddNewCommittee", resourceCulture);
+                return ResourceManager.GetString("add_new_committee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add users in to commitee groups.
         /// </summary>
-        internal static string AddUsersInToCommiteeGroups {
+        internal static string add_users_in_to_commitee_groups {
             get {
-                return ResourceManager.GetString("AddUsersInToCommiteeGroups", resourceCulture);
+                return ResourceManager.GetString("add_users_in_to_commitee_groups", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Assign members to committee.
         /// </summary>
-        internal static string AssignMembersToCommittee {
+        internal static string assign_members_to_committee {
             get {
-                return ResourceManager.GetString("AssignMembersToCommittee", resourceCulture);
+                return ResourceManager.GetString("assign_members_to_committee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Commitee name.
         /// </summary>
-        internal static string CommiteeName {
+        internal static string commitee_name {
             get {
-                return ResourceManager.GetString("CommiteeName", resourceCulture);
+                return ResourceManager.GetString("commitee_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Commitee size.
         /// </summary>
-        internal static string CommiteeSize {
+        internal static string commitee_size {
             get {
-                return ResourceManager.GetString("CommiteeSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("commitee_size", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter acceptable number of approvals.
         /// </summary>
-        internal static string EnterAcceptableNumberOfApprovals {
+        internal static string enter_acceptable_number_of_approvals {
             get {
-                return ResourceManager.GetString("EnterAcceptableNumberOfApprovals", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inactive.
-        /// </summary>
-        internal static string Inactive {
-            get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Leader.
-        /// </summary>
-        internal static string Leader {
-            get {
-                return ResourceManager.GetString("Leader", resourceCulture);
+                return ResourceManager.GetString("enter_acceptable_number_of_approvals", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loan commitee.
         /// </summary>
-        internal static string LoanCommitee {
+        internal static string loan_commitee {
             get {
-                return ResourceManager.GetString("LoanCommitee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan commitee group.
-        /// </summary>
-        internal static string LoanCommiteeGroup {
-            get {
-                return ResourceManager.GetString("LoanCommiteeGroup", resourceCulture);
+                return ResourceManager.GetString("loan_commitee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN COMMITEE CONFIGURATION.
         /// </summary>
-        internal static string LOAN_COMMITEE_CONFIGURATION {
+        internal static string loan_commitee_configuration {
             get {
-                return ResourceManager.GetString("LOAN_COMMITEE_CONFIGURATION", resourceCulture);
+                return ResourceManager.GetString("loan_commitee_configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan commitee group.
+        /// </summary>
+        internal static string loan_commitee_group {
+            get {
+                return ResourceManager.GetString("loan_commitee_group", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum amount to valide.
         /// </summary>
-        internal static string MaximumAmountToValide {
+        internal static string maximum_amount_to_valide {
             get {
-                return ResourceManager.GetString("MaximumAmountToValide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member.
-        /// </summary>
-        internal static string Member {
-            get {
-                return ResourceManager.GetString("Member", resourceCulture);
+                return ResourceManager.GetString("maximum_amount_to_valide", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum amount to valide.
         /// </summary>
-        internal static string MinimumAmountToValide {
+        internal static string minimum_amount_to_valide {
             get {
-                return ResourceManager.GetString("MinimumAmountToValide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("minimum_amount_to_valide", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No commitee groups are available at the moment.
         /// </summary>
-        internal static string NoCommiteeGroupsAreAvailableAtTheMoment {
+        internal static string no_commitee_groups_are_available_at_the_moment {
             get {
-                return ResourceManager.GetString("NoCommiteeGroupsAreAvailableAtTheMoment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Range.
-        /// </summary>
-        internal static string Range {
-            get {
-                return ResourceManager.GetString("Range", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select group.
-        /// </summary>
-        internal static string SelectGroup {
-            get {
-                return ResourceManager.GetString("SelectGroup", resourceCulture);
+                return ResourceManager.GetString("no_commitee_groups_are_available_at_the_moment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select group leader.
         /// </summary>
-        internal static string SelectGroupLeader {
+        internal static string select_group_leader {
             get {
-                return ResourceManager.GetString("SelectGroupLeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select user.
-        /// </summary>
-        internal static string SelectUser {
-            get {
-                return ResourceManager.GetString("SelectUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size.
-        /// </summary>
-        internal static string Size {
-            get {
-                return ResourceManager.GetString("Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validation required.
-        /// </summary>
-        internal static string ValidationRequired {
-            get {
-                return ResourceManager.GetString("ValidationRequired", resourceCulture);
+                return ResourceManager.GetString("select_group_leader", resourceCulture);
             }
         }
     }

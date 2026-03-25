@@ -1,25 +1,25 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalSalaryUpload.SalaryUploadForm</legend>
+    <legend id="select_base">@GlobalPISalaryUpload.salary_upload_form</legend>
     <div class="card-body">
         @using (Html.BeginForm("SalaryFile", "SalaryUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
-                    <label class="form-label">@GlobalSalaryUpload.SalaryType:</label>
+                    <label class="form-label">@GlobalShared.salary_type:</label>
 
                     @if (ViewBag.HeadOffice=="Yes")
                     {
                         <div class="d-flex align-items-center">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="salaryTypeCivil" name="AddSalaryUploadModelCommand.SalaryType" value="CivilServants" required />
-                                <label class="form-check-label" for="salaryTypeCivil">@GlobalSalaryUpload.CivilServants</label>
+                                <label class="form-check-label" for="salaryTypeCivil">@GlobalShared.civil_servants</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
-                                <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                                <label class="form-check-label" for="salaryTypePrivate">@GlobalShared.private_institutions</label>
                             </div>
                         </div>
                     }
@@ -28,7 +28,7 @@
                         <div class="d-flex align-items-center">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="salaryTypePrivate" name="AddSalaryUploadModelCommand.SalaryType" value="PrivateInstitutions" required />
-                                <label class="form-check-label" for="salaryTypePrivate">@GlobalSalaryUpload.PrivateInstitutions</label>
+                                <label class="form-check-label" for="salaryTypePrivate">@GlobalShared.private_institutions</label>
                             </div>
                         </div>
                     }
@@ -39,7 +39,7 @@
                     <div class="form-floating form-floating-outline">
                         <input type="file" id="file" name="AddSalaryUploadModelCommand.File" class="form-control" required />
                         @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.File, "", new { @class = "text-danger " })
-                        <label>@GlobalSalaryUpload.SelectSalaryFile</label>
+                        <label>@GlobalPISalaryUpload.select_salary_file</label>
                     </div>
                 </div>
 

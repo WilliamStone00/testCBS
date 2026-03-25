@@ -1,6 +1,7 @@
-﻿<div class="card mb-3">
+@using Resources
+<div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Tips for using the receipt filters effectively</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMemberReceipt.tips_for_using_the_receipt_filters_effectively</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -8,12 +9,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>Filter by branch:</strong> Narrow down receipts using branch code or name.</li>
-                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>Date range:</strong> Select start and end dates to limit results.</li>
-                <li><i class="mdi mdi-account-outline text-success me-2"></i> <strong>Member reference:</strong> Use the unique member reference for precise search.</li>
-                <li><i class="mdi mdi-receipt-outline text-primary me-2"></i> <strong>Transaction reference:</strong> Find receipts by internal or external transaction numbers.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>Export:</strong> Download filtered results to Excel.</li>
-                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>Refresh often:</strong> To ensure the latest data is displayed.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Filter_by_Branch:</strong> @GlobalMemberReceipt.narrow_down_receipts_using_branch_code_or_name.</li>
+                <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalShared.Date_Range:</strong> @GlobalMemberReceipt.select_start_and_end_dates_to_limit_results.</li>
+                <li><i class="mdi mdi-account-outline text-success me-2"></i> <strong>@GlobalShared.Member_reference:</strong> @GlobalMemberReceipt.use_the_unique_member_reference_for_precise_search.</li>
+                <li><i class="mdi mdi-receipt-outline text-primary me-2"></i> <strong>@GlobalShared.Transaction_Reference:</strong> @GlobalMemberReceipt.find_receipts_by_internal_or_external_transaction_numbers.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalMemberReceipt.download_filtered_results_to_excel.</li>
+                <li><i class="mdi mdi-reload text-info me-2"></i> <strong>@GlobalShared.Refresh_often:</strong> @GlobalMemberReceipt.to_ensure_the_latest_data_is_displayed.</li>
             </ul>
         </div>
     </div>

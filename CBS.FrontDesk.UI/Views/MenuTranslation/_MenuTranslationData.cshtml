@@ -1,4 +1,4 @@
-﻿<!-- ✅ FINAL CLEAN VERSION -->
+<!-- ✅ FINAL CLEAN VERSION -->
 @using Resources
 <div id="translationTableContainer" class="card p-3 shadow mb-4">
     <div class="table-responsive mb-4">
@@ -6,10 +6,10 @@
             <thead class="table-light">
                 <tr>
                     <th>#</th>
-                    <th>@GlobalMenuTranslation.Menu</th>
-                    <th>@GlobalMenuTranslation.OriginalDescription</th>
-                    <th>@GlobalMenuTranslation.TranslatedText</th>
-                    <th>@GlobalMenuTranslation.TranslatedDescription</th>
+                    <th>@GlobalShared.menu</th>
+                    <th>@GlobalShared.original_description</th>
+                    <th>@GlobalMenuTranslation.translated_text</th>
+                    <th>@GlobalMenuTranslation.translated_description</th>
                 </tr>
             </thead>
             <tbody id="translationTableBody">
@@ -18,6 +18,6 @@
         </table>
     </div>
     <button class="btn btn-primary mt-3" onclick="submitMenuTranslations()">
-        <i class="mdi mdi-content-save me-1"></i> @GlobalMenuTranslation.SubmitTranslations
+        <i class="mdi mdi-content-save me-1"></i> @GlobalMenuTranslation.submit_translations
     </button>
 </div>

@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bankbranchyearserial_positions_control_how_numbers_are_built" xml:space="preserve">
+    <value>Bank/branch/year/serial positions control how numbers are built</value>
+  </data>
+  <data name="bank_code_pos" xml:space="preserve">
+    <value>Bank Code Pos</value>
+  </data>
+  <data name="bank_code_position" xml:space="preserve">
+    <value>Bank Code Position</value>
+  </data>
+  <data name="branch_code_pos" xml:space="preserve">
+    <value>Branch Code Pos</value>
+  </data>
+  <data name="branch_code_position" xml:space="preserve">
+    <value>Branch Code Position</value>
+  </data>
+  <data name="cheque_number_configurations" xml:space="preserve">
+    <value>Cheque Number Configurations</value>
+  </data>
+  <data name="click_save_to_store_your_template_you_can_also_reset_to_clear_and_start_fresh" xml:space="preserve">
+    <value>Click "Save" to store your template. You can also &lt;strong&gt;Reset&lt;/strong&gt; to clear and start fresh</value>
+  </data>
+  <data name="components_visually_drag_to_reorder_draganddrop_overrides_numeric_inputs_automatically" xml:space="preserve">
+    <value>components visually (drag to reorder). Drag-and-drop overrides numeric inputs automatically</value>
+  </data>
+  <data name="define_and_manage_the_structure_of_cheque_number_identifiers_by_arranging_variablesbank_code_branch_code_year_serial_number" xml:space="preserve">
+    <value>Define and manage the structure of cheque number identifiers by arranging variables(Bank Code, Branch Code, Year, Serial Number)</value>
+  </data>
+  <data name="drag_drop" xml:space="preserve">
+    <value>Drag &amp; Drop</value>
+  </data>
+  <data name="drag_placeholders_eg_branchcode_year_sequence_in_the_template_area_to_build_your_cheque_number_format" xml:space="preserve">
+    <value>Drag placeholders (e.g. &lt;code&gt;{BranchCode}&lt;/code&gt;, &lt;code&gt;{Year}&lt;/code&gt;, &lt;code&gt;{Sequence}&lt;/code&gt;) in the template area to build your cheque number format</value>
+  </data>
+  <data name="drag_placeholders_horizontally_to_adjust_the_order_of_fields_in_your_cheque_number" xml:space="preserve">
+    <value>Drag placeholders horizontally to adjust the order of fields in your cheque number</value>
+  </data>
+  <data name="ensure_each_required_placeholder_like_sequence_is_included_at_least_once" xml:space="preserve">
+    <value>Ensure each required placeholder (like &lt;code&gt;{Sequence}&lt;/code&gt;) is included at least once</value>
+  </data>
+  <data name="manage_serialnumber_configuration_per_branch_and_date_range" xml:space="preserve">
+    <value>Manage serial/number configuration per branch and date range</value>
+  </data>
+  <data name="number_components_positions" xml:space="preserve">
+    <value>Number Components &amp; Positions</value>
+  </data>
+  <data name="number_configuration" xml:space="preserve">
+    <value>Number Configuration</value>
+  </data>
+  <data name="number_config_filters" xml:space="preserve">
+    <value>Number Config Filters</value>
+  </data>
+  <data name="select_the_branch_to_apply_this_numbering_scheme" xml:space="preserve">
+    <value>Select the branch to apply this numbering scheme</value>
+  </data>
+  <data name="serial_number_position" xml:space="preserve">
+    <value>Serial Number Position</value>
+  </data>
+  <data name="serial_pos" xml:space="preserve">
+    <value>Serial Pos</value>
+  </data>
+  <data name="show_numeric_position_inputs" xml:space="preserve">
+    <value>Show numeric position inputs</value>
+  </data>
+  <data name="the_template_area_shows_your_current_format_in_real_time" xml:space="preserve">
+    <value>The template area shows your current format in real time</value>
+  </data>
+  <data name="tips_for_cheque_number_configuration" xml:space="preserve">
+    <value>Tips for Cheque Number Configuration</value>
+  </data>
+  <data name="tips_for_number_configuration" xml:space="preserve">
+    <value>Tips for Number Configuration</value>
+  </data>
+  <data name="use_date_range_to_enabledisable_configuration_across_time" xml:space="preserve">
+    <value>Use date range to enable/disable configuration across time</value>
+  </data>
+  <data name="use_draganddrop_or_dropdowns_to_control_the_order_of_variables_in_cheque_numbers" xml:space="preserve">
+    <value>Use drag-and-drop or dropdowns to control the order of variables in cheque numbers</value>
+  </data>
+  <data name="year_pos" xml:space="preserve">
+    <value>Year Pos</value>
+  </data>
+  <data name="year_position" xml:space="preserve">
+    <value>Year Position</value>
+  </data>
+</root>

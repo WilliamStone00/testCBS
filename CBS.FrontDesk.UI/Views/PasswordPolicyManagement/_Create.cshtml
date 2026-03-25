@@ -1,20 +1,20 @@
-﻿@model CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime
+@model CBS.FrontDesk.Data.Entity.RequestManagement.IdleTime
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalPasswordPolicyManagement.PASSWORD_POLICY_MANAGEMENT</legend>
+    <legend id="select_base">@GlobalPasswordPolicyManagement.password_policy_management</legend>
     <div class="card-body">
         @using (Html.BeginForm("AddOrUpdate", "PasswordPolicyManagement", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <!-- 🌍 Scope: IsCentral Checkbox and Branch Selection -->
             <div class="card mb-3 border shadow-sm">
                 <div class="card-header bg-light fw-bold text-uppercase text-dark">
-                    <i class="mdi mdi-office-building-outline me-2"></i> @GlobalPasswordPolicyManagement.ConfigurationScope
+                    <i class="mdi mdi-office-building-outline me-2"></i> @GlobalPasswordPolicyManagement.configuration_scope
                 </div>
                 <div class="card-body row gy-3">
                     <div class="col-md-12">
                         <div class="form-check form-switch">
                             @Html.CheckBoxFor(m => m.IsCentral, new { @class = "form-check-input", id = "IsCentralCheckbox", onchange = "toggleBranchSection(this.checked)" })
-                            <label class="form-check-label" for="IsCentralCheckbox">@GlobalPasswordPolicyManagement.ApplyToAllBranchesCentral</label>
+                            <label class="form-check-label" for="IsCentralCheckbox">@GlobalPasswordPolicyManagement.apply_to_all_branches_central</label>
                         </div>
                     </div>
                     <div id="branchSection" class="row gy-3">
@@ -23,10 +23,10 @@
                                 @Html.DropDownListFor(
                                   m => m.BranchId,
                                   new SelectList(ViewBag.Branches, "Id", "Name"),
-                                  "---"+ @GlobalPasswordPolicyManagement.SelectBranch +"---",
+                                  "---"+ @GlobalShared.Select_Branch +"---",
                                   new { @class = "form-control select2", id = "BranchId", @search = "true" })
                                 @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
-                                <label for="BranchId">@GlobalPasswordPolicyManagement.SelectABranch</label>
+                                <label for="BranchId">@GlobalShared.select_a_branch</label>
                             </div>
                         </div>
                     </div>
@@ -35,35 +35,35 @@
             <!-- 🔐 Session & Access Configuration -->
             <div class="card mb-3 border shadow-sm">
                 <div class="card-header bg-light fw-bold text-uppercase text-dark">
-                    <i class="mdi mdi-lock-clock-outline me-2"></i> @GlobalPasswordPolicyManagement.SessionAccessControl
+                    <i class="mdi mdi-lock-clock-outline me-2"></i> @GlobalPasswordPolicyManagement.session_access_control
                 </div>
                 <div class="card-body row gy-3">
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.IdleDuration, new { @class = "form-control", type = "time" })
                             @Html.ValidationMessageFor(m => m.IdleDuration, "", new { @class = "text-danger" })
-                            <label for="IdleDuration">@GlobalPasswordPolicyManagement.IdleTimeout (hh:mm:ss)</label>
+                            <label for="IdleDuration">@GlobalShared.idle_timeout (hh:mm:ss)</label>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.NumberOfLoginAttemps, new { @class = "form-control", type = "number", min = 1 })
                             @Html.ValidationMessageFor(m => m.NumberOfLoginAttemps, "", new { @class = "text-danger" })
-                            <label for="NumberOfLoginAttemps">@GlobalPasswordPolicyManagement.MaxLoginAttempts</label>
+                            <label for="NumberOfLoginAttemps">@GlobalShared.max_login_attempts</label>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.NumberOfDaysRequiredToResetPassword, new { @class = "form-control", type = "number", min = 1 })
                             @Html.ValidationMessageFor(m => m.NumberOfDaysRequiredToResetPassword, "", new { @class = "text-danger" })
-                            <label for="NumberOfDaysRequiredToResetPassword">@GlobalPasswordPolicyManagement.DaysBeforePasswordReset</label>
+                            <label for="NumberOfDaysRequiredToResetPassword">@GlobalPasswordPolicyManagement.days_before_password_reset</label>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.NumberOfDaysToBlockUserIfInactive, new { @class = "form-control", type = "number", min = 1 })
                             @Html.ValidationMessageFor(m => m.NumberOfDaysToBlockUserIfInactive, "", new { @class = "text-danger" })
-                            <label for="NumberOfDaysToBlockUserIfInactive">@GlobalPasswordPolicyManagement.BlockInactiveUserAfterDays</label>
+                            <label for="NumberOfDaysToBlockUserIfInactive">@GlobalPasswordPolicyManagement.block_inactive_user_after_days</label>
                         </div>
                     </div>
                 </div>
@@ -72,14 +72,14 @@
             <!-- Password Policy Rules -->
             <div class="card mb-3 border shadow-sm">
                 <div class="card-header bg-light fw-bold text-uppercase text-dark">
-                    <i class="mdi mdi-lock-check-outline me-2"></i> @GlobalPasswordPolicyManagement.PasswordPolicyRules
+                    <i class="mdi mdi-lock-check-outline me-2"></i> @GlobalPasswordPolicyManagement.password_policy_rules
                 </div>
                 <div class="card-body">
                     @Html.HiddenFor(m => m.PasswordPoliciesJson, new { id = "PasswordPoliciesJson" })
                     <div id="jsonEditor" style="height: auto; min-height: 400px; width: 100%; border: 1px solid #ccc; border-radius: 5px;"></div>
                     <span id="jsonError" class="text-danger d-none mt-2 fw-semibold"></span>
                     <small class="text-muted mt-2 d-block">
-                        @GlobalPasswordPolicyManagement.EnterKeyValuePairsAsJSON (e.g. <code>{ "MinLength": "8" }</code>). @GlobalPasswordPolicyManagement.ChangesWillASync.
+                        @GlobalPasswordPolicyManagement.enter_key_value_pairs_as_json (e.g. <code>{ "MinLength": "8" }</code>). @GlobalPasswordPolicyManagement.changes_will_async.
                     </small>
                 </div>
             </div>

@@ -117,43 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Data" xml:space="preserve">
-    <value>Data</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NoOldLoanMapingIsCreated" xml:space="preserve">
+  <data name="no_old_loan_maping_is_created" xml:space="preserve">
     <value>No old loan maping is created</value>
   </data>
-  <data name="OldLoanAccountingMaping" xml:space="preserve">
+  <data name="old_loan_accounting_maping" xml:space="preserve">
     <value>Old Loan Accounting Maping</value>
   </data>
-  <data name="SelectAccountLedger" xml:space="preserve">
+  <data name="select_account_ledger" xml:space="preserve">
     <value>Select account ledger</value>
   </data>
-  <data name="SelectAccountLedgerForCapitalAmount" xml:space="preserve">
+  <data name="select_account_ledger_for_capital_amount" xml:space="preserve">
     <value>Select account ledger for capital amount</value>
   </data>
-  <data name="SelectAccountLedgerForInterestAmount" xml:space="preserve">
+  <data name="select_account_ledger_for_interest_amount" xml:space="preserve">
     <value>Select account ledger for interest amount</value>
   </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanFourYears" xml:space="preserve">
+  <data name="select_account_ledger_for_provision_more_than_four_years" xml:space="preserve">
     <value>Select account ledger for provision more than four years</value>
   </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanOneYear" xml:space="preserve">
+  <data name="select_account_ledger_for_provision_more_than_one_year" xml:space="preserve">
     <value>Select account ledger for provision more than one year</value>
   </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanThreeYears" xml:space="preserve">
+  <data name="select_account_ledger_for_provision_more_than_three_years" xml:space="preserve">
     <value>Select account ledger for provision more than three years</value>
   </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanTwoYears" xml:space="preserve">
+  <data name="select_account_ledger_for_provision_more_than_two_years" xml:space="preserve">
     <value>Select account ledger for provision more than two years</value>
   </data>
-  <data name="SelectAccountLedgerForVatAmount" xml:space="preserve">
+  <data name="select_account_ledger_for_vat_amount" xml:space="preserve">
     <value>Select account ledger for vat amount</value>
-  </data>
-  <data name="SelectLoanType" xml:space="preserve">
-    <value>Select loan type</value>
   </data>
 </root>

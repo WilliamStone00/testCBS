@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
 @using Resources
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -7,38 +7,38 @@
                 <tbody>
                     <!-- General Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.GeneralInformation</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.General_Information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.MemberName:</td>
+                        <td class="font-weight-bold">@GlobalShared.Member_name:</td>
                         <td>@Model.MemberNoneCashOperation.MemberName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.MemberReference:</td>
+                        <td class="font-weight-bold">@GlobalShared.Member_reference:</td>
                         <td>@Model.MemberNoneCashOperation.MemberReference</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountNumber:</td>
+                        <td class="font-weight-bold">@GlobalShared.AccountNumber:</td>
                         <td>@Model.MemberNoneCashOperation.AccountNUmber</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.ChartOfAccount:</td>
+                        <td class="font-weight-bold">@GlobalShared.Chart_Of_Account:</td>
                         <td>@Model.MemberNoneCashOperation.ChartOfAccountName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.Amount:</td>
+                        <td class="font-weight-bold">@GlobalShared.Amount:</td>
                         <td>@Model.MemberNoneCashOperation.Amount.ToString("#,##0.0") FCFA</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.BookingDirection:</td>
+                        <td class="font-weight-bold">@GlobalShared.booking_direction:</td>
                         <td>
                             @if (Model.MemberNoneCashOperation.BookingDirection == "Debit")
                             {
-                                <span class="badge bg-danger">@GlobalMemberNoneCashOperation.Debit</span>
+                                <span class="badge bg-danger">@GlobalShared.Debit</span>
                             }
                             else
                             {
-                                <span class="badge bg-success">@GlobalMemberNoneCashOperation.Credit</span>
+                                <span class="badge bg-success">@GlobalShared.Credit</span>
                             }
                         </td>
                     </tr>
@@ -49,10 +49,10 @@
 
                     <!-- Approval Information -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.ApprovalInformation</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Approval_information</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.ApprovalStatus:</td>
+                        <td class="font-weight-bold">@GlobalShared.Approval_status:</td>
                         <td>
                             @if (Model.MemberNoneCashOperation.ApprovalStatus == "Approved")
                             {
@@ -69,53 +69,53 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.ApprovedBy:</td>
+                        <td class="font-weight-bold">@GlobalShared.Approved_by:</td>
                         <td>@Model.MemberNoneCashOperation.ApprovedBy</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.ApprovalDate:</td>
+                        <td class="font-weight-bold">@GlobalShared.Approval_date:</td>
                         <td>@Model.MemberNoneCashOperation.ApprovalDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.ApprovalComment:</td>
+                        <td class="font-weight-bold">@GlobalShared.approval_comment:</td>
                         <td>@Model.MemberNoneCashOperation.ApprovalComment</td>
                     </tr>
 
                     <!-- Source and Branch Details -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.SourceAndBranchDetails</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.source_and_branch_details</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.Source:</td>
+                        <td class="font-weight-bold">@GlobalShared.source:</td>
                         <td>@Model.MemberNoneCashOperation.Source</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.BranchName:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_Name:</td>
                         <td>@Model.MemberNoneCashOperation.BranchName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.BranchCode:</td>
+                        <td class="font-weight-bold">@GlobalShared.Branch_Code:</td>
                         <td>@Model.MemberNoneCashOperation.BranchCode</td>
                     </tr>
 
                     <!-- Operation Metadata -->
                     <tr class="table-primary">
-                        <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.OperationMetadata</td>
+                        <td colspan="2" class="font-weight-bold text-center">@GlobalShared.operation_metadata</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.InitiatedBy:</td>
+                        <td class="font-weight-bold">@GlobalShared.Initiated_By:</td>
                         <td>@Model.MemberNoneCashOperation.InitiatedUserName</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.RequestDate:</td>
+                        <td class="font-weight-bold">@GlobalShared.Request_Date:</td>
                         <td>@Model.MemberNoneCashOperation.RequestDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountingDate:</td>
+                        <td class="font-weight-bold">@GlobalShared.Accounting_Date:</td>
                         <td>@Model.MemberNoneCashOperation.AccountingDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold">@GlobalMemberNoneCashOperation.TransactionReference:</td>
+                        <td class="font-weight-bold">@GlobalShared.Transaction_Reference:</td>
                         <td>@Model.MemberNoneCashOperation.TransactionReference</td>
                     </tr>
 
@@ -123,22 +123,22 @@
                     @if (Model.MemberNoneCashOperation.Account != null)
                     {
                         <tr class="table-primary">
-                            <td colspan="2" class="font-weight-bold text-center">@GlobalMemberNoneCashOperation.AccountInformation</td>
+                            <td colspan="2" class="font-weight-bold text-center">@GlobalShared.Account_Information</td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountHolderName:</td>
+                            <td class="font-weight-bold">@GlobalShared.account_holder_name:</td>
                             <td>@Model.MemberNoneCashOperation.Account.CustomerName</td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountType:</td>
+                            <td class="font-weight-bold">@GlobalShared.Account_type:</td>
                             <td>@Model.MemberNoneCashOperation.Account.AccountType</td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountNumber:</td>
+                            <td class="font-weight-bold">@GlobalShared.AccountNumber:</td>
                             <td>@Model.MemberNoneCashOperation.Account.AccountNumber</td>
                         </tr>
                         <tr>
-                            <td class="font-weight-bold">@GlobalMemberNoneCashOperation.AccountBalance:</td>
+                            <td class="font-weight-bold">@GlobalShared.Account_balance:</td>
                             <td>@Model.MemberNoneCashOperation.Account.Balance.ToString("#,##0.0") FCFA</td>
                         </tr>
                     }

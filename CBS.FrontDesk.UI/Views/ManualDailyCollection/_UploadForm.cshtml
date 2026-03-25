@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.ManualDailycollection.FileUploadResponse
 @using Resources
 
@@ -12,8 +12,8 @@
         <div class="card-header bg-white border-0 py-3">
             <h6 class="mb-0 text-primary d-flex align-items-center">
                 <i class="mdi mdi-cloud-upload-outline me-2"></i>
-                Manual Daily Collection File Upload
-                <span class="badge bg-success ms-2">Required</span>
+                @GlobalManualDailyCollection.manual_daily_collection_file_upload
+            <span class="badge bg-success ms-2">@GlobalShared.Required</span>
             </h6>
         </div>
 
@@ -22,7 +22,7 @@
             <!-- Info -->
             <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
                 <i class="mdi mdi-information-outline me-2"></i>
-                <div>Please upload your daily collection file. Maximum file size is <strong>10MB</strong>.</div>
+                <div>@GlobalManualDailyCollection.please_upload_your_daily_collection_file_maximum_file_size_is <strong>10MB</strong>.</div>
             </div>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
@@ -32,7 +32,7 @@
                 <div class="col-12 d-flex justify-content-md-end">
                     <div class="col-md-4">
                         <label for="AccountingDay" class="form-label fw-semibold text-md-end d-block">
-                            📅 Accounting Date
+                            📅 @GlobalShared.Accounting_Date
                         </label>
                         @Html.TextBoxFor(
                             m => m.AccountingDay,
@@ -45,16 +45,16 @@
                                 value = DateTime.Today.ToString("yyyy-MM-dd"), // 👈 Preselect today's date
                                 max = DateTime.Today.ToString("yyyy-MM-dd")     // 👈 Prevent future dates
                             })
-                        <small class="text-muted d-block text-md-end">
-                            Select the posting (accounting) date for this upload.
-                        </small>
+                    <small class="text-muted d-block text-md-end">
+                        @GlobalManualDailyCollection.select_the_posting_accounting_date_for_this_upload.
+                    </small>
                         @Html.ValidationMessageFor(m => m.AccountingDay, "", new { @class = "text-danger d-block text-md-end" })
                     </div>
                 </div>
 
                 <!-- BRANCH (full width) -->
                 <div class="col-12">
-                    <label for="BranchId" class="form-label fw-semibold">🏢 Branch</label>
+                    <label for="BranchId" class="form-label fw-semibold">🏢 @GlobalShared.Branch</label>
                     @Html.DropDownListFor(m => m.BranchId,
                      new SelectList(ViewBag.Branches, "Id", "Name"),
                      "--- " + "Select Branch" + " ---",
@@ -65,7 +65,7 @@
 
                 <!-- COLLECTOR -->
                 <div class="col-12 col-md-12">
-                    <label for="CollectorxCollectorId" class="form-label fw-semibold">👤 Select Daily Collector</label>
+                    <label for="CollectorxCollectorId" class="form-label fw-semibold">👤 @GlobalShared.Select_Daily_Collector</label>
                     @Html.DropDownListFor(m => m.CollectorAndUser,
                         Enumerable.Empty<SelectListItem>(),
                         "--- Select Daily Collector ---",
@@ -82,28 +82,28 @@
                 <!-- FILE -->
                 <!-- File upload input -->
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Select operation file</label>
+                    <label class="form-label fw-semibold">@GlobalShared.Select_Operation_File</label>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Select operation file</label>
+                        <label class="form-label fw-semibold">@GlobalShared.Select_Operation_File</label>
                         <div class="input-group">
                             <input type="file" name="uploadedFile" class="form-control" required />
                             <button type="button" id="btnUpload" class="btn btn-primary">
-                                <i class="mdi mdi-cloud-upload-outline me-1"></i> Upload File
+                                <i class="mdi mdi-cloud-upload-outline me-1"></i> @GlobalShared.upload_file
                             </button>
                         </div>
                         <small class="form-text text-muted">
-                            Supported formats: .csv, .xlsx, .xls
+                            @GlobalShared.Supported_Formats: .csv, .xlsx, .xls
                         </small>
                     </div>
                     <small class="form-text text-muted">
-                        Supported formats: .csv, .xlsx, .xls
+                        @GlobalShared.Supported_Formats: .csv, .xlsx, .xls
                     </small>
                 </div>
 
                 <!-- TEMPLATE DOWNLOAD -->
                 <div class="col-12 d-flex justify-content-end">
                     <a href="@Url.Action("DownloadTemplate", "ManualDailyCollection")" class="btn btn-outline-primary">
-                        <i class="mdi mdi-file-download-outline me-1"></i> Download Template
+                        <i class="mdi mdi-file-download-outline me-1"></i> @GlobalShared.Download_Template
                     </a>
                 </div>
             </div>

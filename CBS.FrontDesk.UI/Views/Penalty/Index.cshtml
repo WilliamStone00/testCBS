@@ -1,8 +1,8 @@
-﻿
+
 @{
     ViewBag.Title = "Penalty Configuration Rules";
 }
-
+@using Resources
 <div class="container">
     <!-- 🔷 Page Header -->
     <div class="row mb-2">
@@ -10,13 +10,13 @@
             <div class="card bg-light shadow-sm">
                 <div class="card-body text-center">
                     <h2 class="card-title text-danger">
-                        <i class="mdi mdi-gavel me-2"></i> Penalty Configuration Rules
+                        <i class="mdi mdi-gavel me-2"></i> @GlobalPenalty.penalty_configuration_rules
                     </h2>
                     <p class="card-text text-secondary fs-6">
-                        Manage rules for loan penalties such as late fees, post-maturity fines, and interest-based charges. Penalties are applied based on loan behavior and timing.
+                        @GlobalPenalty.manage_rules_for_loan_penalties_such_as_late_fees_postmaturity_fines_and_interestbased_charges_penalties_are_applied_based_on_loan_behavior_and_timing.
                     </p>
                     <p class="card-text text-muted small">
-                        Use the buttons below to create or update penalty rules linked to loan products.
+                        @GlobalPenalty.use_the_buttons_below_to_create_or_update_penalty_rules_linked_to_loan_products.
                     </p>
                     <hr style="border: 2px solid rgba(255, 0, 0, 0.2);" />
                 </div>
@@ -35,16 +35,16 @@
                         <a type="button" onclick="LoadPenaltyConfigs()"
                            class="btn btn-outline-danger btn-sm"
                            data-bs-toggle="tooltip"
-                           title="Reload and View Penalty Configuration List">
-                            <i class="mdi mdi-view-list me-1"></i> View List
+                           title="@GlobalPenalty.reload_and_view_penalty_configuration_list">
+                            <i class="mdi mdi-view-list me-1"></i> @GlobalShared.View_List
                         </a>
                     </div>
                     <div>
                         <button onclick="AddORUpdateGen(null,'penaltyConfigDataTableContainer','_PenaltyConfigForm','new','Penalty')"
                                 class="btn btn-outline-danger btn-sm"
                                 data-bs-toggle="tooltip"
-                                title="Create a new penalty configuration">
-                            <i class="mdi mdi-plus me-1"></i> New Penalty Rule
+                                title="@GlobalPenalty.create_a_new_penalty_configuration">
+                            <i class="mdi mdi-plus me-1"></i> @GlobalPenalty.new_penalty_rule
                         </button>
                     </div>
                 </div>

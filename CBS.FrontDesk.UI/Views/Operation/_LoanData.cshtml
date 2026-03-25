@@ -1,15 +1,15 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
     @using Resources
 @if (Model.Loans.Count == 0)
 {
     <div class="text-center my-3">
-        <p>@GlobalOperation.NoLoansHaveBeenContractedBy @Model.Customer.name</p>
+        <p>@GlobalOperation.no_loans_have_been_contracted_by @Model.Customer.name</p>
     </div>
 }
 else
 {
     <div class="card-header">
-        <h6 class="card-title">@GlobalOperation.MembersCurrentLoan</h6>
+        <h6 class="card-title">@GlobalOperation.members_current_loan</h6>
     </div>
     <div class="table-responsive mb-3">
 
@@ -17,19 +17,19 @@ else
             <thead class="table-light">
                 <tr>
                     <th style="width: 7%">@GlobalShared.Action</th>
-                    <th style="width: 7%">@GlobalOperation.Date</th>
-                    <th style="width: 8%">@GlobalOperation.MaturityDate</th>
-                    <th style="width: 10%">@GlobalOperation.Principal</th>
-                    <th style="width: 7%">@GlobalOperation.Interest Rate</th>
-                    <th style="width: 8%">@GlobalOperation.AccrualInterest</th>
-                    <th style="width: 8%">@GlobalOperation.Tax</th>
-                    <th style="width: 8%">@GlobalOperation.Penalty</th>
-                    <th style="width: 8%">@GlobalOperation.Due</th>
-                    <th style="width: 8%">@GlobalOperation.Paid</th>
-                    <th style="width: 8%">@GlobalOperation.Balance</th>
-                    <th style="width: 8%">@GlobalOperation.LastPayment</th>
+                    <th style="width: 7%">@GlobalShared.Date</th>
+                    <th style="width: 8%">@GlobalShared.maturity_date</th>
+                    <th style="width: 10%">@GlobalShared.Principal</th>
+                    <th style="width: 7%">@GlobalShared.Interest Rate</th>
+                    <th style="width: 8%">@GlobalShared.Accrual_Interest</th>
+                    <th style="width: 8%">@GlobalShared.Tax</th>
+                    <th style="width: 8%">@GlobalShared.Penalty</th>
+                    <th style="width: 8%">@GlobalShared.due</th>
+                    <th style="width: 8%">@GlobalShared.Paid</th>
+                    <th style="width: 8%">@GlobalShared.Balance</th>
+                    <th style="width: 8%">@GlobalShared.last_payment</th>
                     <th style="width: 7%">@GlobalShared.Status</th>
-                    <th style="width: 7%">@GlobalOperation.State</th>
+                    <th style="width: 7%">@GlobalShared.State</th>
 
                 </tr>
             </thead>
@@ -38,7 +38,7 @@ else
                 {
                     <tr>
                         <td style="width: 7%">
-                            <a href="#" onclick="GetLoan('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.SelectLoanToRepay.">
+                            <a href="#" onclick="GetLoan('@d.Id')" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalOperation.select_loan_to_repay.">
                                 Select
                             </a>
                         </td>
@@ -57,11 +57,11 @@ else
                         <td style="width: 7%">
                             @if (d.IsCurrentLoan)
                             {
-                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalOperation.Current</span>
+                                <span class="badge rounded-pill rounded-2 badge-primary bg-label-primary fs-tiny py-1">@GlobalShared.Current</span>
                             }
                             else
                             {
-                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalOperation.Restructured</span>
+                        <span class="badge rounded-pill rounded-2 badge-dark bg-label-dark fs-tiny py-1">@GlobalShared.Restructured</span>
                             }
                         </td>
 

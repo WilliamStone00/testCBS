@@ -1,6 +1,6 @@
-﻿
-@model CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
 
+@model CBS.FrontDesk.Data.Entity.LoanRepayment.LoanRefundDto
+@using Resources
 <div class="modal-body">
 
 
@@ -9,13 +9,13 @@
             <div class="card bg-light mb-2">
                 <div class="card-body text-center">
                     <h1 class="card-title text-success">
-                        <i class="mdi mdi-cash-refund me-2"></i>Refund Report Export
+                        <i class="mdi mdi-cash-refund me-2"></i>@GlobalRefund.refund_report_export
                     </h1>
                     <p class="card-text"></p>
 
                     <div class="alert alert-info mt-3 py-2">
                         <i class="mdi mdi-information-outline me-1"></i>
-                        Export refund transactions with optional date filtering and format selection.
+                        @GlobalRefund.export_refund_transactions_with_optional_date_filtering_and_format_selection.
                     </div>
 
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
@@ -27,7 +27,7 @@
     <!-- Export Options -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Export Format</label>
+            <label class="form-label fw-semibold">@GlobalShared.Export_Format</label>
             <select class="form-select" id="refundExportFormat">
                 <option value="excel">Excel (.xlsx)</option>
                 <option value="pdf">PDF (.pdf)</option>
@@ -35,12 +35,12 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Report Type</label>
+            <label class="form-label fw-semibold">@GlobalShared.Report_Type</label>
             <select class="form-select" id="refundReportType">
-                <option value="full">Full Refund Report</option>
-                <option value="dateRange">Date Range Only</option>
-                <option value="branch">By Branch</option>
-                <option value="status">By Refund Status</option>
+                <option value="full">@GlobalRefund.full_refund_report</option>
+                <option value="dateRange">@GlobalShared.Date_Range_Only</option>
+                <option value="branch">@GlobalShared.By_Branch</option>
+                <option value="status">@GlobalRefund.by_refund_status</option>
             </select>
         </div>
     </div>
@@ -48,18 +48,18 @@
     <!-- Date Range -->
     <div class="row mb-3">
         <div class="col-md-6">
-            <label class="form-label fw-semibold">Refund Date Range (Optional)</label>
+            <label class="form-label fw-semibold">@GlobalRefund.refund_date_range (@GlobalShared.Optional)</label>
             <div class="input-group">
                 <input type="date" class="form-control" id="refundStartDate">
                 <span class="input-group-text">To</span>
                 <input type="date" class="form-control" id="refundEndDate">
             </div>
-            <small class="text-muted">Leave empty to include all refund dates.</small>
+            <small class="text-muted">@GlobalRefund.leave_empty_to_include_all_refund_dates.</small>
         </div>
 
         <!-- File Name -->
         <div class="col-md-6">
-            <label class="form-label fw-semibold">File Name</label>
+            <label class="form-label fw-semibold">@GlobalShared.File_Name</label>
             <input type="text" class="form-control" id="refundFileName"
                    value="Refund_Report"
                    placeholder="Enter file name">
@@ -69,11 +69,11 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close me-1"></i>Cancel
+        <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
     </button>
 
     <button type="button" class="btn btn-success" id="btnConfirmRefundExport">
-        <i class="mdi mdi-cash-refund me-1"></i>Export
+        <i class="mdi mdi-cash-refund me-1"></i>@GlobalShared.Export
     </button>
 </div>
 

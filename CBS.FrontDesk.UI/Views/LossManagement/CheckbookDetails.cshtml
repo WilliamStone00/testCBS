@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckbookDetailDto
-
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CheckbookDetailDto
+@using Resources
 @{
     ViewBag.Title = "Checkbook Details";
 }
@@ -11,37 +11,37 @@
 <div class="container mt-4">
     <h3 class="mb-4 text-primary">
         <i class="mdi mdi-book-information-variant me-2"></i>
-        Checkbook Details
+        @GlobalShared.CheckBook_Details
     </h3>
 
     <!-- Checkbook Information -->
     <div class="card mb-4">
         <div class="card-header bg-light">
-            <h6 class="mb-0">Checkbook Information</h6>
+            <h6 class="mb-0">@GlobalLossManagement.checkbook_information</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-4">Checkbook ID:</dt>
+                        <dt class="col-sm-4">@GlobalShared.CheckBook_ID:</dt>
                         <dd class="col-sm-8">@Model.Id</dd>
 
-                        <dt class="col-sm-4">Category:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Category:</dt>
                         <dd class="col-sm-8">@Model.CheckBookCategoryId</dd>
 
-                        <dt class="col-sm-4">Status:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Status:</dt>
                         <dd class="col-sm-8">@Model.Status</dd>
                     </dl>
                 </div>
                 <div class="col-md-6">
                     <dl class="row">
-                        <dt class="col-sm-4">Customer ID:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Customer_ID:</dt>
                         <dd class="col-sm-8">@Model.CustomerId</dd>
 
-                        <dt class="col-sm-4">Account Number:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Account_Number:</dt>
                         <dd class="col-sm-8">@Model.AccountNumber</dd>
 
-                        <dt class="col-sm-4">Branch Code:</dt>
+                        <dt class="col-sm-4">@GlobalShared.Branch_Code:</dt>
                         <dd class="col-sm-8">@Model.BranchId</dd>
                     </dl>
                 </div>

@@ -61,1550 +61,623 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acc. number.
+        ///   Looks up a localized string similar to ACCOUNT CONFIGURATION DETAILS.
         /// </summary>
-        internal static string AccNumber {
+        internal static string account_configuration_details {
             get {
-                return ResourceManager.GetString("AccNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account holder name.
-        /// </summary>
-        internal static string AccountHolderName {
-            get {
-                return ResourceManager.GetString("AccountHolderName", resourceCulture);
+                return ResourceManager.GetString("account_configuration_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Account initialization.
         /// </summary>
-        internal static string AccountInitialization {
+        internal static string account_initialization {
             get {
-                return ResourceManager.GetString("AccountInitialization", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account name.
-        /// </summary>
-        internal static string AccountName {
-            get {
-                return ResourceManager.GetString("AccountName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account number.
-        /// </summary>
-        internal static string AccountNumber {
-            get {
-                return ResourceManager.GetString("AccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ACCOUNTS.
-        /// </summary>
-        internal static string ACCOUNTS {
-            get {
-                return ResourceManager.GetString("ACCOUNTS", resourceCulture);
+                return ResourceManager.GetString("account_initialization", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Account statements of.
         /// </summary>
-        internal static string AccountStatementsOf {
+        internal static string account_statements_of {
             get {
-                return ResourceManager.GetString("AccountStatementsOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account status.
-        /// </summary>
-        internal static string AccountStatus {
-            get {
-                return ResourceManager.GetString("AccountStatus", resourceCulture);
+                return ResourceManager.GetString("account_statements_of", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Account to account transfer request.
         /// </summary>
-        internal static string AccountToAccountTransferRequest {
+        internal static string account_to_account_transfer_request {
             get {
-                return ResourceManager.GetString("AccountToAccountTransferRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account type.
-        /// </summary>
-        internal static string AccountType {
-            get {
-                return ResourceManager.GetString("AccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ACCOUNT CONFIGURATION DETAILS.
-        /// </summary>
-        internal static string ACCOUNT_CONFIGURATION_DETAILS {
-            get {
-                return ResourceManager.GetString("ACCOUNT_CONFIGURATION_DETAILS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ACCOUNT INFORMATION.
-        /// </summary>
-        internal static string ACCOUNT_INFORMATION {
-            get {
-                return ResourceManager.GetString("ACCOUNT_INFORMATION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Accrual interest.
-        /// </summary>
-        internal static string AccrualInterest {
-            get {
-                return ResourceManager.GetString("AccrualInterest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        internal static string Active {
-            get {
-                return ResourceManager.GetString("Active", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Address.
-        /// </summary>
-        internal static string Address {
-            get {
-                return ResourceManager.GetString("Address", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Amount.
-        /// </summary>
-        internal static string Amount {
-            get {
-                return ResourceManager.GetString("Amount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval comment.
-        /// </summary>
-        internal static string ApprovalComment {
-            get {
-                return ResourceManager.GetString("ApprovalComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approval date.
-        /// </summary>
-        internal static string ApprovalDate {
-            get {
-                return ResourceManager.GetString("ApprovalDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approved by.
-        /// </summary>
-        internal static string ApprovedBy {
-            get {
-                return ResourceManager.GetString("ApprovedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
+                return ResourceManager.GetString("account_to_account_transfer_request", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Balance Account Number.
         /// </summary>
-        internal static string BalanceAccountNumber {
+        internal static string balance_account_number {
             get {
-                return ResourceManager.GetString("BalanceAccountNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bank code.
-        /// </summary>
-        internal static string BankCode {
-            get {
-                return ResourceManager.GetString("BankCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch.
-        /// </summary>
-        internal static string Branch {
-            get {
-                return ResourceManager.GetString("Branch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Branch code.
-        /// </summary>
-        internal static string BranchCode {
-            get {
-                return ResourceManager.GetString("BranchCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges.
-        /// </summary>
-        internal static string Charges {
-            get {
-                return ResourceManager.GetString("Charges", resourceCulture);
+                return ResourceManager.GetString("balance_account_number", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check to filter by branch.
         /// </summary>
-        internal static string CheckToFilterByBranch {
+        internal static string check_to_filter_by_branch {
             get {
-                return ResourceManager.GetString("CheckToFilterByBranch", resourceCulture);
+                return ResourceManager.GetString("check_to_filter_by_branch", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check to filter by teller.
         /// </summary>
-        internal static string CheckToFilterByTeller {
+        internal static string check_to_filter_by_teller {
             get {
-                return ResourceManager.GetString("CheckToFilterByTeller", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CNI.
-        /// </summary>
-        internal static string CNI {
-            get {
-                return ResourceManager.GetString("CNI", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Coins.
-        /// </summary>
-        internal static string Coins {
-            get {
-                return ResourceManager.GetString("Coins", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm request.
-        /// </summary>
-        internal static string ConfirmRequest {
-            get {
-                return ResourceManager.GetString("ConfirmRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit.
-        /// </summary>
-        internal static string Credit {
-            get {
-                return ResourceManager.GetString("Credit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current.
-        /// </summary>
-        internal static string Current {
-            get {
-                return ResourceManager.GetString("Current", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date created.
-        /// </summary>
-        internal static string DateCreated {
-            get {
-                return ResourceManager.GetString("DateCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date expire.
-        /// </summary>
-        internal static string DateExpire {
-            get {
-                return ResourceManager.GetString("DateExpire", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date from.
-        /// </summary>
-        internal static string DateFrom {
-            get {
-                return ResourceManager.GetString("DateFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date issue.
-        /// </summary>
-        internal static string DateIssue {
-            get {
-                return ResourceManager.GetString("DateIssue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date of Initiation.
-        /// </summary>
-        internal static string DateOfInitiation {
-            get {
-                return ResourceManager.GetString("DateOfInitiation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date to.
-        /// </summary>
-        internal static string DateTo {
-            get {
-                return ResourceManager.GetString("DateTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Debit.
-        /// </summary>
-        internal static string Debit {
-            get {
-                return ResourceManager.GetString("Debit", resourceCulture);
+                return ResourceManager.GetString("check_to_filter_by_teller", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Depositer note.
         /// </summary>
-        internal static string DepositerNote {
+        internal static string depositer_note {
             get {
-                return ResourceManager.GetString("DepositerNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deposit operation.
-        /// </summary>
-        internal static string DepositOperation {
-            get {
-                return ResourceManager.GetString("DepositOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Depositor name.
-        /// </summary>
-        internal static string DepositorName {
-            get {
-                return ResourceManager.GetString("DepositorName", resourceCulture);
+                return ResourceManager.GetString("depositer_note", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Depositors information.
         /// </summary>
-        internal static string DepositorsInformation {
+        internal static string depositors_information {
             get {
-                return ResourceManager.GetString("DepositorsInformation", resourceCulture);
+                return ResourceManager.GetString("depositors_information", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deposit policy is not configure for product.
+        ///   Looks up a localized string similar to Depositor name.
         /// </summary>
-        internal static string DepositPolicyIsNotConfigureForProduct {
+        internal static string depositor_name {
             get {
-                return ResourceManager.GetString("DepositPolicyIsNotConfigureForProduct", resourceCulture);
+                return ResourceManager.GetString("depositor_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DEPOSITS CONFIGURATION.
         /// </summary>
-        internal static string DEPOSITS_CONFIGURATION {
+        internal static string deposits_configuration {
             get {
-                return ResourceManager.GetString("DEPOSITS_CONFIGURATION", resourceCulture);
+                return ResourceManager.GetString("deposits_configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deposit operation.
+        /// </summary>
+        internal static string deposit_operation {
+            get {
+                return ResourceManager.GetString("deposit_operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deposit policy is not configure for product.
+        /// </summary>
+        internal static string deposit_policy_is_not_configure_for_product {
+            get {
+                return ResourceManager.GetString("deposit_policy_is_not_configure_for_product", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Deposit type.
         /// </summary>
-        internal static string DepositType {
+        internal static string deposit_type {
             get {
-                return ResourceManager.GetString("DepositType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination account.
-        /// </summary>
-        internal static string DestinationAccount {
-            get {
-                return ResourceManager.GetString("DestinationAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination branch.
-        /// </summary>
-        internal static string DestinationBranch {
-            get {
-                return ResourceManager.GetString("DestinationBranch", resourceCulture);
+                return ResourceManager.GetString("deposit_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Destination commission.
         /// </summary>
-        internal static string DestinationCommission {
+        internal static string destination_commission {
             get {
-                return ResourceManager.GetString("DestinationCommission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Due.
-        /// </summary>
-        internal static string Due {
-            get {
-                return ResourceManager.GetString("Due", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter amount.
-        /// </summary>
-        internal static string EnterAmount {
-            get {
-                return ResourceManager.GetString("EnterAmount", resourceCulture);
+                return ResourceManager.GetString("destination_commission", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter initial deposit.
         /// </summary>
-        internal static string EnterInitialDeposit {
+        internal static string enter_initial_deposit {
             get {
-                return ResourceManager.GetString("EnterInitialDeposit", resourceCulture);
+                return ResourceManager.GetString("enter_initial_deposit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter recieving account number.
         /// </summary>
-        internal static string EnterRecievingAccountNumber {
+        internal static string enter_recieving_account_number {
             get {
-                return ResourceManager.GetString("EnterRecievingAccountNumber", resourceCulture);
+                return ResourceManager.GetString("enter_recieving_account_number", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter sending account number.
         /// </summary>
-        internal static string EnterSendingAccountNumber {
+        internal static string enter_sending_account_number {
             get {
-                return ResourceManager.GetString("EnterSendingAccountNumber", resourceCulture);
+                return ResourceManager.GetString("enter_sending_account_number", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error ocured while getting member. Please refresh your browser.
         /// </summary>
-        internal static string ErrorOcuredWhileGettingMember {
+        internal static string error_ocured_while_getting_member {
             get {
-                return ResourceManager.GetString("ErrorOcuredWhileGettingMember", resourceCulture);
+                return ResourceManager.GetString("error_ocured_while_getting_member", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Export members account.
         /// </summary>
-        internal static string ExportMembersAccount {
+        internal static string export_members_account {
             get {
-                return ResourceManager.GetString("ExportMembersAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee.
-        /// </summary>
-        internal static string Fee {
-            get {
-                return ResourceManager.GetString("Fee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter by date.
-        /// </summary>
-        internal static string FilterByDate {
-            get {
-                return ResourceManager.GetString("FilterByDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home phone number.
-        /// </summary>
-        internal static string HomePhoneNumber {
-            get {
-                return ResourceManager.GetString("HomePhoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Identity number.
-        /// </summary>
-        internal static string IdentityNumber {
-            get {
-                return ResourceManager.GetString("IdentityNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In-Active.
-        /// </summary>
-        internal static string InActive {
-            get {
-                return ResourceManager.GetString("InActive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiation comment.
-        /// </summary>
-        internal static string InitiationComment {
-            get {
-                return ResourceManager.GetString("InitiationComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiator.
-        /// </summary>
-        internal static string Initiator {
-            get {
-                return ResourceManager.GetString("Initiator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiator comment.
-        /// </summary>
-        internal static string InitiatorComment {
-            get {
-                return ResourceManager.GetString("InitiatorComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Interest.
-        /// </summary>
-        internal static string Interest {
-            get {
-                return ResourceManager.GetString("Interest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last payment.
-        /// </summary>
-        internal static string LastPayment {
-            get {
-                return ResourceManager.GetString("LastPayment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan id.
-        /// </summary>
-        internal static string LoanId {
-            get {
-                return ResourceManager.GetString("LoanId", resourceCulture);
+                return ResourceManager.GetString("export_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loan Repayment operation by cash.
         /// </summary>
-        internal static string LoanRepaymentOperationByCash {
+        internal static string loan_repayment_operation_by_cash {
             get {
-                return ResourceManager.GetString("LoanRepaymentOperationByCash", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loans.
-        /// </summary>
-        internal static string Loans {
-            get {
-                return ResourceManager.GetString("Loans", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Maturity date.
-        /// </summary>
-        internal static string MaturityDate {
-            get {
-                return ResourceManager.GetString("MaturityDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max.
-        /// </summary>
-        internal static string Max {
-            get {
-                return ResourceManager.GetString("Max", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max amount.
-        /// </summary>
-        internal static string MaxAmount {
-            get {
-                return ResourceManager.GetString("MaxAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member.
-        /// </summary>
-        internal static string Member {
-            get {
-                return ResourceManager.GetString("Member", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member account name.
-        /// </summary>
-        internal static string MemberAccountName {
-            get {
-                return ResourceManager.GetString("MemberAccountName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member ref.
-        /// </summary>
-        internal static string MemberRef {
-            get {
-                return ResourceManager.GetString("MemberRef", resourceCulture);
+                return ResourceManager.GetString("loan_repayment_operation_by_cash", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Member&apos;s account statement of.
         /// </summary>
-        internal static string MembersAccountStatementOf {
+        internal static string members_account_statement_of {
             get {
-                return ResourceManager.GetString("MembersAccountStatementOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member&apos;s Current Loan(s).
-        /// </summary>
-        internal static string MembersCurrentLoan {
-            get {
-                return ResourceManager.GetString("MembersCurrentLoan", resourceCulture);
+                return ResourceManager.GetString("members_account_statement_of", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MEMBER&apos;S CASH DESK OPERATIONS.
         /// </summary>
-        internal static string MEMBERS_CASH_DESK_OPERATIONS {
+        internal static string members_cash_desk_operations {
             get {
-                return ResourceManager.GetString("MEMBERS_CASH_DESK_OPERATIONS", resourceCulture);
+                return ResourceManager.GetString("members_cash_desk_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to MEMBER&apos;S CASH DESK OPERATIONS (ACCOUNT.
         /// </summary>
-        internal static string MEMBERS_CASH_DESK_OPERATIONS_ACCOUNT {
+        internal static string members_cash_desk_operations_account {
             get {
-                return ResourceManager.GetString("MEMBERS_CASH_DESK_OPERATIONS_ACCOUNT", resourceCulture);
+                return ResourceManager.GetString("members_cash_desk_operations_account", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min.
+        ///   Looks up a localized string similar to Member&apos;s Current Loan(s).
         /// </summary>
-        internal static string Min {
+        internal static string members_current_loan {
             get {
-                return ResourceManager.GetString("Min", resourceCulture);
+                return ResourceManager.GetString("members_current_loan", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum amount.
+        ///   Looks up a localized string similar to Member account name.
         /// </summary>
-        internal static string MinimumAmount {
+        internal static string member_account_name {
             get {
-                return ResourceManager.GetString("MinimumAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to More information.
-        /// </summary>
-        internal static string MoreInformation {
-            get {
-                return ResourceManager.GetString("MoreInformation", resourceCulture);
+                return ResourceManager.GetString("member_account_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to New transfer operation.
         /// </summary>
-        internal static string NewTransferOperation {
+        internal static string new_transfer_operation {
             get {
-                return ResourceManager.GetString("NewTransferOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No loans have been contracted by.
-        /// </summary>
-        internal static string NoLoansHaveBeenContractedBy {
-            get {
-                return ResourceManager.GetString("NoLoansHaveBeenContractedBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No pending transfer(s) are available for the moment.
-        /// </summary>
-        internal static string NoPendingTransferAreAvailableForTheMoment {
-            get {
-                return ResourceManager.GetString("NoPendingTransferAreAvailableForTheMoment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not active.
-        /// </summary>
-        internal static string NotActive {
-            get {
-                return ResourceManager.GetString("NotActive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Note.
-        /// </summary>
-        internal static string Note {
-            get {
-                return ResourceManager.GetString("Note", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notes.
-        /// </summary>
-        internal static string Notes {
-            get {
-                return ResourceManager.GetString("Notes", resourceCulture);
+                return ResourceManager.GetString("new_transfer_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Notes Denomination.
         /// </summary>
-        internal static string NotesDenomination {
+        internal static string notes_denomination {
             get {
-                return ResourceManager.GetString("NotesDenomination", resourceCulture);
+                return ResourceManager.GetString("notes_denomination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loans have been contracted by.
+        /// </summary>
+        internal static string no_loans_have_been_contracted_by {
+            get {
+                return ResourceManager.GetString("no_loans_have_been_contracted_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No pending transfer(s) are available for the moment.
+        /// </summary>
+        internal static string no_pending_transfer_are_available_for_the_moment {
+            get {
+                return ResourceManager.GetString("no_pending_transfer_are_available_for_the_moment", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No transaction(s) are available for account.
         /// </summary>
-        internal static string NoTransactionAreAvailableForAccount {
+        internal static string no_transaction_are_available_for_account {
             get {
-                return ResourceManager.GetString("NoTransactionAreAvailableForAccount", resourceCulture);
+                return ResourceManager.GetString("no_transaction_are_available_for_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No transfer is available for the main time.
         /// </summary>
-        internal static string NoTransferIsAvailableForTheMainTime {
+        internal static string no_transfer_is_available_for_the_main_time {
             get {
-                return ResourceManager.GetString("NoTransferIsAvailableForTheMainTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number.
-        /// </summary>
-        internal static string Number {
-            get {
-                return ResourceManager.GetString("Number", resourceCulture);
+                return ResourceManager.GetString("no_transfer_is_available_for_the_main_time", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Online banking status.
         /// </summary>
-        internal static string OnlineBankingStatus {
+        internal static string online_banking_status {
             get {
-                return ResourceManager.GetString("OnlineBankingStatus", resourceCulture);
+                return ResourceManager.GetString("online_banking_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Open account.
         /// </summary>
-        internal static string OpenAccount {
+        internal static string open_account {
             get {
-                return ResourceManager.GetString("OpenAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opening balance.
-        /// </summary>
-        internal static string OpeningBalance {
-            get {
-                return ResourceManager.GetString("OpeningBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Opening date.
-        /// </summary>
-        internal static string OpeningDate {
-            get {
-                return ResourceManager.GetString("OpeningDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paid.
-        /// </summary>
-        internal static string Paid {
-            get {
-                return ResourceManager.GetString("Paid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Penalty.
-        /// </summary>
-        internal static string Penalty {
-            get {
-                return ResourceManager.GetString("Penalty", resourceCulture);
+                return ResourceManager.GetString("open_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PENDING TRANSFER.
         /// </summary>
-        internal static string PENDING_TRANSFER {
+        internal static string pending_transfer {
             get {
-                return ResourceManager.GetString("PENDING_TRANSFER", resourceCulture);
+                return ResourceManager.GetString("pending_transfer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform member deposit operation.
         /// </summary>
-        internal static string PerformMemberDepositOperation {
+        internal static string perform_member_deposit_operation {
             get {
-                return ResourceManager.GetString("PerformMemberDepositOperation", resourceCulture);
+                return ResourceManager.GetString("perform_member_deposit_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform member deposit operation in.
         /// </summary>
-        internal static string PerformMemberDepositOperationIn {
+        internal static string perform_member_deposit_operation_in {
             get {
-                return ResourceManager.GetString("PerformMemberDepositOperationIn", resourceCulture);
+                return ResourceManager.GetString("perform_member_deposit_operation_in", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform member loan repayment operation in.
         /// </summary>
-        internal static string PerformMemberLoanRepaymentOperationIn {
+        internal static string perform_member_loan_repayment_operation_in {
             get {
-                return ResourceManager.GetString("PerformMemberLoanRepaymentOperationIn", resourceCulture);
+                return ResourceManager.GetString("perform_member_loan_repayment_operation_in", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform member withdrawal operation.
         /// </summary>
-        internal static string PerformMemberWithdrawalOperation {
+        internal static string perform_member_withdrawal_operation {
             get {
-                return ResourceManager.GetString("PerformMemberWithdrawalOperation", resourceCulture);
+                return ResourceManager.GetString("perform_member_withdrawal_operation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Perform transfer from.
         /// </summary>
-        internal static string PerformTransferFrom {
+        internal static string perform_transfer_from {
             get {
-                return ResourceManager.GetString("PerformTransferFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone number.
-        /// </summary>
-        internal static string PhoneNumber {
-            get {
-                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+                return ResourceManager.GetString("perform_transfer_from", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Place a request.
         /// </summary>
-        internal static string PlaceARequest {
+        internal static string place_arequest {
             get {
-                return ResourceManager.GetString("PlaceARequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Place of issue.
-        /// </summary>
-        internal static string PlaceOfIssue {
-            get {
-                return ResourceManager.GetString("PlaceOfIssue", resourceCulture);
+                return ResourceManager.GetString("place_arequest", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Posting frequency.
         /// </summary>
-        internal static string PostingFrequency {
+        internal static string posting_frequency {
             get {
-                return ResourceManager.GetString("PostingFrequency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Principal.
-        /// </summary>
-        internal static string Principal {
-            get {
-                return ResourceManager.GetString("Principal", resourceCulture);
+                return ResourceManager.GetString("posting_frequency", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Print customer account statements.
         /// </summary>
-        internal static string PrintCustomerAccountStatements {
+        internal static string print_customer_account_statements {
             get {
-                return ResourceManager.GetString("PrintCustomerAccountStatements", resourceCulture);
+                return ResourceManager.GetString("print_customer_account_statements", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to print members account.
         /// </summary>
-        internal static string printMembersAccount {
+        internal static string print_members_account {
             get {
-                return ResourceManager.GetString("printMembersAccount", resourceCulture);
+                return ResourceManager.GetString("print_members_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Product active status.
         /// </summary>
-        internal static string ProductActiveStatus {
+        internal static string product_active_status {
             get {
-                return ResourceManager.GetString("ProductActiveStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rate.
-        /// </summary>
-        internal static string Rate {
-            get {
-                return ResourceManager.GetString("Rate", resourceCulture);
+                return ResourceManager.GetString("product_active_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reasons for deposit/saving.
         /// </summary>
-        internal static string ReasonsForDepositSaving {
+        internal static string reasons_for_deposit_saving {
             get {
-                return ResourceManager.GetString("ReasonsForDepositSaving", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Receiver.
-        /// </summary>
-        internal static string Receiver {
-            get {
-                return ResourceManager.GetString("Receiver", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Receiver name.
-        /// </summary>
-        internal static string ReceiverName {
-            get {
-                return ResourceManager.GetString("ReceiverName", resourceCulture);
+                return ResourceManager.GetString("reasons_for_deposit_saving", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Receiving account.
         /// </summary>
-        internal static string ReceivingAccount {
+        internal static string receiving_account {
             get {
-                return ResourceManager.GetString("ReceivingAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference.
-        /// </summary>
-        internal static string Reference {
-            get {
-                return ResourceManager.GetString("Reference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reference number.
-        /// </summary>
-        internal static string ReferenceNumber {
-            get {
-                return ResourceManager.GetString("ReferenceNumber", resourceCulture);
+                return ResourceManager.GetString("receiving_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reload page to get customer details.
         /// </summary>
-        internal static string ReloadPageToGetCustomerDetails {
+        internal static string reload_page_to_get_customer_details {
             get {
-                return ResourceManager.GetString("ReloadPageToGetCustomerDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request source.
-        /// </summary>
-        internal static string RequestSource {
-            get {
-                return ResourceManager.GetString("RequestSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restructured.
-        /// </summary>
-        internal static string Restructured {
-            get {
-                return ResourceManager.GetString("Restructured", resourceCulture);
+                return ResourceManager.GetString("reload_page_to_get_customer_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Saving officer.
         /// </summary>
-        internal static string SavingOfficer {
+        internal static string saving_officer {
             get {
-                return ResourceManager.GetString("SavingOfficer", resourceCulture);
+                return ResourceManager.GetString("saving_officer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Saving product.
         /// </summary>
-        internal static string SavingProduct {
+        internal static string saving_product {
             get {
-                return ResourceManager.GetString("SavingProduct", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select.
-        /// </summary>
-        internal static string Select {
-            get {
-                return ResourceManager.GetString("Select", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select approval status.
-        /// </summary>
-        internal static string SelectApprovalStatus {
-            get {
-                return ResourceManager.GetString("SelectApprovalStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("saving_product", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Selected account.
         /// </summary>
-        internal static string SelectedAccount {
+        internal static string selected_account {
             get {
-                return ResourceManager.GetString("SelectedAccount", resourceCulture);
+                return ResourceManager.GetString("selected_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select loan to repay.
         /// </summary>
-        internal static string SelectLoanToRepay {
+        internal static string select_loan_to_repay {
             get {
-                return ResourceManager.GetString("SelectLoanToRepay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select teller.
-        /// </summary>
-        internal static string SelectTeller {
-            get {
-                return ResourceManager.GetString("SelectTeller", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select to approve.
-        /// </summary>
-        internal static string SelectToApprove {
-            get {
-                return ResourceManager.GetString("SelectToApprove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sender.
-        /// </summary>
-        internal static string Sender {
-            get {
-                return ResourceManager.GetString("Sender", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sender name.
-        /// </summary>
-        internal static string SenderName {
-            get {
-                return ResourceManager.GetString("SenderName", resourceCulture);
+                return ResourceManager.GetString("select_loan_to_repay", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Sending account.
         /// </summary>
-        internal static string SendingAccount {
+        internal static string sending_account {
             get {
-                return ResourceManager.GetString("SendingAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source account.
-        /// </summary>
-        internal static string SourceAccount {
-            get {
-                return ResourceManager.GetString("SourceAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source branch.
-        /// </summary>
-        internal static string SourceBranch {
-            get {
-                return ResourceManager.GetString("SourceBranch", resourceCulture);
+                return ResourceManager.GetString("sending_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Source commission.
         /// </summary>
-        internal static string SourceCommission {
+        internal static string source_commission {
             get {
-                return ResourceManager.GetString("SourceCommission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to State.
-        /// </summary>
-        internal static string State {
-            get {
-                return ResourceManager.GetString("State", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to statements.
-        /// </summary>
-        internal static string statements {
-            get {
-                return ResourceManager.GetString("statements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use accounting date.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Submit query.
-        /// </summary>
-        internal static string SubmitQuery {
-            get {
-                return ResourceManager.GetString("SubmitQuery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tax.
-        /// </summary>
-        internal static string Tax {
-            get {
-                return ResourceManager.GetString("Tax", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telephone.
-        /// </summary>
-        internal static string Telephone {
-            get {
-                return ResourceManager.GetString("Telephone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller.
-        /// </summary>
-        internal static string Teller {
-            get {
-                return ResourceManager.GetString("Teller", resourceCulture);
+                return ResourceManager.GetString("source_commission", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Teller note.
         /// </summary>
-        internal static string TellerNote {
+        internal static string teller_note {
             get {
-                return ResourceManager.GetString("TellerNote", resourceCulture);
+                return ResourceManager.GetString("teller_note", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to to another account.
         /// </summary>
-        internal static string toAnotherAccount {
+        internal static string to_another_account {
             get {
-                return ResourceManager.GetString("toAnotherAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total account balance.
-        /// </summary>
-        internal static string TotalAccountBalance {
-            get {
-                return ResourceManager.GetString("TotalAccountBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total amount.
-        /// </summary>
-        internal static string TotalAmount {
-            get {
-                return ResourceManager.GetString("TotalAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total balance.
-        /// </summary>
-        internal static string TotalBalance {
-            get {
-                return ResourceManager.GetString("TotalBalance", resourceCulture);
+                return ResourceManager.GetString("to_another_account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction Query Form.
         /// </summary>
-        internal static string TransactionQueryForm {
+        internal static string transaction_query_form {
             get {
-                return ResourceManager.GetString("TransactionQueryForm", resourceCulture);
+                return ResourceManager.GetString("transaction_query_form", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction Query Parameters.
         /// </summary>
-        internal static string TransactionQueryParameters {
+        internal static string transaction_query_parameters {
             get {
-                return ResourceManager.GetString("TransactionQueryParameters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TRANSACTIONS.
-        /// </summary>
-        internal static string TRANSACTIONS {
-            get {
-                return ResourceManager.GetString("TRANSACTIONS", resourceCulture);
+                return ResourceManager.GetString("transaction_query_parameters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction type.
         /// </summary>
-        internal static string TransactionType {
+        internal static string transaction_type {
             get {
-                return ResourceManager.GetString("TransactionType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfer details.
-        /// </summary>
-        internal static string TransferDetails {
-            get {
-                return ResourceManager.GetString("TransferDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transfers.
-        /// </summary>
-        internal static string Transfers {
-            get {
-                return ResourceManager.GetString("Transfers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TRANSFERS.
-        /// </summary>
-        internal static string TRANSFERS_ {
-            get {
-                return ResourceManager.GetString("TRANSFERS_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to transfer type.
-        /// </summary>
-        internal static string transferType {
-            get {
-                return ResourceManager.GetString("transferType", resourceCulture);
+                return ResourceManager.GetString("transaction_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to TRANSFER CONFIGURATION.
         /// </summary>
-        internal static string TRANSFER_CONFIGURATION {
+        internal static string transfer_configuration {
             get {
-                return ResourceManager.GetString("TRANSFER_CONFIGURATION", resourceCulture);
+                return ResourceManager.GetString("transfer_configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to TRANSFER REQUEST FORM.
         /// </summary>
-        internal static string TRANSFER_REQUEST_FORM {
+        internal static string transfer_request_form {
             get {
-                return ResourceManager.GetString("TRANSFER_REQUEST_FORM", resourceCulture);
+                return ResourceManager.GetString("transfer_request_form", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Uncheck if deposit is not done by account owner.
         /// </summary>
-        internal static string UncheckIfDepositIsNotDoneByAccountOwner {
+        internal static string uncheck_if_deposit_is_not_done_by_account_owner {
             get {
-                return ResourceManager.GetString("UncheckIfDepositIsNotDoneByAccountOwner", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown.
-        /// </summary>
-        internal static string Unknown {
-            get {
-                return ResourceManager.GetString("Unknown", resourceCulture);
+                return ResourceManager.GetString("uncheck_if_deposit_is_not_done_by_account_owner", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use accounting date.
         /// </summary>
-        internal static string UseAccountingDate {
+        internal static string use_accounting_date {
             get {
-                return ResourceManager.GetString("UseAccountingDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Values.
-        /// </summary>
-        internal static string Values {
-            get {
-                return ResourceManager.GetString("Values", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vat.
-        /// </summary>
-        internal static string Vat {
-            get {
-                return ResourceManager.GetString("Vat", resourceCulture);
+                return ResourceManager.GetString("use_accounting_date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View of allmMember account information.
         /// </summary>
-        internal static string ViewOfAllmMemberAccountInformation {
+        internal static string view_of_allm_member_account_information {
             get {
-                return ResourceManager.GetString("ViewOfAllmMemberAccountInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View pending list.
-        /// </summary>
-        internal static string ViewPendingList {
-            get {
-                return ResourceManager.GetString("ViewPendingList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Withdrawal note.
-        /// </summary>
-        internal static string WithdrawalNote {
-            get {
-                return ResourceManager.GetString("WithdrawalNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Withdrawal operation.
-        /// </summary>
-        internal static string WithdrawalOperation {
-            get {
-                return ResourceManager.GetString("WithdrawalOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Withdrawal policy is not configure for Product.
-        /// </summary>
-        internal static string WithdrawalPolicyIsNotConfigureForProduct {
-            get {
-                return ResourceManager.GetString("WithdrawalPolicyIsNotConfigureForProduct", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Withdrawal type.
-        /// </summary>
-        internal static string WithdrawalType {
-            get {
-                return ResourceManager.GetString("WithdrawalType", resourceCulture);
+                return ResourceManager.GetString("view_of_allm_member_account_information", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to WITHDRAWAL CONFIGURATION.
         /// </summary>
-        internal static string WITHDRAWAL_CONFIGURATION {
+        internal static string withdrawal_configuration {
             get {
-                return ResourceManager.GetString("WITHDRAWAL_CONFIGURATION", resourceCulture);
+                return ResourceManager.GetString("withdrawal_configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal note.
+        /// </summary>
+        internal static string withdrawal_note {
+            get {
+                return ResourceManager.GetString("withdrawal_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal operation.
+        /// </summary>
+        internal static string withdrawal_operation {
+            get {
+                return ResourceManager.GetString("withdrawal_operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal policy is not configure for Product.
+        /// </summary>
+        internal static string withdrawal_policy_is_not_configure_for_product {
+            get {
+                return ResourceManager.GetString("withdrawal_policy_is_not_configure_for_product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal type.
+        /// </summary>
+        internal static string withdrawal_type {
+            get {
+                return ResourceManager.GetString("withdrawal_type", resourceCulture);
             }
         }
     }

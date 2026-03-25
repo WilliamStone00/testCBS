@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountmanaQuery
+@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountmanaQuery
 @{
     ViewBag.Title = "Account Status Management";
 }
@@ -8,14 +8,14 @@
         <div class="card bg-light mb-2 shadow-sm">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold">
-                    <i class="mdi mdi-account-cog me-2"></i> Member Account Management
+                    <i class="mdi mdi-account-cog me-2"></i> @GlobalMemberAccountMan.member_account_management
                 </h1>
                 <p class="card-text">
-                    Manage account status changes, approvals, and track workflow history
+                    @GlobalMemberAccountMan.manage_account_status_changes_approvals_and_track_workflow_history
                 </p>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    View and manage account status requests. Approve, reject, or monitor account status changes.
+                    @GlobalMemberAccountMan.view_and_manage_account_status_requests_approve_reject_or_monitor_account_status_changes.
                 </div>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> Tips & Guidelines</span>
+        <span><i class="mdi mdi-lightbulb-on-outline me-2"></i> @GlobalShared.Tips & @GlobalShared.guidelines</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseTips" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
@@ -36,23 +36,23 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-home-city text-success me-2"></i>
-                    <strong>Branch Filter:</strong> Filter requests by specific branch to focus on your location
+                    <strong>@GlobalShared.Branch_Filter:</strong> @GlobalMemberAccountMan.filter_requests_by_specific_branch_to_focus_on_your_location
                 </li>
                 <li>
                     <i class="mdi mdi-tag-text text-info me-2"></i>
-                    <strong>Member Reference:</strong> Search using member ID or account number
+                    <strong>@GlobalShared.Member_reference:</strong> @GlobalMemberAccountMan.search_using_member_id_or_account_number
                 </li>
                 <li>
                     <i class="mdi mdi-playlist-check text-warning me-2"></i>
-                    <strong>Status Tracking:</strong> Monitor requests from Pending to Applied status
+                    <strong>@GlobalMemberAccountMan.status_tracking:</strong> @GlobalMemberAccountMan.monitor_requests_from_pending_to_applied_status
                 </li>
                 <li>
                     <i class="mdi mdi-clock-outline text-primary me-2"></i>
-                    <strong>Effective Date:</strong> Changes take effect on the specified date
+                    <strong>@GlobalShared.effective_date:</strong> @GlobalMemberAccountMan.changes_take_effect_on_the_specified_date
                 </li>
                 <li>
                     <i class="mdi mdi-refresh text-info me-2"></i>
-                    <strong>Refresh:</strong> Always refresh data to ensure you're viewing the latest requests
+                    <strong>@GlobalShared.Refresh:</strong> @GlobalMemberAccountMan.always_refresh_data_to_ensure_youre_viewing_the_latest_requests
                 </li>
             </ul>
         </div>
@@ -60,7 +60,7 @@
 </div>
 
 <div class="card shadow p-3 mb-4" id="filtersSection">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>Account Status Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i>@GlobalMemberAccountMan.account_status_filters</h5>
 
     <form id="accountStatusFilterForm" autocomplete="off">
         <div class="card p-3 mb-3 bg-light">
@@ -89,21 +89,21 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input filter-toggle" id="chkStatus" data-target="#statusContainer">
-                        <label class="form-check-label fw-bold">Filter by Status</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.Filter_by_status</label>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input filter-toggle" id="chkAction" data-target="#actionContainer">
-                        <label class="form-check-label fw-bold">Filter by Action</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.filter_by_action</label>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input filter-toggle" id="chkMember">
-                        <label class="form-check-label fw-bold">Filter by Member</label>
+                        <label class="form-check-label fw-bold">@GlobalShared.filter_by_member</label>
                     </div>
                 </div>
 
@@ -114,36 +114,36 @@
 
                 <!-- Status -->
                 <div class="col-md-4 d-none" id="statusContainer">
-                    <label class="form-label fw-bold">Status</label>
+                    <label class="form-label fw-bold">@GlobalShared.Status</label>
                     <select id="status" name="Status" class="form-control">
-                        <option value="">-- All Statuses --</option>
-                        <option value="PendingApproval">Pending Approval</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Rejected">Rejected</option>
-                        <option value="Applied">Applied</option>
-                        <option value="Failed">Failed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="">-- @GlobalShared.All_Statuses --</option>
+                        <option value="PendingApproval">@GlobalShared.pending_approval</option>
+                        <option value="Approved">@GlobalShared.Approved</option>
+                        <option value="Rejected">@GlobalShared.Rejected</option>
+                        <option value="Applied">@GlobalShared.applied</option>
+                        <option value="Failed">@GlobalShared.Failed</option>
+                        <option value="Cancelled">@GlobalShared.Cancelled</option>
                     </select>
                 </div>
 
                 <!-- Action -->
                 <div class="col-md-4 d-none" id="actionContainer">
-                    <label class="form-label fw-bold">Action Type</label>
+                    <label class="form-label fw-bold">@GlobalShared.action_type</label>
                     <select id="action" name="Action" class="form-control">
-                        <option value="">-- All Actions --</option>
-                        <option value="BlockFull">Block Full</option>
-                        <option value="UnblockFull">Unblock Full</option>
-                        <option value="BlockPartial">Block Partial</option>
-                        <option value="UnblockPartial">Unblock Partial</option>
-                        <option value="Freeze">Freeze</option>
-                        <option value="Close">Close</option>
-                        <option value="Reopen">Reopen</option>
+                        <option value="">-- @GlobalShared.all_actions --</option>
+                        <option value="BlockFull">@GlobalShared.block_full</option>
+                        <option value="UnblockFull">@GlobalShared.unblock_full</option>
+                        <option value="BlockPartial">@GlobalShared.block_partial</option>
+                        <option value="UnblockPartial">@GlobalShared.unblock_partial</option>
+                        <option value="Freeze">@GlobalShared.freeze</option>
+                        <option value="Close">@GlobalShared.Close</option>
+                        <option value="Reopen">@GlobalShared.Reopen</option>
                     </select>
                 </div>
 
                 <!-- Member Reference -->
                 <div class="col-md-4 d-none" id="memberContainer">
-                    <label class="form-label fw-bold">Member Reference</label>
+                    <label class="form-label fw-bold">@GlobalShared.Member_reference</label>
                     <input type="text" id="memberReference" name="MemberReference"
                            class="form-control" placeholder="Account/Member ID" />
                 </div>
@@ -153,11 +153,11 @@
             <div class="row mt-2">
                 <div class="col-md-12 d-flex">
                     <button id="applyFilterBtn" type="button" class="btn btn-primary me-2 w-100">
-                        <i class="mdi mdi-magnify"></i> Apply Filter
+                        <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
                     </button>
 
                     <button id="resetFilterBtn" type="button" class="btn btn-secondary me-2 w-100">
-                        <i class="mdi mdi-refresh"></i> Reset
+                        <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
                     </button>
 
                 </div>
@@ -192,11 +192,11 @@
             </div>
             <div class="modal-body">
                 <div class="text-center">
-                    <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+                    <div class="spinner-border" role="status"><span class="visually-hidden">@GlobalShared.Loading...</span></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

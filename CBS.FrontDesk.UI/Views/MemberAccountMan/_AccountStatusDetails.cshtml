@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
-
+@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@using Resources
 @functions {
     string FormatDate(DateTime date)
     {
@@ -19,10 +19,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-account-details me-2"></i> Account Status Request Details
+                <i class="mdi mdi-account-details me-2"></i> @GlobalMemberAccountMan.account_status_request_details
             </h1>
             <p class="card-text text-muted mb-1">
-                Complete information about the account status change request
+                @GlobalMemberAccountMan.complete_information_about_the_account_status_change_request
             </p>
         </div>
     </div>
@@ -30,25 +30,25 @@
     <div class="row">
         <!-- Left Column - Account Information -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-account me-2"></i> Member Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-account me-2"></i> @GlobalShared.Member_Information</h6>
             <table class="table table-sm table-bordered">
                 <tr><td class="fw-bold" style="width: 40%;">Request ID:</td><td>@Model.Id</td></tr>
-                <tr><td class="fw-bold">Member Name:</td><td>@Model.MemberName</td></tr>
-                <tr><td class="fw-bold">Member Reference:</td><td>@Model.MemberReference</td></tr>
-                <tr><td class="fw-bold">Account ID:</td><td>@Model.AccountId</td></tr>
-                <tr><td class="fw-bold">Account Number:</td><td>@Model.AccountNumber</td></tr>
-                <tr><td class="fw-bold">Account Type:</td><td>@Model.AccountType</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Member_name:</td><td>@Model.MemberName</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Member_reference:</td><td>@Model.MemberReference</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Account_ID:</td><td>@Model.AccountId</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Account_Number:</td><td>@Model.AccountNumber</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Account_type:</td><td>@Model.AccountType</td></tr>
             </table>
         </div>
 
         <!-- Right Column - Branch Information -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-domain me-2"></i> Branch Information</h6>
+            <h6 class="text-primary"><i class="mdi mdi-domain me-2"></i> @GlobalShared.Branch_Information</h6>
             <table class="table table-sm table-bordered">
                 <tr><td class="fw-bold" style="width: 40%;">Branch ID:</td><td>@Model.BranchId</td></tr>
-                <tr><td class="fw-bold">Branch Name:</td><td>@Model.BranchName</td></tr>
-                <tr><td class="fw-bold">Branch Code:</td><td>@Model.BranchCode</td></tr>
-                <tr><td class="fw-bold">Correlation ID:</td><td>@Model.CorrelationId</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Branch_Name:</td><td>@Model.BranchName</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Branch_Code:</td><td>@Model.BranchCode</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Correlation_Id:</td><td>@Model.CorrelationId</td></tr>
             </table>
         </div>
     </div>
@@ -56,20 +56,20 @@
     <!-- Action Details -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> Action Details</h6>
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> @GlobalShared.action_details</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold" style="width: 20%;">Action:</td><td>@Model.Action</td></tr>
-                <tr><td class="fw-bold">Status:</td><td>@Model.Status</td></tr>
-                <tr><td class="fw-bold">Amount:</td><td>@Model.Amount.ToString("N2")</td></tr>
-                <tr><td class="fw-bold">Effective Date:</td><td>@FormatNullableDate(Model.EffectiveDate)</td></tr>
-                <tr><td class="fw-bold">Request Reason:</td><td>@Model.RequestReason</td></tr>
+                <tr><td class="fw-bold" style="width: 20%;">@GlobalShared.Action:</td><td>@Model.Action</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Status:</td><td>@Model.Status</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Amount:</td><td>@Model.Amount.ToString("N2")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.effective_date:</td><td>@FormatNullableDate(Model.EffectiveDate)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.request_reason:</td><td>@Model.RequestReason</td></tr>
                 @if (!string.IsNullOrEmpty(Model.DecisionNote))
                 {
-                    <tr><td class="fw-bold">Decision Note:</td><td>@Model.DecisionNote</td></tr>
+                    <tr><td class="fw-bold">@GlobalShared.decision_note:</td><td>@Model.DecisionNote</td></tr>
                 }
                 @if (!string.IsNullOrEmpty(Model.BlockReason))
                 {
-                    <tr><td class="fw-bold">Block Reason:</td><td>@Model.BlockReason</td></tr>
+                    <tr><td class="fw-bold">@GlobalShared.block_reason:</td><td>@Model.BlockReason</td></tr>
                 }
             </table>
         </div>
@@ -78,18 +78,18 @@
     <!-- Request Timeline -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Request Timeline</h6>
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> @GlobalMemberAccountMan.request_timeline</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold" style="width: 20%;">Requested By:</td>
+                    <td class="fw-bold" style="width: 20%;">@GlobalShared.Requested_by:</td>
                     <td>@Model.RequestedByName</td>
-                    <td class="fw-bold" style="width: 20%;">Requested On:</td>
+                    <td class="fw-bold" style="width: 20%;">@GlobalShared.requested_on:</td>
                     <td>@FormatNullableDate(Model.RequestedOn)</td>
                 </tr>
                 @if (!string.IsNullOrEmpty(Model.DecidedByName))
                 {
                     <tr>
-                        <td class="fw-bold">Decided By:</td>
+                        <td class="fw-bold">@GlobalShared.decided_by:</td>
                         <td>@Model.DecidedByName</td>
                         <td class="fw-bold">Decided On:</td>
                         <td>@FormatNullableDate(Model.DecidedOn)</td>
@@ -105,7 +105,7 @@
                 @if (!string.IsNullOrEmpty(Model.ApplyError))
                 {
                     <tr>
-                        <td class="fw-bold text-danger">Apply Error:</td>
+                        <td class="fw-bold text-danger">@GlobalShared.apply_error:</td>
                         <td colspan="3" class="text-danger">@Model.ApplyError</td>
                     </tr>
                 }
@@ -142,7 +142,7 @@
                 }
             }
             <span class="badge @badgeClass p-3" style="font-size: 1.2rem;">
-                Current Status: @Model.Status
+                @GlobalShared.Current_Status: @Model.Status
             </span>
         </div>
     </div>

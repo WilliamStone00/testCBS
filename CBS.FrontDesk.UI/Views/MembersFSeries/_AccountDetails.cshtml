@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accountgetid
+@model CBS.FrontDesk.Data.Entity.Accountgetid
 @using Resources
 @using CBS.FrontDesk.UI.Helper;
 
@@ -14,10 +14,10 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h1 class="display-6 fw-bold mb-2">
-                        <i class="mdi mdi-bank-outline me-2"></i> Account Details
+                        <i class="mdi mdi-bank-outline me-2"></i> @GlobalShared.Account_details
                     </h1>
                     <p class="text-black">
-                        <i class="mdi mdi-information-outline me-1"></i> Complete information for account @Model.AccountNumber
+                        <i class="mdi mdi-information-outline me-1"></i> @GlobalMembersFSeries.complete_information_for_account @Model.AccountNumber
                     </p>
                 </div>
                 <div class="text-end">
@@ -34,7 +34,7 @@
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-information-outline me-2"></i>Basic Information
+                <i class="mdi mdi-information-outline me-2"></i>@GlobalShared.Basic_Information
             </h5>
         </div>
         <div class="card-body p-0">
@@ -42,43 +42,43 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">Account ID</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalShared.Account_ID</th>
                             <td class="fw-semibold">@Model.Id</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Account Number</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Account_Number</th>
                             <td><span class="badge bg-light bg-opacity-10 text-primary p-2">@Model.AccountNumber</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Account Name</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Account_Name</th>
                             <td>@(Model.AccountName ?? "-")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Customer Name</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Customer_Name</th>
                             <td class="fw-bold">@Model.CustomerName</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Account Type</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Account_type</th>
                             <td><span class="badge bg-info">@Model.AccountType</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Profile Type</th>
+                            <th class="ps-4 bg-light">@GlobalShared.profile_type</th>
                             <td>@(Model.ProfileType ?? "-")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Product ID</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Product_ID</th>
                             <td>@Model.ProductId</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Branch</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Branch</th>
                             <td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Teller ID</th>
+                            <th class="ps-4 bg-light">@GlobalShared.teller_id</th>
                             <td>@(Model.TellerId ?? "-")</td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Teller Account</th>
+                            <th class="ps-4 bg-light">@GlobalShared.teller_account</th>
                             <td>
                                 <span class="badge @(Model.IsTellerAccount ? "bg-warning" : "bg-secondary")">
                                     @(Model.IsTellerAccount ? "Yes" : "No")
@@ -95,7 +95,7 @@
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-currency-usd me-2"></i>Financial Summary
+                <i class="mdi mdi-currency-usd me-2"></i>@GlobalShared.Financial_Summary
             </h5>
         </div>
         <div class="card-body p-0">
@@ -103,39 +103,39 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">Opening Balance</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalShared.Opening_Balance</th>
                             <td class="fw-semibold">@Model.OpeningBalance.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Current Balance</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Current_balance</th>
                             <td class="fw-bold text-primary h5 mb-0">@Model.Balance.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Previous Balance</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Previous_Balance</th>
                             <td>@Model.PreviousBalance.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Available Balance</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.available_balance</th>
                             <td class="fw-bold text-success">@Model.AvailableBalance.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Blocked Amount</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Blocked_Amount</th>
                             <td class="text-danger">@Model.BlockedAmount.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Interest Generated</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Interest_Generated</th>
                             <td>@Model.InterestGenerated.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Last Interest Posted</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.last_interest_posted</th>
                             <td>@Model.LastInterestPosted.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Last Operation</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Last_operation</th>
                             <td>@(Model.LastOperation ?? "-")</td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Last Operation Amount</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Last_operation_amount</th>
                             <td class="fw-semibold">@Model.LastOperationAmount.ToString("N2")</td>
                         </tr>
                     </tbody>
@@ -148,7 +148,7 @@
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-shield-check-outline me-2"></i>Account Status & Controls
+                <i class="mdi mdi-shield-check-outline me-2"></i>@GlobalMembersFSeries.account_status_controls
             </h5>
         </div>
         <div class="card-body p-0">
@@ -156,11 +156,11 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">Status</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalShared.Status</th>
                             <td><span class="badge bg-info">@Model.Status</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Account State</th>
+                            <th class="ps-4 bg-light">@GlobalShared.account_state</th>
                             <td>
                                 <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger") me-2">
                                     @(Model.IsActive ? "Active" : "Inactive")
@@ -171,11 +171,11 @@
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Blocked Reason</th>
+                            <th class="ps-4 bg-light">@GlobalShared.blocked_reason</th>
                             <td>@(Model.ReasonOfBlocked ?? "-")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Cash In Blocked</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.cash_in_blocked</th>
                             <td>
                                 <span class="badge @(Model.IsCashInBlocked ? "bg-danger" : "bg-success")">
                                     @(Model.IsCashInBlocked ? "Yes" : "No")
@@ -183,7 +183,7 @@
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Withdrawal Blocked</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.withdrawal_blocked</th>
                             <td>
                                 <span class="badge @(Model.IsWithdrawalBlocked ? "bg-danger" : "bg-success")">
                                     @(Model.IsWithdrawalBlocked ? "Yes" : "No")
@@ -191,7 +191,7 @@
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Transfer Blocked</th>
+                            <th class="ps-4 bg-light">@GlobalShared.transfer_blocked</th>
                             <td>
                                 <span class="badge @(Model.IsTransferBlocked ? "bg-danger" : "bg-success")">
                                     @(Model.IsTransferBlocked ? "Yes" : "No")
@@ -199,7 +199,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Opening Day Status</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.opening_day_status</th>
                             <td><span class="badge bg-secondary">@Model.OpenningOfDayStatus</span></td>
                         </tr>
                     </tbody>
@@ -212,7 +212,7 @@
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-chart-line me-2"></i>Overdraft Configuration
+                <i class="mdi mdi-chart-line me-2"></i>@GlobalMembersFSeries.overdraft_configuration
             </h5>
         </div>
         <div class="card-body p-0">
@@ -220,7 +220,7 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">OD Enabled</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalMembersFSeries.od_enabled</th>
                             <td>
                                 <span class="badge @(Model.IsOverdraftEnabled ? "bg-success" : "bg-secondary")">
                                     @(Model.IsOverdraftEnabled ? "Yes" : "No")
@@ -228,27 +228,27 @@
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Overdraft Limit</th>
+                            <th class="ps-4 bg-light">@GlobalShared.overdraft_limit</th>
                             <td class="fw-semibold">@Model.OverdraftLimit.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Overdraft Used</th>
+                            <th class="ps-4 bg-light">@GlobalShared.overdraft_used</th>
                             <td class="text-warning">@Model.OverdraftUsed.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Available OD</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.available_od</th>
                             <td class="text-success">@Model.AvailableOverdraft.ToString("N2")</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Interest Rate</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Interest_Rate</th>
                             <td><span class="badge bg-primary bg-opacity-10 text-primary">@Model.InterestRate %</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Penalty Rate</th>
+                            <th class="ps-4 bg-light">@GlobalShared.penalty_rate</th>
                             <td><span class="badge bg-danger bg-opacity-10 text-danger">@Model.PenaltyRate %</span></td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Auto Recover</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.auto_recover</th>
                             <td>
                                 <span class="badge @(Model.AutoRecoverOnDeposit ? "bg-success" : "bg-secondary")">
                                     @(Model.AutoRecoverOnDeposit ? "Yes" : "No")
@@ -256,19 +256,19 @@
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Activation Date</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.activation_date</th>
                             <td>@DateHelper.FormatNullableDate(Model.OverdraftActivationDate)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Expiry Date</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Expiry_Date</th>
                             <td>@DateHelper.FormatNullableDate(Model.OverdraftExpiryDate)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Activated By</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Activated_by</th>
                             <td>@(Model.ActivatedBy ?? "-")</td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Salary OD Account</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.salary_od_account</th>
                             <td>
                                 <span class="badge @(Model.IsSalaryOverdraftAccount ? "bg-success" : "bg-secondary")">
                                     @(Model.IsSalaryOverdraftAccount ? "Yes" : "No")
@@ -285,7 +285,7 @@
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-calendar-plus me-2"></i>Account Opening
+                <i class="mdi mdi-calendar-plus me-2"></i>@GlobalShared.account_opening
             </h5>
         </div>
         <div class="card-body p-0">
@@ -293,11 +293,11 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">Opening Date</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalShared.opening_date</th>
                             <td><span class="fw-semibold">@DateHelper.FormatNullableDate(Model.CreatedDate)</span></td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Account Manager</th>
+                            <th class="ps-4 bg-light">@GlobalShared.account_manager</th>
                             <td>@Model.AccountManager</td>
                         </tr>
                     </tbody>
@@ -310,7 +310,7 @@
     <div class="card shadow-sm border-0">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 text-primary">
-                <i class="mdi mdi-timeline-clock-outline me-2"></i>Timeline & Audit
+                <i class="mdi mdi-timeline-clock-outline me-2"></i>@GlobalShared.Timeline & @GlobalShared.Audit
             </h5>
         </div>
         <div class="card-body p-0">
@@ -318,27 +318,27 @@
                 <table class="table table-hover mb-0">
                     <tbody>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light" style="width: 200px;">Date Blocked</th>
+                            <th class="ps-4 bg-light" style="width: 200px;">@GlobalShared.Date_Blocked</th>
                             <td>@DateHelper.FormatNullableDate(Model.DateBlocked)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Date Released</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Date_Released</th>
                             <td>@DateHelper.FormatNullableDate(Model.DateReleased)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Last Interest Calculated</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.last_interest_calculated</th>
                             <td>@DateHelper.FormatNullableDate(Model.LastInterestCalculatedDate)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Date Of Last Operation</th>
+                            <th class="ps-4 bg-light">@GlobalShared.Date_of_Last_Operation</th>
                             <td>@DateHelper.FormatNullableDate(Model.DateOfLastOperation)</td>
                         </tr>
                         <tr class="border-bottom">
-                            <th class="ps-4 bg-light">Closed On</th>
+                            <th class="ps-4 bg-light">@GlobalShared.closed_on</th>
                             <td>@DateHelper.FormatNullableDate(Model.ClosedOn)</td>
                         </tr>
                         <tr>
-                            <th class="ps-4 bg-light">Last Closure Reason</th>
+                            <th class="ps-4 bg-light">@GlobalMembersFSeries.last_closure_reason</th>
                             <td>@(Model.LastClosureReason ?? "-")</td>
                         </tr>
                     </tbody>

@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Idle Timeout & Password Policy Configuration";
 }
 @using Resources
@@ -7,13 +7,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-timer-sand-empty me-2"></i> @GlobalPasswordPolicyManagement.IdleTimeoutPasswordPolicyConfiguration
+                    <i class="mdi mdi-timer-sand-empty me-2"></i> @GlobalPasswordPolicyManagement.idle_timeout_password_policy_configuration
                 </h1>
                 <p class="card-text">
-                    @GlobalPasswordPolicyManagement.UseThisInterfaceToDefineRulesForUserInactivity.
-                    @GlobalPasswordPolicyManagement.AdministratorsCanConfigureCentralized.
+                    @GlobalPasswordPolicyManagement.use_this_interface_to_define_rules_for_user_inactivity.
+                    @GlobalPasswordPolicyManagement.administrators_can_configure_centralized.
                     <br />
-                    @GlobalPasswordPolicyManagement.SettingsIncludeLockoutThresholds.
+                    @GlobalPasswordPolicyManagement.settings_include_lockout_thresholds.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -23,9 +23,9 @@
 <!-- Create Button Outside Header -->
 <div class="d-flex justify-content-end mb-2">
     <a href="/PasswordPolicyManagement" class="btn btn-sm btn-outline-primary me-2">
-        <i class="mdi mdi-plus"></i> @GlobalPasswordPolicyManagement.CreateNewPolicy
+        <i class="mdi mdi-plus"></i> @GlobalShared.create_new_policy
     </a>
-    <a type="button" onclick="LoadDataGen('PasswordPolicyManagement','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalPasswordPolicyManagement.ViewExistingConfigs">
+    <a type="button" onclick="LoadDataGen('PasswordPolicyManagement','myDataTable','_Data',0,'datalistingview')" class="btn btn-label-primary btn-sm" data-bs-toggle="tooltip" title="@GlobalShared.view_existing_configs">
         <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
     </a>
 </div>

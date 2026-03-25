@@ -117,28 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackToLogin" xml:space="preserve">
-    <value>Retour à la connexion</value>
-  </data>
-  <data name="EnterTheCurrentCodeDisplayedInTheApp" xml:space="preserve">
-    <value>Entrez le code actuel affiché dans l'application dans la zone de saisie "Code MFA" ci-dessus</value>
-  </data>
-  <data name="HowToValidateTheMFACode" xml:space="preserve">
-    <value>Comment valider le code MFA</value>
-  </data>
-  <data name="IfTheCodeIsCorrectYouWillBeRedirectedOrReceiveConfirmation" xml:space="preserve">
-    <value>Si le code est correct, vous serez redirigé ou recevrez une confirmation. Si ce n'est pas le cas, vérifiez le code sur votre application et réessayez</value>
-  </data>
-  <data name="LocateTheCodeAssociatedWithYourAccount" xml:space="preserve">
-    <value>Localisez le code associé à votre compte. Ce code se renouvelle toutes les 30 secondes</value>
-  </data>
-  <data name="MFACode" xml:space="preserve">
-    <value>Code MFA</value>
-  </data>
-  <data name="MFAVerification" xml:space="preserve">
-    <value>Vérification MFA</value>
-  </data>
-  <data name="OpenTheGoogleAuthenticatorAppOnYourPhone" xml:space="preserve">
-    <value>Ouvrez l'application Google Authenticator sur votre téléphone</value>
-  </data>
 </root>

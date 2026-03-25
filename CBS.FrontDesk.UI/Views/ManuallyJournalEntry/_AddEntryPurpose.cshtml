@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
     @using Resources
 
 @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "" }))
@@ -11,7 +11,7 @@
                 <div class="card-header">
 
                     <h5 class="card-title" id="Purpose">
-                        @GlobalManuallyJournalEntry.Purpose_of_the_Entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })
+                        @GlobalManuallyJournalEntry.purpose_of_the_entry: @Html.TextAreaFor(m => m.EntryDescription.Description, new { @class = "form-control textbox" })
                         @Html.ValidationMessageFor(m => m.EntryDescription.Description, "", new { @class = "text-danger" })
                     </h5>
 
@@ -26,7 +26,7 @@
 
                 <div class="shift-right">
                     <button type="button" onclick="DoPosting()" class="btn btn-primary" id="post-entries">
-                        @GlobalManuallyJournalEntry.PostEntries &nbsp;&nbsp;<i class="mdi mdi-database-plus"></i>
+                        @GlobalShared.post_entries &nbsp;&nbsp;<i class="mdi mdi-database-plus"></i>
                     </button>
                     <input type="hidden" name="Action" value="insert" id="Action" />
                 </div>

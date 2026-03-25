@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+    @using Resources
 @using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "memberReferenceAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }))
 {
     <div class="container-fluid">
@@ -8,14 +9,14 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-primary">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-account-details-outline me-2"></i>Current Member Reference Information
+                            <i class="mdi mdi-account-details-outline me-2"></i>@GlobalMemberAdjustmentConsole.current_member_reference_information
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- Current Member ID -->
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.MemberId, "Current Member ID", new { @class = "form-label" })
+                                @Html.LabelFor(m => m.MemberId, $"{@GlobalShared.current_member_id}", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.MemberId, new { @class = "form-control", @readonly = "readonly" })
                             </div>
                         </div>
@@ -26,7 +27,7 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-warning">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-pencil-outline me-2"></i>New Member Reference Information
+                            <i class="mdi mdi-pencil-outline me-2"></i>@GlobalMemberAdjustmentConsole.new_member_reference_information
                         </h5>
                     </div>
                     <div class="card-body">
@@ -40,7 +41,7 @@
                             <div class="row">
                                 <!-- New Reference -->
                                 <div class="col-md-12 mb-3">
-                                    @Html.LabelFor(m => m.NewMemberId, "New Member Reference", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.NewMemberId, $"{@GlobalMemberAdjustmentConsole.new_member_reference}", new { @class = "form-label" })
                                     @Html.TextBoxFor(m => m.NewMemberId,
              new
              {
@@ -48,7 +49,7 @@
                  required = "required",
                  placeholder = "Enter new member reference"
              })
-                                    <div class="invalid-feedback">Please enter a new member reference</div>
+                                    <div class="invalid-feedback">@GlobalMemberAdjustmentConsole.please_enter_a_new_member_reference</div>
                                     @Html.ValidationMessageFor(m => m.NewMemberId, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -56,16 +57,16 @@
                             <!-- Reason -->
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    @Html.LabelFor(m => m.Reason, "Reason for Reference Change", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.Reason, $"{@GlobalMemberAdjustmentConsole.reason_for_reference_change}", new { @class = "form-label" })
                                     @Html.TextAreaFor(m => m.Reason,
              new
              {
                  @class = "form-control",
                  rows = "3",
                  required = "required",
-                 placeholder = "Please provide a reason for this reference change"
+                 placeholder = @GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_reference_change
              })
-                                    <div class="invalid-feedback">Please provide a reason for this change</div>
+                                    <div class="invalid-feedback">@GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_change</div>
                                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -75,10 +76,10 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="mdi mdi-close me-1"></i>Cancel
+                                            <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                                         </button>
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-content-save-check me-1"></i>Submit Reference Change
+                                            <i class="mdi mdi-content-save-check me-1"></i>@GlobalShared.submit_reference_change
                                         </button>
                                     </div>
                                 </div>

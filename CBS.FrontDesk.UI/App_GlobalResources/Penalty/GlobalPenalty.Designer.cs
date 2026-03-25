@@ -61,218 +61,670 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calculate penalty on.
+        ///   Looks up a localized string similar to Accounting Posting.
         /// </summary>
-        internal static string CalculatePenaltyOn {
+        internal static string accounting_posting {
             get {
-                return ResourceManager.GetString("CalculatePenaltyOn", resourceCulture);
+                return ResourceManager.GetString("accounting_posting", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to enable.
+        ///   Looks up a localized string similar to Accounting role.
         /// </summary>
-        internal static string CheckToEnable {
+        internal static string accounting_role {
             get {
-                return ResourceManager.GetString("CheckToEnable", resourceCulture);
+                return ResourceManager.GetString("accounting_role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always validate penalty logic with compliance, credit risk, and finance teams before activating on live loan products.
+        /// </summary>
+        internal static string always_validate_penalty_logic_with_compliance_credit_risk_and_finance_teams_before_activating_on_live_loan_products {
+            get {
+                return ResourceManager.GetString("always_validate_penalty_logic_with_compliance_credit_risk_and_finance_teams_befor" +
+                        "e_activating_on_live_loan_products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Fixed Penalty Amount.
+        /// </summary>
+        internal static string apply_fixed_penalty_amount {
+            get {
+                return ResourceManager.GetString("apply_fixed_penalty_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply the penalty at each eligible recurrence interval. Recommended for daily/weekly logic.
+        /// </summary>
+        internal static string apply_the_penalty_at_each_eligible_recurrence_interval_recommended_for_dailyweekly_logic {
+            get {
+                return ResourceManager.GetString("apply_the_penalty_at_each_eligible_recurrence_interval_recommended_for_dailyweekl" +
+                        "y_logic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculate penalty on.
+        /// </summary>
+        internal static string calculate_penalty_on {
+            get {
+                return ResourceManager.GetString("calculate_penalty_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation Logic.
+        /// </summary>
+        internal static string calculation_logic {
+            get {
+                return ResourceManager.GetString("calculation_logic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cap Amount.
+        /// </summary>
+        internal static string cap_amount {
+            get {
+                return ResourceManager.GetString("cap_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check to allow penalties even on weekends.
+        /// </summary>
+        internal static string check_to_allow_penalties_even_on_weekends {
+            get {
+                return ResourceManager.GetString("check_to_allow_penalties_even_on_weekends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose from &lt;code&gt;Overdue_Principal_Amount&lt;/code&gt;, &lt;code&gt;Overdue_Interest_Amount&lt;/code&gt;, &lt;code&gt;Overdue_Daily_Interest_Amount&lt;/code&gt;, or &lt;code&gt;Overdue_Principal_Plus_Interest&lt;/code&gt;. Use &lt;code&gt;Apply_Fixed_Penalty_Amount&lt;/code&gt; to apply fixed value directly.
+        /// </summary>
+        internal static string choose_from_overdueprincipalamount_overdueinterestamount_overduedailyinterestamount_or_overdueprincipalplusinterest_use_applyfixedpenaltyamount_to_apply_fixed_value_directly {
+            get {
+                return ResourceManager.GetString("choose_from_overdueprincipalamount_overdueinterestamount_overduedailyinterestamou" +
+                        "nt_or_overdueprincipalplusinterest_use_applyfixedpenaltyamount_to_apply_fixed_va" +
+                        "lue_directly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new penalty configuration.
+        /// </summary>
+        internal static string create_a_new_penalty_configuration {
+            get {
+                return ResourceManager.GetString("create_a_new_penalty_configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Days after due date before penalty eligibility begins.
+        /// </summary>
+        internal static string days_after_due_date_before_penalty_eligibility_begins {
+            get {
+                return ResourceManager.GetString("days_after_due_date_before_penalty_eligibility_begins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines the logic to apply — use &lt;code&gt;Late_Repayment_Penalty&lt;/code&gt; for installment defaults or &lt;code&gt;Penalty_After_Maturity_Date&lt;/code&gt; for post-loan expiry.
+        /// </summary>
+        internal static string defines_the_logic_to_apply_use_laterepaymentpenalty_for_installment_defaults_or_penaltyaftermaturitydate_for_postloan_expiry {
+            get {
+                return ResourceManager.GetString("defines_the_logic_to_apply_use_laterepaymentpenalty_for_installment_defaults_or_p" +
+                        "enaltyaftermaturitydate_for_postloan_expiry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines the number of days after a due date before any penalty is considered. Helps protect compliant borrowers from accidental penalties.
+        /// </summary>
+        internal static string defines_the_number_of_days_after_a_due_date_before_any_penalty_is_considered_helps_protect_compliant_borrowers_from_accidental_penalties {
+            get {
+                return ResourceManager.GetString("defines_the_number_of_days_after_a_due_date_before_any_penalty_is_considered_help" +
+                        "s_protect_compliant_borrowers_from_accidental_penalties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines the part of the loan used as the penalty base. For fixed fees, choose &quot;Apply Fixed Penalty Amount.
+        /// </summary>
+        internal static string defines_the_part_of_the_loan_used_as_the_penalty_base_for_fixed_fees_choose_apply_fixed_penalty_amount {
+            get {
+                return ResourceManager.GetString("defines_the_part_of_the_loan_used_as_the_penalty_base_for_fixed_fees_choose_apply" +
+                        "_fixed_penalty_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Determines when to trigger penalty (e.g., after due date or on maturity).
+        /// </summary>
+        internal static string determines_when_to_trigger_penalty_eg_after_due_date_or_on_maturity {
+            get {
+                return ResourceManager.GetString("determines_when_to_trigger_penalty_eg_after_due_date_or_on_maturity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Expiry by Days.
+        /// </summary>
+        internal static string enable_expiry_by_days {
+            get {
+                return ResourceManager.GetString("enable_expiry_by_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ends penalty enforcement after a specific number of days.
+        /// </summary>
+        internal static string ends_penalty_enforcement_after_a_specific_number_of_days {
+            get {
+                return ResourceManager.GetString("ends_penalty_enforcement_after_a_specific_number_of_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a numeric amount. If &lt;code&gt;IsRate&lt;/code&gt; is checked, this value is treated as a percentage of the base; otherwise, it is a flat fee.
+        /// </summary>
+        internal static string enter_a_numeric_amount_if_israte_is_checked_this_value_is_treated_as_a_percentage_of_the_base_otherwise_it_is_a_flat_fee {
+            get {
+                return ResourceManager.GetString("enter_a_numeric_amount_if_israte_is_checked_this_value_is_treated_as_a_percentage" +
+                        "_of_the_base_otherwise_it_is_a_flat_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter days to apply penalt. Penalty will be applied after grace period.
         /// </summary>
-        internal static string EnterDaysToApplyPenaltPenaltyWillBeAppliedAfterGracePeriod {
+        internal static string enter_days_to_apply_penalt_penalty_will_be_applied_after_grace_period {
             get {
-                return ResourceManager.GetString("EnterDaysToApplyPenaltPenaltyWillBeAppliedAfterGracePeriod", resourceCulture);
+                return ResourceManager.GetString("enter_days_to_apply_penalt_penalty_will_be_applied_after_grace_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter either a fixed amount (e.g., 2000 FCFA) or a % rate.
+        /// </summary>
+        internal static string enter_either_a_fixed_amount_eg_2000_fcfa_or_a_rate {
+            get {
+                return ResourceManager.GetString("enter_either_a_fixed_amount_eg_2000_fcfa_or_a_rate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter penalty unique name.
         /// </summary>
-        internal static string EnterPenaltyUniqueName {
+        internal static string enter_penalty_unique_name {
             get {
-                return ResourceManager.GetString("EnterPenaltyUniqueName", resourceCulture);
+                return ResourceManager.GetString("enter_penalty_unique_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter penalty value. (Keep in mind of you have selectd rate or fix amount).
         /// </summary>
-        internal static string EnterPenaltyValue {
+        internal static string enter_penalty_value {
             get {
-                return ResourceManager.GetString("EnterPenaltyValue", resourceCulture);
+                return ResourceManager.GetString("enter_penalty_value", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fixed amount.
+        ///   Looks up a localized string similar to Example: “Late Fee – Personal Loans”. Must be unique.
         /// </summary>
-        internal static string FixedAmount {
+        internal static string example_late_fee_personal_loans_must_be_unique {
             get {
-                return ResourceManager.GetString("FixedAmount", resourceCulture);
+                return ResourceManager.GetString("example_late_fee_personal_loans_must_be_unique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fee Posting Account ID.
+        /// </summary>
+        internal static string fee_posting_account_id {
+            get {
+                return ResourceManager.GetString("fee_posting_account_id", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Grace period in days (Optional).
         /// </summary>
-        internal static string GracePeriodInDays {
+        internal static string grace_period_in_days {
             get {
-                return ResourceManager.GetString("GracePeriodInDays", resourceCulture);
+                return ResourceManager.GetString("grace_period_in_days", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive.
+        ///   Looks up a localized string similar to How often to apply: daily, weekly, monthly, etc.
         /// </summary>
-        internal static string Inactive {
+        internal static string how_often_to_apply_daily_weekly_monthly_etc {
             get {
-                return ResourceManager.GetString("Inactive", resourceCulture);
+                return ResourceManager.GetString("how_often_to_apply_daily_weekly_monthly_etc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If &lt;code&gt;ApplyOnWeekends&lt;/code&gt; is false, penalties will be skipped on Saturdays and Sundays. Enable for daily calculations.
+        /// </summary>
+        internal static string if_applyonweekends_is_false_penalties_will_be_skipped_on_saturdays_and_sundays_enable_for_daily_calculations {
+            get {
+                return ResourceManager.GetString("if_applyonweekends_is_false_penalties_will_be_skipped_on_saturdays_and_sundays_en" +
+                        "able_for_daily_calculations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If &lt;code&gt;IsCumulative&lt;/code&gt; is enabled, penalties will apply repeatedly as per recurrence settings. Disable to restrict application to once per cycle.
+        /// </summary>
+        internal static string if_iscumulative_is_enabled_penalties_will_apply_repeatedly_as_per_recurrence_settings_disable_to_restrict_application_to_once_per_cycle {
+            get {
+                return ResourceManager.GetString("if_iscumulative_is_enabled_penalties_will_apply_repeatedly_as_per_recurrence_sett" +
+                        "ings_disable_to_restrict_application_to_once_per_cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal notes or detailed explanation for admins.
+        /// </summary>
+        internal static string internal_notes_or_detailed_explanation_for_admins {
+            get {
+                return ResourceManager.GetString("internal_notes_or_detailed_explanation_for_admins", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to I want Penalty to be a fixed amount.
         /// </summary>
-        internal static string IWantPenaltyToBeAFixedAmount {
+        internal static string iwant_penalty_to_be_afixed_amount {
             get {
-                return ResourceManager.GetString("IWantPenaltyToBeAFixedAmount", resourceCulture);
+                return ResourceManager.GetString("iwant_penalty_to_be_afixed_amount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to I want penalty to be percentage % based.
         /// </summary>
-        internal static string IWantPenaltyToBePercentageBased {
+        internal static string iwant_penalty_to_be_percentage_based {
             get {
-                return ResourceManager.GetString("IWantPenaltyToBePercentageBased", resourceCulture);
+                return ResourceManager.GetString("iwant_penalty_to_be_percentage_based", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LOAN PRODUCT PENALTY CONFIGUATIONS.
         /// </summary>
-        internal static string LOAN_PRODUCT_PENALTY_CONFIGUATIONS {
+        internal static string loan_product_penalty_configuations {
             get {
-                return ResourceManager.GetString("LOAN_PRODUCT_PENALTY_CONFIGUATIONS", resourceCulture);
+                return ResourceManager.GetString("loan_product_penalty_configuations", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Manage rules for loan penalties such as late fees, post-maturity fines, and interest-based charges. Penalties are applied based on loan behavior and timing.
         /// </summary>
-        internal static string Name {
+        internal static string manage_rules_for_loan_penalties_such_as_late_fees_postmaturity_fines_and_interestbased_charges_penalties_are_applied_based_on_loan_behavior_and_timing {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("manage_rules_for_loan_penalties_such_as_late_fees_postmaturity_fines_and_interest" +
+                        "based_charges_penalties_are_applied_based_on_loan_behavior_and_timing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
+        ///   Looks up a localized string similar to Maximum amount this penalty can reach.
         /// </summary>
-        internal static string No {
+        internal static string maximum_amount_this_penalty_can_reach {
             get {
-                return ResourceManager.GetString("No", resourceCulture);
+                return ResourceManager.GetString("maximum_amount_this_penalty_can_reach", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum number of days overdue before enforcing penalty.
+        /// </summary>
+        internal static string minimum_number_of_days_overdue_before_enforcing_penalty {
+            get {
+                return ResourceManager.GetString("minimum_number_of_days_overdue_before_enforcing_penalty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiplier of the period.
+        /// </summary>
+        internal static string multiplier_of_the_period {
+            get {
+                return ResourceManager.GetString("multiplier_of_the_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Penalty Rule.
+        /// </summary>
+        internal static string new_penalty_rule {
+            get {
+                return ResourceManager.GetString("new_penalty_rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-Time Only.
+        /// </summary>
+        internal static string onetime_only {
+            get {
+                return ResourceManager.GetString("onetime_only", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to (optional) Waive penalty on branch holidays.
         /// </summary>
-        internal static string OptionalWaivePenaltyOnBranchHolidays {
+        internal static string optional_waive_penalty_on_branch_holidays {
             get {
-                return ResourceManager.GetString("OptionalWaivePenaltyOnBranchHolidays", resourceCulture);
+                return ResourceManager.GetString("optional_waive_penalty_on_branch_holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overdue Daily Interest Amount.
+        /// </summary>
+        internal static string overdue_daily_interest_amount {
+            get {
+                return ResourceManager.GetString("overdue_daily_interest_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overdue Interest Amount.
+        /// </summary>
+        internal static string overdue_interest_amount {
+            get {
+                return ResourceManager.GetString("overdue_interest_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overdue Principal Amount.
+        /// </summary>
+        internal static string overdue_principal_amount {
+            get {
+                return ResourceManager.GetString("overdue_principal_amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overdue Principal + Interest.
+        /// </summary>
+        internal static string overdue_principal_interest {
+            get {
+                return ResourceManager.GetString("overdue_principal_interest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty Base.
+        /// </summary>
+        internal static string penalty_base {
+            get {
+                return ResourceManager.GetString("penalty_base", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty Cap.
+        /// </summary>
+        internal static string penalty_cap {
+            get {
+                return ResourceManager.GetString("penalty_cap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty Configuration Guidelines.
+        /// </summary>
+        internal static string penalty_configuration_guidelines {
+            get {
+                return ResourceManager.GetString("penalty_configuration_guidelines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty Configuration Rules.
+        /// </summary>
+        internal static string penalty_configuration_rules {
+            get {
+                return ResourceManager.GetString("penalty_configuration_rules", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Penalty description.
         /// </summary>
-        internal static string PenaltyDescription {
+        internal static string penalty_description {
             get {
-                return ResourceManager.GetString("PenaltyDescription", resourceCulture);
+                return ResourceManager.GetString("penalty_description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Penalty type.
+        ///   Looks up a localized string similar to Penalty Details.
         /// </summary>
-        internal static string PenaltyType {
+        internal static string penalty_details {
             get {
-                return ResourceManager.GetString("PenaltyType", resourceCulture);
+                return ResourceManager.GetString("penalty_details", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Product.
+        ///   Looks up a localized string similar to Penalty name.
         /// </summary>
-        internal static string Product {
+        internal static string penalty_name {
             get {
-                return ResourceManager.GetString("Product", resourceCulture);
+                return ResourceManager.GetString("penalty_name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select.
+        ///   Looks up a localized string similar to Penalty Value.
         /// </summary>
-        internal static string Select {
+        internal static string penalty_value {
             get {
-                return ResourceManager.GetString("Select", resourceCulture);
+                return ResourceManager.GetString("penalty_value", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select penalty type.
+        ///   Looks up a localized string similar to Please correct the errors and try again.
         /// </summary>
-        internal static string SelectPenaltyType {
+        internal static string please_correct_the_errors_and_try_again {
             get {
-                return ResourceManager.GetString("SelectPenaltyType", resourceCulture);
+                return ResourceManager.GetString("please_correct_the_errors_and_try_again", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set penalty.
+        ///   Looks up a localized string similar to Poorly configured penalties may result in excessive client burden, reputational damage, or compliance issues.
         /// </summary>
-        internal static string SetPenalty {
+        internal static string poorly_configured_penalties_may_result_in_excessive_client_burden_reputational_damage_or_compliance_issues {
             get {
-                return ResourceManager.GetString("SetPenalty", resourceCulture);
+                return ResourceManager.GetString("poorly_configured_penalties_may_result_in_excessive_client_burden_reputational_da" +
+                        "mage_or_compliance_issues", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
+        ///   Looks up a localized string similar to Recurrence Settings.
         /// </summary>
-        internal static string Type {
+        internal static string recurrence_settings {
             get {
-                return ResourceManager.GetString("Type", resourceCulture);
+                return ResourceManager.GetString("recurrence_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload and View Penalty Configuration List.
+        /// </summary>
+        internal static string reload_and_view_penalty_configuration_list {
+            get {
+                return ResourceManager.GetString("reload_and_view_penalty_configuration_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set &lt;code&gt;IsOneTimeOnly&lt;/code&gt; to true if this penalty must only apply once across the life of the loan. Often used for maturity or closure-related fees.
+        /// </summary>
+        internal static string set_isonetimeonly_to_true_if_this_penalty_must_only_apply_once_across_the_life_of_the_loan_often_used_for_maturity_or_closurerelated_fees {
+            get {
+                return ResourceManager.GetString("set_isonetimeonly_to_true_if_this_penalty_must_only_apply_once_across_the_life_of" +
+                        "_the_loan_often_used_for_maturity_or_closurerelated_fees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set &lt;code&gt;RecurringPeriod&lt;/code&gt; (Days, Weeks, Months, Years) and &lt;code&gt;RecuringInterval&lt;/code&gt; (e.g., 30) to determine how often the penalty should be reapplied. Applies only if &lt;code&gt;IsCumulative&lt;/code&gt; is true.
+        /// </summary>
+        internal static string set_recurringperiod_days_weeks_months_years_and_recuringinterval_eg_30_to_determine_how_often_the_penalty_should_be_reapplied_applies_only_if_iscumulative_is_true {
+            get {
+                return ResourceManager.GetString("set_recurringperiod_days_weeks_months_years_and_recuringinterval_eg_30_to_determi" +
+                        "ne_how_often_the_penalty_should_be_reapplied_applies_only_if_iscumulative_is_tru" +
+                        "e", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies how long after overdue the penalty should actually be enforced. Works in combination with Grace Period.
+        /// </summary>
+        internal static string specifies_how_long_after_overdue_the_penalty_should_actually_be_enforced_works_in_combination_with_grace_period {
+            get {
+                return ResourceManager.GetString("specifies_how_long_after_overdue_the_penalty_should_actually_be_enforced_works_in" +
+                        "_combination_with_grace_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time in days from activation until penalty stops applying.
+        /// </summary>
+        internal static string time_in_days_from_activation_until_penalty_stops_applying {
+            get {
+                return ResourceManager.GetString("time_in_days_from_activation_until_penalty_stops_applying", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timing &amp; Recurrence.
+        /// </summary>
+        internal static string timing_recurrence {
+            get {
+                return ResourceManager.GetString("timing_recurrence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle to activate or deactivate this penalty rule.
+        /// </summary>
+        internal static string toggle_to_activate_or_deactivate_this_penalty_rule {
+            get {
+                return ResourceManager.GetString("toggle_to_activate_or_deactivate_this_penalty_rule", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Update penalty for.
         /// </summary>
-        internal static string UpdatePenaltyFor {
+        internal static string update_penalty_for {
             get {
-                return ResourceManager.GetString("UpdatePenaltyFor", resourceCulture);
+                return ResourceManager.GetString("update_penalty_for", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value.
+        ///   Looks up a localized string similar to Used for tracking penalty revenue in the General Ledger (GL).
         /// </summary>
-        internal static string Value {
+        internal static string used_for_tracking_penalty_revenue_in_the_general_ledger_gl {
             get {
-                return ResourceManager.GetString("Value", resourceCulture);
+                return ResourceManager.GetString("used_for_tracking_penalty_revenue_in_the_general_ledger_gl", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yes.
+        ///   Looks up a localized string similar to Use &lt;code&gt;FeePostingAccountId&lt;/code&gt; to direct penalty revenue into a specific ledger or GL account.
         /// </summary>
-        internal static string Yes {
+        internal static string use_feepostingaccountid_to_direct_penalty_revenue_into_a_specific_ledger_or_gl_account {
             get {
-                return ResourceManager.GetString("Yes", resourceCulture);
+                return ResourceManager.GetString("use_feepostingaccountid_to_direct_penalty_revenue_into_a_specific_ledger_or_gl_ac" +
+                        "count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use for special one-time charges like late start fees.
+        /// </summary>
+        internal static string use_for_special_onetime_charges_like_late_start_fees {
+            get {
+                return ResourceManager.GetString("use_for_special_onetime_charges_like_late_start_fees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use &lt;code&gt;HasExpiryAfterDays&lt;/code&gt; and &lt;code&gt;ExpireAfterDays&lt;/code&gt; to disable the rule automatically after a number of active days. Useful for promotional or transitional penalties.
+        /// </summary>
+        internal static string use_hasexpiryafterdays_and_expireafterdays_to_disable_the_rule_automatically_after_a_number_of_active_days_useful_for_promotional_or_transitional_penalties {
+            get {
+                return ResourceManager.GetString("use_hasexpiryafterdays_and_expireafterdays_to_disable_the_rule_automatically_afte" +
+                        "r_a_number_of_active_days_useful_for_promotional_or_transitional_penalties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use &lt;code&gt;PenaltyMaxCapAmount&lt;/code&gt; to limit total charges from this rule. Prevents overcharging in long-term arrears.
+        /// </summary>
+        internal static string use_penaltymaxcapamount_to_limit_total_charges_from_this_rule_prevents_overcharging_in_longterm_arrears {
+            get {
+                return ResourceManager.GetString("use_penaltymaxcapamount_to_limit_total_charges_from_this_rule_prevents_overchargi" +
+                        "ng_in_longterm_arrears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the buttons below to create or update penalty rules linked to loan products.
+        /// </summary>
+        internal static string use_the_buttons_below_to_create_or_update_penalty_rules_linked_to_loan_products {
+            get {
+                return ResourceManager.GetString("use_the_buttons_below_to_create_or_update_penalty_rules_linked_to_loan_products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value &amp; Application Mode.
+        /// </summary>
+        internal static string value_application_mode {
+            get {
+                return ResourceManager.GetString("value_application_mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Enforcement.
+        /// </summary>
+        internal static string weekend_enforcement {
+            get {
+                return ResourceManager.GetString("weekend_enforcement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When checked, the system treats PenaltyValue as a percentage (e.g., 2%). Recommended max: 10%.
+        /// </summary>
+        internal static string when_checked_the_system_treats_penaltyvalue_as_a_percentage_eg_2_recommended_max_10 {
+            get {
+                return ResourceManager.GetString("when_checked_the_system_treats_penaltyvalue_as_a_percentage_eg_2_recommended_max_" +
+                        "10", resourceCulture);
             }
         }
     }

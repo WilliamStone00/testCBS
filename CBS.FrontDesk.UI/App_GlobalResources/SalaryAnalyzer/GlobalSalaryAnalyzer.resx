@@ -117,274 +117,151 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddressAnomaliesLikeOverpayments" xml:space="preserve">
+  <data name="address_anomalies_like_overpayments" xml:space="preserve">
     <value>Address anomalies like overpayments or missing records promptly</value>
   </data>
-  <data name="AddressDiscrepanciesLikeMismatchesOrErrorsPromptly" xml:space="preserve">
+  <data name="address_discrepancies_like_mismatches_or_errors_promptly" xml:space="preserve">
     <value>Address discrepancies like mismatches or errors promptly</value>
   </data>
-  <data name="buttonToAnalyzeUploadedSalaryData" xml:space="preserve">
+  <data name="button_to_analyze_uploaded_salary_data" xml:space="preserve">
     <value>button to analyze uploaded salary data</value>
   </data>
-  <data name="buttonToCheckPreviouslyAnalyzedResults" xml:space="preserve">
+  <data name="button_to_check_previously_analyzed_results" xml:space="preserve">
     <value>button to check previously analyzed results</value>
   </data>
-  <data name="buttonToProcessDetailedSalaryData" xml:space="preserve">
+  <data name="button_to_process_detailed_salary_data" xml:space="preserve">
     <value>button to process detailed salary data</value>
   </data>
-  <data name="buttonToRemoveFilesThatAreIncorrect" xml:space="preserve">
+  <data name="button_to_remove_files_that_are_incorrect" xml:space="preserve">
     <value>button to remove files that are incorrect, outdated, or no longer needed. Ensure you confirm the action as deleted files cannot be recovered</value>
   </data>
-  <data name="buttonToRetrieveAcopyOfTheUploadedFile" xml:space="preserve">
+  <data name="button_to_retrieve_acopy_of_the_uploaded_file" xml:space="preserve">
     <value>button to retrieve a copy of the uploaded file for offline review or backup</value>
   </data>
-  <data name="buttonToViewDetailedAnalysis" xml:space="preserve">
+  <data name="button_to_view_detailed_analysis" xml:space="preserve">
     <value>button to view detailed analysis and records related to the uploaded file. This opens the details in a new tab for convenience</value>
   </data>
-  <data name="buttoToAccessPreviouslyAnalyzedResults" xml:space="preserve">
+  <data name="butto_to_access_previously_analyzed_results" xml:space="preserve">
     <value>button to access previously analyzed results</value>
   </data>
-  <data name="Charges" xml:space="preserve">
-    <value>Charges</value>
-  </data>
-  <data name="CivilServants" xml:space="preserve">
-    <value>Civil servants</value>
-  </data>
-  <data name="ClickOnThe" xml:space="preserve">
-    <value>Click on the</value>
-  </data>
-  <data name="ClickThe" xml:space="preserve">
-    <value>Click the</value>
-  </data>
-  <data name="DailyServers" xml:space="preserve">
+  <data name="daily_servers" xml:space="preserve">
     <value>Daily servers</value>
   </data>
-  <data name="DeleteAnalysis" xml:space="preserve">
-    <value>Delete analysis</value>
-  </data>
-  <data name="DeleteFiles" xml:space="preserve">
-    <value>Delete files</value>
-  </data>
-  <data name="DeleteInvalidUploadsToMaintainClean" xml:space="preserve">
+  <data name="delete_invalid_uploads_to_maintain_clean" xml:space="preserve">
     <value>Delete invalid uploads to maintain clean and accurate records</value>
   </data>
-  <data name="Deposit" xml:space="preserve">
-    <value>Deposit</value>
-  </data>
-  <data name="DetailedResults" xml:space="preserve">
-    <value>Detailed results</value>
-  </data>
-  <data name="DetailedSalaryAnalysisResults" xml:space="preserve">
+  <data name="detailed_salary_analysis_results" xml:space="preserve">
     <value>Detailed Salary Analysis Results</value>
   </data>
-  <data name="DownloadSalaryFiles" xml:space="preserve">
+  <data name="download_salary_files" xml:space="preserve">
     <value>Download salary files</value>
   </data>
-  <data name="EditableFields" xml:space="preserve">
-    <value>Editable fields</value>
-  </data>
-  <data name="EditAnalysisResultsToIncorporateNecessaryUpdates" xml:space="preserve">
+  <data name="edit_analysis_results_to_incorporate_necessary_updates" xml:space="preserve">
     <value>Edit analysis results to incorporate necessary updates</value>
   </data>
-  <data name="EditAnalyzedSalaryRecordsForCorrections" xml:space="preserve">
+  <data name="edit_analyzed_salary_records_for_corrections" xml:space="preserve">
     <value>Edit analyzed salary records for corrections or updates when necessary</value>
   </data>
-  <data name="EnsureAllUploadedSalaryFilesAreAccurate" xml:space="preserve">
+  <data name="elected_staff" xml:space="preserve">
+    <value>Elected Staff</value>
+  </data>
+  <data name="ensure_all_uploaded_salary_files_are_accurate" xml:space="preserve">
     <value>Ensure all uploaded salary files are accurate and in the correct format</value>
   </data>
-  <data name="EnsureDataIntegrityByValidatingUploadedSalaryRecords" xml:space="preserve">
+  <data name="ensure_data_integrity_by_validating_uploaded_salary_records" xml:space="preserve">
     <value>Ensure data integrity by validating uploaded salary records</value>
   </data>
-  <data name="ExportSalaryAnalysisToExcel" xml:space="preserve">
+  <data name="export_salary_analysis_to_excel" xml:space="preserve">
     <value>Export salary analysis to excel</value>
   </data>
-  <data name="ExportTheResultsToExcelForOfflineReview" xml:space="preserve">
+  <data name="export_the_results_to_excel_for_offline_review" xml:space="preserve">
     <value>Export the results to Excel for offline review and further analysis</value>
   </data>
-  <data name="FileName" xml:space="preserve">
-    <value>File name</value>
-  </data>
-  <data name="FileNaming" xml:space="preserve">
-    <value>File naming</value>
-  </data>
-  <data name="ForMinorCorrectionsEditSalaryRelated" xml:space="preserve">
+  <data name="for_minor_corrections_edit_salary_related" xml:space="preserve">
     <value>For minor corrections, edit salary-related data after viewing the file details to align with updated requirements</value>
   </data>
-  <data name="InternalStaff" xml:space="preserve">
-    <value>Internal staff</value>
-  </data>
-  <data name="MakeSureUploadedFilesHaveMeaningfulNames" xml:space="preserve">
+  <data name="make_sure_uploaded_files_have_meaningful_names" xml:space="preserve">
     <value>Make sure uploaded files have meaningful names to help with easy identification during reviews</value>
   </data>
-  <data name="Matricule" xml:space="preserve">
-    <value>Matricule</value>
+  <data name="micro_loan" xml:space="preserve">
+    <value>Micro Loan</value>
   </data>
-  <data name="MonitorTheProcessingStatusOfSalaryFiles" xml:space="preserve">
+  <data name="monitor_the_processing_status_of_salary_files" xml:space="preserve">
     <value>Monitor the processing status of salary files through the file details page</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NetSalary" xml:space="preserve">
-    <value>Net Salary</value>
-  </data>
-  <data name="NoFilesIsAvailableForAnalysis" xml:space="preserve">
+  <data name="no_files_is_available_for_analysis" xml:space="preserve">
     <value>No files is available for analysis</value>
   </data>
-  <data name="NoSalaryAnalysisResultsFound" xml:space="preserve">
+  <data name="no_salary_analysis_results_found" xml:space="preserve">
     <value>No salary analysis results found</value>
   </data>
-  <data name="NoSalaryUploadsFound" xml:space="preserve">
+  <data name="no_salary_uploads_found" xml:space="preserve">
     <value>No salary uploads found</value>
   </data>
-  <data name="PrivateInstitutions" xml:space="preserve">
-    <value>Private institutions</value>
+  <data name="private_visible_to_this_branch_only" xml:space="preserve">
+    <value>Private (visible to this branch only)</value>
   </data>
-  <data name="RegularlyReviewUploadedFilesToVerifyTheirAccuracy" xml:space="preserve">
-    <value>Regularly review uploaded files to verify their accuracy and ensure all payroll operations align with uploaded data</value>
+  <data name="public_visible_to_other_branches" xml:space="preserve">
+    <value>Public (visible to other branches)</value>
   </data>
-  <data name="RegularlyVerifyAnalyzedResults" xml:space="preserve">
+  <data name="regularly_verify_analyzed_results" xml:space="preserve">
     <value>Regularly verify analyzed results against payroll to ensure accuracy</value>
   </data>
-  <data name="RegularReviews" xml:space="preserve">
-    <value>Regular reviews</value>
-  </data>
-  <data name="Repayment" xml:space="preserve">
-    <value>Repayment</value>
-  </data>
-  <data name="ReviewDiscrepanciesOrUnusualFigures" xml:space="preserve">
+  <data name="review_discrepancies_or_unusual_figures" xml:space="preserve">
     <value>Review discrepancies or unusual figures and address them promptly</value>
   </data>
-  <data name="RunAnalysis" xml:space="preserve">
-    <value>Run analysis</value>
-  </data>
-  <data name="RunSalaryAnalysis" xml:space="preserve">
+  <data name="run_salary_analysis" xml:space="preserve">
     <value>Run Salary Analysis</value>
   </data>
-  <data name="SalaryAnalysis" xml:space="preserve">
-    <value>Salary analysis</value>
+  <data name="salary_after_deposit" xml:space="preserve">
+    <value>Salary After Deposit</value>
   </data>
-  <data name="SalaryAnalysisDashboard" xml:space="preserve">
+  <data name="salary_analysis_dashboard" xml:space="preserve">
     <value>Salary Analysis Dashboard</value>
   </data>
-  <data name="SalaryType" xml:space="preserve">
-    <value>Salary type</value>
-  </data>
-  <data name="SalaryUploadForm" xml:space="preserve">
-    <value>Salary Upload Form</value>
-  </data>
-  <data name="SALARY_ANALYSIS_RESULT_SUMMARY" xml:space="preserve">
+  <data name="salary_analysis_result_summary" xml:space="preserve">
     <value>SALARY ANALYSIS RESULT SUMMARY</value>
   </data>
-  <data name="SALARY_SUMMARY" xml:space="preserve">
+  <data name="salary_summary" xml:space="preserve">
     <value>SALARY SUMMARY</value>
   </data>
-  <data name="Savings" xml:space="preserve">
-    <value>Savings</value>
+  <data name="salary_upload_form" xml:space="preserve">
+    <value>Salary Upload Form</value>
   </data>
-  <data name="SelectSalaryFileFormattedMatricule" xml:space="preserve">
+  <data name="select_salary_file_formatted_matricule" xml:space="preserve">
     <value>Select salary file (Formatted: Matricule, Name, NetSalary)</value>
   </data>
-  <data name="Shares" xml:space="preserve">
-    <value>Shares</value>
+  <data name="special_loans_overdraft" xml:space="preserve">
+    <value>Special Loans &amp; Overdraft</value>
   </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Surname</value>
-  </data>
-  <data name="TIPS" xml:space="preserve">
-    <value>TIPS</value>
-  </data>
-  <data name="TipsForEfficientUse" xml:space="preserve">
+  <data name="tips_for_efficient_use" xml:space="preserve">
     <value>Tips for efficient use</value>
   </data>
-  <data name="TotalBranches" xml:space="preserve">
-    <value>Total branches</value>
-  </data>
-  <data name="TotalCapital" xml:space="preserve">
-    <value>Total capital</value>
-  </data>
-  <data name="TotalCharges" xml:space="preserve">
-    <value>Total charges</value>
-  </data>
-  <data name="TotalDeposit" xml:space="preserve">
-    <value>Total deposit</value>
-  </data>
-  <data name="TotalInterest" xml:space="preserve">
-    <value>Total interest</value>
-  </data>
-  <data name="TotalMembers" xml:space="preserve">
-    <value>Total members</value>
-  </data>
-  <data name="TotalNetSalary" xml:space="preserve">
+  <data name="total_net_salary" xml:space="preserve">
     <value>Gross Amount</value>
   </data>
-  <data name="TotalRepayment" xml:space="preserve">
-    <value>Total repayment</value>
-  </data>
-  <data name="TotalSalary" xml:space="preserve">
-    <value>Net Amount</value>
-  </data>
-  <data name="TotalSavings" xml:space="preserve">
-    <value>Total savings</value>
-  </data>
-  <data name="TotalShares" xml:space="preserve">
-    <value>Total shares</value>
-  </data>
-  <data name="TotalVAT" xml:space="preserve">
-    <value>Total VAT</value>
-  </data>
-  <data name="TrackStatus" xml:space="preserve">
-    <value>Track status</value>
-  </data>
-  <data name="UploadAndManageEmployeeSalaryFilesEasilyAndEfficiently" xml:space="preserve">
+  <data name="upload_and_manage_employee_salary_files_easily_and_efficiently" xml:space="preserve">
     <value>Upload and manage employee salary files easily and efficiently. Use the tools below to upload new salary files or view existing records</value>
   </data>
-  <data name="UploadDate" xml:space="preserve">
-    <value>Upload date</value>
-  </data>
-  <data name="UploadedBy" xml:space="preserve">
-    <value>Uploaded by</value>
-  </data>
-  <data name="UploadedFiles" xml:space="preserve">
-    <value>Uploaded files</value>
-  </data>
-  <data name="UploadedOn" xml:space="preserve">
-    <value>Uploaded on</value>
-  </data>
-  <data name="UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords" xml:space="preserve">
+  <data name="use_search_filters_to_quickly_locate_specific_employee_salary_records" xml:space="preserve">
     <value>Use search filters to quickly locate specific employee salary records</value>
   </data>
-  <data name="UseSearchToolsToLocateSpecificAnalysisResultsQuickly" xml:space="preserve">
+  <data name="use_search_tools_to_locate_specific_analysis_results_quickly" xml:space="preserve">
     <value>Use search tools to locate specific analysis results quickly</value>
   </data>
-  <data name="UseThe" xml:space="preserve">
-    <value>Use the</value>
-  </data>
-  <data name="UseTheDetailedTableBelowToViewIndividualSalaryBreakdowns" xml:space="preserve">
+  <data name="use_the_detailed_table_below_to_view_individual_salary_breakdowns" xml:space="preserve">
     <value>Use the detailed table below to view individual salary breakdowns</value>
   </data>
-  <data name="VAT" xml:space="preserve">
-    <value>VAT</value>
-  </data>
-  <data name="ViewAnalyzeAndManageDetailedSalaryAnalysisResults" xml:space="preserve">
-    <value>View, analyze, and manage detailed salary analysis results. Use the tools below to explore data or view existing records</value>
-  </data>
-  <data name="ViewAnalyzeAndManageEmployeeSalary" xml:space="preserve">
-    <value>View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records</value>
-  </data>
-  <data name="ViewAnalyzedResults" xml:space="preserve">
+  <data name="view_analyzed_results" xml:space="preserve">
     <value>View analyzed results</value>
   </data>
-  <data name="ViewDetailedResults" xml:space="preserve">
-    <value>View Detailed Results</value>
+  <data name="view_analyze_and_manage_detailed_salary_analysis_results" xml:space="preserve">
+    <value>View, analyze, and manage detailed salary analysis results. Use the tools below to explore data or view existing records</value>
   </data>
-  <data name="ViewFileDetails" xml:space="preserve">
-    <value>View file details</value>
+  <data name="view_analyze_and_manage_employee_salary" xml:space="preserve">
+    <value>View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records</value>
   </data>
-  <data name="ViewResultOfAnalyzedSalary" xml:space="preserve">
+  <data name="view_result_of_analyzed_salary" xml:space="preserve">
     <value>View Result Of Analyzed Salary</value>
-  </data>
-  <data name="ViewResults" xml:space="preserve">
-    <value>View results</value>
   </data>
 </root>

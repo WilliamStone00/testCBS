@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 
 
@@ -9,12 +9,12 @@
                 <table id="myDataTable" class="table table-bordered table-striped">
                     <thead class="table-light">
                         <tr>
-                            <th>@GlobalSalaryUpload.FileName</th>
+                            <th>@GlobalShared.File_Name</th>
                             <th>File Type</th>
                             @*<th>Branch</th>*@
                             <th>Visibility</th>
-                            <th>@GlobalSalaryUpload.UploadedBy</th>
-                            <th>@GlobalSalaryUpload.UploadedOn</th>
+                            <th>@GlobalShared.Uploaded_By</th>
+                            <th>@GlobalShared.Uploaded_On</th>
                             @*<th>@GlobalShared.Status</th>*@
                             <th style="width:1%;">@GlobalShared.Action</th>
                         </tr>

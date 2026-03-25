@@ -117,34 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="IsThisRoleTeller" xml:space="preserve">
+  <data name="is_this_role_teller" xml:space="preserve">
     <value>Is this role teller</value>
   </data>
-  <data name="MenuText" xml:space="preserve">
+  <data name="menu_text" xml:space="preserve">
     <value>Menu text</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="NoPermisionAssociatedToSelectedRole" xml:space="preserve">
+  <data name="no_permision_associated_to_selected_role" xml:space="preserve">
     <value>No Permision associated to selected role</value>
   </data>
-  <data name="PermisionAssociatedToRole" xml:space="preserve">
+  <data name="permision_associated_to_role" xml:space="preserve">
     <value>Permision associated to role</value>
   </data>
-  <data name="Teller" xml:space="preserve">
-    <value>Teller</value>
-  </data>
-  <data name="ViewPermissions" xml:space="preserve">
+  <data name="view_permissions" xml:space="preserve">
     <value>View permissions</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
   </data>
 </root>

@@ -1,19 +1,19 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection>
-
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportSection.ReportSection>
+@using Resources
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Sections</h5>
     <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportSectionCreateModal()">
-        <i class="mdi mdi-plus"></i> New
+        <i class="mdi mdi-plus"></i> @GlobalShared.New
     </a>
 </div>
 
 <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable_section">
     <thead>
         <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Sort Order</th>
-            <th>Actions</th>
+            <th>@GlobalShared.Code</th>
+            <th>@GlobalShared.Name</th>
+            <th>@GlobalShared.sort_order</th>
+            <th>@GlobalShared.Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
                 <td>@item.SortOrder</td>
                 <td>
                     <a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="openReportSectionEditModal('@item.Id')">
-                        <i class="mdi mdi-pencil"></i> Edit
+                        <i class="mdi mdi-pencil"></i> @GlobalShared.Edit
                     </a>
                 </td>
             </tr>

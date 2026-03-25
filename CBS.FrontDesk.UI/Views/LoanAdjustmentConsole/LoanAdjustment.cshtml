@@ -1,20 +1,20 @@
-﻿@{
+@{
     ViewBag.Title = "Loan Adjustment Console";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-pencil-ruler-outline me-2"></i> Loan Adjustment Console
+                    <i class="mdi mdi-pencil-ruler-outline me-2"></i> @GlobalLoanAdjustmentConsole.loan_adjustment_console
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Manage and apply <strong>manual adjustments or waivers</strong> to loans across all branches.
+                    @Html.Raw(@GlobalLoanAdjustmentConsole.manage_and_apply_manual_adjustments_or_waivers_to_loans_across_all_branches).
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    <strong>Note:</strong> This tool is intended for <u>waivers and corrections</u> — not for loan rescheduling or restructuring.
+                    <strong>@GlobalShared.Note:</strong> @Html.Raw(@GlobalLoanAdjustmentConsole.this_tool_is_intended_for_waivers_and_corrections_not_for_loan_rescheduling_or_restructuring).
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Reviewing Loan Adjustments</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalLoanAdjustmentConsole.tips_for_reviewing_loan_adjustments</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -35,23 +35,23 @@
             <ul class="mb-0">
                 <li>
                     <i class="mdi mdi-pencil-outline text-success me-2"></i>
-                    <strong>Adjustment Scope:</strong> Adjust fields like <span class="fw-semibold text-dark">Loan Amount, Outstanding Balance, Interest, VAT, and Penalty</span>.
+                    <strong>@GlobalShared.adjustment_scope:</strong> @GlobalLoanAdjustmentConsole.adjust_fields_like <span class="fw-semibold text-dark">@GlobalLoanAdjustmentConsole.loan_amount_outstanding_balance_interest_vat_and_penalty</span>.
                 </li>
                 <li>
                     <i class="mdi mdi-file-cancel-outline text-danger me-2"></i>
-                    <strong>Exclusion:</strong> This console does <u>not</u> manage loan restructuring or rescheduling.
+                    <strong>@GlobalShared.exclusion:</strong> @Html.Raw(@GlobalLoanAdjustmentConsole.this_console_does_not_manage_loan_restructuring_or_rescheduling).
                 </li>
                 <li>
                     <i class="mdi mdi-account-search-outline text-dark me-2"></i>
-                    <strong>Quick Search:</strong> Filter by Loan ID, Member ID, or date.
+                    <strong>@GlobalShared.quick_search:</strong> @GlobalLoanAdjustmentConsole.filter_by_loan_id_member_id_or_date.
                 </li>
                 <li>
                     <i class="mdi mdi-domain text-info me-2"></i>
-                    <strong>Branch Filter:</strong> Narrow results by location.
+                    <strong>@GlobalShared.Branch_Filter:</strong> @GlobalLoanAdjustmentConsole.narrow_results_by_location.
                 </li>
                 <li>
                     <i class="mdi mdi-file-export-outline text-success me-2"></i>
-                    <strong>Export:</strong> Use the export button to download adjustment records to Excel.
+                    <strong>@GlobalShared.Export:</strong> @GlobalLoanAdjustmentConsole.use_the_export_button_to_download_adjustment_records_to_excel.
                 </li>
             </ul>
         </div>
@@ -60,45 +60,45 @@
 
 <!-- Filters Section -->
 <div class="card shadow p-3 mb-2">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Filter Adjustment Requests</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLoanAdjustmentConsole.filter_adjustment_requests</h5>
 
     <div class="card p-3 mb-3 bg-light">
         <!-- Toggle Controls -->
         <div class="row mb-3">
             <div class="col-md-6 form-check">
                 <input type="checkbox" class="form-check-input" id="byBranch" />
-                <label class="form-check-label fw-bold" for="byBranch">Filter by Branch</label>
+                <label class="form-check-label fw-bold" for="byBranch">@GlobalShared.Filter_by_Branch</label>
             </div>
             <div class="col-md-6 form-check">
                 <input type="checkbox" class="form-check-input" id="byDate" />
-                <label class="form-check-label fw-bold" for="byDate">Filter by Date</label>
+                <label class="form-check-label fw-bold" for="byDate">@GlobalShared.Filter_by_Date</label>
             </div>
         </div>
 
         <!-- Branch Filter -->
         <div id="branchFilterSection" class="row mb-3" style="display:none;">
             <div class="col-md-12">
-                <label class="form-label fw-bold">Select Branch</label>
+                <label class="form-label fw-bold">@GlobalShared.Select_Branch</label>
                 @Html.DropDownList("branchInput", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-control shadow-sm select2", @id = "branchInput" })
             </div>
         </div>
 
         <!-- Date Range Filter -->
         <div id="dateRangeSection" class="row mb-3" style="display:none;">
-            <div class="col-md-6"><input type="datetime-local" id="startDate" class="form-control" placeholder="Start Date" /></div>
-            <div class="col-md-6"><input type="datetime-local" id="endDate" class="form-control" placeholder="End Date" /></div>
+            <div class="col-md-6"><input type="datetime-local" id="startDate" class="form-control" placeholder="@GlobalShared.Start_Date" /></div>
+            <div class="col-md-6"><input type="datetime-local" id="endDate" class="form-control" placeholder="@GlobalShared.End_Date" /></div>
         </div>
 
         <!-- Base Filters -->
         <div class="row">
-            <div class="col-md-4 mb-2"><input type="text" id="loanId" class="form-control" placeholder="Loan ID" /></div>
-            <div class="col-md-4 mb-2"><input type="text" id="memberId" class="form-control" placeholder="Member ID" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="loanId" class="form-control" placeholder="@GlobalShared.Loan_ID" /></div>
+            <div class="col-md-4 mb-2"><input type="text" id="memberId" class="form-control" placeholder="@GlobalShared.Member_ID" /></div>
             <div class="col-md-4 mb-2">
                 <select id="adjustmentStatus" class="form-select shadow-sm">
-                    <option value="">All Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="">@GlobalShared.All_status</option>
+                    <option value="Pending">@GlobalShared.Pending</option>
+                    <option value="Approved">@GlobalShared.Approved</option>
+                    <option value="Rejected">@GlobalShared.Rejected</option>
                 </select>
             </div>
         </div>
@@ -108,15 +108,15 @@
     <!-- Action Buttons -->
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
-            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Apply Filter</button>
-            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset</button>
+            <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
+            <button id="resetFilterBtn" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
         </div>
     </div>
 </div>
 
 <!-- Results Card -->
 <div id="loanDataCard" class="card p-3 shadow mb-4" style="display: none;">
-    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> Loan Adjustment Requests</h5>
+    <h5 class="text-primary mb-1"><i class="mdi mdi-table"></i> @GlobalLoanAdjustmentConsole.loan_adjustment_requests</h5>
     <div class="table-responsive">
         <div class="card-body" id="datalistingview">
             @Html.Partial("_LoanAdjustmentData")

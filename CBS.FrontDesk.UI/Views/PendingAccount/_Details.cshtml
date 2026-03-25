@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountDto
-
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.PendingAccountDto
+@using Resources
 @functions{
     private string ChangeTypeClass(string value)
     {
@@ -53,10 +53,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> Account Request Details
+                <i class="mdi mdi-book-open-page-variant-outline me-2"></i> @GlobalPendingAccount.account_request_details
             </h1>
             <p class="card-text text-muted mb-1">
-                Detailed view of the selected account record.
+                @GlobalPendingAccount.detailed_view_of_the_selected_account_record.
             </p>
         </div>
     </div>
@@ -64,18 +64,18 @@
     <div class="row">
         <!-- Left Column: Identity & Hierarchy -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Identity & Hierarchy</h6>
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @GlobalPendingAccount.identity_hierarchy</h6>
             <table class="table table-sm table-bordered">
                 <tr><td class="fw-bold">Id</td><td>@(Model?.Id ?? "-")</td></tr>
-                <tr><td class="fw-bold">Scope</td><td>@(Model?.Scope ?? "-")</td></tr>
-                <tr><td class="fw-bold">Code</td><td>@(Model?.Code ?? "-")</td></tr>
-                <tr><td class="fw-bold">Name (EN)</td><td>@(Model?.NameEn ?? "-")</td></tr>
-                <tr><td class="fw-bold">Name (FR)</td><td>@(Model?.NameFr ?? "-")</td></tr>
-                <tr><td class="fw-bold">Class</td><td>@(Model?.Class ?? "-")</td></tr>
-                <tr><td class="fw-bold">Display Name</td><td>@(Model?.Name ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Scope</td><td>@(Model?.Scope ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Code</td><td>@(Model?.Code ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Name (EN)</td><td>@(Model?.NameEn ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Name (FR)</td><td>@(Model?.NameFr ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Class</td><td>@(Model?.Class ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.display_name</td><td>@(Model?.Name ?? "-")</td></tr>
 
                @* <tr><td class="fw-bold">Parent Id</td><td>@(Model?.ParentId ?? "-")</td></tr>*@
-                <tr><td class="fw-bold">Parent Code</td><td>@(Model?.ParentCode ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.parent_code</td><td>@(Model?.ParentCode ?? "-")</td></tr>
 
               @*  <tr><td class="fw-bold">Path Seed</td><td>@(string.IsNullOrWhiteSpace(Model?.PathSeed) ? "-" : Model.PathSeed)</td></tr>
                 <tr><td class="fw-bold">Depth Seed</td><td>@(Model?.DepthSeed?.ToString() ?? "-")</td></tr>*@
@@ -84,10 +84,10 @@
 
         <!-- Right Column: Ownership / Mapping / Flags -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> Ownership, Mapping & Flags</h6>
+            <h6 class="text-primary"><i class="mdi mdi-cog-outline me-2"></i> @GlobalPendingAccount.ownership_mapping_flags</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Affiliate</td>
+                    <td class="fw-bold">@GlobalShared.Affiliate</td>
                     <td>@((Model?.AffiliateName ?? Model?.AffiliateId) is string av && !string.IsNullOrWhiteSpace(av) ? av : "-")</td>
                 </tr>
               @*  <tr>
@@ -95,7 +95,7 @@
                     <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateId) ? "-" : Model.AffiliateId)</td>
                 </tr>*@
                 <tr>
-                    <td class="fw-bold">Branch</td>
+                    <td class="fw-bold">@GlobalShared.Branch</td>
                     <td>@((Model?.BranchName ?? Model?.BranchId) is string bv && !string.IsNullOrWhiteSpace(bv) ? bv : "-")</td>
                 </tr>
                 @*<tr>
@@ -103,11 +103,11 @@
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchName) ? "-" : Model.BranchName)</td>
                 </tr>*@
                 <tr>
-                    <td class="fw-bold">Branch Code</td>
+                    <td class="fw-bold">@GlobalShared.Branch_Code</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.BranchCode) ? "-" : Model.BranchCode)</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Affiliate Account</td>
+                    <td class="fw-bold">@GlobalShared.Affiliate_Account</td>
                     <td>
                         @{
                             var aa = (Model?.AffiliateAccountName, Model?.AffiliateAccountCode, Model?.AffiliateAccountId);
@@ -124,7 +124,7 @@
                     <td>@(string.IsNullOrWhiteSpace(Model?.AffiliateAccountId) ? "-" : Model.AffiliateAccountId)</td>
                 </tr>*@
                 <tr>
-                    <td class="fw-bold">HO PCMF Account</td>
+                    <td class="fw-bold">@GlobalPendingAccount.ho_pcmf_account</td>
                     <td>
                         @{
                             var ho = (Model?.HoPcmfAccountName, Model?.HoPcmfAccountCode, Model?.HoPcmfAccountId);
@@ -143,7 +143,7 @@
 
                 <!-- Change type + Update reference -->
                 <tr>
-                    <td class="fw-bold">Change Type</td>
+                    <td class="fw-bold">@GlobalShared.change_type</td>
                     <td>
                         @{
                             var changeTypeValLocal = Model?.ChangeType ?? "";
@@ -153,17 +153,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Update Reference</td>
+                    <td class="fw-bold">@GlobalShared.update_reference</td>
                     <td>@(string.IsNullOrWhiteSpace(Model?.UpdateReference) ? "-" : Model.UpdateReference)</td>
                 </tr>
 
-                <tr><td class="fw-bold">Posting Allowed</td><td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td></tr>
-                <tr><td class="fw-bold">Requires Mapping</td><td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Posting_Allowed</td><td>@(Model?.PostingAllowed == true ? "Yes" : "No")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.requires_mapping</td><td>@(Model?.RequiresMapping == true ? "Yes" : "No")</td></tr>
 
-                <tr><td class="fw-bold">Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
 
                 <tr>
-                    <td class="fw-bold">Status</td>
+                    <td class="fw-bold">@GlobalShared.Status</td>
                     <td>
                         @{
                             var statusValLocal = Model?.Status ?? string.Empty;
@@ -179,10 +179,10 @@
     <!-- Update Details (Old Values & Update Kind) -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-restore-alert me-2"></i> Update Details</h6>
+            <h6 class="text-primary"><i class="mdi mdi-restore-alert me-2"></i> @GlobalShared.update_details</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Account Update Type</td>
+                    <td class="fw-bold">@GlobalShared.account_update_type</td>
                     <td>
                         @{
                             var ukValLocal = Model?.AccountUpdateKind ?? "";
@@ -192,9 +192,9 @@
                         <span class="badge @ukClsLocal">@ukTextLocal</span>
                     </td>
                 </tr>
-                <tr><td class="fw-bold">Old Account Number</td><td>@(string.IsNullOrWhiteSpace(Model?.CodeOld) ? "-" : Model.CodeOld)</td></tr>
-                <tr><td class="fw-bold">Old Name (EN)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameEnOld) ? "-" : Model.NameEnOld)</td></tr>
-                <tr><td class="fw-bold">Old Name (FR)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameFrOld) ? "-" : Model.NameFrOld)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Old_Account_Number</td><td>@(string.IsNullOrWhiteSpace(Model?.CodeOld) ? "-" : Model.CodeOld)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.old_name (EN)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameEnOld) ? "-" : Model.NameEnOld)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.old_name (FR)</td><td>@(string.IsNullOrWhiteSpace(Model?.NameFrOld) ? "-" : Model.NameFrOld)</td></tr>
             </table>
         </div>
     </div>
@@ -202,16 +202,16 @@
     <!-- Request / Approval Section -->
     <div class="row mt-3">
         <div class="col-12">
-            <h6 class="text-primary"><i class="mdi mdi-account-check-outline me-2"></i> Request & Approval</h6>
+            <h6 class="text-primary"><i class="mdi mdi-account-check-outline me-2"></i> @GlobalShared.request & @GlobalShared.Approval</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Requested By</td><td>@(string.IsNullOrWhiteSpace(Model?.RequestedBy) ? "-" : Model.RequestedBy)</td></tr>
-                <tr><td class="fw-bold">Requested At (UTC)</td><td>@(Model?.RequestedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
-                <tr><td class="fw-bold">Approved By</td><td>@(string.IsNullOrWhiteSpace(Model?.ApprovedBy) ? "-" : Model.ApprovedBy)</td></tr>
-                <tr><td class="fw-bold">Approved At (UTC)</td><td>@(Model?.ApprovedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
-                <tr><td class="fw-bold">Rejected By</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectedBy) ? "-" : Model.RejectedBy)</td></tr>
-                <tr><td class="fw-bold">Rejected At (UTC)</td><td>@(Model?.RejectedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
-                <tr><td class="fw-bold">Rejection Reason</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectionReason) ? "-" : Model.RejectionReason)</td></tr>
-                <tr><td class="fw-bold">Request Notes</td><td>@(string.IsNullOrWhiteSpace(Model?.Notes) ? "-" : Model.Notes)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Requested_by</td><td>@(string.IsNullOrWhiteSpace(Model?.RequestedBy) ? "-" : Model.RequestedBy)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.requested_at (UTC)</td><td>@(Model?.RequestedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Approved_by</td><td>@(string.IsNullOrWhiteSpace(Model?.ApprovedBy) ? "-" : Model.ApprovedBy)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.approved_at (UTC)</td><td>@(Model?.ApprovedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Rejected_By</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectedBy) ? "-" : Model.RejectedBy)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.rejected_at (UTC)</td><td>@(Model?.RejectedAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.rejection_reason</td><td>@(string.IsNullOrWhiteSpace(Model?.RejectionReason) ? "-" : Model.RejectionReason)</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.request_notes</td><td>@(string.IsNullOrWhiteSpace(Model?.Notes) ? "-" : Model.Notes)</td></tr>
             </table>
         </div>
     </div>
@@ -219,21 +219,21 @@
     <!-- Audit & Lifecycle Section -->
     <div class="row mt-3">
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> Audit</h6>
+            <h6 class="text-primary"><i class="mdi mdi-timeline-clock-outline me-2"></i> @GlobalShared.Audit</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Created Date</td><td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Created_Date</td><td>@(Model?.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
              @*   <tr><td class="fw-bold">Modified Date</td><td>@(Model?.ModifiedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "-")</td></tr>
                 <tr><td class="fw-bold">Is Deleted</td><td>@(Model?.IsDeleted == true ? "Yes" : "No")</td></tr>*@
             </table>
         </div>
 
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-clipboard-text-outline me-2"></i> Other Metadata</h6>
+            <h6 class="text-primary"><i class="mdi mdi-clipboard-text-outline me-2"></i> @GlobalShared.other_metadata</h6>
             <table class="table table-sm table-bordered">
-                <tr><td class="fw-bold">Requested / Approval Reference</td><td>@(Model?.Reference ?? "-")</td></tr>
-                <tr><td class="fw-bold">Correlation Id</td><td>@(Model?.CorrelationId ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.requested / @GlobalShared.approval_reference</td><td>@(Model?.Reference ?? "-")</td></tr>
+                <tr><td class="fw-bold">@GlobalShared.Correlation_Id</td><td>@(Model?.CorrelationId ?? "-")</td></tr>
                 <tr>
-                    <td class="fw-bold">Status</td>
+                    <td class="fw-bold">@GlobalShared.Status</td>
                     <td>
                         @{
                             var statusValLocal2 = Model?.Status ?? string.Empty;

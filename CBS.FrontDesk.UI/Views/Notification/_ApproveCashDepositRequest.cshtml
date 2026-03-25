@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
     @using Resources
 @{
     ViewBag.Title = "View Cash Deposit Request Details";
@@ -22,7 +22,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    @GlobalNotification.RequestReferenceId :@Model.DepositNotificationDto.Id @GlobalNotification.Amount : XFA @Model.DepositNotificationDto.Amount
+                    @GlobalNotification.request_reference_id :@Model.DepositNotificationDto.Id @GlobalShared.Amount : XFA @Model.DepositNotificationDto.Amount
                 </button>
             </h2>
             <div class="card-body">
@@ -32,7 +32,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>@GlobalNotification.CashReplenishmentDetails</th>
+                                <th>@GlobalNotification.cash_replenishment_details</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -40,25 +40,25 @@
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
-                                    <td>@GlobalNotification.BranchOffice</td>
+                                    <td>@GlobalShared.Branch_Office</td>
                                     <td>@Model.DepositNotificationDto.BranchOffice </td>
                                 </tr>
                             }
 
                             <tr>
-                                <td>@GlobalNotification.AmountToDeposit</td>
+                                <td>@GlobalNotification.amount_to_deposit</td>
                                 <td>XAF @{(Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} </td>
                             </tr>
                             <tr>
-                                <td> @GlobalNotification.Message</td>
+                                <td> @GlobalShared.Message</td>
                                 <td>@Model.DepositNotificationDto.Message </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.IssuedBy </td>
+                                <td>@GlobalShared.Issued_By </td>
                                 <td> @Model.DepositNotificationDto.IssuedBy </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.IssuedDate</td>
+                                <td>@GlobalShared.Issued_Date</td>
                                 <td>@Model.DepositNotificationDto.IssueDate </td>
                             </tr>
                             <tr>
@@ -92,20 +92,20 @@
                     </table>
                 </div>
                 <div class="card card-action mb-5">
-                    <h5 class="card-title">@GlobalNotification.BankDepositRequestStatus</h5>
+                    <h5 class="card-title">@GlobalNotification.bank_deposit_request_status</h5>
                     <div class="card-body">
                         <div class="mb-3 col-12 mb-0">
                             @if (@Model.DepositNotificationDto.IsApproved)
                             {
                                 <div class="alert alert-outline-success" role="alert">
-                                    <h6 class="alert-heading mb-1">@GlobalNotification.TheDepositCashRequestOfFCFA @{(Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} @GlobalNotification.IssuedBy @Model.DepositNotificationDto.IssuedBy @GlobalNotification.isAlreadyApproved.</h6>
+                                    <h6 class="alert-heading mb-1">@GlobalNotification.the_deposit_cash_request_of_fcfa @{(Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} @GlobalShared.Issued_By @Model.DepositNotificationDto.IssuedBy @GlobalShared.is_already_approved.</h6>
 
                                 </div>
                             }
                             else
                             {<div class="alert alert-outline-primary" role="alert">
-                                 <h6 class="alert-heading mb-1">@GlobalNotification.ReferenceId :@Model.DepositNotificationDto.Id  @GlobalNotification.withAmount XFA @{(Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} @GlobalNotification.hasNotYetBeenApproved</h6>
-                                 <p class="mb-0">@GlobalNotification.SelectSourceAccountToWhichTheVaultWillBe </p>
+                                 <h6 class="alert-heading mb-1">@GlobalShared.reference_id :@Model.DepositNotificationDto.Id  @GlobalNotification.with_amount XFA @{(Convert.ToDecimal(Model.DepositNotificationDto.Amount)).ToString("N");} @GlobalShared.has_not_yet_been_approved</h6>
+                                 <p class="mb-0">@GlobalNotification.select_source_account_to_which_the_vault_will_be </p>
                                 </div>
                             }
 
@@ -129,11 +129,11 @@
                                     <div class="form-check mb-3">
                                         <div class="form-check">
                                             @Html.CheckBoxFor(m => m.DepositNotificationDto.IsApproved, new { @class = "form-check-input" })
-                                            <label class="form-check-label" for="isActive">@GlobalNotification.TheCashReplenishmentRequestOfIssuedBy @Model.DepositNotificationDto.IssuedBy @GlobalNotification.hasBeenApproved</label>
+                                            <label class="form-check-label" for="isActive">@GlobalShared.the_cash_replenishment_request_of_issued_by @Model.DepositNotificationDto.IssuedBy @GlobalShared.has_been_approved</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary">@GlobalNotification.AlreadyApprovedAccountReplenishment</button>
+                                        <button type="submit" class="btn btn-primary">@GlobalNotification.already_approved_account_replenishment</button>
                                     </div>
 
                                 }
@@ -145,7 +145,7 @@
 
                                             @Html.DropDownListFor(m => m.DepositNotificationDto.Status, new SelectList(ViewBag.DepositDecisions == null ? "" : ViewBag.DepositDecisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "" })
                                             @Html.ValidationMessageFor(model => model.DepositNotificationDto.Status, "", new { @class = "text-danger" })
-                                            <label for="Account">@GlobalNotification.MakeDecision</label>
+                                            <label for="Account">@GlobalShared.make_decision</label>
                                         </div>
                                     </div>
                                     <div id="hideBranchID">
@@ -154,7 +154,7 @@
 
                                                 @Html.DropDownListFor(m => m.DepositNotificationDto.correpondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "correpondingBranchId" })
                                                 @Html.ValidationMessageFor(model => model.DepositNotificationDto.correpondingBranchId, "", new { @class = "text-danger" })
-                                                <label for="Account">@GlobalNotification.SelectBranch</label>
+                                                <label for="Account">@GlobalShared.Select_Branch</label>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
 
                                                 @Html.DropDownListFor(m => m.DepositNotificationDto.BankAccountId, new SelectList(ViewBag.Branch == null ? "" : ViewBag.Branch, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(model => model.DepositNotificationDto.BankAccountId, "", new { @class = "text-danger" })
-                                                <label for="Account">@GlobalNotification.SelectBankAccount </label>
+                                                <label for="Account">@GlobalNotification.select_bank_account </label>
                                             </div>
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                             @Html.TextAreaFor(m => m.DepositNotificationDto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
                                             @Html.ValidationMessageFor(model => model.DepositNotificationDto.ApprovedMessage, "", new { @class = "text-danger" })
 
-                                            <label for="Description"> @GlobalNotification.Comment</label>
+                                            <label for="Description"> @GlobalShared.Comment</label>
                                         </div>
                                     </div>
                                     <div class="col-12 text-end">

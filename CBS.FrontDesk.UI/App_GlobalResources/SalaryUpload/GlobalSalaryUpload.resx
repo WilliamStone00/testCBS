@@ -117,220 +117,487 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Activate" xml:space="preserve">
-    <value>Activate</value>
+  <data name="address_anomalies_like_incorrect_amounts_or_missing_records_promptly" xml:space="preserve">
+    <value>Address anomalies like incorrect amounts or missing records promptly</value>
   </data>
-  <data name="AddressAnomaliesLikeOverpaymentsOrMissingRecordsPromptly" xml:space="preserve">
+  <data name="address_anomalies_like_overpayments_or_missing_records_promptly" xml:space="preserve">
     <value>Address anomalies like overpayments or missing records promptly</value>
   </data>
-  <data name="beforeUploadingCivilServants" xml:space="preserve">
+  <data name="allowed_xlsx_or_csv_please_use_the_official_template_do_not_change_headers_or_column_order" xml:space="preserve">
+    <value>Allowed: &lt;code&gt;.xlsx&lt;/code&gt; or &lt;code&gt;.csv&lt;/code&gt;. Please use the official template — do not change headers or column order</value>
+  </data>
+  <data name="all_reexecution_actions_are_logged_for_audit_purposes" xml:space="preserve">
+    <value>All reexecution actions are logged for audit purposes</value>
+  </data>
+  <data name="analysed_files" xml:space="preserve">
+    <value>Analysed Files</value>
+  </data>
+  <data name="analysis_phase" xml:space="preserve">
+    <value>Analysis Phase</value>
+  </data>
+  <data name="any_deviation_may_result_in_validation_failure" xml:space="preserve">
+    <value>Any deviation may result in validation failure</value>
+  </data>
+  <data name="audit_trail_traceability" xml:space="preserve">
+    <value>Audit Trail &amp; Traceability</value>
+  </data>
+  <data name="authorized_usage_only" xml:space="preserve">
+    <value>Authorized Usage Only</value>
+  </data>
+  <data name="autopopulated_from_the_clicked_loan_execution_details" xml:space="preserve">
+    <value>Auto-populated from the clicked loan execution details</value>
+  </data>
+  <data name="available_for_execution" xml:space="preserve">
+    <value>Available for Execution</value>
+  </data>
+  <data name="bank_transfer" xml:space="preserve">
+    <value>Bank Transfer</value>
+  </data>
+  <data name="before_uploading_civil_servants" xml:space="preserve">
     <value>before uploading (e.g., Civil Servants, Private Institutions, Internal Staff, or Daily Servers)</value>
   </data>
-  <data name="BranchCode" xml:space="preserve">
-    <value>Branch code</value>
+  <data name="bg_builder" xml:space="preserve">
+    <value>BG Builder</value>
   </data>
-  <data name="BranchPayrollSummary" xml:space="preserve">
+  <data name="branch_and_gl_account_verification" xml:space="preserve">
+    <value>Branch and GL Account Verification</value>
+  </data>
+  <data name="branch_details" xml:space="preserve">
+    <value>Branch Details</value>
+  </data>
+  <data name="branch_payroll_summary" xml:space="preserve">
     <value>Branch payroll summary</value>
   </data>
-  <data name="buttonToAccessAllPreviouslyUploadedSalaryFiles" xml:space="preserve">
+  <data name="button_to_access_all_previously_uploaded_salary_files" xml:space="preserve">
     <value>button to access all previously uploaded salary files</value>
   </data>
-  <data name="buttonToAnalyzeUploadedSalaryData" xml:space="preserve">
+  <data name="button_to_analyze_uploaded_salary_data" xml:space="preserve">
     <value>button to analyze uploaded salary data</value>
   </data>
-  <data name="buttonToCheckPreviouslyAnalyzedResults" xml:space="preserve">
+  <data name="button_to_check_previously_analyzed_results" xml:space="preserve">
     <value>button to check previously analyzed results</value>
   </data>
-  <data name="buttonToRemoveFilesThatAreIncorrect" xml:space="preserve">
+  <data name="button_to_remove_files_that_are_incorrect" xml:space="preserve">
     <value>button to remove files that are incorrect, outdated, or no longer needed. Ensure you confirm the action as deleted files cannot be recovered</value>
   </data>
-  <data name="buttonToRetrieveAcopyOfTheUploadedFileForOfflineReviewOrBackup" xml:space="preserve">
+  <data name="button_to_retrieve_acopy_of_the_uploaded_file_for_offline_review_or_backup" xml:space="preserve">
     <value>button to retrieve a copy of the uploaded file for offline review or backup</value>
   </data>
-  <data name="buttonToViewDetailedAnalysis" xml:space="preserve">
+  <data name="button_to_view_detailed_analysis" xml:space="preserve">
     <value>button to view detailed analysis and records related to the uploaded file. This opens the details in a new tab for convenience</value>
   </data>
-  <data name="CivilServants" xml:space="preserve">
-    <value>Civil servants</value>
+  <data name="cash" xml:space="preserve">
+    <value>Cash</value>
   </data>
-  <data name="ClickOnThe" xml:space="preserve">
-    <value>Click on the</value>
+  <data name="choose_the_branch_that_owns_this_upload" xml:space="preserve">
+    <value>Choose the branch that owns this upload</value>
   </data>
-  <data name="ClickThe" xml:space="preserve">
-    <value>Click the</value>
+  <data name="click_on_loan_execution_details_from_any_file_to_view_statistics" xml:space="preserve">
+    <value>Click on "Loan Execution Details" from any file to view statistics</value>
   </data>
-  <data name="Deactivate" xml:space="preserve">
-    <value>Deactivate</value>
+  <data name="click_the_view_result_of_analyzed_share_month_button_to_check_previously_analyzed_results" xml:space="preserve">
+    <value>Click the &lt;strong&gt;"View Result Of Analyzed Share Month"&lt;/strong&gt; button to check previously analyzed results</value>
   </data>
-  <data name="DeleteFiles" xml:space="preserve">
-    <value>Delete files</value>
+  <data name="confirm_that_the_salary_batch_already_exists_in_the_system_and_was_only_partially_processed_this_interface_must_not_be_used_for_new_salary_uploads" xml:space="preserve">
+    <value>Confirm that the salary batch already exists in the system and was only partially processed. This interface must not be used for new salary uploads</value>
   </data>
-  <data name="DeleteInvalidUploadsToMaintainCleanAndAccurateRecords" xml:space="preserve">
+  <data name="delete_invalid_uploads_to_maintain_clean_and_accurate_records" xml:space="preserve">
     <value>Delete invalid uploads to maintain clean and accurate records</value>
   </data>
-  <data name="DoubleCheckFilesForFormattingErrors" xml:space="preserve">
+  <data name="detailed_view_of_loan_repayment_transaction" xml:space="preserve">
+    <value>Detailed view of loan repayment transaction</value>
+  </data>
+  <data name="double_check_files_for_formatting_errors" xml:space="preserve">
     <value>Double-check files for formatting errors (e.g., invalid Matricule, missing names, or incorrect salary amounts) before submission to avoid rejections</value>
   </data>
-  <data name="DownloadSalaryFiles" xml:space="preserve">
+  <data name="download_salary_files" xml:space="preserve">
     <value>Download salary files</value>
   </data>
-  <data name="EasilyManageAndUploadEmployeeSalaryFiles" xml:space="preserve">
+  <data name="duplicate_transaction_prevention" xml:space="preserve">
+    <value>Duplicate Transaction Prevention</value>
+  </data>
+  <data name="easily_manage_and_upload_employee_salary_files" xml:space="preserve">
     <value>Easily manage and upload employee salary files for various groups, including Civil Servants, Private Institutions, Internal Staff, and Daily Servers. Ensure accuracy and compliance with the required formats</value>
   </data>
-  <data name="EditableFields" xml:space="preserve">
-    <value>Editable fields</value>
-  </data>
-  <data name="EditAnalyzedSalaryRecordsForCorrectionsOrUpdatesWhenNecessary" xml:space="preserve">
+  <data name="edit_analyzed_salary_records_for_corrections_or_updates_when_necessary" xml:space="preserve">
     <value>Edit analyzed salary records for corrections or updates when necessary</value>
   </data>
-  <data name="EnsureAllUploadedSalaryFilesAreAccurateAndInTheCorrectFormat" xml:space="preserve">
+  <data name="edit_analyzed_share_month_records_for_corrections_or_updates_when_necessary" xml:space="preserve">
+    <value>Edit analyzed share month records for corrections or updates when necessary</value>
+  </data>
+  <data name="ensure_all_uploaded_salary_files_are_accurate_and_in_the_correct_format" xml:space="preserve">
     <value>Ensure all uploaded salary files are accurate and in the correct format</value>
   </data>
-  <data name="EnsureTheSalaryFileIsFormattedAs" xml:space="preserve">
+  <data name="ensure_all_uploaded_share_month_files_are_accurate_and_in_the_correct_format_eg_excel_csv" xml:space="preserve">
+    <value>Ensure all uploaded share month files are accurate and in the correct format (e.g., Excel, CSV)</value>
+  </data>
+  <data name="ensure_that_previously_successful_postings_will_not_be_reposted" xml:space="preserve">
+    <value>Ensure that previously successful postings will not be reposted</value>
+  </data>
+  <data name="ensure_the_salary_file_is_formatted_as" xml:space="preserve">
     <value>Ensure the salary file is formatted as</value>
   </data>
-  <data name="FileName" xml:space="preserve">
-    <value>File name</value>
+  <data name="execution_phase" xml:space="preserve">
+    <value>Execution Phase</value>
   </data>
-  <data name="FileNaming" xml:space="preserve">
-    <value>File naming</value>
+  <data name="export_your_filtered_result_to_excel" xml:space="preserve">
+    <value>Export your filtered result to Excel</value>
   </data>
-  <data name="ForMinorCorrectionsEditSalaryRelated" xml:space="preserve">
+  <data name="file_management_console" xml:space="preserve">
+    <value>File Management Console</value>
+  </data>
+  <data name="file_statistics" xml:space="preserve">
+    <value>File Statistics</value>
+  </data>
+  <data name="file_upload_id" xml:space="preserve">
+    <value>File Upload ID</value>
+  </data>
+  <data name="file_upload_results" xml:space="preserve">
+    <value>File Upload Results</value>
+  </data>
+  <data name="filter_by_date_range_when_the_execution_occurred" xml:space="preserve">
+    <value>Filter by date range when the execution occurred</value>
+  </data>
+  <data name="filter_by_principal_or_total_repayment_amount" xml:space="preserve">
+    <value>Filter by principal or total repayment amount</value>
+  </data>
+  <data name="filter_by_specific_branch_or_view_all" xml:space="preserve">
+    <value>Filter by specific branch or view all</value>
+  </data>
+  <data name="filter_by_upload_date_range" xml:space="preserve">
+    <value>Filter by upload date range</value>
+  </data>
+  <data name="filter_executions_by_their_current_status_pending_success_failed_refunded" xml:space="preserve">
+    <value>Filter executions by their current status (Pending, Success, Failed, Refunded)</value>
+  </data>
+  <data name="first_7_columns_actions_shown_by_default" xml:space="preserve">
+    <value>First 7 columns + Actions shown by default</value>
+  </data>
+  <data name="focus_on_files_uploaded_in_a_specific_branch" xml:space="preserve">
+    <value>Focus on files uploaded in a specific branch</value>
+  </data>
+  <data name="for_minor_corrections_edit_salary_related" xml:space="preserve">
     <value>For minor corrections, edit salary-related data after viewing the file details to align with updated requirements</value>
   </data>
-  <data name="GrossSalary" xml:space="preserve">
+  <data name="for_private_institutions_a_source_account_is_optional" xml:space="preserve">
+    <value>For &lt;strong&gt;Private institutions&lt;/strong&gt;, a source account is optional</value>
+  </data>
+  <data name="for_private_institutions_civil_servant_salary_or_standing_orders" xml:space="preserve">
+    <value>For &lt;strong&gt;Private Institutions&lt;/strong&gt;, &lt;strong&gt;Civil Servant Salary&lt;/strong&gt;, or &lt;strong&gt;Standing Orders&lt;/strong&gt;</value>
+  </data>
+  <data name="generate_file_for_bulk_operation" xml:space="preserve">
+    <value>Generate File for bulk Operation</value>
+  </data>
+  <data name="go_to_bulk_operation" xml:space="preserve">
+    <value>Go to Bulk Operation</value>
+  </data>
+  <data name="gross_salary" xml:space="preserve">
     <value>Gross salary</value>
   </data>
-  <data name="KeepTrackOfUploadedFiles" xml:space="preserve">
+  <data name="hidden_for_civil_servants" xml:space="preserve">
+    <value>Hidden for &lt;strong&gt;Civil servants&lt;/strong&gt;</value>
+  </data>
+  <data name="interest1" xml:space="preserve">
+    <value>Interest</value>
+  </data>
+  <data name="keep_track_of_uploaded_files" xml:space="preserve">
     <value>Keep track of uploaded files and their processing status to ensure timely payroll execution</value>
   </data>
-  <data name="MakeSureUploadedFilesHaveMeaningfulNames" xml:space="preserve">
+  <data name="load_files_that_are_ready_for_analysis" xml:space="preserve">
+    <value>Load files that are ready for analysis</value>
+  </data>
+  <data name="loan_repayment_details" xml:space="preserve">
+    <value>Loan Repayment Details</value>
+  </data>
+  <data name="loan_repayment_execution" xml:space="preserve">
+    <value>Loan Repayment Execution</value>
+  </data>
+  <data name="loan_repayment_filters" xml:space="preserve">
+    <value>Loan Repayment Filters</value>
+  </data>
+  <data name="main_files_all" xml:space="preserve">
+    <value>Main Files (All)</value>
+  </data>
+  <data name="make_sure_uploaded_files_have_meaningful_names" xml:space="preserve">
     <value>Make sure uploaded files have meaningful names to help with easy identification during reviews</value>
   </data>
-  <data name="Matricule" xml:space="preserve">
-    <value>Matricule</value>
+  <data name="member_share_month_details" xml:space="preserve">
+    <value>Member Share Month Details</value>
   </data>
-  <data name="MonitorTheProcessingStatusOfSalaryFilesThroughTheFileDetailsPage" xml:space="preserve">
+  <data name="mobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="monitor_the_processing_status_of_salary_files_through_the_file_details_page" xml:space="preserve">
     <value>Monitor the processing status of salary files through the file details page</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NetSalary" xml:space="preserve">
-    <value>Net salary</value>
-  </data>
-  <data name="NoBranchPayrollSummariesFound" xml:space="preserve">
+  <data name="no_branch_payroll_summaries_found" xml:space="preserve">
     <value>No branch payroll summaries found</value>
   </data>
-  <data name="NoSalaryUploadsFound" xml:space="preserve">
+  <data name="no_salary_uploads_found" xml:space="preserve">
     <value>No salary uploads found</value>
   </data>
-  <data name="OverallPayrollSummary" xml:space="preserve">
+  <data name="no_share_month_records_found" xml:space="preserve">
+    <value>No share month records found</value>
+  </data>
+  <data name="only_analysis_files_can_be_uploaded_here" xml:space="preserve">
+    <value>Only &lt;strong&gt;Analysis files&lt;/strong&gt; can be uploaded here</value>
+  </data>
+  <data name="original_batch_validation" xml:space="preserve">
+    <value>Original Batch Validation</value>
+  </data>
+  <data name="overall_payroll_summary" xml:space="preserve">
     <value>Overall payroll summary</value>
   </data>
-  <data name="PrivateInstitutions" xml:space="preserve">
-    <value>Private institutions</value>
+  <data name="overall_share_month_summary" xml:space="preserve">
+    <value>Overall Share Month Summary</value>
   </data>
-  <data name="RegularlyReviewUploadedFilesToVerifyTheirAccuracy" xml:space="preserve">
-    <value>Regularly review uploaded files to verify their accuracy and ensure all payroll operations align with uploaded data</value>
+  <data name="patched_at" xml:space="preserve">
+    <value>Patched At</value>
   </data>
-  <data name="RegularlyVerifyAnalyzedResultsAgainstPayrollToEnsureAccuracy" xml:space="preserve">
+  <data name="patch_note" xml:space="preserve">
+    <value>Patch Note</value>
+  </data>
+  <data name="patch_reference" xml:space="preserve">
+    <value>Patch Reference</value>
+  </data>
+  <data name="payment_channel" xml:space="preserve">
+    <value>Payment Channel</value>
+  </data>
+  <data name="please_select_an_action_mode" xml:space="preserve">
+    <value>Please select an Action Mode</value>
+  </data>
+  <data name="postexecution_reconciliation" xml:space="preserve">
+    <value>Post-Execution Reconciliation</value>
+  </data>
+  <data name="principal_amount" xml:space="preserve">
+    <value>Principal Amount</value>
+  </data>
+  <data name="privacy" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="processing_status_monitoring" xml:space="preserve">
+    <value>Processing Status Monitoring</value>
+  </data>
+  <data name="quickly_drill_into_file_types_pdfcsvxlsx_and_categories_salary_standing_orders_etc" xml:space="preserve">
+    <value>Quickly drill into file types (PDF/CSV/XLSX) and categories (Salary, Standing Orders, etc.)</value>
+  </data>
+  <data name="reexecuted_file" xml:space="preserve">
+    <value>Reexecuted File</value>
+  </data>
+  <data name="reexecution_file_integrity" xml:space="preserve">
+    <value>Reexecution File Integrity</value>
+  </data>
+  <data name="reexecution_must_be_initiated_strictly_for_unprocessed_salary_records" xml:space="preserve">
+    <value>Reexecution must be initiated strictly for unprocessed salary records</value>
+  </data>
+  <data name="refunded" xml:space="preserve">
+    <value>Refunded</value>
+  </data>
+  <data name="refund_date" xml:space="preserve">
+    <value>Refund Date</value>
+  </data>
+  <data name="regularly_verify_analyzed_results_against_payroll_to_ensure_accuracy" xml:space="preserve">
     <value>Regularly verify analyzed results against payroll to ensure accuracy</value>
   </data>
-  <data name="RegularReviews" xml:space="preserve">
-    <value>Regular reviews</value>
+  <data name="regularly_verify_analyzed_results_against_records_to_ensure_accuracy" xml:space="preserve">
+    <value>Regularly verify analyzed results against records to ensure accuracy</value>
   </data>
-  <data name="RunSalaryAnalysis" xml:space="preserve">
+  <data name="required_for_standing_order_optional_for_private_institutions" xml:space="preserve">
+    <value>Required for &lt;strong&gt;Standing Order&lt;/strong&gt;. Optional for &lt;strong&gt;Private institutions&lt;/strong&gt;</value>
+  </data>
+  <data name="run_salary_analysis" xml:space="preserve">
     <value>Run Salary Analysis</value>
   </data>
-  <data name="SalaryAnalysis" xml:space="preserve">
-    <value>Salary Analysis</value>
+  <data name="salary_analyses_reexecution" xml:space="preserve">
+    <value>Salary Analyses Reexecution</value>
   </data>
-  <data name="SalaryCodeMatriculeNameNetSalaryForCilvilServantsFile" xml:space="preserve">
+  <data name="salary_code" xml:space="preserve">
+    <value>Salary Code</value>
+  </data>
+  <data name="salary_code_matricule_name_net_salary_for_cilvil_servants_file" xml:space="preserve">
     <value>Salary Code, Matricule, Name, NetSalary For Cilvil Servants file</value>
   </data>
-  <data name="SalaryEarners" xml:space="preserve">
+  <data name="salary_debit_patch_information" xml:space="preserve">
+    <value>Salary Debit Patch Information</value>
+  </data>
+  <data name="salary_earners" xml:space="preserve">
     <value>Salary earners</value>
   </data>
-  <data name="SalaryType" xml:space="preserve">
-    <value>Salary type</value>
+  <data name="salary_reexecution_compliance_guidelines" xml:space="preserve">
+    <value>Salary Reexecution Compliance Guidelines</value>
   </data>
-  <data name="SalaryUpload" xml:space="preserve">
-    <value>Salary upload</value>
+  <data name="salary_reexecution_file_upload" xml:space="preserve">
+    <value>Salary Reexecution File Upload</value>
   </data>
-  <data name="SalaryUploadForm" xml:space="preserve">
-    <value>Salary Upload Form</value>
+  <data name="salary_reexecution_management" xml:space="preserve">
+    <value>Salary Reexecution Management</value>
   </data>
-  <data name="SalaryUploadManagement" xml:space="preserve">
-    <value>Salary Upload Management</value>
+  <data name="salary_reexecution_must_be_performed_exclusively_by_authorized_personnel_in_compliance_with_internal_payroll_controls_and_segregationofduties_policies" xml:space="preserve">
+    <value>"Salary reexecution must be performed exclusively by authorized personnel in compliance with internal payroll controls and segregation-of-duties policies</value>
   </data>
-  <data name="SALARY_SUMMARY" xml:space="preserve">
+  <data name="salary_summary" xml:space="preserve">
     <value>SALARY SUMMARY</value>
   </data>
-  <data name="SelectSalaryFile" xml:space="preserve">
+  <data name="salary_upload" xml:space="preserve">
+    <value>Salary upload</value>
+  </data>
+  <data name="salary_upload_form" xml:space="preserve">
+    <value>Salary Upload Form</value>
+  </data>
+  <data name="salary_upload_management" xml:space="preserve">
+    <value>Salary Upload Management</value>
+  </data>
+  <data name="search_filter_and_manage_uploaded_files_across_all_branches" xml:space="preserve">
+    <value>Search, filter, and manage uploaded files across all branches</value>
+  </data>
+  <data name="see_files_by_a_specific_user" xml:space="preserve">
+    <value>See files by a specific user</value>
+  </data>
+  <data name="selecting_standing_order_requires_choosing_a_source_account" xml:space="preserve">
+    <value>Selecting &lt;strong&gt;Standing Order&lt;/strong&gt; requires choosing a &lt;em&gt;source account&lt;/em&gt;</value>
+  </data>
+  <data name="select_and_validate_the_correct_branch_and_corresponding_general_ledger_gl_account_to_prevent_accounting_misstatements_and_reconciliation_issues" xml:space="preserve">
+    <value>Select and validate the correct Branch and corresponding General Ledger (GL) Account to prevent accounting misstatements and reconciliation issues</value>
+  </data>
+  <data name="select_private_to_restrict_access_to_your_branch_public_to_allow_other_branches_to_view" xml:space="preserve">
+    <value>Select &lt;strong&gt;Private&lt;/strong&gt; to restrict access to your branch; &lt;strong&gt;Public&lt;/strong&gt; to allow other branches to view</value>
+  </data>
+  <data name="select_salary_file" xml:space="preserve">
     <value>Select salary file (Formatted: Matricule, Name, NetSalary)</value>
   </data>
-  <data name="SelectTheAppropriate" xml:space="preserve">
+  <data name="select_the_appropriate" xml:space="preserve">
     <value>Select the appropriate</value>
   </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Surname</value>
+  <data name="share_month_amount" xml:space="preserve">
+    <value>Share Month Amount</value>
   </data>
-  <data name="TIPS" xml:space="preserve">
-    <value>TIPS</value>
+  <data name="share_month_analysis" xml:space="preserve">
+    <value>Share Month Analysis</value>
   </data>
-  <data name="TotalBranches" xml:space="preserve">
-    <value>Total branches</value>
+  <data name="share_month_summary" xml:space="preserve">
+    <value>Share Month Summary</value>
   </data>
-  <data name="TotalGrossSalary" xml:space="preserve">
+  <data name="source_chart_of_account" xml:space="preserve">
+    <value>Source Chart of Account</value>
+  </data>
+  <data name="standing_order" xml:space="preserve">
+    <value>Standing Order</value>
+  </data>
+  <data name="standing_order_source_coa_id" xml:space="preserve">
+    <value>Standing Order Source (COA Id)</value>
+  </data>
+  <data name="tax_amount" xml:space="preserve">
+    <value>Tax Amount</value>
+  </data>
+  <data name="the_uploaded_file_must_strictly_comply_with_the_approved_salary_reexecution_template_salary_code_matricule_employee_name_net_salary_etc" xml:space="preserve">
+    <value>The uploaded file must strictly comply with the approved salary reexecution template (Salary Code, Matricule, Employee Name, Net Salary, etc.)</value>
+  </data>
+  <data name="this_interface_is_designated_exclusively_for_the_controlled_reexecution_of_previously_uploaded_salary" xml:space="preserve">
+    <value>This interface is designated exclusively for the controlled reexecution of previously uploaded salary batches that did not reach full processing completion due to system, validation, or transactional interruptions. It serves as a corrective operational environment to ensure financial accuracy, regulatory compliance, and audit traceability in payroll postings</value>
+  </data>
+  <data name="tips_for_using_filters_effectively" xml:space="preserve">
+    <value>Tips for Using Filters Effectively</value>
+  </data>
+  <data name="toggle_privatepublic_uploads" xml:space="preserve">
+    <value>Toggle private/public uploads</value>
+  </data>
+  <data name="total_gross_salary" xml:space="preserve">
     <value>Total gross salary</value>
   </data>
-  <data name="TotalMembers" xml:space="preserve">
-    <value>Total members</value>
-  </data>
-  <data name="TotalNetSalary" xml:space="preserve">
+  <data name="total_net_salary" xml:space="preserve">
     <value>Total net salary</value>
   </data>
-  <data name="TotalPayrollSummary" xml:space="preserve">
+  <data name="total_payroll_summary" xml:space="preserve">
     <value>Total payroll summary</value>
   </data>
-  <data name="TrackStatus" xml:space="preserve">
-    <value>Track status</value>
+  <data name="transaction_overview" xml:space="preserve">
+    <value>Transaction Overview</value>
   </data>
-  <data name="UploadAndManageEmployeeSalaryFilesEasilyAndEfficiently" xml:space="preserve">
+  <data name="type_category" xml:space="preserve">
+    <value>Type &amp; Category</value>
+  </data>
+  <data name="upload_analysis_file" xml:space="preserve">
+    <value>Upload Analysis File</value>
+  </data>
+  <data name="upload_and_manage_employee_salary_files_easily_and_efficiently" xml:space="preserve">
     <value>Upload and manage employee salary files easily and efficiently. Use the tools below to upload new salary files or view existing records</value>
   </data>
-  <data name="UploadDate" xml:space="preserve">
-    <value>Upload date</value>
+  <data name="upload_details" xml:space="preserve">
+    <value>Upload Details</value>
   </data>
-  <data name="UploadedBy" xml:space="preserve">
-    <value>Uploaded by</value>
+  <data name="upload_files" xml:space="preserve">
+    <value>Upload Files</value>
   </data>
-  <data name="UploadedFiles" xml:space="preserve">
-    <value>Uploaded files</value>
-  </data>
-  <data name="UploadedOn" xml:space="preserve">
-    <value>Uploaded on</value>
-  </data>
-  <data name="UploadNewFile" xml:space="preserve">
-    <value>Upload new file</value>
-  </data>
-  <data name="UploadNewSalaryFile" xml:space="preserve">
+  <data name="upload_new_salary_file" xml:space="preserve">
     <value>Upload new salary file</value>
   </data>
-  <data name="UseSearchFiltersToQuicklyLocateSpecificEmployeeSalaryRecords" xml:space="preserve">
+  <data name="upload_summary" xml:space="preserve">
+    <value>Upload Summary</value>
+  </data>
+  <data name="upon_completion_reconcile_salary_totals_against_approved_payroll_reports_and_accounting_balances_to_ensure_financial_accuracy" xml:space="preserve">
+    <value>Upon completion, reconcile salary totals against approved payroll reports and accounting balances to ensure financial accuracy</value>
+  </data>
+  <data name="users_may_be_required_to_provide_justification_for_reprocessing_during_reviews" xml:space="preserve">
+    <value>Users may be required to provide justification for reprocessing during reviews</value>
+  </data>
+  <data name="use_search_filters_to_quickly_locate_specific_employee_salary_records" xml:space="preserve">
     <value>Use search filters to quickly locate specific employee salary records</value>
   </data>
-  <data name="UseThe" xml:space="preserve">
-    <value>Use the</value>
+  <data name="use_search_filters_to_quickly_locate_specific_member_share_month_records" xml:space="preserve">
+    <value>Use search filters to quickly locate specific member share month records</value>
   </data>
-  <data name="UseTheUploadFormToAddNewSalaryFiles" xml:space="preserve">
+  <data name="use_the_filters_to_narrow_by_date_type_category_privacy_and_more" xml:space="preserve">
+    <value>Use the filters to narrow by date, type, category, privacy, and more</value>
+  </data>
+  <data name="use_the_run_share_month_analysis_button_to_analyze_uploaded_share_month_data" xml:space="preserve">
+    <value>Use the &lt;strong&gt;"Run Share Month Analysis"&lt;/strong&gt; button to analyze uploaded share month data</value>
+  </data>
+  <data name="use_the_switches_above_to_customize_your_view_hidden_columns_appear_dimmed" xml:space="preserve">
+    <value>Use the switches above to customize your view. Hidden columns appear dimmed</value>
+  </data>
+  <data name="use_the_table_search_to_find_by_file_name_code_status_etc" xml:space="preserve">
+    <value>Use the table search to find by file name, code, status, etc</value>
+  </data>
+  <data name="use_the_upload_form_to_add_new_salary_files" xml:space="preserve">
     <value>Use the upload form to add new salary files</value>
   </data>
-  <data name="ViewAnalyzeAndManageEmployeeSalarySummariesEfficiently" xml:space="preserve">
+  <data name="use_the_view_list_functionality_to_track_execution_status_identify_pending_records_and_confirm_successful_completion" xml:space="preserve">
+    <value>Use the &lt;strong&gt;View List&lt;/strong&gt; functionality to track execution status, identify pending records, and confirm successful completion</value>
+  </data>
+  <data name="use_this_for_bulk_standing_orders_you_must_also_pick_a_source_account" xml:space="preserve">
+    <value>Use this for bulk standing orders. You must also pick a source account</value>
+  </data>
+  <data name="use_this_for_companies_and_private_institutions_payroll_files" xml:space="preserve">
+    <value>Use this for companies and private institutions payroll files</value>
+  </data>
+  <data name="use_this_for_governmentcivil_service_payroll_files" xml:space="preserve">
+    <value>Use this for Government/Civil Service payroll files</value>
+  </data>
+  <data name="view_all_uploaded_files" xml:space="preserve">
+    <value>View all uploaded files</value>
+  </data>
+  <data name="view_analysed_files_that_are_ready_for_execution" xml:space="preserve">
+    <value>View analysed files that are ready for execution</value>
+  </data>
+  <data name="view_analyze_and_manage_employee_salary_summaries_efficiently" xml:space="preserve">
     <value>View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records</value>
   </data>
-  <data name="ViewResultOfAnalyzedSalary" xml:space="preserve">
+  <data name="view_analyze_and_manage_share_month_summaries_efficiently" xml:space="preserve">
+    <value>View, analyze and manage share month summaries efficiently</value>
+  </data>
+  <data name="view_and_manage_loan_repayment_executions_filter_by_various_criteria_and_track_execution_status" xml:space="preserve">
+    <value>View and manage loan repayment executions, filter by various criteria and track execution status</value>
+  </data>
+  <data name="view_result_of_analyzed_salary" xml:space="preserve">
     <value>View Result Of Analyzed Salary</value>
+  </data>
+  <data name="visibility_to_other_branches" xml:space="preserve">
+    <value>Visibility to other branches</value>
+  </data>
+  <data name="visible_only_within_your_branch_and_authorized_head_office" xml:space="preserve">
+    <value>Visible only within your branch (and authorized Head Office)</value>
+  </data>
+  <data name="visible_to_all_branches" xml:space="preserve">
+    <value>Visible to all branches</value>
   </data>
 </root>

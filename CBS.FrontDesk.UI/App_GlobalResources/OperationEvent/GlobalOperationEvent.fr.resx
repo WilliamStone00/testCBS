@@ -117,28 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckThisBoxIfEventHasMultipleEntries" xml:space="preserve">
-    <value>Cochez cette case si l'événement a plusieurs entrées</value>
-  </data>
-  <data name="CreateAccountingRuleForEvent" xml:space="preserve">
-    <value>Créer une règle comptable pour l'événement</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EventAttribute" xml:space="preserve">
-    <value>Attribut de l'événement</value>
-  </data>
-  <data name="EventCode" xml:space="preserve">
-    <value>Code de l'événement</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="OperationEventName" xml:space="preserve">
-    <value>Nom de l'événement d'opération</value>
-  </data>
-  <data name="SetRule" xml:space="preserve">
-    <value>Définir la règle</value>
-  </data>
 </root>

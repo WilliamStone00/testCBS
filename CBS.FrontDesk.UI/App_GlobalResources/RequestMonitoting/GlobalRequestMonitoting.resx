@@ -117,82 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzeRateLimitedAccessAttempts" xml:space="preserve">
+  <data name="analyze_rate_limited_access_attempts" xml:space="preserve">
     <value>Analyze rate-limited access attempts across branches and IPs. Use date and branch filters to target specific requests</value>
   </data>
-  <data name="ApplyFilters" xml:space="preserve">
-    <value>Apply filters</value>
-  </data>
-  <data name="AutoRefreshesEvery1Minute" xml:space="preserve">
+  <data name="auto_refreshes_every1_minute" xml:space="preserve">
     <value>Auto-refreshes every 1 minute</value>
   </data>
-  <data name="BlockedVsNonBlocked" xml:space="preserve">
+  <data name="blocked_vs_non_blocked" xml:space="preserve">
     <value>Blocked vs non-blocked</value>
   </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>End date</value>
-  </data>
-  <data name="ExportToExcel" xml:space="preserve">
-    <value>Export to excel</value>
-  </data>
-  <data name="FilteredByBranch" xml:space="preserve">
+  <data name="filtered_by_branch" xml:space="preserve">
     <value>Filtered by branch</value>
   </data>
-  <data name="Filters" xml:space="preserve">
-    <value>Filters</value>
-  </data>
-  <data name="HourlyRequestTrends" xml:space="preserve">
+  <data name="hourly_request_trends" xml:space="preserve">
     <value>Hourly request trends</value>
   </data>
-  <data name="LastRefreshed" xml:space="preserve">
-    <value>Last refreshed</value>
-  </data>
-  <data name="LoadingDetailedLogsPleaseWait" xml:space="preserve">
+  <data name="loading_detailed_logs_please_wait" xml:space="preserve">
     <value>Loading detailed logs, please wait</value>
   </data>
-  <data name="Location" xml:space="preserve">
-    <value>Location</value>
-  </data>
-  <data name="never" xml:space="preserve">
-    <value>never</value>
-  </data>
-  <data name="RequestLogListing" xml:space="preserve">
+  <data name="request_log_listing" xml:space="preserve">
     <value>Request Log Listing</value>
   </data>
-  <data name="RequestMonitoringDashboard" xml:space="preserve">
+  <data name="request_monitoring_dashboard" xml:space="preserve">
     <value>Request Monitoring Dashboard</value>
   </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Start date</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="Top10IPActivities" xml:space="preserve">
+  <data name="top10_ipactivities" xml:space="preserve">
     <value>Top 10 IP activities</value>
   </data>
-  <data name="TopCount" xml:space="preserve">
+  <data name="top_count" xml:space="preserve">
     <value>Top count</value>
   </data>
-  <data name="TopIPs" xml:space="preserve">
+  <data name="top_ips" xml:space="preserve">
     <value>Top IPs</value>
   </data>
-  <data name="TopPaths" xml:space="preserve">
+  <data name="top_paths" xml:space="preserve">
     <value>Top paths</value>
   </data>
-  <data name="TopUsers" xml:space="preserve">
+  <data name="top_users" xml:space="preserve">
     <value>Top users</value>
   </data>
-  <data name="TopX" xml:space="preserve">
+  <data name="top_x" xml:space="preserve">
     <value>Top x</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>User</value>
   </data>
 </root>

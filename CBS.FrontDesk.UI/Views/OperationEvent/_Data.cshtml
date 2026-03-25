@@ -1,10 +1,10 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.Accounting.OperationEvent>
+@model List<CBS.FrontDesk.Data.Entity.Accounting.OperationEvent>
     @using Resources
 <table class="table table-hover" id="myDataTable">
     <thead class="table-light">
         <tr>
-            <th>>@GlobalOperationEvent.OperationEventName</th>
-            <th>>@GlobalOperationEvent.Description</th>
+            <th>>@GlobalOperationEvent.operation_event_name</th>
+            <th>>@GlobalShared.Description</th>
             <th>>@GlobalShared.Action</th>
         </tr>
     </thead>
@@ -18,9 +18,9 @@
 
                 <td style="width:40%">
                     <button type="button" onclick="EditResetModal('@d.Id','modalBody','modalContent','OperationEventAttribute','InitializeData','_Create','new','modalLabel','Add EventAttribute')" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modalCenter">
-                        >@GlobalOperationEvent.EventAttribute
+                        >@GlobalOperationEvent.event_attribute
                     </button>
-                    <button onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','AccountingEntryRule')" class="mr-2 btn  btn-primary" data-toggle="tooltip" data-placement="top" title=">@GlobalOperationEvent.CreateAccountingRuleForEvent @d.OperationEventName @GlobalShared.ToEdit">>@GlobalOperationEvent.SetRule</button>
+                    <button onclick="AddORUpdateGen('@d.Id','datalistingview','_Create','update','AccountingEntryRule')" class="mr-2 btn  btn-primary" data-toggle="tooltip" data-placement="top" title=">@GlobalOperationEvent.create_accounting_rule_for_event @d.OperationEventName @GlobalShared.ToEdit">>@GlobalShared.set_rule</button>
                     <button onclick="AddORUpdateGen('@d.Id','datalistingview','_Update','update','OperationEvent')" class="mr-2 btn btn-default" data-toggle="tooltip" data-placement="top" title=">@GlobalShared.Select @d.OperationEventName >@GlobalShared.ToEdit">>@GlobalShared.Edit</button>
                     <button class="mr-2 btn  btn-danger" data-toggle="tooltip" data-placement="top" title=">@GlobalShared.Delete @d.OperationEventName" onclick="DeleteRecordDataTable('OperationEvent','@d.Id','myDataTable','_Data',0,'datalistingview')">>@GlobalShared.Delete</button>
 

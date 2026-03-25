@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.UserManagement.MFAActivation
+@model CBS.FrontDesk.Data.UserManagement.MFAActivation
+    @using Resources
 @{
     ViewBag.Title = "TOTP Account Verification";
     Layout = "~/Views/Shared/_MfaLayout.cshtml";
@@ -7,8 +8,8 @@
 <div class="mfa-form-box">
     <div class="text-center mb-4">
         <img src="~/AppFiles/Images/Logog2XI.png" alt="Logo" class="logo mb-3" style="max-height: 60px;" />
-        <h5 class="text-primary fw-bold">TOTP (Time-based One-Time Password)</h5>
-        <p class="text-muted">Hello <strong>@Model.FullName</strong>, please enter your current code to continue.</p>
+        <h5 class="text-primary fw-bold">@GlobalMFAVerification.totp_timebased_onetime_password</h5>
+        <p class="text-muted">@GlobalShared.hello <strong>@Model.FullName</strong>, @GlobalMFAVerification.please_enter_your_current_code_to_continue.</p>
     </div>
 
     @using (Html.BeginForm("MFACodeVerification", "MFAVerification", FormMethod.Post, new
@@ -28,24 +29,24 @@
                     @placeholder = "Enter TOTP Code",
                     @autocomplete = "off"
                 })
-                <label for="Code">Enter TOTP Code</label>
+                <label for="Code">@GlobalMFAVerification.enter_totp_code</label>
                 @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Verify Code</button>
+            <button type="submit" class="btn btn-primary w-100">@GlobalMFAVerification.verify_code</button>
 
-            <a href="~/Authentication/Logout" class="btn btn-outline-secondary w-100 mt-2">Cancel & Return to Login</a>
+            <a href="~/Authentication/Logout" class="btn btn-outline-secondary w-100 mt-2">@GlobalMFAVerification.cancel_return_to_login</a>
         </fieldset>
     }
 
     @Html.Partial("_Alert")
 
     <div class="alert alert-info mt-4">
-        <strong>How to Use TOTP:</strong>
+        <strong>@GlobalMFAVerification.how_to_use_totp:</strong>
         <ul class="mb-0">
-            <li>Open the <strong>Google Authenticator</strong> or <strong>Microsoft Authenticator</strong> app on your phone.</li>
-            <li>Find the 6-digit code associated with your TSC account. It refreshes every 30 seconds.</li>
-            <li>Type the current code above and click <strong>Verify Code</strong>.</li>
+            <li>@Html.Raw(@GlobalMFAVerification.open_the_google_authenticator_or_microsoft_authenticator_app_on_your_phone).</li>
+            <li>@GlobalMFAVerification.find_the_6digit_code_associated_with_your_tsc_account_it_refreshes_every_30_seconds.</li>
+            <li>@Html.Raw(@GlobalMFAVerification.type_the_current_code_above_and_click_verify_code).</li>
         </ul>
     </div>
 

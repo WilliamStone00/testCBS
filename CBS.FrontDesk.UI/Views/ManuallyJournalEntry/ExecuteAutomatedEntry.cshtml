@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
+@model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
     @using Resources
 @{
     ViewBag.Title = "Accounting Event -Execution";
@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0 w-100">@GlobalManuallyJournalEntry.ConfiguredManualJournalEntry</h4>
+            <h4 class="mb-0 w-100">@GlobalManuallyJournalEntry.configured_manual_journal_entry</h4>
         </div>
 
         <div class="card-body">
@@ -14,36 +14,36 @@
                 <!-- Left Panel: Event Metadata -->
                 <div class="col-md-4">
                     <fieldset class="border p-3 rounded">
-                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.EntryMetadata</legend>
+                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.entry_metadata</legend>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.EventName</label>
+                            <label class="form-label fw-bold">@GlobalShared.event_name</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.EventName" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.EventDescription</label>
+                            <label class="form-label fw-bold">@GlobalShared.event_description</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.Description" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.AmountToBeExecuted</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.amount_to_be_executed</label>
                             <input type="text" class="form-control" value="@Model.AccountingEventRule.UnitAmount" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.DoubleValidationNeeded</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.double_validation_needed</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Double Validation is required" : "Double Validation is not required")" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.LevelOfExecution</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.level_of_execution</label>
                             <input type="text" class="form-control" id="LevelOfExecution" value="@Model.AccountingEventRule.LevelOfExecution" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.IsChainExecution</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.is_chain_execution</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? "Chain execution is set" : "Chain execution is not set")" readonly>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.NextAccountingEvent</label>
+                            <label class="form-label fw-bold">@GlobalManuallyJournalEntry.next_accounting_event</label>
                             <input type="text" class="form-control" value="@(Model.AccountingEventRule.IsChainEntry ? Model.AccountingEventRule.AccountingEventRuleId : "Chain execution is not set")" readonly>
                         </div>
                     </fieldset>
@@ -52,13 +52,13 @@
                 <!-- Right Panel: Accounting Rules Table -->
                 <div class="col-md-8">
                     <fieldset class="border p-3 rounded">
-                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.AccountingEntries: @Model.AccountingEventRule.EventName</legend>
+                        <legend class="w-auto text-primary">@GlobalManuallyJournalEntry.accounting_entries: @Model.AccountingEventRule.EventName</legend>
 
 
                         @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "manualEntryForm" }))
                         {
                             <div class="mb-3">
-                                <label class="form-label fw-bold">@GlobalManuallyJournalEntry.TransactionReference</label>
+                                <label class="form-label fw-bold">@GlobalShared.Transaction_Reference</label>
                                 <input type="text" class="form-control" id="Reference" value="" readonly>
                             </div>
                             <input type="hidden" class="form-control" id="AccountingEventId" value="@Model.AccountingEventRule.Id" readonly>
@@ -70,9 +70,9 @@
                             <table id="accountingEventRuleDataTable" class="table table-bordered">
                                 <thead class="table-dark text-center">
                                     <tr>
-                                        <th width="50%">@GlobalManuallyJournalEntry.AccountDescription</th>
-                                        <th width="25%">@GlobalManuallyJournalEntry.Debit (XFA)</th>
-                                        <th width="25%">@GlobalManuallyJournalEntry.Credit (XFA)</th>
+                                        <th width="50%">@GlobalManuallyJournalEntry.account_description</th>
+                                        <th width="25%">@GlobalShared.Debit (XFA)</th>
+                                        <th width="25%">@GlobalShared.Credit (XFA)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -108,13 +108,13 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="3" class="text-center text-muted">@GlobalManuallyJournalEntry.NoAccountingRulesAvailable.</td>
+                                            <td colspan="3" class="text-center text-muted">@GlobalManuallyJournalEntry.no_accounting_rules_available.</td>
                                         </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-secondary">
-                                        <td class="fw-bold">@GlobalManuallyJournalEntry.TOTAL:</td>
+                                        <td class="fw-bold">@GlobalShared.Total:</td>
                                         <td class="fw-bold text-end" id="debitTotal">0</td>
                                         <td class="fw-bold text-end" id="creditTotal">0</td>
                                     </tr>
@@ -128,11 +128,11 @@
 
                             <!-- Description Input -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold">@GlobalManuallyJournalEntry.Description / Purpose of Manual Entry</label>
-                                <textarea class="form-control" id="descriptionField" rows="3" placeholder="@GlobalManuallyJournalEntry.EnterReasonForManualEntry..."></textarea>
+                                <label class="form-label fw-bold">@GlobalShared.Description / Purpose of Manual Entry</label>
+                                <textarea class="form-control" id="descriptionField" rows="3" placeholder="@GlobalManuallyJournalEntry.enter_reason_for_manual_entry..."></textarea>
                             </div>
                             <div class="mt-4 text-center">
-                                <button type="submit" class="btn btn-primary px-4" id="submitButton" disabled>@GlobalManuallyJournalEntry.SubmitEntry</button>
+                                <button type="submit" class="btn btn-primary px-4" id="submitButton" disabled>@GlobalShared.submit_entry</button>
                             </div>
                         }
                     </fieldset>

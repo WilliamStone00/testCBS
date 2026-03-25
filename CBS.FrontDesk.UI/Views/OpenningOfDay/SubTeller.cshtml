@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
+@model CBS.FrontDesk.Data.Entity.SavingProducts.OpeningOfTheDay
     @using Resources
 @{
     ViewBag.Title = "OPEN OF DAY S.T.";
@@ -9,14 +9,14 @@
         <div class="card bg-light mb-4">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalOpenningOfDay.OpeningOfSubTill
+                    <i class="mdi mdi-cash-multiple me-2"></i> @GlobalOpenningOfDay.opening_of_sub_till
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalOpenningOfDay.ManageTheOpeningProcessOfTheSubTillEfficiently.
+                    @GlobalOpenningOfDay.manage_the_opening_process_of_the_sub_till_efficiently.
                 </p>
                 <p class="card-text text-danger fw-bold">
                     <i class="mdi mdi-alert-circle-outline me-2"></i>
-                    @GlobalOpenningOfDay.NoteSubTillsCannotBeOpened.
+                    @GlobalOpenningOfDay.note_sub_tills_cannot_be_opened.
                 </p>
             </div>
         </div>
@@ -27,7 +27,7 @@
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
         <span>
-            <i class="mdi mdi-information-outline me-2"></i> @GlobalOpenningOfDay.HELP_TIPS
+            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.HELP_TIPS
         </span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
             <i class="mdi mdi-chevron-down"></i>
@@ -36,21 +36,21 @@
     <div id="collapseHelpTips" class="collapse">
         <div class="card-body">
             <p class="text-muted mb-2">
-                @GlobalOpenningOfDay.ProperDenominationBreakdown:
+                @GlobalOpenningOfDay.proper_denomination_breakdown:
             </p>
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.EnterTheNumberOfNotesCoinsForEachDenomination.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.DoubleCheckTheAmountsEnteredToEnsureTheyMatchTheTotalBalance.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.UseDenominationsSystematicallyToMinimizeCountingErrors.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.VerifyTheTotalsBeforeSubmittingTheForm.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.enter_the_number_of_notes_coins_for_each_denomination.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.double_check_the_amounts_entered_to_ensure_they_match_the_total_balance.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.use_denominations_systematically_to_minimize_counting_errors.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalOpenningOfDay.verify_the_totals_before_submitting_the_form.</li>
             </ul>
             <p class="text-muted mb-2">
-                @GlobalOpenningOfDay.AdditionalNotes:
+                @GlobalShared.Additional_Notes:
             </p>
             <ul>
-               <li><i class="mdi mdi-information-outline text-primary me-2"></i>@GlobalOpenningOfDay.EnsureThePrimaryTillIsOpenedBeforeAttemptingToOpenASubTill.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.MakeSureTo <strong>@GlobalOpenningOfDay.printYourOpenOfDayReport</strong> @GlobalOpenningOfDay.afterCompletingTheProcess.</li>
-                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalOpenningOfDay.IfThe <strong>@GlobalOpenningOfDay.OpenOfDayButtonIsGreyedOut</strong>, @GlobalOpenningOfDay.theValuesEnteredDoNotMatchTheExpectedTotals.</li>
+               <li><i class="mdi mdi-information-outline text-primary me-2"></i>@GlobalOpenningOfDay.ensure_the_primary_till_is_opened_before_attempting_to_open_asub_till.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalOpenningOfDay.make_sure_to <strong>@GlobalOpenningOfDay.print_your_open_of_day_report</strong> @GlobalOpenningOfDay.after_completing_the_process.</li>
+                <li><i class="mdi mdi-alert-outline text-danger me-2"></i> @GlobalOpenningOfDay.if_the <strong>@GlobalOpenningOfDay.open_of_day_button_is_greyed_out</strong>, @GlobalOpenningOfDay.the_values_entered_do_not_match_the_expected_totals.</li>
             </ul>
         </div>
     </div>
@@ -69,7 +69,7 @@
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cash-multiple me-2"></i>
-                            @GlobalOpenningOfDay.SubTillOpening
+                            @GlobalOpenningOfDay.sub_till_opening
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"

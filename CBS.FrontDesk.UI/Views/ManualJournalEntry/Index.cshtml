@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.AccountingV2.JournalEntryPayload
 
 @{
@@ -59,19 +59,19 @@
 <div class="card bg-light mb-3">
     <div class="card-body text-center">
         <h1 class="card-title text-primary">
-            <i class="mdi mdi-book-open-variant me-2"></i>Manual Journal Entry
+            <i class="mdi mdi-book-open-variant me-2"></i>@GlobalShared.manual_journal_entry
         </h1>
 
         <div class="alert alert-info mt-3 py-2">
             <i class="mdi mdi-information-outline me-1"></i>
-            Create and manage manual journal entries with proper debit and credit allocations.
+            @GlobalManualJournalEntry.create_and_manage_manual_journal_entries_with_proper_debit_and_credit_allocations.
         </div>
     </div>
 </div>
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> TIPS FOR MANUAL JOURNAL ENTRY</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalManualJournalEntry.tips_for_manual_journal_entry</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJournalTips" aria-expanded="true">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -80,13 +80,13 @@
     <div id="collapseJournalTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><strong>Validate Accounts:</strong> Ensure all account codes exist in the chart of accounts before posting. </li>
-                <li><strong>Debit and Credit Balance:</strong> Total debits must equal total credits for the entry to be valid.</li>
-                <li><strong>Narration:</strong> Provide a clear description of the transaction purpose.</li>
-                <li><strong>Posting Date:</strong> Verify the posting date is within the current financial period.</li>
-                <li><strong>Approval Workflow:</strong> Some entries may require approval verification before posting.</li>
-                <li><strong>Manual Entry Checks:</strong> Use the <em>Validate</em> button to confirm account codes and balances before submission.</li>
-                <li><strong>Attachments:</strong> Upload supporting documents for audit trail purposes.</li>
+                <li><strong>@GlobalShared.validate_accounts:</strong> @GlobalManualJournalEntry.ensure_all_account_codes_exist_in_the_chart_of_accounts_before_posting. </li>
+                <li><strong>@GlobalManualJournalEntry.debit_and_credit_balance:</strong> @GlobalManualJournalEntry.total_debits_must_equal_total_credits_for_the_entry_to_be_valid.</li>
+                <li><strong>@GlobalShared.Narration:</strong> @GlobalManualJournalEntry.provide_a_clear_description_of_the_transaction_purpose.</li>
+                <li><strong>@GlobalShared.posting_date:</strong> @GlobalManualJournalEntry.verify_the_posting_date_is_within_the_current_financial_period.</li>
+                <li><strong>@GlobalShared.approval_workflow:</strong> @GlobalManualJournalEntry.some_entries_may_require_approval_verification_before_posting.</li>
+                <li><strong>@GlobalManualJournalEntry.manual_entry_checks:</strong> @Html.Raw(@GlobalManualJournalEntry.use_the_validate_button_to_confirm_account_codes_and_balances_before_submission).</li>
+                <li><strong>@GlobalShared.Attachments:</strong> @GlobalManualJournalEntry.upload_supporting_documents_for_audit_trail_purposes.</li>
             </ul>
         </div>
     </div>
@@ -97,7 +97,7 @@
     <div class="card-body d-flex justify-content-end align-items-center">
 
         <a href="/JournalHead/Index" target="_blank" class="btn btn-label-primary btn-sm me-2" data-bs-toggle="tooltip" title="View List">
-            <i class="mdi mdi-view-list mdi-18px"></i> View List
+            <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.View_List
         </a>
 
         @*<a type="button" onclick="AddORUpdateGen(null,'datalistingview','_Posting','new','ManualJournalEntry')" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New Vault">

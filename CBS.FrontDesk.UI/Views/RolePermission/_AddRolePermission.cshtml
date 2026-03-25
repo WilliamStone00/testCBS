@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
+@model CBS.FrontDesk.Data.Entity.PermissionMenuLoaderDto
 @using Resources
 
 <fieldset class="fieldset-custom">
@@ -7,9 +7,9 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalRolePermission.MenuText</th>
-                        <th>@GlobalRolePermission.Parent</th>
-                        <th>@GlobalRolePermission.Description</th>
+                        <th>@GlobalRolePermission.menu_text</th>
+                        <th>@GlobalShared.Parent</th>
+                        <th>@GlobalShared.Description</th>
                         <th> <label><input type="checkbox" id="selectAll"></label></th>
                     </tr>
                 </thead>

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
@@ -7,7 +7,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalMembers</h5>
+                            <h5 class="card-title text-primary">@GlobalShared.Total_members</h5>
                             <p class="card-text fs-4 fw-bold text-info">
                                 @Model.SalaryUploadModelSummaryDto.TotalMembers.ToString("N0")
                             </p>
@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-primary">@GlobalSalaryAnalyzer.TotalNetSalary</h5>
+                            <h5 class="card-title text-primary">@GlobalPISalaryAnalyzer.total_net_salary</h5>
                             <p class="card-text fs-4 fw-bold text-success">
                                 @Model.SalaryUploadModelSummaryDto.TotalNetSalary.ToString("N1")
                             </p>
@@ -36,12 +36,12 @@
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
-                                <th>@GlobalSalaryAnalyzer.Matricule</th>
-                                <th>@GlobalSalaryAnalyzer.Surname</th>
-                                <th>@GlobalSalaryAnalyzer.Name</th>
-                                <th>@GlobalSalaryAnalyzer.NetSalary</th>
-                                <th>@GlobalSalaryAnalyzer.UploadDate</th>
-                                <th>@GlobalSalaryAnalyzer.UploadedBy</th>
+                                <th>@GlobalShared.matricule</th>
+                                <th>@GlobalShared.surname</th>
+                                <th>@GlobalShared.Name</th>
+                                <th>@GlobalShared.net_salary</th>
+                                <th>@GlobalShared.upload_date</th>
+                                <th>@GlobalShared.Uploaded_By</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,7 +68,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>@GlobalSalaryAnalyzer.NoSalaryUploadsFound.</p>
+                        <p>@GlobalPISalaryAnalyzer.no_salary_uploads_found.</p>
                     </div>
                 }
             </div>

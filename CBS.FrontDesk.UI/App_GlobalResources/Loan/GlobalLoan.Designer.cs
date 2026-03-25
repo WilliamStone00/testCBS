@@ -430,15 +430,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HISTORIES.
-        /// </summary>
-        internal static string histories {
-            get {
-                return ResourceManager.GetString("histories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Irrecoverable Loans (Delinquent &gt; 3 years, fully provisioned).
         /// </summary>
         internal static string irrecoverable_loans_delinquent_3years_fully_provisioned {

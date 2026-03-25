@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
 @using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
@@ -9,9 +9,9 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>@GlobalSalaryExecution.FileName</th>
-                                <th>@GlobalSalaryExecution.UploadedBy</th>
-                                <th>@GlobalSalaryExecution.UploadedOn</th>
+                                <th>@GlobalShared.File_Name</th>
+                                <th>@GlobalShared.Uploaded_By</th>
+                                <th>@GlobalShared.Uploaded_On</th>
                                 <th>@GlobalShared.Status</th>
                                 <th>@GlobalShared.Action</th>
                             </tr>
@@ -72,7 +72,7 @@
                 else
                 {
                     <div class="text-center my-3">
-                        <p>@GlobalSalaryExecution.NoSalaryUploadsFound.</p>
+                        <p>@GlobalPISalaryExecution.no_salary_uploads_found.</p>
                     </div>
                 }
             </div>

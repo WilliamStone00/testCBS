@@ -61,11 +61,119 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjustment Request Filters.
+        /// </summary>
+        internal static string adjustment_request_filters {
+            get {
+                return ResourceManager.GetString("adjustment_request_filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust fields like.
+        /// </summary>
+        internal static string adjust_fields_like {
+            get {
+                return ResourceManager.GetString("adjust_fields_like", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delinquent Loans with Aging Breakdown.
         /// </summary>
         internal static string delinquent_loans_with_aging_breakdown {
             get {
                 return ResourceManager.GetString("delinquent_loans_with_aging_breakdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Easily separate pending, approved, or rejected entries.
+        /// </summary>
+        internal static string easily_separate_pending_approved_or_rejected_entries {
+            get {
+                return ResourceManager.GetString("easily_separate_pending_approved_or_rejected_entries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter Adjustment Requests.
+        /// </summary>
+        internal static string filter_adjustment_requests {
+            get {
+                return ResourceManager.GetString("filter_adjustment_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter by Loan ID, Member ID, or date.
+        /// </summary>
+        internal static string filter_by_loan_id_member_id_or_date {
+            get {
+                return ResourceManager.GetString("filter_by_loan_id_member_id_or_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter specific requests quickly.
+        /// </summary>
+        internal static string filter_specific_requests_quickly {
+            get {
+                return ResourceManager.GetString("filter_specific_requests_quickly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fix overcharges or balance issues.
+        /// </summary>
+        internal static string fix_overcharges_or_balance_issues {
+            get {
+                return ResourceManager.GetString("fix_overcharges_or_balance_issues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Adjustment Console.
+        /// </summary>
+        internal static string loan_adjustment_console {
+            get {
+                return ResourceManager.GetString("loan_adjustment_console", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Adjustment Details.
+        /// </summary>
+        internal static string loan_adjustment_details {
+            get {
+                return ResourceManager.GetString("loan_adjustment_details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Adjustment Requests.
+        /// </summary>
+        internal static string loan_adjustment_requests {
+            get {
+                return ResourceManager.GetString("loan_adjustment_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Adjustment Request Overview.
+        /// </summary>
+        internal static string loan_adjustment_request_overview {
+            get {
+                return ResourceManager.GetString("loan_adjustment_request_overview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan Amount, Outstanding Balance, Interest, VAT, and Penalty.
+        /// </summary>
+        internal static string loan_amount_outstanding_balance_interest_vat_and_penalty {
+            get {
+                return ResourceManager.GetString("loan_amount_outstanding_balance_interest_vat_and_penalty", resourceCulture);
             }
         }
         
@@ -93,6 +201,232 @@ namespace Resources {
         internal static string loan_situation_report_current_performing_loans {
             get {
                 return ResourceManager.GetString("loan_situation_report_current_performing_loans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage and apply &lt;strong&gt;manual adjustments or waivers&lt;/strong&gt; to loans across all branches.
+        /// </summary>
+        internal static string manage_and_apply_manual_adjustments_or_waivers_to_loans_across_all_branches {
+            get {
+                return ResourceManager.GetString("manage_and_apply_manual_adjustments_or_waivers_to_loans_across_all_branches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Narrow down requests by request date.
+        /// </summary>
+        internal static string narrow_down_requests_by_request_date {
+            get {
+                return ResourceManager.GetString("narrow_down_requests_by_request_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Narrow results by location.
+        /// </summary>
+        internal static string narrow_results_by_location {
+            get {
+                return ResourceManager.GetString("narrow_results_by_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Installment Date.
+        /// </summary>
+        internal static string next_installment_date {
+            get {
+                return ResourceManager.GetString("next_installment_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not for loan rescheduling or refinancing.
+        /// </summary>
+        internal static string not_for_loan_rescheduling_or_refinancing {
+            get {
+                return ResourceManager.GetString("not_for_loan_rescheduling_or_refinancing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not for rescheduling or refinancing.
+        /// </summary>
+        internal static string not_for_rescheduling_or_refinancing {
+            get {
+                return ResourceManager.GetString("not_for_rescheduling_or_refinancing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Override with New Values.
+        /// </summary>
+        internal static string override_with_new_values {
+            get {
+                return ResourceManager.GetString("override_with_new_values", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a detailed reason for this manual adjustment or waiver.
+        /// </summary>
+        internal static string provide_a_detailed_reason_for_this_manual_adjustment_or_waiver {
+            get {
+                return ResourceManager.GetString("provide_a_detailed_reason_for_this_manual_adjustment_or_waiver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason for Adjustment.
+        /// </summary>
+        internal static string reason_for_adjustment {
+            get {
+                return ResourceManager.GetString("reason_for_adjustment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review, approve, and track loan adjustment requests across branches.
+        /// </summary>
+        internal static string review_approve_and_track_loan_adjustment_requests_across_branches {
+            get {
+                return ResourceManager.GetString("review_approve_and_track_loan_adjustment_requests_across_branches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit Adjustment Request.
+        /// </summary>
+        internal static string submit_adjustment_request {
+            get {
+                return ResourceManager.GetString("submit_adjustment_request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit or validate a manual loan adjustment request. Not valid for rescheduling.
+        /// </summary>
+        internal static string submit_or_validate_a_manual_loan_adjustment_request_not_valid_for_rescheduling {
+            get {
+                return ResourceManager.GetString("submit_or_validate_a_manual_loan_adjustment_request_not_valid_for_rescheduling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This console does &lt;u&gt;not&lt;/u&gt; manage loan restructuring or rescheduling.
+        /// </summary>
+        internal static string this_console_does_not_manage_loan_restructuring_or_rescheduling {
+            get {
+                return ResourceManager.GetString("this_console_does_not_manage_loan_restructuring_or_rescheduling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This tool is intended for &lt;u&gt;waivers and corrections&lt;/u&gt; — not for loan rescheduling or restructuring.
+        /// </summary>
+        internal static string this_tool_is_intended_for_waivers_and_corrections_not_for_loan_rescheduling_or_restructuring {
+            get {
+                return ResourceManager.GetString("this_tool_is_intended_for_waivers_and_corrections_not_for_loan_rescheduling_or_re" +
+                        "structuring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Reviewing Loan Adjustments.
+        /// </summary>
+        internal static string tips_for_reviewing_loan_adjustments {
+            get {
+                return ResourceManager.GetString("tips_for_reviewing_loan_adjustments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tips for Using the Adjustment Console.
+        /// </summary>
+        internal static string tips_for_using_the_adjustment_console {
+            get {
+                return ResourceManager.GetString("tips_for_using_the_adjustment_console", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track who initiated or approved changes.
+        /// </summary>
+        internal static string track_who_initiated_or_approved_changes {
+            get {
+                return ResourceManager.GetString("track_who_initiated_or_approved_changes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use filters to narrow down pending or processed requests.
+        /// </summary>
+        internal static string use_filters_to_narrow_down_pending_or_processed_requests {
+            get {
+                return ResourceManager.GetString("use_filters_to_narrow_down_pending_or_processed_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use for fixing calculation or data errors.
+        /// </summary>
+        internal static string use_for_fixing_calculation_or_data_errors {
+            get {
+                return ResourceManager.GetString("use_for_fixing_calculation_or_data_errors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use for interest, VAT, penalty waivers.
+        /// </summary>
+        internal static string use_for_interest_vat_penalty_waivers {
+            get {
+                return ResourceManager.GetString("use_for_interest_vat_penalty_waivers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the export button to download adjustment records to Excel.
+        /// </summary>
+        internal static string use_the_export_button_to_download_adjustment_records_to_excel {
+            get {
+                return ResourceManager.GetString("use_the_export_button_to_download_adjustment_records_to_excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the export button to download your current view.
+        /// </summary>
+        internal static string use_the_export_button_to_download_your_current_view {
+            get {
+                return ResourceManager.GetString("use_the_export_button_to_download_your_current_view", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View original and new loan values, and approval history.
+        /// </summary>
+        internal static string view_original_and_new_loan_values_and_approval_history {
+            get {
+                return ResourceManager.GetString("view_original_and_new_loan_values_and_approval_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View requests from specific branches.
+        /// </summary>
+        internal static string view_requests_from_specific_branches {
+            get {
+                return ResourceManager.GetString("view_requests_from_specific_branches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When to Use This.
+        /// </summary>
+        internal static string when_to_use_this {
+            get {
+                return ResourceManager.GetString("when_to_use_this", resourceCulture);
             }
         }
     }

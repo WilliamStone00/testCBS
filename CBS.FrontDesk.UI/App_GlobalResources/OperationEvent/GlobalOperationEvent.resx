@@ -117,28 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckThisBoxIfEventHasMultipleEntries" xml:space="preserve">
+  <data name="check_this_box_if_event_has_multiple_entries" xml:space="preserve">
     <value>Check this box if event has multiple entries</value>
   </data>
-  <data name="CreateAccountingRuleForEvent" xml:space="preserve">
+  <data name="create_accounting_rule_for_event" xml:space="preserve">
     <value>Create accounting rule for event</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EventAttribute" xml:space="preserve">
+  <data name="event_attribute" xml:space="preserve">
     <value>Event attribute</value>
   </data>
-  <data name="EventCode" xml:space="preserve">
-    <value>Event code</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="OperationEventName" xml:space="preserve">
+  <data name="operation_event_name" xml:space="preserve">
     <value>Operation event name</value>
-  </data>
-  <data name="SetRule" xml:space="preserve">
-    <value>Set rule</value>
   </data>
 </root>

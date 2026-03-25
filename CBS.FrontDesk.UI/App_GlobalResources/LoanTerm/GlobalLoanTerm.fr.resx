@@ -117,25 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="header" xml:space="preserve">
+  <data name="loan_term_management" xml:space="preserve">
     <value>Gestion des conditions de prêt</value>
   </data>
-  <data name="Loan_Term_Settings" xml:space="preserve">
+  <data name="loan_term_settings" xml:space="preserve">
     <value>Paramètres de durée du prêt</value>
   </data>
-  <data name="Maximum_value_in_months" xml:space="preserve">
+  <data name="manage_loan_terms_configurations_here" xml:space="preserve">
+    <value />
+  </data>
+  <data name="maximum_value_in_months" xml:space="preserve">
     <value>Valeur maximale en mois</value>
   </data>
-  <data name="Minimum_value_in_months" xml:space="preserve">
+  <data name="minimum_value_in_months" xml:space="preserve">
     <value>Valeur minimale en mois</value>
   </data>
-  <data name="Min_Max" xml:space="preserve">
+  <data name="min_max" xml:space="preserve">
     <value>Min : Max</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="TermKind" xml:space="preserve">
+  <data name="term_kind" xml:space="preserve">
     <value>Type de terme</value>
   </data>
 </root>

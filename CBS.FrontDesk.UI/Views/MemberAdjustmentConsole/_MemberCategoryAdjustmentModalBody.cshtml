@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
 @using Resources
 
 @using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "memberCategoryAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }))
@@ -10,20 +10,20 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-primary">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-account-check-outline me-2"></i>Current Member Active Status Information
+                            <i class="mdi mdi-account-check-outline me-2"></i>@GlobalMemberAdjustmentConsole.current_member_active_status_information
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- Current Member ID -->
                             <div class="col-md-6 mb-3">
-                                @Html.LabelFor(m => m.MemberId, "Current Member ID", new { @class = "form-label" })
+                                @Html.LabelFor(m => m.MemberId, $"{@GlobalShared.current_member_id}", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.MemberId, new { @class = "form-control", @readonly = "readonly" })
                             </div>
 
                             <!-- Old Membership Status -->
                             <div class="col-md-6 mb-3">
-                                @Html.LabelFor(m => m.OldMemberCategory, "Old Member Category", new { @class = "form-label" })
+                                @Html.LabelFor(m => m.OldMemberCategory, $"{@GlobalMemberAdjustmentConsole.old_member_category}", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.OldMemberCategory, new { @class = "form-control", @readonly = "readonly" })
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-warning">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-pencil-outline me-2"></i>New Member Status Information
+                            <i class="mdi mdi-pencil-outline me-2"></i>@GlobalMemberAdjustmentConsole.new_member_status_information
                         </h5>
                     </div>
                     <div class="card-body">
@@ -54,8 +54,8 @@
                                     @Html.DropDownListFor(m => m.NewMemberCategory,
                      new List<SelectListItem>
                      {
-                                                    new SelectListItem { Value = "MemberAccount", Text = "Regular member account", Selected = true },
-                                                    new SelectListItem { Value = "DailySaver", Text = "Regular Daily Saver member account", Selected = true },
+                                                    new SelectListItem { Value = "MemberAccount", Text = @GlobalMemberAdjustmentConsole.regular_member_account, Selected = true },
+                                                    new SelectListItem { Value = "DailySaver", Text = @GlobalMemberAdjustmentConsole.regular_daily_saver_member_account, Selected = true },
                                                     new SelectListItem { Value = "AffiliateMemberSalaryAccount", Text = @GlobalIndividual.TemporalSalaryAccountForMembersAssociatedToOtherAffiliates },
                                                     new SelectListItem { Value = "UnknownSalaryMemberAccount", Text = @GlobalIndividual.TemporalSalaryAccountForNoneRegularizedMembers },
                                                     new SelectListItem { Value = "DailyCollection", Text = @GlobalIndividual.DailyServersAccount },
@@ -65,7 +65,7 @@
                      },
                      new { @class = "form-select shadow-input-boxes", id = "CustomerType", @required = "required" }
                  )
-                                    <div class="invalid-feedback">Please select a new member category</div>
+                                    <div class="invalid-feedback">@GlobalMemberAdjustmentConsole.please_select_a_new_member_category</div>
                                     @Html.ValidationMessageFor(m => m.NewMemberCategory, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -73,10 +73,10 @@
                             <!-- Reason -->
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    @Html.LabelFor(m => m.Reason, "Reason for Member Category Change", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.Reason, $"{@GlobalMemberAdjustmentConsole.reason_for_member_category_change}", new { @class = "form-label" })
                                     @Html.TextAreaFor(m => m.Reason,
-             new { @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this status change" })
-                                    <div class="invalid-feedback">Please provide a reason for this change</div>
+             new { @class = "form-control", rows = "3", required = "required", placeholder = $"{@GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_status_change}" })
+                                    <div class="invalid-feedback">@GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_change</div>
                                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -86,10 +86,10 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="mdi mdi-close me-1"></i>Cancel
+                                            <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                                         </button>
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-content-save-check me-1"></i>Submit Status Change
+                                            <i class="mdi mdi-content-save-check me-1"></i>@GlobalMemberAdjustmentConsole.submit_status_change
                                         </button>
                                     </div>
                                 </div>

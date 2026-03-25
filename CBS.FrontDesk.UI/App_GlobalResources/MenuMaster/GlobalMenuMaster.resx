@@ -117,49 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActionName" xml:space="preserve">
+  <data name="action_name" xml:space="preserve">
     <value>Action name</value>
   </data>
-  <data name="CheckToSetInVisibile" xml:space="preserve">
+  <data name="check_to_set_in_visibile" xml:space="preserve">
     <value>Check to set in-visibile</value>
   </data>
-  <data name="Controller" xml:space="preserve">
+  <data name="controller" xml:space="preserve">
     <value>Controller</value>
   </data>
-  <data name="ControllerName" xml:space="preserve">
+  <data name="controller_name" xml:space="preserve">
     <value>Controller name</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="GroupName" xml:space="preserve">
+  <data name="group_name" xml:space="preserve">
     <value>Group name</value>
   </data>
-  <data name="IconClass" xml:space="preserve">
+  <data name="icon_class" xml:space="preserve">
     <value>Icon class</value>
   </data>
-  <data name="MENUMANAGEMENT" xml:space="preserve">
+  <data name="menu_management" xml:space="preserve">
     <value>MENU MANAGEMENT</value>
   </data>
-  <data name="MenuOrder" xml:space="preserve">
+  <data name="menu_order" xml:space="preserve">
     <value>Menu order</value>
   </data>
-  <data name="MenuText" xml:space="preserve">
+  <data name="menu_text" xml:space="preserve">
     <value>Menu text</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="SelectParentMenu" xml:space="preserve">
+  <data name="select_parent_menu" xml:space="preserve">
     <value>Select parent menu</value>
   </data>
-  <data name="Tooltips" xml:space="preserve">
+  <data name="tooltips" xml:space="preserve">
     <value>Tooltips</value>
-  </data>
-  <data name="Visible" xml:space="preserve">
-    <value>Visible</value>
   </data>
 </root>

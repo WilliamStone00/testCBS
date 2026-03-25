@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
+@model CBS.FrontDesk.Data.Entity.MemberNoneCashOperationsP.MemberNoneCashOperationCarrier
 @{
     ViewBag.Title = "Back Office - None Cash Mobile Money Cash-In";
 }
@@ -11,13 +11,13 @@
         <div class="card bg-light">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-cellphone-transfer me-2"></i> @GlobalMobileMoneyBackOffice.BackOfficeNoneCashMobileMoneyCashIn
+                    <i class="mdi mdi-cellphone-transfer me-2"></i> @GlobalMobileMoneyBackOffice.back_office_none_cash_mobile_money_cash_in
                 </h1>
                 <p class="card-text">
-                    @GlobalMobileMoneyBackOffice.ThisInterfaceIsExclusivelyForBackOffice.
-                    @GlobalMobileMoneyBackOffice.ItAllowsStaffToProcessMemberDeposits
-                    @GlobalMobileMoneyBackOffice.AndCreditThoseFundsToTheRespectiveMembersAccount.
-                    <strong>@GlobalMobileMoneyBackOffice.NoWithdrawalsCanBeProcessedFromThisInterface.</strong>
+                    @GlobalMobileMoneyBackOffice.this_interface_is_exclusively_for_back_office.
+                    @GlobalMobileMoneyBackOffice.it_allows_staff_to_process_member_deposits
+                    @GlobalMobileMoneyBackOffice.and_credit_those_funds_to_the_respective_members_account.
+                    <strong>@GlobalMobileMoneyBackOffice.no_withdrawals_can_be_processed_from_this_interface.</strong>
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips Section -->
 <div class="card mb-0">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMobileMoneyBackOffice.MobileMoneyCashInGuidelines</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMobileMoneyBackOffice.mobile_money_cash_in_guidelines</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperationTips" aria-expanded="false" aria-controls="collapseOperationTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,17 +36,17 @@
     <div id="collapseOperationTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-magnify text-success me-2"></i> @GlobalMobileMoneyBackOffice.SearchForTheMembersAccount.</li>
-                <li><i class="mdi mdi-account-box-outline text-primary me-2"></i> @GlobalMobileMoneyBackOffice.VerifyTheMembersDetails.</li>
-                <li><i class="mdi mdi-cellphone text-success me-2"></i> @GlobalMobileMoneyBackOffice.SelectTheCorrectMobileMoneyOperator.</li>
-                <li><i class="mdi mdi-bank text-primary me-2"></i> @GlobalMobileMoneyBackOffice.EnsureTheDepositWasMadeIntoTheBranchsMobileMoneyFloatAccount.</li>
-                <li><i class="mdi mdi-cash-register text-primary me-2"></i> @GlobalMobileMoneyBackOffice.EnterTheCorrectTellerCodeToProcess.</li>
-                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @GlobalMobileMoneyBackOffice.EnterAClearTransactionNote.</li>
-                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i> @GlobalMobileMoneyBackOffice.VerifyTheAmountEnteredIncludingAnyApplicableFeesBeforeConfirming</li>
-                <li><i class="mdi mdi-swap-horizontal text-success me-2"></i> @GlobalMobileMoneyBackOffice.TheAccountantMustImmediatelyProcessTheTransaction</li>
-                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalMobileMoneyBackOffice.OnlyDepositsAreAllowed</li>
-                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalMobileMoneyBackOffice.OnceSubmittedTransactionsCannotBeReversed.</li>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMobileMoneyBackOffice.NoAdditionalApprovalIsRequired.</li>
+                <li><i class="mdi mdi-magnify text-success me-2"></i> @GlobalMobileMoneyBackOffice.search_for_the_members_account.</li>
+                <li><i class="mdi mdi-account-box-outline text-primary me-2"></i> @GlobalMobileMoneyBackOffice.verify_the_members_details.</li>
+                <li><i class="mdi mdi-cellphone text-success me-2"></i> @GlobalMobileMoneyBackOffice.select_the_correct_mobile_money_operator.</li>
+                <li><i class="mdi mdi-bank text-primary me-2"></i> @GlobalMobileMoneyBackOffice.ensure_the_deposit_was_made_into_the_branchs_mobile_money_float_account.</li>
+                <li><i class="mdi mdi-cash-register text-primary me-2"></i> @GlobalMobileMoneyBackOffice.enter_the_correct_teller_code_to_process.</li>
+                <li><i class="mdi mdi-note-edit-outline text-info me-2"></i> @GlobalMobileMoneyBackOffice.enter_aclear_transaction_note.</li>
+                <li><i class="mdi mdi-cash-multiple text-warning me-2"></i> @GlobalMobileMoneyBackOffice.verify_the_amount_entered_including_any_applicable_fees_before_confirming</li>
+                <li><i class="mdi mdi-swap-horizontal text-success me-2"></i> @GlobalMobileMoneyBackOffice.the_accountant_must_immediately_process_the_transaction</li>
+                <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> @GlobalMobileMoneyBackOffice.only_deposits_are_allowed</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalMobileMoneyBackOffice.once_submitted_transactions_cannot_be_reversed.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMobileMoneyBackOffice.no_additional_approval_is_required.</li>
             </ul>
         </div>
     </div>
@@ -63,7 +63,7 @@
                     <h2 class="accordion-header" id="headingMobileMoney">
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionPopoutIcon-3" aria-expanded="true" aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-cellphone-transfer me-2"></i>
-                            <span id="NoneCashMobileMoney">@GlobalMobileMoneyBackOffice.BACK_OFFICE_NONE_CASH_MOBILE_MONEY_CASH_IN</span>
+                            <span id="NoneCashMobileMoney">@GlobalMobileMoneyBackOffice.back_office_none_cash_mobile_money_cash_in</span>
                         </button>
                     </h2>
                     <div id="collapseMobileMoneyOperations" data-bs-parent="#collapsibleSection">

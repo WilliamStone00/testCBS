@@ -61,326 +61,290 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Additional notes.
-        /// </summary>
-        internal static string AdditionalNotes {
-            get {
-                return ResourceManager.GetString("AdditionalNotes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to after completing the process.
         /// </summary>
-        internal static string afterCompletingTheProcess {
+        internal static string after_completing_the_process {
             get {
-                return ResourceManager.GetString("afterCompletingTheProcess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance.
-        /// </summary>
-        internal static string Balance {
-            get {
-                return ResourceManager.GetString("Balance", resourceCulture);
+                return ResourceManager.GetString("after_completing_the_process", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Balance brought forward.
         /// </summary>
-        internal static string BalanceBroughtForward {
+        internal static string balance_brought_forward {
             get {
-                return ResourceManager.GetString("BalanceBroughtForward", resourceCulture);
+                return ResourceManager.GetString("balance_brought_forward", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Double-check the amounts entered to ensure they match the total balance.
         /// </summary>
-        internal static string DoubleCheckTheAmountsEnteredToEnsureTheyMatchTheTotalBalance {
+        internal static string double_check_the_amounts_entered_to_ensure_they_match_the_total_balance {
             get {
-                return ResourceManager.GetString("DoubleCheckTheAmountsEnteredToEnsureTheyMatchTheTotalBalance", resourceCulture);
+                return ResourceManager.GetString("double_check_the_amounts_entered_to_ensure_they_match_the_total_balance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure all denominations are accurately entered.
         /// </summary>
-        internal static string EnsureAllDenominationsAreAccuratelyEntered {
+        internal static string ensure_all_denominations_are_accurately_entered {
             get {
-                return ResourceManager.GetString("EnsureAllDenominationsAreAccuratelyEntered", resourceCulture);
+                return ResourceManager.GetString("ensure_all_denominations_are_accurately_entered", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ensure the primary till is opened before attempting to open a sub-till.
         /// </summary>
-        internal static string EnsureThePrimaryTillIsOpenedBeforeAttemptingToOpenASubTill {
+        internal static string ensure_the_primary_till_is_opened_before_attempting_to_open_asub_till {
             get {
-                return ResourceManager.GetString("EnsureThePrimaryTillIsOpenedBeforeAttemptingToOpenASubTill", resourceCulture);
+                return ResourceManager.GetString("ensure_the_primary_till_is_opened_before_attempting_to_open_asub_till", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the number of notes/coins for each denomination.
         /// </summary>
-        internal static string EnterTheNumberOfNotesCoinsForEachDenomination {
+        internal static string enter_the_number_of_notes_coins_for_each_denomination {
             get {
-                return ResourceManager.GetString("EnterTheNumberOfNotesCoinsForEachDenomination", resourceCulture);
+                return ResourceManager.GetString("enter_the_number_of_notes_coins_for_each_denomination", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to For example.
         /// </summary>
-        internal static string ForExample {
+        internal static string for_example {
             get {
-                return ResourceManager.GetString("ForExample", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HELP TIPS.
-        /// </summary>
-        internal static string HELP_TIPS {
-            get {
-                return ResourceManager.GetString("HELP_TIPS", resourceCulture);
+                return ResourceManager.GetString("for_example", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If the.
         /// </summary>
-        internal static string IfThe {
+        internal static string if_the {
             get {
-                return ResourceManager.GetString("IfThe", resourceCulture);
+                return ResourceManager.GetString("if_the", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If you have 3 notes of N10,000, enter &quot;3&quot; under the N10,000 field.
         /// </summary>
-        internal static string IfYouHave3NotesOfN10000Enter3 {
+        internal static string if_you_have3_notes_of_n10000_enter3 {
             get {
-                return ResourceManager.GetString("IfYouHave3NotesOfN10000Enter3", resourceCulture);
+                return ResourceManager.GetString("if_you_have3_notes_of_n10000_enter3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to it indicates mismatched values or missing information.
         /// </summary>
-        internal static string itIndicatesMismatchedValuesOrMissingInformation {
+        internal static string it_indicates_mismatched_values_or_missing_information {
             get {
-                return ResourceManager.GetString("itIndicatesMismatchedValuesOrMissingInformation", resourceCulture);
+                return ResourceManager.GetString("it_indicates_mismatched_values_or_missing_information", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Make sure to.
         /// </summary>
-        internal static string MakeSureTo {
+        internal static string make_sure_to {
             get {
-                return ResourceManager.GetString("MakeSureTo", resourceCulture);
+                return ResourceManager.GetString("make_sure_to", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Manage the opening process of the main till efficiently. Ensure all details are accurate for a smooth operation.
         /// </summary>
-        internal static string ManageTheOpeningProcessOfTheMainTillEfficiently {
+        internal static string manage_the_opening_process_of_the_main_till_efficiently {
             get {
-                return ResourceManager.GetString("ManageTheOpeningProcessOfTheMainTillEfficiently", resourceCulture);
+                return ResourceManager.GetString("manage_the_opening_process_of_the_main_till_efficiently", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Manage the opening process of the sub-till efficiently. Ensure all details are accurate for a smooth operation.
         /// </summary>
-        internal static string ManageTheOpeningProcessOfTheSubTillEfficiently {
+        internal static string manage_the_opening_process_of_the_sub_till_efficiently {
             get {
-                return ResourceManager.GetString("ManageTheOpeningProcessOfTheSubTillEfficiently", resourceCulture);
+                return ResourceManager.GetString("manage_the_opening_process_of_the_sub_till_efficiently", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Note: Sub-tills cannot be opened until the primary till has been opened. Ensure the primary till is operational before proceeding.
         /// </summary>
-        internal static string NoteSubTillsCannotBeOpened {
+        internal static string note_sub_tills_cannot_be_opened {
             get {
-                return ResourceManager.GetString("NoteSubTillsCannotBeOpened", resourceCulture);
+                return ResourceManager.GetString("note_sub_tills_cannot_be_opened", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Opening of main Till.
         /// </summary>
-        internal static string OpeningOfMainTill {
+        internal static string opening_of_main_till {
             get {
-                return ResourceManager.GetString("OpeningOfMainTill", resourceCulture);
+                return ResourceManager.GetString("opening_of_main_till", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Opening of Sub-Till.
         /// </summary>
-        internal static string OpeningOfSubTill {
+        internal static string opening_of_sub_till {
             get {
-                return ResourceManager.GetString("OpeningOfSubTill", resourceCulture);
+                return ResourceManager.GetString("opening_of_sub_till", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Open of Day button is greyed out.
         /// </summary>
-        internal static string OpenOfDayButtonIsGreyedOut {
+        internal static string open_of_day_button_is_greyed_out {
             get {
-                return ResourceManager.GetString("OpenOfDayButtonIsGreyedOut", resourceCulture);
+                return ResourceManager.GetString("open_of_day_button_is_greyed_out", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Open of day note.
         /// </summary>
-        internal static string OpenOfDayNote {
+        internal static string open_of_day_note {
             get {
-                return ResourceManager.GetString("OpenOfDayNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open the day.
-        /// </summary>
-        internal static string OpenTheDay {
-            get {
-                return ResourceManager.GetString("OpenTheDay", resourceCulture);
+                return ResourceManager.GetString("open_of_day_note", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to OPEN OF THE TILL AS OF ACCOUNTING DAY.
         /// </summary>
-        internal static string OPEN_OF_THE_TILL_AS_OF_ACCOUNTING_DAY {
+        internal static string open_of_the_till_as_of_accounting_day {
             get {
-                return ResourceManager.GetString("OPEN_OF_THE_TILL_AS_OF_ACCOUNTING_DAY", resourceCulture);
+                return ResourceManager.GetString("open_of_the_till_as_of_accounting_day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the day.
+        /// </summary>
+        internal static string open_the_day {
+            get {
+                return ResourceManager.GetString("open_the_day", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Please note: The main till must be opened before any sub-tills can be opened. The primary till does not perform cash operations with members.
         /// </summary>
-        internal static string PleaseNoteTheMainTillMustBeOpenedBeforeAnySubTillsCanBeOpened {
+        internal static string please_note_the_main_till_must_be_opened_before_any_sub_tills_can_be_opened {
             get {
-                return ResourceManager.GetString("PleaseNoteTheMainTillMustBeOpenedBeforeAnySubTillsCanBeOpened", resourceCulture);
+                return ResourceManager.GetString("please_note_the_main_till_must_be_opened_before_any_sub_tills_can_be_opened", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Primary Till Opening.
         /// </summary>
-        internal static string PrimaryTillOpening {
+        internal static string primary_till_opening {
             get {
-                return ResourceManager.GetString("PrimaryTillOpening", resourceCulture);
+                return ResourceManager.GetString("primary_till_opening", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to print your open of day report.
         /// </summary>
-        internal static string printYourOpenOfDayReport {
+        internal static string print_your_open_of_day_report {
             get {
-                return ResourceManager.GetString("printYourOpenOfDayReport", resourceCulture);
+                return ResourceManager.GetString("print_your_open_of_day_report", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Proper denomination breakdown ensures accuracy and reduces discrepancies. Follow these tips.
         /// </summary>
-        internal static string ProperDenominationBreakdown {
+        internal static string proper_denomination_breakdown {
             get {
-                return ResourceManager.GetString("ProperDenominationBreakdown", resourceCulture);
+                return ResourceManager.GetString("proper_denomination_breakdown", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Sub-Till Opening.
         /// </summary>
-        internal static string SubTillOpening {
+        internal static string sub_till_opening {
             get {
-                return ResourceManager.GetString("SubTillOpening", resourceCulture);
+                return ResourceManager.GetString("sub_till_opening", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The main till does not directly interact with members for cash operations.
         /// </summary>
-        internal static string TheMainTillDoesNotDirectlyInteract {
+        internal static string the_main_till_does_not_directly_interact {
             get {
-                return ResourceManager.GetString("TheMainTillDoesNotDirectlyInteract", resourceCulture);
+                return ResourceManager.GetString("the_main_till_does_not_directly_interact", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The main till serves as the main control till for sub-tills. Follow these tips.
         /// </summary>
-        internal static string TheMainTillServesAsTheMainControlTillForSubTillsFollowTheseTips {
+        internal static string the_main_till_serves_as_the_main_control_till_for_sub_tills_follow_these_tips {
             get {
-                return ResourceManager.GetString("TheMainTillServesAsTheMainControlTillForSubTillsFollowTheseTips", resourceCulture);
+                return ResourceManager.GetString("the_main_till_serves_as_the_main_control_till_for_sub_tills_follow_these_tips", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The system will automatically calculate the total for all denominations.
         /// </summary>
-        internal static string TheSystemWillAutomaticallyCalculateTheTotal {
+        internal static string the_system_will_automatically_calculate_the_total {
             get {
-                return ResourceManager.GetString("TheSystemWillAutomaticallyCalculateTheTotal", resourceCulture);
+                return ResourceManager.GetString("the_system_will_automatically_calculate_the_total", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to the values entered do not match the expected totals or the primary till is not opened.
         /// </summary>
-        internal static string theValuesEnteredDoNotMatchTheExpectedTotals {
+        internal static string the_values_entered_do_not_match_the_expected_totals {
             get {
-                return ResourceManager.GetString("theValuesEnteredDoNotMatchTheExpectedTotals", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total amount.
-        /// </summary>
-        internal static string TotalAmount {
-            get {
-                return ResourceManager.GetString("TotalAmount", resourceCulture);
+                return ResourceManager.GetString("the_values_entered_do_not_match_the_expected_totals", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Use denominations systematically to minimize counting errors.
         /// </summary>
-        internal static string UseDenominationsSystematicallyToMinimizeCountingErrors {
+        internal static string use_denominations_systematically_to_minimize_counting_errors {
             get {
-                return ResourceManager.GetString("UseDenominationsSystematicallyToMinimizeCountingErrors", resourceCulture);
+                return ResourceManager.GetString("use_denominations_systematically_to_minimize_counting_errors", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Verify that totals match the expected amounts for sub-till operations.
         /// </summary>
-        internal static string VerifyThatTotalsMatchTheExpectedAmountsForSubTillOperations {
+        internal static string verify_that_totals_match_the_expected_amounts_for_sub_till_operations {
             get {
-                return ResourceManager.GetString("VerifyThatTotalsMatchTheExpectedAmountsForSubTillOperations", resourceCulture);
+                return ResourceManager.GetString("verify_that_totals_match_the_expected_amounts_for_sub_till_operations", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Verify the totals before submitting the form.
         /// </summary>
-        internal static string VerifyTheTotalsBeforeSubmittingTheForm {
+        internal static string verify_the_totals_before_submitting_the_form {
             get {
-                return ResourceManager.GetString("VerifyTheTotalsBeforeSubmittingTheForm", resourceCulture);
+                return ResourceManager.GetString("verify_the_totals_before_submitting_the_form", resourceCulture);
             }
         }
     }

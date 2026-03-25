@@ -1,11 +1,11 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
     @using Resources
 @{
     ViewBag.Title = "Loan Product Accounting Configurations";
 
 }
 
-<h2>@GlobalLoanProduct.LoanProductAccountingConfigurations</h2>
+<h2>@GlobalLoanProduct.loan_product_accounting_configurations</h2>
 <fieldset class="fieldset-custom">
 
 
@@ -17,10 +17,10 @@
             <table class="table table-hover" id="myDataTable">
                 <thead>
                     <tr>
-                        <th>@GlobalLoanProduct.OperationEvent</th>
-                        <th>@GlobalLoanProduct.AccountNumber</th>
-                        <th>@GlobalLoanProduct.Description</th>
-                        <th>@GlobalLoanProduct.Status</th>
+                        <th>@GlobalShared.operation_event</th>
+                        <th>@GlobalShared.Account_Number</th>
+                        <th>@GlobalShared.Description</th>
+                        <th>@GlobalShared.Status</th>
                     </tr>
                 </thead>
 

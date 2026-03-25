@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "All requests";
 }
 @using Resources
@@ -15,7 +15,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-cash-multiple me-2"></i>@GlobalMobileMoneyCashTopup.AllMMCOMMRequests
+                            <i class="mdi mdi-cash-multiple me-2"></i>@GlobalMobileMoneyCashTopup.all_mmc_omm_requests
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -28,7 +28,7 @@
                                         <div class="card-body d-sm-flex d-block">
                                             <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0 ms-auto">
                                                 <div class="ms-3">
-                                                    <a type="button" href="/MobileMoneyCashTopup/AllRequests" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalMobileMoneyCashTopup.ReloadAllRequests.">
+                                                    <a type="button" href="/MobileMoneyCashTopup/AllRequests" class="btn btn-icon btn-label-primary btn-sm btn-fab demo" data-bs-toggle="tooltip" title="@GlobalShared.reload_all_requests.">
                                                         <span class="tf-icons mdi mdi-view-list mdi-18px"></span>
                                                     </a>
                                                 </div>
@@ -57,68 +57,68 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">@GlobalMobileMoneyCashTopup.RequestDetails</h5>
+                <h5 class="modal-title" id="detailsModalLabel">@GlobalShared.request_details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-striped">
                     <tbody>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.RequestedDateTime:</th>
+                            <th scope="row">@GlobalMobileMoneyCashTopup.requested_date_time:</th>
                             <td id="modalRequestDate" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.TransactionReference:</th>
+                            <th scope="row">@GlobalShared.Transaction_Reference:</th>
                             <td id="modalTransactionReference" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.RequestReference:</th>
+                            <th scope="row">@GlobalShared.request_reference:</th>
                             <td id="modalRequestReference" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.RequestedAmount:</th>
+                            <th scope="row">@GlobalShared.Requested_Amount:</th>
                             <td id="modalRequestedAmount" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.InitiatedBy:</th>
+                            <th scope="row">@GlobalShared.Initiated_By:</th>
                             <td id="modalInitiatedBy" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.OperatorType:</th>
+                            <th scope="row">@GlobalShared.operator_type:</th>
                             <td id="modalOperatorType" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.SourceType:</th>
+                            <th scope="row">@GlobalShared.Source_type:</th>
                             <td id="modalSourceType" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.Branch:</th>
+                            <th scope="row">@GlobalShared.Branch:</th>
                             <td id="modalBranch" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.RequestNote:</th>
+                            <th scope="row">@GlobalShared.Request_note:</th>
                             <td id="modalRequestNote" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.ApprovalStatus:</th>
+                            <th scope="row">@GlobalShared.Approval_status:</th>
                             <td id="modalApprovalStatus" class="wrap-text">
                                 <span class="badge" id="approvalStatusBadge"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.MemberReferenceAccountNumber:</th>
+                            <th scope="row">@GlobalMobileMoneyCashTopup.member_reference_account_number:</th>
                             <td id="modalMemberReferenceAccountNumber" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.ApprovalNote:</th>
+                            <th scope="row">@GlobalShared.Approval_note:</th>
                             <td id="modalApprovalNote" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.ApprovalDate:</th>
+                            <th scope="row">@GlobalShared.Approval_date:</th>
                             <td id="modalApprovalDate" class="wrap-text"></td>
                         </tr>
                         <tr>
-                            <th scope="row">@GlobalMobileMoneyCashTopup.ApprovedBy:</th>
+                            <th scope="row">@GlobalShared.Approved_by:</th>
                             <td id="modalApprovedBy" class="wrap-text"></td>
                         </tr>
                     </tbody>

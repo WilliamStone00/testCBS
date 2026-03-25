@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Member Overall branches";
 }
 @using Resources
@@ -7,15 +7,15 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalMembersFSeries.MEMBERS_OVERVIEW_FROM_OVER_ALL_BRANCHES
+                    <i class="mdi mdi-account-group-outline me-2"></i> @GlobalMembersFSeries.members_overview_from_over_all_branches
                 </h1>
                 <p class="card-text">
-                    @GlobalMembersFSeries.TheF2F5SeriesProvidesUsersWithDetailedInsights.
-                    @GlobalMembersFSeries.ThisReportOffersNetworkWideAccessSpecificallyLimitedToThe <strong>@Session["BankName"]</strong>, @GlobalMembersFSeries.andIsStrictlyReadOnly.
-                    @GlobalMembersFSeries.AListOfMembersIsFirstDisplayed.
+                    @GlobalMembersFSeries.the_f2_f5_series_provides_users_with_detailed_insights.
+                    @GlobalMembersFSeries.this_report_offers_network_wide_access_specifically_limited_to_the <strong>@Session["BankName"]</strong>, @GlobalMembersFSeries.and_is_strictly_read_only.
+                    @GlobalMembersFSeries.alist_of_members_is_first_displayed.
                 </p>
                 <p class="card-text fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalMembersFSeries.LeverageTheFiltersBelowToNarrowResultsByGender.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalMembersFSeries.leverage_the_filters_below_to_narrow_results_by_gender.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -26,7 +26,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMembersFSeries.TIPS_FOR_FILTERING_MEMBERS_EFFECTIVELY</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMembersFSeries.tips_for_filtering_members_effectively</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,11 +34,11 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalMembersFSeries.FilterByBranch:</strong> @GlobalMembersFSeries.EasilySegmentMembersByOperationalBranch.</li>
-                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalMembersFSeries.RegistrationDates:</strong> @GlobalMembersFSeries.FilterByCreationDateOrBirthDateToTargetSpecificDemographics.</li>
-                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalMembersFSeries.GenderMaritalStatus:</strong> @GlobalMembersFSeries.AnalyzeMemberBreakdownAcrossKeyAttributes.</li>
-                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalMembersFSeries.ApprovalLegalStatus:</strong> @GlobalMembersFSeries.FilterApprovedMembersByLegalFormOrType.</li>
-                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalMembersFSeries.Export:</strong> @GlobalMembersFSeries.ExportSearchResultsToExcelForReportingOrRecordkeeping.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalShared.Filter_by_Branch:</strong> @GlobalMembersFSeries.easily_segment_members_by_operational_branch.</li>
+                <li><i class="mdi mdi-calendar-range text-primary me-2"></i> <strong>@GlobalShared.Registration_dates:</strong> @GlobalMembersFSeries.filter_by_creation_date_or_birth_date_to_target_specific_demographics.</li>
+                <li><i class="mdi mdi-gender-male-female text-secondary me-2"></i> <strong>@GlobalMembersFSeries.gender_marital_status:</strong> @GlobalMembersFSeries.analyze_member_breakdown_across_key_attributes.</li>
+                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalMembersFSeries.approval_legal_status:</strong> @GlobalMembersFSeries.filter_approved_members_by_legal_form_or_type.</li>
+                <li><i class="mdi mdi-file-export-outline text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalMembersFSeries.export_search_results_to_excel_for_reporting_or_recordkeeping.</li>
             </ul>
         </div>
     </div>
@@ -46,7 +46,7 @@
 
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalMembersFSeries.MemberFilters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Member_Filters</h5>
     <form id="memberFilterForm">
         <div class="card p-3 mb-3 bg-light">
             <!-- Toggle switches for additional filters -->
@@ -54,19 +54,19 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDemographics" onclick="document.getElementById('demographicFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDemographics">@GlobalMembersFSeries.ShowDemographicFilters</label>
+                        <label class="form-check-label fw-bold" for="toggleDemographics">@GlobalMembersFSeries.show_demographic_filters</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleApproval" onclick="document.getElementById('approvalFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleApproval">@GlobalMembersFSeries.ShowApprovalLegalFilters</label>
+                        <label class="form-check-label fw-bold" for="toggleApproval">@GlobalMembersFSeries.show_approval_legal_filters</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDates" onclick="document.getElementById('dateFilters').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalMembersFSeries.ShowDateFilters</label>
+                        <label class="form-check-label fw-bold" for="toggleDates">@GlobalShared.Show_Date_Filters</label>
                     </div>
                 </div>
             </div>
@@ -74,22 +74,22 @@
             <!-- Default Filters -->
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">@GlobalMembersFSeries.MemberAccountNumber</label>
-                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="@GlobalMembersFSeries.MemberAccountTemporalNumber" />
+                    <label class="form-label fw-bold">@GlobalShared.Member_account_number</label>
+                    <input type="text" id="customerId" name="CustomerId" class="form-control" placeholder="@GlobalMembersFSeries.member_account_temporal_number" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold">@GlobalMembersFSeries.FirstName</label>
-                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalMembersFSeries.FirstName" />
+                    <label class="form-label fw-bold">@GlobalShared.First_Name</label>
+                    <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="@GlobalShared.First_Name" />
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label fw-bold">@GlobalMembersFSeries.LastName</label>
-                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalMembersFSeries.LastName" />
+                    <label class="form-label fw-bold">@GlobalShared.Last_Name</label>
+                    <input type="text" id="lastName" name="LastName" class="form-control" placeholder="@GlobalShared.Last_Name" />
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <label class="form-label fw-bold">@GlobalMembersFSeries.Branch</label>
-                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalMembersFSeries.SelectBranch + "---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
+                    <label class="form-label fw-bold">@GlobalShared.Branch</label>
+                    @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "---" + @GlobalShared.Select_Branch + "---", new { @class = "form-control select2", @id = "branchId", @name = "BranchId" })
                 </div>
             </div>
 
@@ -97,32 +97,32 @@
             <div id="demographicFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.GenderOrGroups</label>
+                        <label class="form-label fw-bold">@GlobalShared.Gender_Or_Groups</label>
                         <select id="gender" name="Gender" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="Female">@GlobalMembersFSeries.Female</option>
-                            <option value="Male">@GlobalMembersFSeries.Male</option>
-                            <option value="Male">@GlobalMembersFSeries.Groups</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Female">@GlobalShared.Female</option>
+                            <option value="Male">@GlobalShared.Male</option>
+                            <option value="Male">@GlobalShared.Groups</option>
                         </select>
 
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.MaritalStatus</label>
+                        <label class="form-label fw-bold">@GlobalShared.Marital_Status</label>
                         <select id="maritalStatus" name="MaritalStatus" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="Divorced">@GlobalMembersFSeries.Divorced</option>
-                            <option value="Married">@GlobalMembersFSeries.Married</option>
-                            <option value="Single">@GlobalMembersFSeries.Single</option>
-                            <option value="Widowed">@GlobalMembersFSeries.Widowed</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Divorced">@GlobalShared.Divorced</option>
+                            <option value="Married">@GlobalShared.Married</option>
+                            <option value="Single">@GlobalShared.Single</option>
+                            <option value="Widowed">@GlobalShared.Widowed</option>
                         </select>
 
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.WorkingStatus</label>
+                        <label class="form-label fw-bold">@GlobalShared.Working_Status</label>
                         <select id="workingStatus" name="WorkingStatus" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="Unemployed">@GlobalMembersFSeries.Unemployed</option>
-                            <option value="Working">@GlobalMembersFSeries.Working</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Unemployed">@GlobalShared.Unemployed</option>
+                            <option value="Working">@GlobalShared.Working</option>
                         </select>
 
                     </div>
@@ -133,48 +133,48 @@
             <div id="approvalFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.MembershipApproval</label>
+                        <label class="form-label fw-bold">@GlobalShared.Membership_Approval</label>
                         <select id="membershipApprovalStatus" name="MembershipApprovalStatus" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
+                            <option value="">@GlobalShared.All</option>
                             <option value="Approved">@GlobalShared.Approved</option>
-                            <option value="Pending">@GlobalMembersFSeries.AwaitsValidation</option>
+                            <option value="Pending">@GlobalShared.Awaits_Validation</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.LegalForm</label>
+                        <label class="form-label fw-bold">@GlobalShared.Legal_Form</label>
                         <select id="legalForm" name="LegalForm" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="Moral_Person">@GlobalMembersFSeries.MoralPerson</option>
-                            <option value="Physical_Person">@GlobalMembersFSeries.PhysicalPerson</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Moral_Person">@GlobalShared.Moral_Person</option>
+                            <option value="Physical_Person">@GlobalShared.Physical_Person</option>
                         </select>
 
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.MembersProfile</label>
+                        <label class="form-label fw-bold">@GlobalShared.Members_Profile</label>
                         <select id="customerType" name="CustomerType" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="AffiliateMemberSalaryAccount">@GlobalMembersFSeries.AffiliateMemberSalary</option>
-                            <option value="CivilServantsSalaryCollection">@GlobalMembersFSeries.CivilServantsSalary</option>
-                            <option value="DailyCollection">@GlobalMembersFSeries.DailyCollection</option>
-                            <option value="DailySaver">@GlobalMembersFSeries.DailySaver</option>
-                            <option value="MemberAccount">@GlobalMembersFSeries.MembersAccountSerialNumber</option>
-                            <option value="MobileMoneyMTN">@GlobalMembersFSeries.MobileMoneyMTN</option>
-                            <option value="MobileMoneyOrange">@GlobalMembersFSeries.MobileMoneyOrange</option>
-                            <option value="PreRegisteredMember">@GlobalMembersFSeries.PreRegisteredMembers</option>
-                            <option value="PrivateInstitutionSalaryCollection">@GlobalMembersFSeries.PrivateInstitutionSalary</option>
-                            <option value="Remittance">@GlobalMembersFSeries.Remittance </option>
-                            <option value="TemporalAccount">@GlobalMembersFSeries.TemporalAccount</option>
-                            <option value="UnknownSalaryMemberAccount">@GlobalMembersFSeries.TemporalSalaryForMember</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="AffiliateMemberSalaryAccount">@GlobalMembersFSeries.affiliate_member_salary</option>
+                            <option value="CivilServantsSalaryCollection">@GlobalMembersFSeries.civil_servants_salary</option>
+                            <option value="DailyCollection">@GlobalShared.Daily_collection</option>
+                            <option value="DailySaver">@GlobalMembersFSeries.daily_saver</option>
+                            <option value="MemberAccount">@GlobalMembersFSeries.members_account_serial_number</option>
+                            <option value="MobileMoneyMTN">@GlobalMembersFSeries.mobile_money_mtn</option>
+                            <option value="MobileMoneyOrange">@GlobalMembersFSeries.mobile_money_orange</option>
+                            <option value="PreRegisteredMember">@GlobalMembersFSeries.pre_registered_members</option>
+                            <option value="PrivateInstitutionSalaryCollection">@GlobalMembersFSeries.private_institution_salary</option>
+                            <option value="Remittance">@GlobalShared.Remittance </option>
+                            <option value="TemporalAccount">@GlobalMembersFSeries.temporal_account</option>
+                            <option value="UnknownSalaryMemberAccount">@GlobalMembersFSeries.temporal_salary_for_member</option>
                         </select>
 
 
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.AgeCategory</label>
+                        <label class="form-label fw-bold">@GlobalShared.Age_Category</label>
                         <select id="ageCategoryStatus" name="AgeCategoryStatus" class="form-select">
-                            <option value="">@GlobalMembersFSeries.All</option>
-                            <option value="Major">@GlobalMembersFSeries.Major</option>
-                            <option value="Minor">@GlobalMembersFSeries.Minor</option>
+                            <option value="">@GlobalShared.All</option>
+                            <option value="Major">@GlobalShared.Major</option>
+                            <option value="Minor">@GlobalShared.Minor</option>
                         </select>
                     </div>
 
@@ -185,21 +185,21 @@
             <div id="dateFilters" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.DateOfBirthFrom</label>
+                        <label class="form-label fw-bold">@GlobalShared.Date_of_Birth_From</label>
                         <input type="date" id="dobFrom" name="DateOfBirthFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.DateofBirthTo</label>
+                        <label class="form-label fw-bold">@GlobalMembersFSeries.dateof_birth_to</label>
                         <input type="date" id="dobTo" name="DateOfBirthTo" class="form-control" />
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.CreatedFrom</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_From</label>
                         <input type="date" id="createdFrom" name="CreatedFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">@GlobalMembersFSeries.CreatedTo</label>
+                        <label class="form-label fw-bold">@GlobalShared.Created_To</label>
                         <input type="date" id="createdTo" name="CreatedTo" class="form-control" />
                     </div>
                 </div>
@@ -208,7 +208,7 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalMembersFSeries.ApplyFilter</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter</button>
                 <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset</button>
                 @*<button id="exportBtn" class="btn btn-success w-100"><i class="mdi mdi-file-excel"></i> Export</button>*@
             </div>

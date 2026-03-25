@@ -117,40 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="about" xml:space="preserve">
     <value>About</value>
     <comment>About TSC</comment>
   </data>
-  <data name="Use_this_area_to_provide_additional_information" xml:space="preserve">
+  <data name="use_this_area_to_provide_additional_information" xml:space="preserve">
     <value>Use this area to provide additional information.</value>
     <comment>Use this area to provide additional information.</comment>
   </data>
-  <data name="ContactUs" xml:space="preserve">
+  <data name="contact_us" xml:space="preserve">
     <value>Contact Us</value>
   </data>
-  <data name="Home" xml:space="preserve">
+  <data name="home" xml:space="preserve">
     <value>Home</value>
     <comment>Home page</comment>
   </data>
-  <data name="NoInternetConnection" xml:space="preserve">
+  <data name="no_internet_connection" xml:space="preserve">
     <value>No internet connection</value>
   </data>
-  <data name="Your_Secure_Reliable_Partner_FLUX" xml:space="preserve">
+  <data name="your_secure_reliable_partner_flux" xml:space="preserve">
     <value>Your Secure &amp; Reliable Partner. FLUX!</value>
     <comment>Slogan line under the heading</comment>
   </data>
-  <data name="RETRY" xml:space="preserve">
+  <data name="retry" xml:space="preserve">
     <value>RETRY</value>
   </data>
-  <data name="Flux_SARL_Empowering_businesses_Enhancing_lives" xml:space="preserve">
-    <value>Flux SARL! : Empowering businesses. Enhancing lives.</value>
+  <data name="empowering_businesses_enhancing_lives" xml:space="preserve">
+    <value>Empowering businesses. Enhancing lives.</value>
     <comment>Mission statement under the slogan</comment>
   </data>
-  <data name="WelcomeTitle" xml:space="preserve">
+  <data name="welcome_to" xml:space="preserve">
     <value>WELCOME TO</value>
     <comment>Main welcome heading for the home page</comment>
   </data>
-  <data name="You_are_currently_offline_Please_check_your_internet_connection_and_try_again" xml:space="preserve">
+  <data name="you_are_currently_offline_please_check_your_internet_connection_and_try_again" xml:space="preserve">
     <value>You are currently offline. Please check your internet connection and try again</value>
   </data>
 </root>

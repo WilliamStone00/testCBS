@@ -117,37 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Controller" xml:space="preserve">
-    <value>Contrôleur</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Group" xml:space="preserve">
-    <value>Groupe</value>
-  </data>
-  <data name="MenuText" xml:space="preserve">
-    <value>Texte du menu</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>Aucun</value>
-  </data>
-  <data name="Parent" xml:space="preserve">
-    <value>Parent</value>
-  </data>
-  <data name="PERMISSIONS" xml:space="preserve">
-    <value>AUTORISATIONS</value>
-  </data>
-  <data name="ROLE_MANAGEMENT" xml:space="preserve">
-    <value>GESTION DES RÔLES</value>
-  </data>
-  <data name="SelectRoleRights" xml:space="preserve">
-    <value>Sélectionner les rôles/droits</value>
-  </data>
-  <data name="Visible" xml:space="preserve">
-    <value>Visible</value>
-  </data>
 </root>

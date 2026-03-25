@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
     @using Resources
 @{
     ViewBag.Title = "View Cash Replenishment Details";
@@ -19,7 +19,7 @@
                         aria-expanded="true"
                         aria-controls="accordionPopoutIcon-3">
                     <i class="mdi mdi-bank-plus me-2"></i>
-                    @GlobalNotification.RequestReferenceId :@Model.CashReplenimentRequestdto.Id @GlobalNotification.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
+                    @GlobalNotification.request_reference_id :@Model.CashReplenimentRequestdto.Id @GlobalShared.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N")
                 </button>
             </h2>
             <div class="card-body">
@@ -29,7 +29,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th colspan="2"> <h5 class="card-title">@GlobalNotification.CashReplenishmentRequestDetails</h5></th>
+                                <th colspan="2"> <h5 class="card-title">@GlobalNotification.cash_replenishment_request_details</h5></th>
 
                             </tr>
                         </thead>
@@ -37,28 +37,28 @@
                             @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                             {
                                 <tr>
-                                    <td>@GlobalNotification.BranchOffice</td>
+                                    <td>@GlobalShared.Branch_Office</td>
                                     <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                                 </tr>
                             }
                             <tr>
-                                <td>@GlobalNotification.InvoiceNumber</td>
+                                <td>@GlobalNotification.invoice_number</td>
                                 <td id="referenceId">@Model.CashReplenimentRequestdto.ReferenceId </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.AmountRequested</td>
+                                <td>@GlobalNotification.amount_requested</td>
                                 <td id="amountRequested">XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.RequestMessage</td>
+                                <td>@GlobalNotification.request_message</td>
                                 <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.RequestedBy </td>
+                                <td>@GlobalShared.Requested_by </td>
                                 <td id="IssuedBy"> @Model.CashReplenimentRequestdto.TempId1 </td>
                             </tr>
                             <tr>
-                                <td>@GlobalNotification.RequestedDate</td>
+                                <td>@GlobalShared.Requested_Date</td>
                                 <td id="IssuedDate">@Model.CashReplenimentRequestdto.IssuedDate </td>
                             </tr>
 
@@ -67,23 +67,23 @@
                                 <tr>
                                     <td>@GlobalShared.Status</td>
                                     <td class="badge bg-label-success rounded-pill text-uppercase">
-                                        @Model.CashReplenimentRequestdto.Status, @GlobalNotification.butWaitingForActionFromManager
+                                        @Model.CashReplenimentRequestdto.Status, @GlobalNotification.but_waiting_for_action_from_manager
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.ApprovedMessage</td>
+                                    <td>@GlobalShared.approved_message</td>
                                     <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.ApprovedBy </td>
+                                    <td>@GlobalShared.Approved_by </td>
                                     <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.TempId2 </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.ApprovedDate</td>
+                                    <td>@GlobalShared.Approved_Date</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.ApprovedAmount</td>
+                                    <td>@GlobalShared.Approved_Amount</td>
                                     <td id="ApprovedBy">@Model.CashReplenimentRequestdto.AmountApproved </td>
                                 </tr>
                                 if (@Model.CashReplenimentRequestdto.CashRequisitionType.Equals(CBS.FrontDesk.Data.Entity.Accounting.CashRequisitionType.REQUEST.ToString()))
@@ -103,7 +103,7 @@
                                     <tr>
                                         <td>@GlobalShared.Status</td>
                                         <td class="badge bg-label-primary rounded-pill text-uppercase">
-                                            @Model.CashReplenimentRequestdto.Status, @GlobalNotification.HasNotYetBeenApprovedByHeadOffice
+                                            @Model.CashReplenimentRequestdto.Status, @GlobalNotification.has_not_yet_been_approved_by_head_office
                                         </td>
                                     </tr>
                                 }
@@ -114,19 +114,19 @@
                                         <tr>
                                             <td>@GlobalShared.Status</td>
                                             <td class="badge bg-label-success rounded-pill text-uppercase">
-                                                @Model.CashReplenimentRequestdto.Status, @GlobalNotification.butWaitingForActionFromManager
+                                                @Model.CashReplenimentRequestdto.Status, @GlobalNotification.but_waiting_for_action_from_manager
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>@GlobalNotification.ApprovedMessage</td>
+                                            <td>@GlobalShared.approved_message</td>
                                             <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                         </tr>
                                         <tr>
-                                            <td>@GlobalNotification.ApprovedBy </td>
+                                            <td>@GlobalShared.Approved_by </td>
                                             <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                         </tr>
                                         <tr>
-                                            <td>@GlobalNotification.ApprovedDate</td>
+                                            <td>@GlobalShared.Approved_Date</td>
                                             <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                         </tr>
                                     }
@@ -141,20 +141,20 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedMessage</td>
+                                                <td>@GlobalShared.approved_message</td>
                                                 <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedBy </td>
+                                                <td>@GlobalShared.Approved_by </td>
                                                 <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedDate</td>
+                                                <td>@GlobalShared.Approved_Date</td>
                                                 <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
 
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.BankTransaction</td>
+                                                <td>@GlobalShared.bank_transaction</td>
                                                 <td>
                                                     @*  <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.ReferenceId')" class="mr-2" id="exLargeModal" data-toggle="tooltip" data-placement="top" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>*@
                                                     <a href="#" onclick="LoadInfomation('@Model.CashReplenimentRequestdto.Id')" class="mr-2 btn btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" data-bs-toggle="modal" data-bs-target="#exLargeModal" title="View @Model.CashReplenimentRequestdto.ReferenceId Cash Request">Bank Transaction Details</a>
@@ -170,15 +170,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedMessage</td>
+                                                <td>@GlobalShared.approved_message</td>
                                                 <td>@Model.CashReplenimentRequestdto.ApprovedMessage </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedBy </td>
+                                                <td>@GlobalShared.Approved_by </td>
                                                 <td id="ApprovedBy"> @Model.CashReplenimentRequestdto.ApprovedBy </td>
                                             </tr>
                                             <tr>
-                                                <td>@GlobalNotification.ApprovedDate</td>
+                                                <td>@GlobalShared.Approved_Date</td>
                                                 <td id="ApprovedBy">@Model.CashReplenimentRequestdto.ApprovedDate </td>
                                             </tr>
                                         }

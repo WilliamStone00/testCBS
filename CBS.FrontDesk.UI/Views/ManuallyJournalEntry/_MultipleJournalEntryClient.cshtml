@@ -1,10 +1,10 @@
-﻿@using Resources
+@using Resources
 <div class="table-responsive">
     <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title card-title justify-content-center" id="exampleModalLabel3"> @GlobalManuallyJournalEntry.Loading_ ...</h2>
+                    <h2 class="modal-title card-title justify-content-center" id="exampleModalLabel3"> @GlobalShared.Loading ...</h2>
                     <button type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
@@ -14,14 +14,14 @@
                 <hr>
                 <div class="modal-body">
                     <div class="table-responsive mb-3">
-                        <h4 class="Reference">Reference:</h4>
+                        <h4 class="Reference">@GlobalShared.Reference:</h4>
                         <input id="ReferenceId" type="hidden" value="" autofocus>
                         <table class="table table-hover" id="AccountingEventEntriesDataTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>@GlobalManuallyJournalEntry.AccountDescription</th>
-                                    <th>@GlobalManuallyJournalEntry.Debit</th>
-                                    <th>@GlobalManuallyJournalEntry.Credit</th>
+                                    <th>@GlobalManuallyJournalEntry.account_description</th>
+                                    <th>@GlobalShared.Debit</th>
+                                    <th>@GlobalShared.Credit</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -35,7 +35,7 @@
                 <div class="modal-footer">
                     <button type="button"
                             class="btn btn-primary" id="submitButton">
-                        <i class="mdi mdi-account-edit me-1"></i>  @GlobalManuallyJournalEntry.PostEntries
+                        <i class="mdi mdi-account-edit me-1"></i>  @GlobalShared.post_entries
                     </button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         @GlobalShared.Close

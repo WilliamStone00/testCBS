@@ -117,8 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="adjustment_request_filters" xml:space="preserve">
+    <value>Adjustment Request Filters</value>
+  </data>
+  <data name="adjust_fields_like" xml:space="preserve">
+    <value>Adjust fields like</value>
+  </data>
   <data name="delinquent_loans_with_aging_breakdown" xml:space="preserve">
     <value>Delinquent Loans with Aging Breakdown</value>
+  </data>
+  <data name="easily_separate_pending_approved_or_rejected_entries" xml:space="preserve">
+    <value>Easily separate pending, approved, or rejected entries</value>
+  </data>
+  <data name="filter_adjustment_requests" xml:space="preserve">
+    <value>Filter Adjustment Requests</value>
+  </data>
+  <data name="filter_by_loan_id_member_id_or_date" xml:space="preserve">
+    <value>Filter by Loan ID, Member ID, or date</value>
+  </data>
+  <data name="filter_specific_requests_quickly" xml:space="preserve">
+    <value>Filter specific requests quickly</value>
+  </data>
+  <data name="fix_overcharges_or_balance_issues" xml:space="preserve">
+    <value>Fix overcharges or balance issues</value>
+  </data>
+  <data name="loan_adjustment_console" xml:space="preserve">
+    <value>Loan Adjustment Console</value>
+  </data>
+  <data name="loan_adjustment_details" xml:space="preserve">
+    <value>Loan Adjustment Details</value>
+  </data>
+  <data name="loan_adjustment_requests" xml:space="preserve">
+    <value>Loan Adjustment Requests</value>
+  </data>
+  <data name="loan_adjustment_request_overview" xml:space="preserve">
+    <value>Loan Adjustment Request Overview</value>
+  </data>
+  <data name="loan_amount_outstanding_balance_interest_vat_and_penalty" xml:space="preserve">
+    <value>Loan Amount, Outstanding Balance, Interest, VAT, and Penalty</value>
   </data>
   <data name="loan_delinquency_summary_by_par_gender_and_loan_type" xml:space="preserve">
     <value>Loan Delinquency Summary by PAR, Gender, and Loan Type</value>
@@ -128,5 +164,80 @@
   </data>
   <data name="loan_situation_report_current_performing_loans" xml:space="preserve">
     <value>Loan Situation Report (Current Performing Loans)</value>
+  </data>
+  <data name="manage_and_apply_manual_adjustments_or_waivers_to_loans_across_all_branches" xml:space="preserve">
+    <value>Manage and apply &lt;strong&gt;manual adjustments or waivers&lt;/strong&gt; to loans across all branches</value>
+  </data>
+  <data name="narrow_down_requests_by_request_date" xml:space="preserve">
+    <value>Narrow down requests by request date</value>
+  </data>
+  <data name="narrow_results_by_location" xml:space="preserve">
+    <value>Narrow results by location</value>
+  </data>
+  <data name="next_installment_date" xml:space="preserve">
+    <value>Next Installment Date</value>
+  </data>
+  <data name="not_for_loan_rescheduling_or_refinancing" xml:space="preserve">
+    <value>Not for loan rescheduling or refinancing</value>
+  </data>
+  <data name="not_for_rescheduling_or_refinancing" xml:space="preserve">
+    <value>Not for rescheduling or refinancing</value>
+  </data>
+  <data name="override_with_new_values" xml:space="preserve">
+    <value>Override with New Values</value>
+  </data>
+  <data name="provide_a_detailed_reason_for_this_manual_adjustment_or_waiver" xml:space="preserve">
+    <value>Provide a detailed reason for this manual adjustment or waiver</value>
+  </data>
+  <data name="reason_for_adjustment" xml:space="preserve">
+    <value>Reason for Adjustment</value>
+  </data>
+  <data name="review_approve_and_track_loan_adjustment_requests_across_branches" xml:space="preserve">
+    <value>Review, approve, and track loan adjustment requests across branches</value>
+  </data>
+  <data name="submit_adjustment_request" xml:space="preserve">
+    <value>Submit Adjustment Request</value>
+  </data>
+  <data name="submit_or_validate_a_manual_loan_adjustment_request_not_valid_for_rescheduling" xml:space="preserve">
+    <value>Submit or validate a manual loan adjustment request. Not valid for rescheduling</value>
+  </data>
+  <data name="this_console_does_not_manage_loan_restructuring_or_rescheduling" xml:space="preserve">
+    <value>This console does &lt;u&gt;not&lt;/u&gt; manage loan restructuring or rescheduling</value>
+  </data>
+  <data name="this_tool_is_intended_for_waivers_and_corrections_not_for_loan_rescheduling_or_restructuring" xml:space="preserve">
+    <value>This tool is intended for &lt;u&gt;waivers and corrections&lt;/u&gt; — not for loan rescheduling or restructuring</value>
+  </data>
+  <data name="tips_for_reviewing_loan_adjustments" xml:space="preserve">
+    <value>Tips for Reviewing Loan Adjustments</value>
+  </data>
+  <data name="tips_for_using_the_adjustment_console" xml:space="preserve">
+    <value>Tips for Using the Adjustment Console</value>
+  </data>
+  <data name="track_who_initiated_or_approved_changes" xml:space="preserve">
+    <value>Track who initiated or approved changes</value>
+  </data>
+  <data name="use_filters_to_narrow_down_pending_or_processed_requests" xml:space="preserve">
+    <value>Use filters to narrow down pending or processed requests</value>
+  </data>
+  <data name="use_for_fixing_calculation_or_data_errors" xml:space="preserve">
+    <value>Use for fixing calculation or data errors</value>
+  </data>
+  <data name="use_for_interest_vat_penalty_waivers" xml:space="preserve">
+    <value>Use for interest, VAT, penalty waivers</value>
+  </data>
+  <data name="use_the_export_button_to_download_adjustment_records_to_excel" xml:space="preserve">
+    <value>Use the export button to download adjustment records to Excel</value>
+  </data>
+  <data name="use_the_export_button_to_download_your_current_view" xml:space="preserve">
+    <value>Use the export button to download your current view</value>
+  </data>
+  <data name="view_original_and_new_loan_values_and_approval_history" xml:space="preserve">
+    <value>View original and new loan values, and approval history</value>
+  </data>
+  <data name="view_requests_from_specific_branches" xml:space="preserve">
+    <value>View requests from specific branches</value>
+  </data>
+  <data name="when_to_use_this" xml:space="preserve">
+    <value>When to Use This</value>
   </data>
 </root>

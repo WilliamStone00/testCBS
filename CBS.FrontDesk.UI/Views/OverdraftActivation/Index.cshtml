@@ -1,7 +1,7 @@
-﻿@{
+@{
     ViewBag.Title = "Overdraft Activation Service";
 }
-
+@using Resources
 <div class="container">
 
     <!-- 🔷 Page Header -->
@@ -28,13 +28,13 @@
             <div class="card bg-light shadow-sm">
                 <div class="card-body text-center">
                     <h3 class="card-title text-primary">
-                        <i class="mdi mdi-bank-check me-2"></i> Overdraft Activation Service
+                        <i class="mdi mdi-bank-check me-2"></i> @GlobalOverdraftActivation.overdraft_activation_service
                     </h3>
                     <p class="card-text text-secondary fs-6">
-                        Submit and manage overdraft activation requests linked to customer accounts. These activations are governed by preconfigured facility rules.
+                        @GlobalOverdraftActivation.submit_and_manage_overdraft_activation_requests_linked_to_customer_accounts_these_activations_are_governed_by_preconfigured_facility_rules.
                     </p>
                     <p class="card-text text-muted small">
-                        Ensure customer eligibility, configuration alignment, and correct data inputs before approval.
+                        @GlobalOverdraftActivation.ensure_customer_eligibility_configuration_alignment_and_correct_data_inputs_before_approval.
                     </p>
                     <hr style="border: 2px solid rgba(0, 128, 128, 0.2);" />
                 </div>
@@ -52,7 +52,7 @@
 
                     <div class="mb-2 mb-md-0">
                         <span class="fw-semibold text-primary">
-                            <i class="mdi mdi-cog-outline me-1"></i> Manage Overdraft Requests
+                            <i class="mdi mdi-cog-outline me-1"></i> @GlobalOverdraftActivation.manage_overdraft_requests
                         </span>
                     </div>
 
@@ -61,15 +61,15 @@
                            onclick="LoadOverdraftRequests()"
                            class="btn btn-outline-primary btn-sm"
                            data-bs-toggle="tooltip"
-                           title="Reload and display all overdraft activation requests">
-                            <i class="mdi mdi-refresh me-1"></i> Reload List
+                           title="@GlobalOverdraftActivation.reload_and_display_all_overdraft_activation_requests">
+                            <i class="mdi mdi-refresh me-1"></i> @GlobalShared.reload_list
                         </a>
 
                         <button onclick="AddORUpdateGen(null,'overdraftRequestDataTableContainer','_OverdraftActivationRequestForm','new','Overdraft')"
                                 class="btn btn-primary btn-sm"
                                 data-bs-toggle="tooltip"
                                 title="Submit a new overdraft request">
-                            <i class="mdi mdi-plus-circle-outline me-1"></i> New Request
+                            <i class="mdi mdi-plus-circle-outline me-1"></i> @GlobalShared.new_request
                         </button>
                     </div>
 

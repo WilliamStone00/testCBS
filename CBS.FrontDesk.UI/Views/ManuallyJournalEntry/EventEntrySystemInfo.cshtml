@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 @{
     ViewBag.Title = "Accounting Event -Update";
@@ -6,7 +6,7 @@
 
 <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
-        <h5 class="card-title mb-0"><i class="fas fa-cogs"></i> @GlobalManuallyJournalEntry.AccountingEventEntryRuleSettings</h5>
+        <h5 class="card-title mb-0"><i class="fas fa-cogs"></i> @GlobalManuallyJournalEntry.accounting_event_entry_rule</h5>
     </div>
     <div class="card-body">
         <div class="row">
@@ -21,21 +21,21 @@
                             <div class="col-md-4">
                                 <fieldset class="border p-3 rounded">
                                     <legend class="w-auto text-primary fw-bold">
-                                        <i class="fas fa-database"></i> @GlobalManuallyJournalEntry.EventEntryMetadata
+                                        <i class="fas fa-database"></i> @GlobalManuallyJournalEntry.event_entry_metadata
                                     </legend>
 
                                     <div class="mb-3">
-                                        <label class="form-label">@GlobalManuallyJournalEntry.EventName</label>
+                                        <label class="form-label">@GlobalShared.event_name</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-clipboard"></i></span>
-                                            @Html.TextBoxFor(m => m.AccountingEventRule.EventName, new { @class = "form-control", @placeholder = @GlobalManuallyJournalEntry.EnterEventName })
+                                            @Html.TextBoxFor(m => m.AccountingEventRule.EventName, new { @class = "form-control", @placeholder = @GlobalShared.enter_event_name })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.AccountingEventRule.EventName, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">@GlobalManuallyJournalEntry.Description</label>
-                                        @Html.TextAreaFor(m => m.AccountingEventRule.Description, new { @class = "form-control", @style = "height: 100px;", @placeholder = @GlobalManuallyJournalEntry.EnterDescription" })
+                                        <label class="form-label">@GlobalShared.Description</label>
+                                        @Html.TextAreaFor(m => m.AccountingEventRule.Description, new { @class = "form-control", @style = "height: 100px;", @placeholder = $"{@GlobalShared.enter_description}" })
                                         @Html.ValidationMessageFor(m => m.AccountingEventRule.Description, "", new { @class = "text-danger" })
                                     </div>
                                 </fieldset>
@@ -44,15 +44,15 @@
                             <div class="col-md-8">
                                 <fieldset class="border p-3 rounded">
                                     <legend class="w-auto text-primary fw-bold">
-                                        <i class="fas fa-file-invoice-dollar"></i> @GlobalManuallyJournalEntry.AccountingEntryRules
+                                        <i class="fas fa-file-invoice-dollar"></i> @GlobalManuallyJournalEntry.accounting_entry_rules
                                     </legend>
 
                                     <div class="table-responsive">
                                         <table id="AccountingRulebasketTable" class="table table-hover table-bordered">
                                             <thead class="table-dark">
                                                 <tr>
-                                                    <th>@GlobalManuallyJournalEntry.ChartOfAccount</th>
-                                                    <th>@GlobalManuallyJournalEntry.BookingDirection</th>
+                                                    <th>@GlobalShared.Chart_Of_Account</th>
+                                                    <th>@GlobalManuallyJournalEntry.booking_direction</th>
                                                     <th>@GlobalShared.Action</th>
                                                 </tr>
                                             </thead>
@@ -60,7 +60,7 @@
                                             </tbody>
                                         </table>
                                         <button type="button" id="addEntry" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-plus-circle"></i> @GlobalManuallyJournalEntry.AddEntry
+                                            <i class="fas fa-plus-circle"></i> @GlobalShared.add_entry
                                         </button>
                                     </div>
                                 </fieldset>

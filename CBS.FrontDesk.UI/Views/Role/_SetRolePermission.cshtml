@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Role
+@model CBS.FrontDesk.Data.Entity.Role
 
 <div class="card-body">
     @using (Html.BeginForm("Create", "Role", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))

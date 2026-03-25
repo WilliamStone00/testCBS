@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanType
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanType
 @using Resources
 
 <fieldset class="fieldset-custom">
@@ -8,10 +8,10 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary fw-bold mb-2">
-                <i class="mdi mdi-bank me-2"></i> Loan Type Details
+                <i class="mdi mdi-bank me-2"></i> @GlobalLoanType.loan_type_details
             </h1>
             <p class="card-text text-muted mb-1">
-                Detailed view of loan type entry
+                @GlobalLoanType.detailed_view_of_loan_type_entry
             </p>
         </div>
     </div>
@@ -22,23 +22,23 @@
             <div class="row">
                 <!-- Basic Information -->
                 <div class="col-md-6">
-                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Basic Information</h6>
+                    <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Basic_Information</h6>
                     <table class="table table-sm table-bordered mb-0">
                         <tr><td class="fw-bold">ID</td><td>@Model.Id</td></tr>
-                        <tr><td class="fw-bold">Code</td><td><span class="badge bg-primary">@Model.Code</span></td></tr>
-                        <tr><td class="fw-bold">Name</td><td>@Model.Name</td></tr>
-                        <tr><td class="fw-bold">Description</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
-                        <tr><td class="fw-bold">Display Order</td><td><span class="badge bg-info">@Model.DisplayOrder</span></td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Code</td><td><span class="badge bg-primary">@Model.Code</span></td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Name</td><td>@Model.Name</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.Description</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
+                        <tr><td class="fw-bold">@GlobalShared.display_order</td><td><span class="badge bg-info">@Model.DisplayOrder</span></td></tr>
                         <tr>
-                            <td class="fw-bold">Status</td>
+                            <td class="fw-bold">@GlobalShared.Status</td>
                             <td>
                                 @if (Model.IsActive)
                                 {
-                                    <span class="badge bg-success">Active</span>
+                                    <span class="badge bg-success">@GlobalShared.Active</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Inactive</span>
+                                    <span class="badge bg-secondary">@GlobalShared.InActive</span>
                                 }
                             </td>
                         </tr>
@@ -50,11 +50,11 @@
 
     <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
-            <i class="mdi mdi-close me-1"></i> Close
+            <i class="mdi mdi-close me-1"></i> @GlobalShared.Close
         </button>
         <button type="button" class="btn btn-primary"
                 onclick="ShowModal('@Model.Id', '_CreateEditLoanType', 'LoanType', 'edit')">
-            <i class="mdi mdi-pencil me-1"></i> Edit
+            <i class="mdi mdi-pencil me-1"></i> @GlobalShared.Edit
         </button>
     </div>
 </fieldset>

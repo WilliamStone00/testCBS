@@ -1,17 +1,17 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentPrimaryTeller
+@model CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentPrimaryTeller
 @using Resources
 
 
 @using (Html.BeginForm("Create", "PrimaryTellerCashRequisition", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
 {
     <fieldset class="fieldset-custom">
-        <legend id="select_base">@GlobalPrimaryTellerCashRequisition.RequestForm</legend>
+        <legend id="select_base">@GlobalShared.request_form</legend>
         <div class="row mt-2 gy-4">
             <div class="col-md-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.RequestedAmount, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.RequestedAmount, "", new { @class = "text-danger " })
-                    <label>@GlobalPrimaryTellerCashRequisition.RequestedAmount</label>
+                    <label>@GlobalShared.Requested_Amount</label>
                 </div>
             </div>
 
@@ -19,7 +19,7 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Requetcomment, new { @class = "form-control", @style = "height: 70px;" })
                     @Html.ValidationMessageFor(m => m.Requetcomment, "", new { @class = "text-danger " })
-                    <label for="formValidationDob">@GlobalPrimaryTellerCashRequisition.RequestNote</label>
+                    <label for="formValidationDob">@GlobalShared.Request_note</label>
                 </div>
             </div>
         </div>

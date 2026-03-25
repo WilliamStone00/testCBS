@@ -1,18 +1,18 @@
-﻿@using Resources
+@using Resources
 <div class="card shadow-sm p-3" id="memberAdjustmentTableContainer">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> Adjustment Requests</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-table"></i> @GlobalShared.adjustment_requests</h5>
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>Requested At</th>
-                    <th>Member Name</th>
+                    <th>@GlobalShared.requested_at</th>
+                    <th>@GlobalShared.Member_name</th>
                     <th>M. AccNo</th>
-                    <th>Branch Name</th>
-                    <th>Adjustment Type</th>
-                    <th>Requested By</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>@GlobalShared.Branch_Name</th>
+                    <th>@GlobalShared.Adjustment_Type</th>
+                    <th>@GlobalShared.Requested_by</th>
+                    <th>@GlobalShared.Status</th>
+                    <th>@GlobalShared.Action</th>
                 </tr>
             </thead>
             <tbody>

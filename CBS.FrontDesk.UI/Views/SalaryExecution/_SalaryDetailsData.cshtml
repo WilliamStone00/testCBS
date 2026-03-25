@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.ExecuteSalaryCarrier
 @using Resources
 
 
@@ -172,7 +172,7 @@
     <div class="mb-3 border-2">
         <!-- Dashboard Section -->
         <div id="dashboardSummary" class="mb-4">
-            <div class="section-header">@*@GlobalSalaryExecution.*@Salary Execution Summary</div>
+            <div class="section-header">@GlobalSalaryExecution.salary_execution_summary</div>
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 <!-- Changed from row-cols-md-3 to row-cols-md-4 -->
                 <!-- Total Members -->
@@ -185,7 +185,7 @@
                                         <i class="mdi mdi-account-group mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-primary mb-0">@GlobalSalaryExecution.TotalMembers</h5>
+                                <h5 class="card-title text-primary mb-0">@GlobalShared.Total_members</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalMembers.ToString("N0")
@@ -204,7 +204,7 @@
                                         <i class="mdi mdi-cash mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-primary mb-0">Gross Salary</h5>
+                                <h5 class="card-title text-primary mb-0">@GlobalSalaryExecution.gross_salary</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalSalary.ToString("N0")
@@ -223,7 +223,7 @@
                                         <i class="mdi mdi-receipt mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-warning mb-0">@GlobalSalaryExecution.TotalCharges</h5>
+                                <h5 class="card-title text-warning mb-0">@GlobalShared.total_charges</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalCharges.ToString("N1")
@@ -242,7 +242,7 @@
                                         <i class="mdi mdi-cash-multiple mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalNetSalary</h5>
+                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.total_net_salary</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalNetSalary.ToString("N1")
@@ -261,7 +261,7 @@
                                         <i class="mdi mdi-piggy-bank mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-info mb-0">@GlobalSalaryExecution.TotalSavings</h5>
+                                <h5 class="card-title text-info mb-0">@GlobalShared.total_savings</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalSavings.ToString("N1")
@@ -280,7 +280,7 @@
                                         <i class="mdi mdi-bank mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-warning mb-0">Total Deposit</h5>
+                                <h5 class="card-title text-warning mb-0">@GlobalShared.total_deposit</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalDeposits.ToString("N1")
@@ -299,7 +299,7 @@
                                         <i class="mdi mdi-chart-line mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-info mb-0">@GlobalSalaryExecution.TotalShares</h5>
+                                <h5 class="card-title text-info mb-0">@GlobalShared.total_shares</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalShares.ToString("N1")
@@ -318,7 +318,7 @@
                                         <i class="mdi mdi-star mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalPreferenceShares</h5>
+                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.total_preference_shares</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalPreferenceShares.ToString("N1")
@@ -335,7 +335,7 @@
                                         <i class="mdi mdi-chart-pie mdi-18px"></i> <!-- Changed icon for Capital -->
                                     </span>
                                 </div>
-                                <h5 class="card-title mb-0" style="color: #836af9;">Total Capital</h5>
+                                <h5 class="card-title mb-0" style="color: #836af9;">@GlobalShared.total_capital</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalCapital.ToString("N1")
@@ -354,7 +354,7 @@
                                         <i class="mdi mdi-percent mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title mb-0" style="color: #836af9;">@GlobalSalaryExecution.TotalLoanInterest</h5>
+                                <h5 class="card-title mb-0" style="color: #836af9;">@GlobalSalaryExecution.total_loan_interest</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalLoanInterest.ToString("N1")
@@ -374,7 +374,7 @@
                                         <i class="mdi mdi-percent mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-warning mb-0">Total VAT</h5>
+                                <h5 class="card-title text-warning mb-0">@GlobalShared.total_vat</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalVAT.ToString("N1")
@@ -393,7 +393,7 @@
                                         <i class="mdi mdi-bank mdi-18px"></i>
                                     </span>
                                 </div>
-                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.TotalLoanRepayment</h5>
+                                <h5 class="card-title text-success mb-0">@GlobalSalaryExecution.total_loan_repayment</h5>
                             </div>
                             <p class="card-texts fw-bold text-dark ms-4 ps-1">
                                 @Model.DashboardViewModel.TotalLoanRepayment.ToString("N1")
@@ -407,34 +407,34 @@
         <div class="table-responsive mb-3">
 
             <div class="mb-3">
-                <label class="fw-bold">Show / Hide Columns</label><br />
+                <label class="fw-bold">@GlobalShared.show / @GlobalShared.hide_columns</label><br />
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="5"> Savings
+                    <input type="checkbox" class="toggle-col" data-col="5"> @GlobalShared.Savings
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="6"> Deposit
+                    <input type="checkbox" class="toggle-col" data-col="6"> @GlobalShared.Deposit
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="7"> Net Salary
+                    <input type="checkbox" class="toggle-col" data-col="7"> @GlobalShared.Net Salary
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="8"> Shares
+                    <input type="checkbox" class="toggle-col" data-col="8"> @GlobalShared.Shares
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="10"> Total Capital
+                    <input type="checkbox" class="toggle-col" data-col="10"> @GlobalShared.total_capital
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="11"> Total Interest
+                    <input type="checkbox" class="toggle-col" data-col="11"> @GlobalShared.total_interest
                 </label>
 
                 <label class="me-3">
-                    <input type="checkbox" class="toggle-col" data-col="12"> VAT
+                    <input type="checkbox" class="toggle-col" data-col="12"> @GlobalShared.VAT
                 </label>
             </div>
             @if (Model.SalaryPaymentExtractes != null && Model.SalaryPaymentExtractes.Any())
@@ -447,19 +447,19 @@
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>@GlobalSalaryExecution.Matricule (Account Number)</th>
-                            <th>@GlobalSalaryExecution.Name</th>
+                            <th>@GlobalShared.matricule (Account Number)</th>
+                            <th>@GlobalShared.Name</th>
                             <th>G.Salary</th> <!-- Changed to Gross Amount -->
                             <th>S.Order</th> <!-- Standing Order Amount -->
-                            <th>@GlobalSalaryExecution.Savings</th>
-                            <th>@GlobalSalaryExecution.Deposit</th>
-                            <th>@GlobalSalaryExecution.NSalary</th> <!-- Net Salary -->
-                            <th>@GlobalSalaryExecution.Shares</th>
+                            <th>@GlobalShared.Savings</th>
+                            <th>@GlobalShared.Deposit</th>
+                            <th>@GlobalSalaryExecution.nsalary</th> <!-- Net Salary -->
+                            <th>@GlobalShared.Shares</th>
                             <th>T.Refunded</th> <!-- Total Loan Repayment -->
                             <th>T.Capital </th> <!-- Total Loan Capital (NEW) -->
                             <th>T.Interest</th> <!-- Total Loan Interest -->
                             <th>T.VAT</th> <!-- Total VAT -->
-                            <th>@GlobalSalaryExecution.Charges</th>
+                            <th>@GlobalShared.Charges</th>
                             <th>@GlobalShared.Status</th>
                         </tr>
                     </thead>
@@ -503,7 +503,7 @@
             else
             {
                 <div class="text-center my-3">
-                    <p>@GlobalSalaryExecution.NoSalaryUploadsFound.</p>
+                    <p>@GlobalSalaryExecution.no_salary_uploads_found.</p>
                 </div>
             }
         </div>        </div>

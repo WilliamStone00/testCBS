@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
     @using Resources
 <div class="col">
 
@@ -12,7 +12,7 @@
                             data-bs-target="#collapseDeliveryAddress"
                             aria-expanded="true"
                             aria-controls="collapseDeliveryAddress">
-                        @GlobalLoanCommitee.AddUsersInToCommiteeGroups
+                        @GlobalLoanCommitee.add_users_in_to_commitee_groups
                     </button>
                 </h2>
                 <div id="collapseDeliveryAddress"
@@ -35,16 +35,16 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, new SelectList(ViewBag.Groups, "Id", "Name"), "---"+ @GlobalLoanCommitee.SelectGroup + "---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, new SelectList(ViewBag.Groups, "Id", "Name"), "---"+ @GlobalShared.select_group + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeMember.LoanCommiteeGroupId, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.SelectGroup</label>
+                                        <label>@GlobalShared.select_group</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalLoanCommitee.SelectUser + "---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanCommiteeMember.UserId, new SelectList(ViewBag.Users, "Value", "Text"), "---"+ @GlobalShared.Select_User + "---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanCommiteeMember.UserId, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanCommitee.SelectUser</label>
+                                        <label>@GlobalShared.Select_User</label>
                                     </div>
                                 </div>
                             </div>

@@ -63,333 +63,252 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to ADDITIONAL CHARGES.
         /// </summary>
-        internal static string ADDITIONAL_CHARGES {
+        internal static string additional_charges {
             get {
-                return ResourceManager.GetString("ADDITIONAL_CHARGES", resourceCulture);
+                return ResourceManager.GetString("additional_charges", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Applicable for moral persons (Group. If not checked, then it&apos;s for individual).
         /// </summary>
-        internal static string ApplicableForMoralPersons {
+        internal static string applicable_for_moral_persons {
             get {
-                return ResourceManager.GetString("ApplicableForMoralPersons", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Applied.
-        /// </summary>
-        internal static string Applied {
-            get {
-                return ResourceManager.GetString("Applied", resourceCulture);
+                return ResourceManager.GetString("applicable_for_moral_persons", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Applied on holidays.
         /// </summary>
-        internal static string AppliedOnHolidays {
+        internal static string applied_on_holidays {
             get {
-                return ResourceManager.GetString("AppliedOnHolidays", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BASIC INFORMATION.
-        /// </summary>
-        internal static string BASIC_INFORMATION {
-            get {
-                return ResourceManager.GetString("BASIC_INFORMATION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Civil Servants.
-        /// </summary>
-        internal static string CivilServants {
-            get {
-                return ResourceManager.GetString("CivilServants", resourceCulture);
+                return ResourceManager.GetString("applied_on_holidays", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Daily collections.
         /// </summary>
-        internal static string DailyCollections {
+        internal static string daily_collections {
             get {
-                return ResourceManager.GetString("DailyCollections", resourceCulture);
+                return ResourceManager.GetString("daily_collections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily Saver Registration/Onboarding Fee.
+        /// </summary>
+        internal static string daily_saver_registration_onboarding_fee {
+            get {
+                return ResourceManager.GetString("daily_saver_registration_onboarding_fee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Define any extra charges that apply when the limit is exceeded. This can be a flat fee or a percentage.
         /// </summary>
-        internal static string DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded {
+        internal static string define_any_extra_charges_that_apply_when_the_limit_is_exceeded {
             get {
-                return ResourceManager.GetString("DefineAnyExtraChargesThatApplyWhenTheLimitIsExceeded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DESCRIPTION.
-        /// </summary>
-        internal static string DESCRIPTION {
-            get {
-                return ResourceManager.GetString("DESCRIPTION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string DescriptionLc {
-            get {
-                return ResourceManager.GetString("DescriptionLc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entity.
-        /// </summary>
-        internal static string Entity {
-            get {
-                return ResourceManager.GetString("Entity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee description.
-        /// </summary>
-        internal static string FeeDescription {
-            get {
-                return ResourceManager.GetString("FeeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee is calculated as rate.
-        /// </summary>
-        internal static string FeeIsCalculatedAsRate {
-            get {
-                return ResourceManager.GetString("FeeIsCalculatedAsRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee is calculated on ranges.
-        /// </summary>
-        internal static string FeeIsCalculatedOnRanges {
-            get {
-                return ResourceManager.GetString("FeeIsCalculatedOnRanges", resourceCulture);
+                return ResourceManager.GetString("define_any_extra_charges_that_apply_when_the_limit_is_exceeded", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to FEE CALCULATION TYPE.
         /// </summary>
-        internal static string FEE_CALCULATION_TYPE {
+        internal static string fee_calculation_type {
             get {
-                return ResourceManager.GetString("FEE_CALCULATION_TYPE", resourceCulture);
+                return ResourceManager.GetString("fee_calculation_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fee description.
+        /// </summary>
+        internal static string fee_description {
+            get {
+                return ResourceManager.GetString("fee_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fee is calculated as rate.
+        /// </summary>
+        internal static string fee_is_calculated_as_rate {
+            get {
+                return ResourceManager.GetString("fee_is_calculated_as_rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fee is calculated on ranges.
+        /// </summary>
+        internal static string fee_is_calculated_on_ranges {
+            get {
+                return ResourceManager.GetString("fee_is_calculated_on_ranges", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Flat Extra Charge on Exceeding Limit.
         /// </summary>
-        internal static string FlatExtraChargeOnExceedingLimit {
+        internal static string flat_extra_charge_on_exceeding_limit {
             get {
-                return ResourceManager.GetString("FlatExtraChargeOnExceedingLimit", resourceCulture);
+                return ResourceManager.GetString("flat_extra_charge_on_exceeding_limit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Membership (Member Registration).
         /// </summary>
-        internal static string Membership {
+        internal static string membership {
             get {
-                return ResourceManager.GetString("Membership", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Moral.
-        /// </summary>
-        internal static string Moral {
-            get {
-                return ResourceManager.GetString("Moral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("membership", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Normal cash operation.
         /// </summary>
-        internal static string NormalCashOperation {
+        internal static string normal_cash_operation {
             get {
-                return ResourceManager.GetString("NormalCashOperation", resourceCulture);
+                return ResourceManager.GetString("normal_cash_operation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Normal days.
+        ///   Looks up a localized string similar to No fee type is created.
         /// </summary>
-        internal static string NormalDays {
+        internal static string no_fee_type_is_created {
             get {
-                return ResourceManager.GetString("NormalDays", resourceCulture);
+                return ResourceManager.GetString("no_fee_type_is_created", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Only on holidays.
         /// </summary>
-        internal static string OnlyOnHolidays {
+        internal static string only_on_holidays {
             get {
-                return ResourceManager.GetString("OnlyOnHolidays", resourceCulture);
+                return ResourceManager.GetString("only_on_holidays", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation Charges Types.
         /// </summary>
-        internal static string OperationChargesTypes {
+        internal static string operation_charges_types {
             get {
-                return ResourceManager.GetString("OperationChargesTypes", resourceCulture);
+                return ResourceManager.GetString("operation_charges_types", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation Fee Details.
         /// </summary>
-        internal static string OperationFeeDetails {
+        internal static string operation_fee_details {
             get {
-                return ResourceManager.GetString("OperationFeeDetails", resourceCulture);
+                return ResourceManager.GetString("operation_fee_details", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Percentage extra charge on exceeding limit.
         /// </summary>
-        internal static string PercentageExtraChargeOnExceedingLimit {
+        internal static string percentage_extra_charge_on_exceeding_limit {
             get {
-                return ResourceManager.GetString("PercentageExtraChargeOnExceedingLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Physical.
-        /// </summary>
-        internal static string Physical {
-            get {
-                return ResourceManager.GetString("Physical", resourceCulture);
+                return ResourceManager.GetString("percentage_extra_charge_on_exceeding_limit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Private Institutions.
         /// </summary>
-        internal static string PrivateInstitutions {
+        internal static string private_institutions {
             get {
-                return ResourceManager.GetString("PrivateInstitutions", resourceCulture);
+                return ResourceManager.GetString("private_institutions", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Provide a detailed description for this fee type.
         /// </summary>
-        internal static string ProvideADetailedDescriptionForThisFeeType {
+        internal static string provide_adetailed_description_for_this_fee_type {
             get {
-                return ResourceManager.GetString("ProvideADetailedDescriptionForThisFeeType", resourceCulture);
+                return ResourceManager.GetString("provide_adetailed_description_for_this_fee_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Provide the basic details of the operation fee, such as its name.
         /// </summary>
-        internal static string ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName {
+        internal static string provide_the_basic_details_of_the_operation_fee_such_as_its_name {
             get {
-                return ResourceManager.GetString("ProvideTheBasicDetailsOfTheOperationFeeSuchAsItsName", resourceCulture);
+                return ResourceManager.GetString("provide_the_basic_details_of_the_operation_fee_such_as_its_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to REGULAR OPERATIONS FEE TYPE.
         /// </summary>
-        internal static string REGULAR_OPERATIONS_FEE_TYPE {
+        internal static string regular_operations_fee_type {
             get {
-                return ResourceManager.GetString("REGULAR_OPERATIONS_FEE_TYPE", resourceCulture);
+                return ResourceManager.GetString("regular_operations_fee_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to REMITTANCE FEE TYPE.
         /// </summary>
-        internal static string REMITTANCE_FEE_TYPE {
+        internal static string remittance_fee_type {
             get {
-                return ResourceManager.GetString("REMITTANCE_FEE_TYPE", resourceCulture);
+                return ResourceManager.GetString("remittance_fee_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to SALARY FEE TYPE.
         /// </summary>
-        internal static string SALARY_FEE_TYPE {
+        internal static string salary_fee_type {
             get {
-                return ResourceManager.GetString("SALARY_FEE_TYPE", resourceCulture);
+                return ResourceManager.GetString("salary_fee_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select how the fee will be calculated: as a percentage rate or based on defined ranges. Specify if it applies on holidays or for moral persons.
         /// </summary>
-        internal static string SelectHowTheFeeWillBeCalculated {
+        internal static string select_how_the_fee_will_be_calculated {
             get {
-                return ResourceManager.GetString("SelectHowTheFeeWillBeCalculated", resourceCulture);
+                return ResourceManager.GetString("select_how_the_fee_will_be_calculated", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select the applicable fee type for the remittance transaction. This fee type determines the charges associated with transferring money through different remittance services such as Western Union, MoneyGram, or other platforms.
         /// </summary>
-        internal static string SelectTheApplicableFeeTypeForThRemittanceTransaction {
+        internal static string select_the_applicable_fee_type_for_th_remittance_transaction {
             get {
-                return ResourceManager.GetString("SelectTheApplicableFeeTypeForThRemittanceTransaction", resourceCulture);
+                return ResourceManager.GetString("select_the_applicable_fee_type_for_th_remittance_transaction", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select the type of operation fee applicable, such as membership or C-Money.
         /// </summary>
-        internal static string SelectTheTypeOfOperationFeeApplicable {
+        internal static string select_the_type_of_operation_fee_applicable {
             get {
-                return ResourceManager.GetString("SelectTheTypeOfOperationFeeApplicable", resourceCulture);
+                return ResourceManager.GetString("select_the_type_of_operation_fee_applicable", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select the type of salary fee applicable, such as Civil Servants, Private Institutions, Daily Servers Or Internal.
         /// </summary>
-        internal static string SelectTheTypeOfSalaryFeeApplicable {
+        internal static string select_the_type_of_salary_fee_applicable {
             get {
-                return ResourceManager.GetString("SelectTheTypeOfSalaryFeeApplicable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
+                return ResourceManager.GetString("select_the_type_of_salary_fee_applicable", resourceCulture);
             }
         }
     }

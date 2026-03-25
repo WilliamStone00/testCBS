@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="address_anomalies_like_overpayments" xml:space="preserve">
+    <value>Address anomalies like overpayments or missing records promptly</value>
+  </data>
+  <data name="address_discrepancies_like_mismatches_or_errors_promptly" xml:space="preserve">
+    <value>Address discrepancies like mismatches or errors promptly</value>
+  </data>
+  <data name="button_to_analyze_uploaded_salary_data" xml:space="preserve">
+    <value>button to analyze uploaded salary data</value>
+  </data>
+  <data name="button_to_check_previously_analyzed_results" xml:space="preserve">
+    <value>button to check previously analyzed results</value>
+  </data>
+  <data name="button_to_process_detailed_salary_data" xml:space="preserve">
+    <value>button to process detailed salary data</value>
+  </data>
+  <data name="button_to_remove_files_that_are_incorrect" xml:space="preserve">
+    <value>button to remove files that are incorrect, outdated, or no longer needed. Ensure you confirm the action as deleted files cannot be recovered</value>
+  </data>
+  <data name="button_to_retrieve_acopy_of_the_uploaded_file" xml:space="preserve">
+    <value>button to retrieve a copy of the uploaded file for offline review or backup</value>
+  </data>
+  <data name="button_to_view_detailed_analysis" xml:space="preserve">
+    <value>button to view detailed analysis and records related to the uploaded file. This opens the details in a new tab for convenience</value>
+  </data>
+  <data name="butto_to_access_previously_analyzed_results" xml:space="preserve">
+    <value>button to access previously analyzed results</value>
+  </data>
+  <data name="daily_servers" xml:space="preserve">
+    <value>Daily servers</value>
+  </data>
+  <data name="delete_invalid_uploads_to_maintain_clean" xml:space="preserve">
+    <value>Delete invalid uploads to maintain clean and accurate records</value>
+  </data>
+  <data name="detailed_salary_analysis_results" xml:space="preserve">
+    <value>Detailed Salary Analysis Results</value>
+  </data>
+  <data name="download_salary_files" xml:space="preserve">
+    <value>Download salary files</value>
+  </data>
+  <data name="edit_analysis_results_to_incorporate_necessary_updates" xml:space="preserve">
+    <value>Edit analysis results to incorporate necessary updates</value>
+  </data>
+  <data name="edit_analyzed_salary_records_for_corrections" xml:space="preserve">
+    <value>Edit analyzed salary records for corrections or updates when necessary</value>
+  </data>
+  <data name="ensure_all_uploaded_salary_files_are_accurate" xml:space="preserve">
+    <value>Ensure all uploaded salary files are accurate and in the correct format</value>
+  </data>
+  <data name="ensure_data_integrity_by_validating_uploaded_salary_records" xml:space="preserve">
+    <value>Ensure data integrity by validating uploaded salary records</value>
+  </data>
+  <data name="export_salary_analysis_to_excel" xml:space="preserve">
+    <value>Export salary analysis to excel</value>
+  </data>
+  <data name="export_the_results_to_excel_for_offline_review" xml:space="preserve">
+    <value>Export the results to Excel for offline review and further analysis</value>
+  </data>
+  <data name="for_minor_corrections_edit_salary_related" xml:space="preserve">
+    <value>For minor corrections, edit salary-related data after viewing the file details to align with updated requirements</value>
+  </data>
+  <data name="make_sure_uploaded_files_have_meaningful_names" xml:space="preserve">
+    <value>Make sure uploaded files have meaningful names to help with easy identification during reviews</value>
+  </data>
+  <data name="monitor_the_processing_status_of_salary_files" xml:space="preserve">
+    <value>Monitor the processing status of salary files through the file details page</value>
+  </data>
+  <data name="no_files_is_available_for_analysis" xml:space="preserve">
+    <value>No files is available for analysis</value>
+  </data>
+  <data name="no_salary_analysis_results_found" xml:space="preserve">
+    <value>No salary analysis results found</value>
+  </data>
+  <data name="no_salary_uploads_found" xml:space="preserve">
+    <value>No salary uploads found</value>
+  </data>
+  <data name="regularly_review_uploaded_files_to_verify_their_accuracy" xml:space="preserve">
+    <value>Regularly review uploaded files to verify their accuracy and ensure all payroll operations align with uploaded data</value>
+  </data>
+  <data name="regularly_verify_analyzed_results" xml:space="preserve">
+    <value>Regularly verify analyzed results against payroll to ensure accuracy</value>
+  </data>
+  <data name="review_discrepancies_or_unusual_figures" xml:space="preserve">
+    <value>Review discrepancies or unusual figures and address them promptly</value>
+  </data>
+  <data name="run_salary_analysis" xml:space="preserve">
+    <value>Run Salary Analysis</value>
+  </data>
+  <data name="salary_analysis_dashboard" xml:space="preserve">
+    <value>Salary Analysis Dashboard</value>
+  </data>
+  <data name="salary_analysis_result_summary" xml:space="preserve">
+    <value>SALARY ANALYSIS RESULT SUMMARY</value>
+  </data>
+  <data name="salary_summary" xml:space="preserve">
+    <value>SALARY SUMMARY</value>
+  </data>
+  <data name="salary_upload_form" xml:space="preserve">
+    <value>Salary Upload Form</value>
+  </data>
+  <data name="select_salary_file_formatted_matricule" xml:space="preserve">
+    <value>Select salary file (Formatted: Matricule, Name, NetSalary)</value>
+  </data>
+  <data name="tips_for_efficient_use" xml:space="preserve">
+    <value>Tips for efficient use</value>
+  </data>
+  <data name="total_net_salary" xml:space="preserve">
+    <value>Gross Amount</value>
+  </data>
+  <data name="upload_and_manage_employee_salary_files_easily_and_efficiently" xml:space="preserve">
+    <value>Upload and manage employee salary files easily and efficiently. Use the tools below to upload new salary files or view existing records</value>
+  </data>
+  <data name="use_search_filters_to_quickly_locate_specific_employee_salary_records" xml:space="preserve">
+    <value>Use search filters to quickly locate specific employee salary records</value>
+  </data>
+  <data name="use_search_tools_to_locate_specific_analysis_results_quickly" xml:space="preserve">
+    <value>Use search tools to locate specific analysis results quickly</value>
+  </data>
+  <data name="use_the_detailed_table_below_to_view_individual_salary_breakdowns" xml:space="preserve">
+    <value>Use the detailed table below to view individual salary breakdowns</value>
+  </data>
+  <data name="view_analyzed_results" xml:space="preserve">
+    <value>View analyzed results</value>
+  </data>
+  <data name="view_analyze_and_manage_detailed_salary_analysis_results" xml:space="preserve">
+    <value>View, analyze, and manage detailed salary analysis results. Use the tools below to explore data or view existing records</value>
+  </data>
+  <data name="view_analyze_and_manage_employee_salary" xml:space="preserve">
+    <value>View, analyze, and manage employee salary summaries efficiently. Use the tools below to analyze salary data or view existing records</value>
+  </data>
+  <data name="view_result_of_analyzed_salary" xml:space="preserve">
+    <value>View Result Of Analyzed Salary</value>
+  </data>
+</root>

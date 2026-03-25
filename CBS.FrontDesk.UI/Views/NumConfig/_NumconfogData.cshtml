@@ -1,4 +1,4 @@
-﻿
+
 @using Resources
 
 
@@ -9,14 +9,14 @@
             <table id="myDataTable" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Created Date</th>
-                        <th>Name</th>
-                        <th>Branch</th>
-                        <th>Bank Code Pos.</th>
-                        <th>Branch Code Pos.</th>
-                        <th>Year Pos.</th>
-                        <th>Serial Pos.</th>
-                        <th>Actions</th>
+                        <th>@GlobalShared.Created_Date</th>
+                        <th>@GlobalShared.Name</th>
+                        <th>@GlobalShared.Branch</th>
+                        <th>@GlobalNumConfig.bank_code_pos.</th>
+                        <th>@GlobalNumConfig.branch_code_pos.</th>
+                        <th>@GlobalNumConfig.year_pos.</th>
+                        <th>@GlobalNumConfig.serial_pos.</th>
+                        <th>@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

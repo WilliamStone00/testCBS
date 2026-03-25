@@ -1,23 +1,23 @@
-﻿@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition
+@model CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition
 
 @{ 
     bool isUpdate = !string.IsNullOrEmpty(Model.Id);
 }
-
+@using Resources
 <!-- Header Section -->
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-file-chart me-2"></i> Report Definition Management
+                    <i class="mdi mdi-file-chart me-2"></i> @GlobalReportConfiguration.report_definition_management
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Configure and organize report definitions used for generating financial statements.
+                    @GlobalReportConfiguration.configure_and_organize_report_definitions_used_for_generating_financial_statements.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Maintain consistency across definitions to ensure accurate and reliable reporting.
+                    @GlobalReportConfiguration.maintain_consistency_across_definitions_to_ensure_accurate_and_reliable_reporting.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -28,7 +28,7 @@
 <!-- Tips Section -->
 <div class="card mb-3 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Configuring Report Definitions</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalReportConfiguration.tips_for_configuring_report_definitions</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -36,10 +36,10 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>Code:</strong> Assign a short, unique identifier for easy reference.</li>
-                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>Report Type:</strong> Select the appropriate category (Balance Sheet, Income Statement, etc.).</li>
-                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>Currency:</strong> Set the reporting currency to ensure precise calculations.</li>
-                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>Status:</strong> Activate or deactivate the definition depending on business requirements.</li>
+                <li><i class="mdi mdi-format-list-bulleted-type text-primary me-2"></i> <strong>@GlobalShared.Code:</strong> @GlobalReportConfiguration.assign_a_short_unique_identifier_for_easy_reference.</li>
+                <li><i class="mdi mdi-file-document-outline text-success me-2"></i> <strong>@GlobalShared.Report_Type:</strong> @GlobalReportConfiguration.select_the_appropriate_category_balance_sheet_income_statement_etc.</li>
+                <li><i class="mdi mdi-currency-usd text-warning me-2"></i> <strong>@GlobalShared.Currency:</strong> @GlobalReportConfiguration.set_the_reporting_currency_to_ensure_precise_calculations.</li>
+                <li><i class="mdi mdi-check-decagram-outline text-info me-2"></i> <strong>@GlobalShared.Status:</strong> @GlobalReportConfiguration.activate_or_deactivate_the_definition_depending_on_business_requirements.</li>
             </ul>
         </div>
     </div>
@@ -57,17 +57,17 @@
             @Html.HiddenFor(model => model.Id)
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.Code, "Report Code", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.Code, $"{@GlobalShared.report_code}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Code, new { @class = "form-control", placeholder = "Enter report code (e.g., BAL001)" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.Name, "Report Name", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.Name, $"{@GlobalShared.report_name}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Enter full report name" })
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.ReportType, "Report Type", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.ReportType, $"{@GlobalShared.Report_Type}", new { @class = "form-label fw-semibold" })
                 @Html.DropDownListFor(model => model.ReportType,
                     new SelectList(new List<string> { "BalanceSheet", "IncomeStatement", "ExpenditureStatement" }),
                     "Select report type",
@@ -75,7 +75,7 @@
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.Currency, "Currency", new { @class = "form-label fw-semibold" })
+                @Html.LabelFor(model => model.Currency, $"{@GlobalShared.Currency}", new { @class = "form-label fw-semibold" })
                 @Html.TextBoxFor(model => model.Currency, new { @class = "form-control", placeholder = "e.g., USD, EUR, XAF" })
             </div>
 

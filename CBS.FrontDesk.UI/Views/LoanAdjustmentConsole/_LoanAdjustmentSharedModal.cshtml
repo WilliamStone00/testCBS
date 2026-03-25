@@ -1,4 +1,4 @@
-﻿
+﻿@using Resources
 
 <div class="modal fade" id="loanAdjustmentModal" tabindex="-1" aria-labelledby="loanAdjustmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -8,7 +8,7 @@
             <div id="loanAdjustmentLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing, please wait...</p>
+                    <p class="fw-semibold text-primary"> @GlobalShared.Processing,  @GlobalShared.please_wait...</p>
                 </div>
             </div>
 
@@ -18,10 +18,10 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="loanAdjustmentModalTitle">
-                                <i class="mdi mdi-pencil-ruler-outline me-2"></i> Loan Adjustment
+                                <i class="mdi mdi-pencil-ruler-outline me-2"></i>  @GlobalShared.loan_adjustment
                             </h1>
                             <p class="card-text" id="loanAdjustmentModalDescription">
-                                Submit or validate a manual loan adjustment request. Not valid for rescheduling.
+                                @GlobalLoanAdjustmentConsole.submit_or_validate_a_manual_loan_adjustment_request_not_valid_for_rescheduling.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -32,7 +32,7 @@
             <!-- Collapsible Tips -->
             <div class="card mx-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> When to Use This</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i>  @GlobalLoanAdjustmentConsole.when_to_use_this</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjustmentTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -40,9 +40,9 @@
                 <div id="collapseAdjustmentTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-cash-edit text-primary me-2"></i><strong>Waivers:</strong> For interest, VAT, penalty.</li>
-                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>Corrections:</strong> Fix overcharges or balance issues.</li>
-                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>Exclusion:</strong> Not for loan rescheduling or refinancing.</li>
+                            <li><i class="mdi mdi-cash-edit text-primary me-2"></i><strong> @GlobalShared.waivers:</strong> For interest, VAT, penalty.</li>
+                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong> @GlobalShared.corrections:</strong>  @GlobalLoanAdjustmentConsole.fix_overcharges_or_balance_issues.</li>
+                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong> @GlobalShared.exclusions:</strong>  @GlobalLoanAdjustmentConsole.not_for_loan_rescheduling_or_refinancing.</li>
                         </ul>
                     </div>
                 </div>
@@ -59,14 +59,14 @@
             <div class="modal-footer justify-content-between">
                 <div>
                     <span class="text-muted fw-semibold">
-                        👤 Customer: <span class="text-dark" id="footerCustomerName">N/A</span> |
-                        🆔 ID: <span class="text-dark" id="footerCustomerId">N/A</span> |
-                        💳 Loan: <span class="text-dark" id="footerLoanId">N/A</span>
+                        👤  @GlobalShared.Customer: <span class="text-dark" id="footerCustomerName">N/A</span> |
+                        🆔  ID: <span class="text-dark" id="footerCustomerId">N/A</span> |
+                        💳  @GlobalShared.Loan: <span class="text-dark" id="footerLoanId">N/A</span>
                     </span>
                 </div>
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
+                        <i class="mdi mdi-close"></i>  @GlobalShared.Cancel
                     </button>
                    
                 </div>

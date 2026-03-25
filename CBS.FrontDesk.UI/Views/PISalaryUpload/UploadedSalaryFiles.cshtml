@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @{
     ViewBag.Title = "PISalaryUpload";
 }
@@ -8,10 +8,10 @@
             <!-- Page Header -->
             <div class="card-header text-center bg-light">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalSalaryUpload.UploadedFiles
+                    <i class="mdi mdi-upload-multiple me-2"></i> @GlobalShared.uploaded_files
                 </h1>
                 <p class="card-text text-muted">
-                    @GlobalSalaryUpload.UploadAndManageEmployeeSalaryFilesEasilyAndEfficiently.
+                    @GlobalPISalaryUpload.upload_and_manage_employee_salary_files_easily_and_efficiently.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -19,7 +19,7 @@
             <!-- Tips Section -->
             <div class="card">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalSalaryUpload.TIPS</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalaryUploadTips" aria-expanded="false" aria-controls="collapseSalaryUploadTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -27,13 +27,13 @@
                 <div id="collapseSalaryUploadTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.DownloadSalaryFiles:</strong> @GlobalSalaryUpload.UseThe <span class="text-primary"><i class="fas fa-download"></i> @GlobalShared.Download</span> @GlobalSalaryUpload.buttonToRetrieveAcopyOfTheUploadedFileForOfflineReviewOrBackup.</li>
-                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.DownloadSalaryFiles:</strong> @GlobalSalaryUpload.ClickOnThe <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalSalaryUpload.buttonToViewDetailedAnalysis.</li>
-                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> <strong>@GlobalSalaryUpload.DeleteFiles:</strong> @GlobalSalaryUpload.UseThe <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalSalaryUpload.buttonToRemoveFilesThatAreIncorrect.</li>
-                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.FileNaming:</strong> @GlobalSalaryUpload.MakeSureUploadedFilesHaveMeaningfulNames.</li>
-                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.RegularReviews:</strong> @GlobalSalaryUpload.RegularlyReviewUploadedFilesToVerifyTheirAccuracy.</li>
-                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> <strong>@GlobalSalaryUpload.EditableFields:</strong> @GlobalSalaryUpload.ForMinorCorrectionsEditSalaryRelated.</li>
-                            <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>@GlobalSalaryUpload.TrackStatus:</strong> @GlobalSalaryUpload.MonitorTheProcessingStatusOfSalaryFilesThroughTheFileDetailsPage.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalPISalaryUpload.download_salary_files:</strong> @GlobalShared.use_the <span class="text-primary"><i class="fas fa-download"></i> @GlobalShared.Download</span> @GlobalPISalaryUpload.button_to_retrieve_acopy_of_the_uploaded_file_for_offline_review_or_backup.</li>
+                            <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> <strong>@GlobalPISalaryUpload.download_salary_files:</strong> @GlobalShared.click_on_the <span class="text-info"><i class="fas fa-info-circle"></i> @GlobalShared.Details</span> @GlobalPISalaryUpload.button_to_view_detailed_analysis.</li>
+                            <li><i class="mdi mdi-alert-circle-outline text-warning me-2"></i> <strong>@GlobalShared.delete_files:</strong> @GlobalShared.use_the <span class="text-danger"><i class="fas fa-trash-alt"></i> @GlobalShared.Delete</span> @GlobalPISalaryUpload.button_to_remove_files_that_are_incorrect.</li>
+                            <li><i class="mdi mdi-information-outline text-primary me-2"></i> <strong>@GlobalShared.file_naming:</strong> @GlobalPISalaryUpload.make_sure_uploaded_files_have_meaningful_names.</li>
+                            <li><i class="mdi mdi-calendar-check-outline text-primary me-2"></i> <strong>@GlobalShared.regular_reviews:</strong> @GlobalPISalaryUpload.regularly_review_uploaded_files_to_verify_their_accuracy.</li>
+                            <li><i class="mdi mdi-pencil-outline text-success me-2"></i> <strong>@GlobalShared.editable_fields:</strong> @GlobalPISalaryUpload.for_minor_corrections_edit_salary_related.</li>
+                            <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>@GlobalShared.track_status:</strong> @GlobalPISalaryUpload.monitor_the_processing_status_of_salary_files_through_the_file_details_page.</li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                                 data-bs-target="#accordionPopoutIcon-3"
                                 aria-expanded="true"
                                 aria-controls="accordionPopoutIcon-3">
-                            <i class="mdi mdi-file-upload me-1"></i> @GlobalSalaryUpload.UploadedFiles
+                            <i class="mdi mdi-file-upload me-1"></i> @GlobalShared.uploaded_files
                         </button>
                     </h2>
                     <div id="accordionPopoutIcon-3"
@@ -66,7 +66,7 @@
                                                 <i class="mdi mdi-view-list mdi-18px"></i> @GlobalShared.ViewList
                                             </a>
                                             <a type="button" href="/PISalaryUpload" class="btn btn-label-secondary btn-sm" data-bs-toggle="tooltip" title="Add New SalaryUpload">
-                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalSalaryUpload.UploadNewSalaryFile
+                                                <i class="mdi mdi-plus mdi-18px"></i> @GlobalPISalaryUpload.upload_new_salary_file
                                             </a>
                                         </div>
                                     </div>

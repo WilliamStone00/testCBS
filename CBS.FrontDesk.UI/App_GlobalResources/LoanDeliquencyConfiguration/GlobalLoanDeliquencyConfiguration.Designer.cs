@@ -63,216 +63,99 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Affect member&apos;s scoring.
         /// </summary>
-        internal static string AffectMembersScoring {
+        internal static string affect_members_scoring {
             get {
-                return ResourceManager.GetString("AffectMembersScoring", resourceCulture);
+                return ResourceManager.GetString("affect_members_scoring", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to A-M.Score.
         /// </summary>
-        internal static string AM_Score {
+        internal static string am_score {
             get {
-                return ResourceManager.GetString("AM_Score", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply fines.
-        /// </summary>
-        internal static string ApplyFines {
-            get {
-                return ResourceManager.GetString("ApplyFines", resourceCulture);
+                return ResourceManager.GetString("am_score", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Credit-O.
         /// </summary>
-        internal static string CreditO {
+        internal static string credit_o {
             get {
-                return ResourceManager.GetString("CreditO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email-team.
-        /// </summary>
-        internal static string EmailTeam {
-            get {
-                return ResourceManager.GetString("EmailTeam", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fine.
-        /// </summary>
-        internal static string Fine {
-            get {
-                return ResourceManager.GetString("Fine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        internal static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan deliquency configuration.
-        /// </summary>
-        internal static string LoanDeliquencyConfiguration {
-            get {
-                return ResourceManager.GetString("LoanDeliquencyConfiguration", resourceCulture);
+                return ResourceManager.GetString("credit_o", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loans from day.
         /// </summary>
-        internal static string LoansFromDay {
+        internal static string loans_from_day {
             get {
-                return ResourceManager.GetString("LoansFromDay", resourceCulture);
+                return ResourceManager.GetString("loans_from_day", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loans to day.
         /// </summary>
-        internal static string LoansToDay {
+        internal static string loans_to_day {
             get {
-                return ResourceManager.GetString("LoansToDay", resourceCulture);
+                return ResourceManager.GetString("loans_to_day", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Member actions.
+        ///   Looks up a localized string similar to Loan deliquency configuration.
         /// </summary>
-        internal static string MemberActions {
+        internal static string loan_deliquency_configuration {
             get {
-                return ResourceManager.GetString("MemberActions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
+                return ResourceManager.GetString("loan_deliquency_configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No loan LoanDeliquencyConfiguration type is created.
         /// </summary>
-        internal static string NoLoanLoanDeliquencyConfigurationTypeIsCreated {
+        internal static string no_loan_loan_deliquency_configuration_type_is_created {
             get {
-                return ResourceManager.GetString("NoLoanLoanDeliquencyConfigurationTypeIsCreated", resourceCulture);
+                return ResourceManager.GetString("no_loan_loan_deliquency_configuration_type_is_created", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Report to credit office.
         /// </summary>
-        internal static string ReportToCreditOffice {
+        internal static string report_to_credit_office {
             get {
-                return ResourceManager.GetString("ReportToCreditOffice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select loan status.
-        /// </summary>
-        internal static string SelectLoanStatus {
-            get {
-                return ResourceManager.GetString("SelectLoanStatus", resourceCulture);
+                return ResourceManager.GetString("report_to_credit_office", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Send email to follow-up team.
         /// </summary>
-        internal static string SendEmailToFolloUpTeam {
+        internal static string send_email_to_follo_up_team {
             get {
-                return ResourceManager.GetString("SendEmailToFolloUpTeam", resourceCulture);
+                return ResourceManager.GetString("send_email_to_follo_up_team", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Send SMS to follow-up team.
         /// </summary>
-        internal static string SendSMSToFollowUpTeam {
+        internal static string send_sms_to_follow_up_team {
             get {
-                return ResourceManager.GetString("SendSMSToFollowUpTeam", resourceCulture);
+                return ResourceManager.GetString("send_sms_to_follow_up_team", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Send SMS to members.
         /// </summary>
-        internal static string SendSMSToMembers {
+        internal static string send_sms_to_members {
             get {
-                return ResourceManager.GetString("SendSMSToMembers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMS-members.
-        /// </summary>
-        internal static string SMSMembers {
-            get {
-                return ResourceManager.GetString("SMSMembers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMS-team.
-        /// </summary>
-        internal static string SMSTeam {
-            get {
-                return ResourceManager.GetString("SMSTeam", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        internal static string Status {
-            get {
-                return ResourceManager.GetString("Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To.
-        /// </summary>
-        internal static string To {
-            get {
-                return ResourceManager.GetString("To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
+                return ResourceManager.GetString("send_sms_to_members", resourceCulture);
             }
         }
     }

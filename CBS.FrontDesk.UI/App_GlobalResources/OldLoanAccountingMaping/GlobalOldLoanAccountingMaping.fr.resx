@@ -117,43 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Data" xml:space="preserve">
-    <value>Données</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="NoOldLoanMapingIsCreated" xml:space="preserve">
-    <value>Aucune cartographie de prêt ancien n'est créée</value>
-  </data>
-  <data name="OldLoanAccountingMaping" xml:space="preserve">
-    <value>Cartographie comptable des prêts anciens</value>
-  </data>
-  <data name="SelectAccountLedger" xml:space="preserve">
-    <value>Sélectionner le registre comptable</value>
-  </data>
-  <data name="SelectAccountLedgerForCapitalAmount" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour le montant du capital</value>
-  </data>
-  <data name="SelectAccountLedgerForInterestAmount" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour le montant des intérêts</value>
-  </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanFourYears" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour la provision de plus de quatre ans</value>
-  </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanOneYear" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour la provision de plus d'un an</value>
-  </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanThreeYears" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour la provision de plus de trois ans</value>
-  </data>
-  <data name="SelectAccountLedgerForProvisionMoreThanTwoYears" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour la provision de plus de deux ans</value>
-  </data>
-  <data name="SelectAccountLedgerForVatAmount" xml:space="preserve">
-    <value>Sélectionner le registre comptable pour le montant de la TVA</value>
-  </data>
-  <data name="SelectLoanType" xml:space="preserve">
-    <value>Sélectionner le type de prêt</value>
-  </data>
 </root>

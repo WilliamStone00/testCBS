@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="adjustment_reference" xml:space="preserve">
+    <value>Adjustment Reference</value>
+  </data>
+  <data name="adjustment_request_filters" xml:space="preserve">
+    <value>Adjustment Request Filters</value>
+  </data>
+  <data name="applying_adjustments_please_wait" xml:space="preserve">
+    <value>Applying adjustments, please wait</value>
+  </data>
+  <data name="current_member_active_status_information" xml:space="preserve">
+    <value>Current Member Active Status Information</value>
+  </data>
+  <data name="current_member_information" xml:space="preserve">
+    <value>Current Member Information</value>
+  </data>
+  <data name="current_member_reference_information" xml:space="preserve">
+    <value>Current Member Reference Information</value>
+  </data>
+  <data name="current_member_status_information" xml:space="preserve">
+    <value>Current Member Status Information</value>
+  </data>
+  <data name="daily_saving_reexecution_fileid" xml:space="preserve">
+    <value>Daily Saving ReExecution FileID</value>
+  </data>
+  <data name="easily_segment_members_by_operational_branch" xml:space="preserve">
+    <value>Easily Segment Members By Operational Branch</value>
+  </data>
+  <data name="easily_separate_pending_approved_or_rejected_entries" xml:space="preserve">
+    <value>Easily separate pending, approved, or rejected entries</value>
+  </data>
+  <data name="enter_member_account_number" xml:space="preserve">
+    <value>Enter member account number</value>
+  </data>
+  <data name="enter_number_of_affected_savers" xml:space="preserve">
+    <value>Enter number of affected savers</value>
+  </data>
+  <data name="enter_re_execution_file_id" xml:space="preserve">
+    <value>Enter re execution file ID</value>
+  </data>
+  <data name="filter_specific_requests_quickly" xml:space="preserve">
+    <value>Filter specific requests quickly</value>
+  </data>
+  <data name="loading_member_adjustment_details" xml:space="preserve">
+    <value>Loading member adjustment details</value>
+  </data>
+  <data name="member_adjustment_console" xml:space="preserve">
+    <value>Member Adjustment Console</value>
+  </data>
+  <data name="member_adjustment_details" xml:space="preserve">
+    <value>member Adjustment Details</value>
+  </data>
+  <data name="member_adjustment_request_overview" xml:space="preserve">
+    <value>Member Adjustment Request Overview</value>
+  </data>
+  <data name="member_id_or_customer_id" xml:space="preserve">
+    <value>Member ID or Customer ID</value>
+  </data>
+  <data name="member_profile_adjustment" xml:space="preserve">
+    <value>Member Profile Adjustment</value>
+  </data>
+  <data name="narrow_down_requests_by_request_date" xml:space="preserve">
+    <value>Narrow down requests by request date</value>
+  </data>
+  <data name="new_blocked_amount_cannot_be_greater_than_available_balance" xml:space="preserve">
+    <value>New blocked amount cannot be greater than available balance</value>
+  </data>
+  <data name="new_membership_status" xml:space="preserve">
+    <value>New Membership Status</value>
+  </data>
+  <data name="new_member_active_status" xml:space="preserve">
+    <value>New Member Active Status</value>
+  </data>
+  <data name="new_member_information" xml:space="preserve">
+    <value>New Member Information</value>
+  </data>
+  <data name="new_member_reference" xml:space="preserve">
+    <value>New Member Reference</value>
+  </data>
+  <data name="new_member_reference_information" xml:space="preserve">
+    <value>New Member Reference Information</value>
+  </data>
+  <data name="new_member_status_information" xml:space="preserve">
+    <value>New Member Status Information</value>
+  </data>
+  <data name="not_for_rescheduling_or_refinancing" xml:space="preserve">
+    <value>Not for rescheduling or refinancing</value>
+  </data>
+  <data name="not_intended_for_loan_modifications_or_financial_rescheduling" xml:space="preserve">
+    <value>Not intended for loan modifications or financial rescheduling</value>
+  </data>
+  <data name="old_blocked_amount" xml:space="preserve">
+    <value>Old Blocked Amount</value>
+  </data>
+  <data name="old_membership_status" xml:space="preserve">
+    <value>Old Membership Status</value>
+  </data>
+  <data name="old_member_active_status" xml:space="preserve">
+    <value>Old Member Active Status</value>
+  </data>
+  <data name="old_member_category" xml:space="preserve">
+    <value>Old Member Category</value>
+  </data>
+  <data name="please_enter_a_new_first_name" xml:space="preserve">
+    <value>Please enter a new first name</value>
+  </data>
+  <data name="please_enter_a_new_last_name" xml:space="preserve">
+    <value>Please enter a new last name</value>
+  </data>
+  <data name="please_enter_a_new_member_reference" xml:space="preserve">
+    <value>Please enter a new member reference</value>
+  </data>
+  <data name="please_enter_a_valid_new_balance" xml:space="preserve">
+    <value>Please enter a valid new balance</value>
+  </data>
+  <data name="please_provide_a_reason_for_this_adjustment" xml:space="preserve">
+    <value>Please provide a reason for this adjustment</value>
+  </data>
+  <data name="please_provide_a_reason_for_this_change" xml:space="preserve">
+    <value>Please provide a reason for this change</value>
+  </data>
+  <data name="please_provide_a_reason_for_this_name_change" xml:space="preserve">
+    <value>Please provide a reason for this name change</value>
+  </data>
+  <data name="please_provide_a_reason_for_this_reference_change" xml:space="preserve">
+    <value>Please provide a reason for this reference change</value>
+  </data>
+  <data name="please_provide_a_reason_for_this_status_change" xml:space="preserve">
+    <value>Please provide a reason for this status change</value>
+  </data>
+  <data name="please_select_a_new_membership_status" xml:space="preserve">
+    <value>Please select a new membership status</value>
+  </data>
+  <data name="please_select_a_new_member_active_status" xml:space="preserve">
+    <value>Please select a new member active status</value>
+  </data>
+  <data name="please_select_a_new_member_category" xml:space="preserve">
+    <value>Please select a new member category</value>
+  </data>
+  <data name="please_select_whether_the_adjustment_is_a_debit_reduces_balance_or_a_credit_increases_balance_then_specify_the_amount_of_balance_difference_to_be_adjusted" xml:space="preserve">
+    <value>Please select whether the adjustment is a &lt;strong&gt;Debit&lt;/strong&gt; (reduces balance) or a &lt;strong&gt;Credit&lt;/strong&gt; (increases balance). Then, specify the amount of balance difference to be adjusted</value>
+  </data>
+  <data name="processing_please_wait" xml:space="preserve">
+    <value>Processing, please wait</value>
+  </data>
+  <data name="provide_a_clear_and_detailed_reason" xml:space="preserve">
+    <value>Provide a clear and detailed reason</value>
+  </data>
+  <data name="reason_for_active_status_change" xml:space="preserve">
+    <value>Reason for Active Status Change</value>
+  </data>
+  <data name="reason_for_adjustment" xml:space="preserve">
+    <value>Reason for Adjustment</value>
+  </data>
+  <data name="reason_for_member_category_change" xml:space="preserve">
+    <value>Reason for Member Category Change</value>
+  </data>
+  <data name="reason_for_reference_change" xml:space="preserve">
+    <value>Reason for Reference Change</value>
+  </data>
+  <data name="reason_for_status_change" xml:space="preserve">
+    <value>Reason for Status Change</value>
+  </data>
+  <data name="regular_daily_saver_member_account" xml:space="preserve">
+    <value>Regular Daily Saver member account</value>
+  </data>
+  <data name="regular_member_account" xml:space="preserve">
+    <value>Regular member account</value>
+  </data>
+  <data name="review_and_confirm_changes_to_member_details_account_status_and_category_updates" xml:space="preserve">
+    <value>Review and confirm changes to member details, account status, and category updates</value>
+  </data>
+  <data name="review_approve_and_track_member_adjustment_requests_across_branches" xml:space="preserve">
+    <value>Review, approve, and track member adjustment requests across branches</value>
+  </data>
+  <data name="select_new_membership_status" xml:space="preserve">
+    <value>Select New membership status</value>
+  </data>
+  <data name="select_new_member_active_status" xml:space="preserve">
+    <value>Select New member Active status</value>
+  </data>
+  <data name="submit_block_adjustment" xml:space="preserve">
+    <value>Submit Block Adjustment</value>
+  </data>
+  <data name="submit_status_change" xml:space="preserve">
+    <value>Submit Status Change</value>
+  </data>
+  <data name="tips_for_using_the_adjustment_console" xml:space="preserve">
+    <value>Tips for Using the Adjustment Console</value>
+  </data>
+  <data name="track_who_initiated_or_approved_changes" xml:space="preserve">
+    <value>Track who initiated or approved changes</value>
+  </data>
+  <data name="update_balance_membership_status_or_account_activity" xml:space="preserve">
+    <value>Update balance, membership status, or account activity</value>
+  </data>
+  <data name="use_filters_to_narrow_down_pending_or_processed_requests" xml:space="preserve">
+    <value>Use filters to narrow down pending or processed requests</value>
+  </data>
+  <data name="use_for_correcting_member_names_ids_or_categories" xml:space="preserve">
+    <value>Use for correcting member names, IDs, or categories</value>
+  </data>
+  <data name="use_for_fixing_calculation_or_data_errors" xml:space="preserve">
+    <value>Use for fixing calculation or data errors</value>
+  </data>
+  <data name="use_for_interest_vat_penalty_waivers" xml:space="preserve">
+    <value>Use for interest, VAT, penalty waivers</value>
+  </data>
+  <data name="use_the_export_button_to_download_your_current_view" xml:space="preserve">
+    <value>Use the export button to download your current view</value>
+  </data>
+  <data name="view_original_and_new_member_values_and_approval_history" xml:space="preserve">
+    <value>View original and new member values, and approval history</value>
+  </data>
+  <data name="view_requests_from_specific_branches" xml:space="preserve">
+    <value>View requests from specific branches</value>
+  </data>
+</root>

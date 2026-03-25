@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCollateral
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductCollateral
     @using Resources
 <div class="change-group">
     <div class="card mb-4">
@@ -30,7 +30,7 @@
                                 data-bs-target="#collapseDeliveryAddress"
                                 aria-expanded="true"
                                 aria-controls="collapseDeliveryAddress">
-                            @GlobalLoanProductCollateral.EnterParameters
+                            @GlobalShared.Enter_parameters
                         </button>
                     </h2>
                     <div id="collapseDeliveryAddress"
@@ -42,9 +42,9 @@
 
                                 <div class="col-md-12">
                                     <div class="form-floating form-floating-outline">
-                                        @Html.DropDownListFor(m => m.LoanProductId, new SelectList(ViewBag.Products, "Value", "Text"), "---"+@GlobalLoanProductCollateral.Select+"---", new { @class = "form-control select2", @search = "true" })
+                                        @Html.DropDownListFor(m => m.LoanProductId, new SelectList(ViewBag.Products, "Value", "Text"), "---"+@GlobalShared.Select+"---", new { @class = "form-control select2", @search = "true" })
                                         @Html.ValidationMessageFor(m => m.LoanProductId, "", new { @class = "text-danger " })
-                                        <label>@GlobalLoanProductCollateral.SelectProduct</label>
+                                        <label>@GlobalShared.Select_product</label>
                                     </div>
                                 </div>
                                 @*<div class="col-md-12">
@@ -65,7 +65,7 @@
                                         </select>
                                         <input type="hidden" name="CollateralId" id="HiddenCollateralId" />
                                         @Html.ValidationMessageFor(m => m.CollateralId, "", new { @class = "text-danger " })
-                                    <label>@GlobalLoanProductCollateral.SelectCollateral</label>
+                                    <label>@GlobalLoanProductCollateral.select_collateral</label>
                                     </div>
                                 </div>
 
@@ -73,21 +73,21 @@
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.LoanProductCollateralTag, new { @class = "form-control", @readonly = "readonly", id = "LoanProductCollateralTag" })
                                         @Html.ValidationMessageFor(m => m.LoanProductCollateralTag, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanProductCollateral.Tag</label>
+                                        <label>@GlobalShared.tag</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.MinimumValueRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.MinimumValueRate, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanProductCollateral.MinimumCollateralRate</label>
+                                        <label>@GlobalLoanProductCollateral.minimum_collateral_rate</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         @Html.TextBoxFor(m => m.MaximumValueRate, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(m => m.MaximumValueRate, "", new { @class = "text-danger" })
-                                        <label>@GlobalLoanProductCollateral.MaximumCollateralRate</label>
+                                        <label>@GlobalLoanProductCollateral.maximum_collateral_rate</label>
                                     </div>
                                 </div>
                             </div>

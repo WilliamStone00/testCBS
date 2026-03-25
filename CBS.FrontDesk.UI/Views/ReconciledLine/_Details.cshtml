@@ -1,4 +1,4 @@
-﻿<style>
+<style>
 
 
     .table tbody tr td {
@@ -25,7 +25,7 @@
 
 
 @model System.Collections.Generic.IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReconciledLine.Reconciled>
-
+@using Resources
 @{
     var header = Model?.FirstOrDefault();
     decimal totalDebit = 0;
@@ -38,63 +38,61 @@
     <div class="card bg-light mb-4 shadow-sm">
         <div class="card-body text-center">
             <h1 class="card-title text-primary">
-                <i class="mdi mdi-file-document-outline me-2"></i> RECONCILED JOURNALS
+                <i class="mdi mdi-file-document-outline me-2"></i> @GlobalReconciledLine.reconciled_journals
             </h1>
             <p class="card-text">
-                <strong>Reconciled Line Module</strong> – View and analyze journal entries reconciled by reference,
-                branch, and account. Check debit/credit totals and balances for each entry.
+                <strong>@GlobalReconciledLine.reconciled_line_module</strong> – @GlobalReconciledLine.view_and_analyze_journal_entries_reconciled_by_reference_branch_and_account_check_debit_credit_totals_and_balances_for_each_entry.
             </p>
             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
 
             <div class="alert alert-info mt-3">
                 <i class="mdi mdi-alert-circle-outline me-2"></i>
-                <strong>Important:</strong> Ensure the journal reference you select exists and has reconciled lines
-                before viewing details.
+                <strong>@GlobalShared.Important:</strong> @GlobalReconciledLine.ensure_the_journal_reference_you_select_exists_and_has_reconciled_lines_before_viewing_details.
             </div>
         </div>
     </div>
 
     <!-- ===================== JOURNAL HEADER ===================== -->
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-        <i class="mdi mdi-file-document me-1"></i> Journal Information
+        <i class="mdi mdi-file-document me-1"></i> @GlobalShared.journal_information
     </h6>
 
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr>
-                <th class="bg-label">Journal Header</th>
+                <th class="bg-label">@GlobalShared.journal_header</th>
                 <td>@header.JournalHeaderId</td>
             </tr>
             <tr>
-                <th class="bg-label" id="reference">Reference</th>
+                <th class="bg-label" id="reference">@GlobalShared.Reference</th>
                 <td>@header.ReferenceNumber</td>
             </tr>
             <tr>
-                <th class="bg-label">Branch</th>
+                <th class="bg-label">@GlobalShared.Branch</th>
                 <td>@header.BranchName</td>
             </tr>
             <tr>
-                <th class="bg-label">Entry Date</th>
+                <th class="bg-label">@GlobalShared.Entry_Date</th>
                 <td>@header.EntryDate.ToString("dd/MM/yyyy")</td>
             </tr>
             <tr>
-                <th class="bg-label">User</th>
+                <th class="bg-label">@GlobalShared.User</th>
                 <td>@header.UserName</td>
             </tr>
             <tr>
-                <th class="bg-label">Interbranch</th>
+                <th class="bg-label">@GlobalShared.InterBranch</th>
                 <td>@(header?.InterbranchStatus == true ? "Yes" : "No")</td>
             </tr>
             <tr>
-                <th class="bg-label">Initiated By</th>
+                <th class="bg-label">@GlobalShared.Initiated_By</th>
                 <td>@header.CreatedBy</td>
             </tr>
             <tr>
-                <th class="bg-label">Created Date</th>
+                <th class="bg-label">@GlobalShared.Created_Date</th>
                 <td>@header.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
             </tr>
             <tr>
-                <th class="bg-label">Approved By</th>
+                <th class="bg-label">@GlobalShared.Approved_by</th>
                 <td>
                     @(string.IsNullOrWhiteSpace(header.ApprovedBy)
                     ? "-"
@@ -102,7 +100,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="bg-label">Approval Date</th>
+                <th class="bg-label">@GlobalShared.Approval_date</th>
                 <td>
                     @(header.ApprovalDate != DateTime.MinValue
             ? header.ApprovalDate.ToString("dd/MM/yyyy HH:mm")
@@ -111,7 +109,7 @@
             </tr>
 
             <tr>
-                <th class="bg-label">Rejected By</th>
+                <th class="bg-label">@GlobalShared.Rejected_By</th>
                 <td>
                     @(string.IsNullOrWhiteSpace(header.RejectedBy)
             ? "-"
@@ -120,7 +118,7 @@
             </tr>
 
             <tr>
-                <th class="bg-label">Rejected Date</th>
+                <th class="bg-label">@GlobalShared.Rejected_Date</th>
                 <td>
                     @(header.RejectedDate != DateTime.MinValue
             ? header.RejectedDate.ToString("dd/MM/yyyy HH:mm")
@@ -133,7 +131,7 @@
 
     <!-- ===================== JOURNAL LINES ===================== -->
     <h6 class="fw-bold text-primary border-bottom pb-1 mb-2">
-        <i class="mdi mdi-table me-1"></i> Reconciled Journal Lines
+        <i class="mdi mdi-table me-1"></i> @GlobalReconciledLine.reconciled_journal_lines
     </h6>
 
     <div class="card border-0">
@@ -142,11 +140,11 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Account No</th>
-                        <th>Account Name</th>
-                        <th>Description</th>
-                        <th class="text-end">Debit (FCFA)</th>
-                        <th class="text-end">Credit (FCFA)</th>
+                        <th>@GlobalShared.Account_No</th>
+                        <th>@GlobalShared.Account_Name</th>
+                        <th>@GlobalShared.Description</th>
+                        <th class="text-end">@GlobalShared.Debit (FCFA)</th>
+                        <th class="text-end">@GlobalShared.Credit (FCFA)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -171,7 +169,7 @@
 
                     <!-- TOTALS -->
                     <tr class="fw-bold bg-light">
-                        <td colspan="4" class="text-end">Totals</td>
+                        <td colspan="4" class="text-end">@GlobalShared.Totals</td>
                         <td class="text-end">@totalDebit.ToString("N0")</td>
                         <td class="text-end">@totalCredit.ToString("N0")</td>
 
@@ -187,18 +185,18 @@
 <!-- ================= MODAL FOOTER ================= -->
 <div class="modal-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <i class="mdi mdi-close"></i> Close
+        <i class="mdi mdi-close"></i> @GlobalShared.Close
     </button>
 
     <div>
 
         <button type="button" id="btnPrintAccountingReport" class="btn btn-primary me-2">
-            <i class="mdi mdi-file-excel-outline"></i> Print
+            <i class="mdi mdi-file-excel-outline"></i> @GlobalShared.Print
         </button>
 
 
-        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2" >
-            <i class="mdi mdi-file-excel-outline"></i> Export Excel 
+        <button type="button" id="btnExportExcel" class="btn btn-outline-primary me-2">
+            <i class="mdi mdi-file-excel-outline"></i> @GlobalShared.Export_Excel
         </button>
 
     </div>

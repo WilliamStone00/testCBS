@@ -61,200 +61,163 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to After applying filters, click &lt;strong&gt;Export to Excel&lt;/strong&gt;.
+        /// </summary>
+        internal static string after_applying_filters_click_export_to_excel {
+            get {
+                return ResourceManager.GetString("after_applying_filters_click_export_to_excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to B.Code.
         /// </summary>
-        internal static string BCode {
+        internal static string b_code {
             get {
-                return ResourceManager.GetString("BCode", resourceCulture);
+                return ResourceManager.GetString("b_code", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch.
+        ///   Looks up a localized string similar to Choose one or more product types (e.g., Saving, Deposit, Shares) to refine your search.
         /// </summary>
-        internal static string Branch {
+        internal static string choose_one_or_more_product_types_eg_saving_deposit_shares_to_refine_your_search {
             get {
-                return ResourceManager.GetString("Branch", resourceCulture);
+                return ResourceManager.GetString("choose_one_or_more_product_types_eg_saving_deposit_shares_to_refine_your_search", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date.
+        ///   Looks up a localized string similar to Export Members Account Balances.
         /// </summary>
-        internal static string Date {
+        internal static string export_members_account_balances {
             get {
-                return ResourceManager.GetString("Date", resourceCulture);
+                return ResourceManager.GetString("export_members_account_balances", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deposit.
+        ///   Looks up a localized string similar to If the grid becomes too heavy or you no longer need old exports, use the &lt;strong&gt;Delete All&lt;/strong&gt; button to clear all your downloaded files.
         /// </summary>
-        internal static string Deposit {
+        internal static string if_the_grid_becomes_too_heavy_or_you_no_longer_need_old_exports_use_the_delete_all_button_to_clear_all_your_downloaded_files {
             get {
-                return ResourceManager.GetString("Deposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Downloaded files.
-        /// </summary>
-        internal static string DownloadedFiles {
-            get {
-                return ResourceManager.GetString("DownloadedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter search criteria.
-        /// </summary>
-        internal static string EnterSearchCriteria {
-            get {
-                return ResourceManager.GetString("EnterSearchCriteria", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export to excel.
-        /// </summary>
-        internal static string ExportToExcel {
-            get {
-                return ResourceManager.GetString("ExportToExcel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File name.
-        /// </summary>
-        internal static string FileName {
-            get {
-                return ResourceManager.GetString("FileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initiate download.
-        /// </summary>
-        internal static string InitiateDownload {
-            get {
-                return ResourceManager.GetString("InitiateDownload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loan.
-        /// </summary>
-        internal static string Loan {
-            get {
-                return ResourceManager.GetString("Loan", resourceCulture);
+                return ResourceManager.GetString("if_the_grid_becomes_too_heavy_or_you_no_longer_need_old_exports_use_the_delete_al" +
+                        "l_button_to_clear_all_your_downloaded_files", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Members accounts F8.
         /// </summary>
-        internal static string MembersAccountsF8 {
+        internal static string members_accounts_f8 {
             get {
-                return ResourceManager.GetString("MembersAccountsF8", resourceCulture);
+                return ResourceManager.GetString("members_accounts_f8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Members Account Balances.
+        /// </summary>
+        internal static string members_account_balances {
+            get {
+                return ResourceManager.GetString("members_account_balances", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Members ordinary account F8.
         /// </summary>
-        internal static string MembersOrdinaryAccountF8 {
+        internal static string members_ordinary_account_f8 {
             get {
-                return ResourceManager.GetString("MembersOrdinaryAccountF8", resourceCulture);
+                return ResourceManager.GetString("members_ordinary_account_f8", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Names.
+        ///   Looks up a localized string similar to Once filtered, you can &lt;strong&gt;export the results&lt;/strong&gt; to a structured Excel file. All your generated downloads will appear below and remain available until you delete them manually.
         /// </summary>
-        internal static string Names {
+        internal static string once_filtered_you_can_export_the_results_to_a_structured_excel_file_all_your_generated_downloads_will_appear_below_and_remain_available_until_you_delete_them_manually {
             get {
-                return ResourceManager.GetString("Names", resourceCulture);
+                return ResourceManager.GetString("once_filtered_you_can_export_the_results_to_a_structured_excel_file_all_your_gene" +
+                        "rated_downloads_will_appear_below_and_remain_available_until_you_delete_them_man" +
+                        "ually", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No file found.
+        ///   Looks up a localized string similar to Once prepared, your export file will appear in the grid view. Click on it to download.
         /// </summary>
-        internal static string NoFileFound {
+        internal static string once_prepared_your_export_file_will_appear_in_the_grid_view_click_on_it_to_download {
             get {
-                return ResourceManager.GetString("NoFileFound", resourceCulture);
+                return ResourceManager.GetString("once_prepared_your_export_file_will_appear_in_the_grid_view_click_on_it_to_downlo" +
+                        "ad", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O.Share.
         /// </summary>
-        internal static string OShare {
+        internal static string o_share {
             get {
-                return ResourceManager.GetString("OShare", resourceCulture);
+                return ResourceManager.GetString("o_share", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to P.Share.
         /// </summary>
-        internal static string PShare {
+        internal static string p_share {
             get {
-                return ResourceManager.GetString("PShare", resourceCulture);
+                return ResourceManager.GetString("p_share", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to References.
+        ///   Looks up a localized string similar to Select a branch to filter results for members registered at that location.
         /// </summary>
-        internal static string References {
+        internal static string select_a_branch_to_filter_results_for_members_registered_at_that_location {
             get {
-                return ResourceManager.GetString("References", resourceCulture);
+                return ResourceManager.GetString("select_a_branch_to_filter_results_for_members_registered_at_that_location", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saving.
+        ///   Looks up a localized string similar to The system will prepare your file and list it in the downloaded files section below.
         /// </summary>
-        internal static string Saving {
+        internal static string the_system_will_prepare_your_file_and_list_it_in_the_downloaded_files_section_below {
             get {
-                return ResourceManager.GetString("Saving", resourceCulture);
+                return ResourceManager.GetString("the_system_will_prepare_your_file_and_list_it_in_the_downloaded_files_section_bel" +
+                        "ow", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search criterial.
+        ///   Looks up a localized string similar to The tool is optimized for &lt;strong&gt;back-office teams, accountants, auditors, and compliance officers&lt;/strong&gt; who need to track member balances and perform reconciliation or analysis.
         /// </summary>
-        internal static string SearchCriterial {
+        internal static string the_tool_is_optimized_for_backoffice_teams_accountants_auditors_and_compliance_officers_who_need_to_track_member_balances_and_perform_reconciliation_or_analysis {
             get {
-                return ResourceManager.GetString("SearchCriterial", resourceCulture);
+                return ResourceManager.GetString("the_tool_is_optimized_for_backoffice_teams_accountants_auditors_and_compliance_of" +
+                        "ficers_who_need_to_track_member_balances_and_perform_reconciliation_or_analysis", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select branch.
+        ///   Looks up a localized string similar to This interface allows users to &lt;strong&gt;view, filter, and export&lt;/strong&gt; detailed account balance information for registered members across various product types such as &lt;span class=&quot;text-success&quot;&gt;Savings&lt;/span&gt;, &lt;span class=&quot;text-info&quot;&gt;Deposits&lt;/span&gt;, and &lt;span class=&quot;text-warning&quot;&gt;Shares&lt;/span&gt;.
         /// </summary>
-        internal static string SelectBranch {
+        internal static string this_interface_allows_users_to_view_filter_and_export_detailed_account_balance_information_for_registered_members_across_various_product_types_such_as_savings_deposits_and_shares {
             get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("this_interface_allows_users_to_view_filter_and_export_detailed_account_balance_in" +
+                        "formation_for_registered_members_across_various_product_types_such_as_savings_de" +
+                        "posits_and_shares", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Size.
+        ///   Looks up a localized string similar to Tips for Filtering and Export.
         /// </summary>
-        internal static string Size {
+        internal static string tips_for_filtering_and_export {
             get {
-                return ResourceManager.GetString("Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User.
-        /// </summary>
-        internal static string User {
-            get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("tips_for_filtering_and_export", resourceCulture);
             }
         }
     }

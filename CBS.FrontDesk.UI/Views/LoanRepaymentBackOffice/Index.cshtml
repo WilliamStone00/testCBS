@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 @{
     ViewBag.Title = "Loan Repayment - Member Balances";
@@ -13,10 +13,10 @@
             <div class="card bg-light">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-bank me-2"></i> @GlobalLoanRepaymentBackOffice.BackOfficeLoanRepaymentManagement
+                        <i class="mdi mdi-bank me-2"></i> @GlobalLoanRepaymentBackOffice.back_office_loan_repayment_management
                     </h1>
                     <p class="card-text">
-                        @GlobalLoanRepaymentBackOffice.ProcessLoanRepaymentsFrom <strong>@GlobalLoanRepaymentBackOffice.membersBalances</strong> @GlobalLoanRepaymentBackOffice.EfficientlyBySelectingTheAccountToDebitAndEntering.
+                        @GlobalLoanRepaymentBackOffice.process_loan_repayments_from <strong>@GlobalLoanRepaymentBackOffice.members_balances</strong> @GlobalLoanRepaymentBackOffice.efficiently_by_selecting_the_account_to_debit_and_entering.
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -31,7 +31,7 @@
                 <div class="card">
                     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
                         <span>
-                            <i class="mdi mdi-information-outline me-2"></i> @GlobalLoanRepaymentBackOffice.HELPTIPS
+                            <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.HELP_TIPS
                         </span>
                         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHelpTips" aria-expanded="false" aria-controls="collapseHelpTips">
                             <i class="mdi mdi-chevron-down"></i>
@@ -44,19 +44,19 @@
                                 <div class="accordion-item mt-2">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRepaymentGuide" aria-expanded="false" aria-controls="collapseLoanRepaymentGuide">
-                                            @GlobalLoanRepaymentBackOffice.LoanRepaymentProcess
+                                            @GlobalLoanRepaymentBackOffice.loan_repayment_process
                                         </button>
                                     </h2>
                                     <div id="collapseLoanRepaymentGuide" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                         <div class="accordion-body">
                                             <ol>
-                                                <li>@GlobalLoanRepaymentBackOffice.First, <strong>@GlobalLoanRepaymentBackOffice.selectAndEnterAmountsToDebitFromMembersAccounts</strong>.</li>
-                                                <li>@GlobalLoanRepaymentBackOffice.EnsureThe <strong>@GlobalLoanRepaymentBackOffice.total_amount_debited_matches_the_loan_repayment_sum</strong>.</li>
-                                                <li>@GlobalLoanRepaymentBackOffice.NextEnterThe <strong>@GlobalLoanRepaymentBackOffice.capital_repayment_interest_VAT_and_penalty</strong> @GlobalLoanRepaymentBackOffice.inTheLoanTable.</li>
-                                                <li>@GlobalLoanRepaymentBackOffice.Click <strong>"@GlobalLoanRepaymentBackOffice.Confirm_Transaction"</strong> @GlobalLoanRepaymentBackOffice.to_validate_the_payment.</li>
-                                                <li>@GlobalLoanRepaymentBackOffice.IfAllValuesMatchTheRepaymentIsProcessedSuccessfully.</li>
+                                                <li>@GlobalShared.first, <strong>@GlobalLoanRepaymentBackOffice.select_and_enter_amounts_to_debit_from_members_accounts</strong>.</li>
+                                                <li>@GlobalLoanRepaymentBackOffice.ensure_the <strong>@GlobalLoanRepaymentBackOffice.total_amount_debited_matches_the_loan_repayment_sum</strong>.</li>
+                                                <li>@GlobalLoanRepaymentBackOffice.next_enter_the <strong>@GlobalLoanRepaymentBackOffice.capital_repayment_interest_vat_and_penalty</strong> @GlobalLoanRepaymentBackOffice.in_the_loan_table.</li>
+                                                <li>@GlobalShared.Click <strong>"@GlobalShared.confirm_transaction"</strong> @GlobalLoanRepaymentBackOffice.to_validate_the_payment.</li>
+                                                <li>@GlobalLoanRepaymentBackOffice.if_all_values_match_the_repayment_is_processed_successfully.</li>
                                             </ol>
-                                            <strong>NB:</strong> @GlobalLoanRepaymentBackOffice.A_mismatch_between_debited_accounts_and_loan_repayment_details_will_prevent_submission.
+                                            <strong>NB:</strong> @GlobalLoanRepaymentBackOffice.a_mismatch_between_debited_accounts_and_loan_repayment_details_will_prevent_submission.
                                         </div>
                                     </div>
                                 </div>
@@ -65,16 +65,16 @@
                                 <div class="accordion-item mt-2">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanFees" aria-expanded="false" aria-controls="collapseLoanFees">
-                                            Loan Repayment Fees & Charges
+                                            @GlobalLoanRepaymentBackOffice.loan_repayment_fees_charges
                                         </button>
                                     </h2>
                                     <div id="collapseLoanFees" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                         <div class="accordion-body">
                                             <ul>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.Interest:</strong> @GlobalLoanRepaymentBackOffice.Based_on_the_outstanding_balance.</li>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.VAT:</strong> @GlobalLoanRepaymentBackOffice.Automatically_calculated_from_interest.</li>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.Penalty:</strong> @GlobalLoanRepaymentBackOffice.Applied_to_overdue_repayments.</li>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.Processing_fees:</strong> @GlobalLoanRepaymentBackOffice.May_apply_depending_on_loan_agreement.</li>
+                                                <li><strong>@GlobalShared.Interest:</strong> @GlobalLoanRepaymentBackOffice.based_on_the_outstanding_balance.</li>
+                                                <li><strong>@GlobalShared.VAT:</strong> @GlobalLoanRepaymentBackOffice.automatically_calculated_from_interest.</li>
+                                                <li><strong>@GlobalShared.Penalty:</strong> @GlobalLoanRepaymentBackOffice.applied_to_overdue_repayments.</li>
+                                                <li><strong>@GlobalLoanRepaymentBackOffice.processing_fees:</strong> @GlobalLoanRepaymentBackOffice.may_apply_depending_on_loan_agreement.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -84,15 +84,15 @@
                                 <div class="accordion-item mt-2">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoanRefundPolicy" aria-expanded="false" aria-controls="collapseLoanRefundPolicy">
-                                            @GlobalLoanRepaymentBackOffice.Refund_Policy_for_Loan_Repayments
+                                            @GlobalLoanRepaymentBackOffice.refund_policy_for_loan_repayments
                                         </button>
                                     </h2>
                                     <div id="collapseLoanRefundPolicy" class="accordion-collapse collapse" data-bs-parent="#helpDetailsAccordion">
                                         <div class="accordion-body">
-                                            <p>@GlobalLoanRepaymentBackOffice.Loan_repayments <strong>@GlobalLoanRepaymentBackOffice.cannot_be_refunded</strong>, @GlobalLoanRepaymentBackOffice.except_in_cases_of:</p>
+                                            <p>@GlobalShared.loan_repayments <strong>@GlobalLoanRepaymentBackOffice.cannot_be_refunded</strong>, @GlobalLoanRepaymentBackOffice.except_in_cases_of:</p>
                                             <ul>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.Overpayment:</strong> @GlobalLoanRepaymentBackOffice.Refund_request_must_be_submitted.</li>
-                                                <li><strong>@GlobalLoanRepaymentBackOffice.System_Errors:</strong> @GlobalLoanRepaymentBackOffice.If_a_duplicate_transaction_occurs.</li>
+                                                <li><strong>@GlobalLoanRepaymentBackOffice.overpayment:</strong> @GlobalLoanRepaymentBackOffice.refund_request_must_be_submitted.</li>
+                                                <li><strong>@GlobalShared.system_errors:</strong> @GlobalLoanRepaymentBackOffice.if_a_duplicate_transaction_occurs.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                     aria-expanded="true"
                                     aria-controls="accordionPopoutIcon-3">
                                 <i class="mdi mdi-bank me-2"></i>
-                                <span id="cashDeskOperations">@GlobalLoanRepaymentBackOffice.Loan_Repayment_Management_Back_Office</span>
+                                <span id="cashDeskOperations">@GlobalLoanRepaymentBackOffice.loan_repayment_management_back_office</span>
                             </button>
                         </h2>
                         <hr />

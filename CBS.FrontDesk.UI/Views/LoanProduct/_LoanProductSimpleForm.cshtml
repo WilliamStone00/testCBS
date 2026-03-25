@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+@model CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.PCMFLoanProductManagementObjects
+    @using Resources
 @{
     var cmd = Model.CreateOrUpdate ?? new CBS.FrontDesk.Data.Entity.LoanConf.PCMFStructure.CreateLoanProductCommand();
     var isEdit = !string.IsNullOrWhiteSpace(cmd.Id);
@@ -93,7 +94,7 @@
                             <i class="mdi mdi-account-group me-2"></i> @formTitle
                         </h1>
                         <p class="card-text">
-                            Fill the minimum fields for PCMF/COBAC. Configure advanced policy/accounting later via Manage actions.
+                            @GlobalLoanProduct.fill_the_minimum_fields_for_pcmfcobac_configure_advanced_policyaccounting_later_via_manage_actions.
                         </p>
                         <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                     </div>
@@ -108,9 +109,9 @@
         <div class="card mb-2">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="text-dark fw-semibold">
-                    <i class="mdi mdi-shape-outline me-1"></i> Loan Facility
+                    <i class="mdi mdi-shape-outline me-1"></i> @GlobalShared.loan_facility
                 </span>
-                <small class="text-muted">Required</small>
+                <small class="text-muted">@GlobalShared.Required</small>
             </div>
 
             <div class="card-body py-2">
@@ -121,8 +122,8 @@
                         <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
                                id="LoanFacilityClassic" value="Classic"
                                @(string.IsNullOrWhiteSpace(cmd.LoanFacility) || cmd.LoanFacility == "Classic" ? "checked" : "") />
-                        <label class="form-check-label fw-semibold" for="LoanFacilityClassic">Classic</label>
-                        <div class="small text-muted">Term required</div>
+                        <label class="form-check-label fw-semibold" for="LoanFacilityClassic">@GlobalShared.classic</label>
+                        <div class="small text-muted">@GlobalShared.term_required</div>
                     </div>
 
                     <div class="form-check">
@@ -130,28 +131,28 @@
                                id="LoanFacilitySSF" value="SSF"
                                @(cmd.LoanFacility == "SSF" ? "checked" : "") />
                         <label class="form-check-label fw-semibold" for="LoanFacilitySSF">SSF</label>
-                        <div class="small text-muted">Term required</div>
+                        <div class="small text-muted">@GlobalShared.term_required</div>
                     </div>
 
                     <div class="form-check">
                         <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
                                id="LoanFacilityOverdraft" value="Overdraft"
                                @(cmd.LoanFacility == "Overdraft" ? "checked" : "") />
-                        <label class="form-check-label fw-semibold" for="LoanFacilityOverdraft">Overdraft</label>
-                        <div class="small text-muted">No term</div>
+                        <label class="form-check-label fw-semibold" for="LoanFacilityOverdraft">@GlobalShared.Overdraft</label>
+                        <div class="small text-muted">@GlobalShared.no_term</div>
                     </div>
 
                     <div class="form-check">
                         <input class="form-check-input lpFacility" type="radio" name="LoanFacilityRadio"
                                id="LoanFacilityLOC" value="LineOfCredit"
                                @(cmd.LoanFacility == "LineOfCredit" ? "checked" : "") />
-                        <label class="form-check-label fw-semibold" for="LoanFacilityLOC">Line of Credit</label>
-                        <div class="small text-muted">Term required</div>
+                        <label class="form-check-label fw-semibold" for="LoanFacilityLOC">@GlobalLoanProduct.line_of_credit</label>
+                        <div class="small text-muted">@GlobalShared.term_required</div>
                     </div>
                 </div>
 
                 <div class="mt-2 small text-muted">
-                    Facility controls whether <b>Loan Term</b> is required and how PCMF choices are filtered.
+                    @Html.Raw(@GlobalLoanProduct.facility_controls_whether_loan_term_is_required_and_how_pcmf_choices_are_filtered).
                 </div>
             </div>
         </div>
@@ -161,32 +162,32 @@
         <div class="card mb-2">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="text-dark fw-semibold">
-                    <i class="mdi mdi-eye-outline me-1"></i> Live PCMF Preview
+                    <i class="mdi mdi-eye-outline me-1"></i> @GlobalLoanProduct.live_pcmf_preview
                 </span>
-                <small class="text-muted">Live</small>
+                <small class="text-muted">@GlobalShared.live</small>
             </div>
 
             <div class="card-body py-2">
                 <div class="d-flex flex-wrap gap-2 align-items-center">
                     <span class="badge bg-label-secondary px-3 py-2" id="pcmfPreviewSection">
-                        Section: @Model.Product.PcmfSection
+                        @GlobalShared.section: @Model.Product.PcmfSection
                     </span>
 
                     <span class="badge bg-label-dark px-3 py-2" id="pcmfPreviewGroup">
-                        Group: @Model.Product.PcmfGroupCode
+                        @GlobalShared.Group: @Model.Product.PcmfGroupCode
                     </span>
 
                     <span class="badge bg-label-primary px-3 py-2" id="pcmfPreviewBase">
-                        Base: @Model.Product.PcmfBaseCode
+                        @GlobalLoanProduct._base: @Model.Product.PcmfBaseCode
                     </span>
 
                     <span class="badge bg-label-info px-3 py-2" id="pcmfPreviewPop">
-                        Population: @Model.Product.PcmfPopulation
+                        @GlobalShared.population: @Model.Product.PcmfPopulation
                     </span>
                 </div>
 
                 <div class="small text-muted mt-2">
-                    Updates automatically as you pick <b>Facility → Term → Purpose → Target</b>.
+                    @Html.Raw(@GlobalLoanProduct.updates_automatically_as_you_pick_facility_term_purpose_target).
                 </div>
             </div>
         </div>
@@ -202,8 +203,8 @@
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpPcmf" aria-expanded="true" aria-controls="cpPcmf">
                 <i class="mdi mdi-tag-outline me-2"></i>
-                <span class="fw-semibold">PCMF Classification</span>
-                <span class="ms-2 text-muted small">(Required)</span>
+                <span class="fw-semibold">@GlobalLoanProduct.pcmf_classification</span>
+                <span class="ms-2 text-muted small">(@GlobalShared.Required)</span>
             </button>
         </h2>
 
@@ -219,10 +220,10 @@
                                 "--- Select Loan Term ---",
                                 new { @class = "form-control select2", id = "LoanTermId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTermId, "", new { @class = "text-danger" })
-                            <label>Loan Term</label>
+                            <label>@GlobalShared.Loan_Term</label>
                         </div>
                         <div class="small text-muted">
-                            Required for <b>Classic / SSF / LOC</b>. Only <b>Overdraft</b> can be empty.
+                            @Html.Raw(@GlobalLoanProduct.required_for_classic_ssf_loc_only_overdraft_can_be_empty).
                         </div>
                     </div>
 
@@ -233,9 +234,9 @@
                                 "--- Select PCMF Purpose ---",
                                 new { @class = "form-control select2", required = "required", id = "PcmfLoanPurposeId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.PcmfLoanPurposeId, "", new { @class = "text-danger" })
-                            <label>PCMF Loan Purpose</label>
+                            <label>@GlobalLoanProduct.pcmf_loan_purpose</label>
                         </div>
-                        <div class="small text-muted">Filtered by term/section.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.filtered_by_termsection.</div>
                     </div>
 
                     <div class="col-md-7">
@@ -245,9 +246,9 @@
                                 "--- Select Target ---",
                                 new { @class = "form-control select2", required = "required", id = "LoanTargetId" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.LoanTargetId, "", new { @class = "text-danger" })
-                            <label>Loan Target</label>
+                            <label>@GlobalShared.Loan_Target</label>
                         </div>
-                        <div class="small text-muted">Enabled after purpose.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.enabled_after_purpose.</div>
                     </div>
 
                 </div>
@@ -261,7 +262,7 @@
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpBasic" aria-expanded="false" aria-controls="cpBasic">
                 <i class="mdi mdi-file-document-outline me-2"></i>
-                <span class="fw-semibold">Basic Information</span>
+                <span class="fw-semibold">@GlobalShared.Basic_Information</span>
                 <span class="ms-2 text-muted small">(Required)</span>
             </button>
         </h2>
@@ -274,16 +275,16 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CreateOrUpdate.ProductCode, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductCode, "", new { @class = "text-danger" })
-                            <label>Product Code</label>
+                            <label>@GlobalShared.Product_Code</label>
                         </div>
-                        <div class="small text-muted">Unique for reporting/integrations.</div>
+                        <div class="small text-muted">@GlobalLoanProduct.unique_for_reportingintegrations.</div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-floating form-floating-outline">
                             @Html.TextBoxFor(m => m.CreateOrUpdate.ProductName, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ProductName, "", new { @class = "text-danger" })
-                            <label>Product Name</label>
+                            <label>@GlobalShared.Product_Name</label>
                         </div>
                     </div>
 
@@ -291,14 +292,14 @@
                         <div class="form-floating form-floating-outline">
                             @Html.TextAreaFor(m => m.CreateOrUpdate.Description, 3, 10, new { @class = "form-control", placeholder = "Short description..." })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.Description, "", new { @class = "text-danger" })
-                            <label>Description</label>
+                            <label>@GlobalShared.Description</label>
                         </div>
                     </div>
 
                     <div class="col-md-12">
                         <div class="form-check mt-1">
                             @Html.CheckBoxFor(m => m.CreateOrUpdate.ActiveStatus, new { @class = "form-check-input", id = "ActiveStatus" })
-                            <label class="form-check-label" for="ActiveStatus">Active</label>
+                            <label class="form-check-label" for="ActiveStatus">@GlobalShared.Active</label>
                         </div>
                     </div>
                 </div>
@@ -313,8 +314,8 @@
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#cpGl" aria-expanded="false" aria-controls="cpGl">
                 <i class="mdi mdi-bank-outline me-2"></i>
-                <span class="fw-semibold">Core Accounting GLs Mapping</span>
-                <span class="ms-2 text-muted small">(Optional)</span>
+                <span class="fw-semibold">@GlobalLoanProduct.core_accounting_gls_mapping</span>
+                <span class="ms-2 text-muted small">(@GlobalShared.Optional)</span>
             </button>
         </h2>
 
@@ -322,14 +323,14 @@
              aria-labelledby="hdGl" data-bs-parent="#loanProductAccordion">
             <div class="accordion-body py-3">
                 <div class="small text-muted mb-2">
-                    Configure later via <b>Manage → Accounting Mapping</b>. If provided, ensure consistency across taxable/non-taxable.
+                    @Html.Raw(@GlobalLoanProduct.configure_later_via_manage_accounting_mapping_if_provided_ensure_consistency_across_taxablenontaxable).
                 </div>
 
                 <div class="row g-3">
 
                     <div class="col-12">
                         <div class="fw-semibold mb-1">
-                            <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> Non-Taxable
+                            <i class="mdi mdi-checkbox-blank-circle-outline me-1"></i> @GlobalLoanProduct.nontaxable
                         </div>
                     </div>
 
@@ -340,7 +341,7 @@
                                 "--- Principal GL (Non-Taxable) ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForPrincipalAmount" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPrincipalAmount, "", new { @class = "text-danger" })
-                            <label>Principal GL (Non-Taxable)</label>
+                            <label>@GlobalLoanProduct.principal_gl_nontaxable</label>
                         </div>
                     </div>
 
@@ -351,17 +352,17 @@
                                 "--- Interest GL (Non-Taxable) ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForInterestReceived" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForInterestReceived, "", new { @class = "text-danger" })
-                            <label>Interest GL (Non-Taxable)</label>
+                            <label>@GlobalLoanProduct.interest_gl_nontaxable</label>
                         </div>
                     </div>
 
                     <!-- ✅ NEW: Disbursement / Transition -->
                     <div class="col-12 mt-2">
                         <div class="fw-semibold mb-1">
-                            <i class="mdi mdi-timer-sand me-1"></i> Disbursement / Transition
+                            <i class="mdi mdi-timer-sand me-1"></i> @GlobalLoanProduct.disbursement_transition
                         </div>
                         <div class="small text-muted">
-                            Used as a <b>waiting/transit GL</b> for loans that are approved but not yet disbursed.
+                            @Html.Raw(@GlobalLoanProduct.used_as_a_waitingtransit_gl_for_loans_that_are_approved_but_not_yet_disbursed).
                         </div>
                     </div>
 
@@ -372,13 +373,13 @@
                                 "--- Transit / Waiting GL (Approved → Pending Disbursement) ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForLoanTransition" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForLoanTransition, "", new { @class = "text-danger" })
-                            <label>Transit / Waiting GL (Approved → Pending Disbursement)</label>
+                            <label>@GlobalLoanProduct.transit_waiting_gl_approved_pending_disbursement</label>
                         </div>
                     </div>
 
                     <div class="col-12 mt-2">
                         <div class="fw-semibold mb-1">
-                            <i class="mdi mdi-cash-check me-1"></i> Taxable
+                            <i class="mdi mdi-cash-check me-1"></i> @GlobalShared.taxable
                         </div>
                     </div>
 
@@ -389,7 +390,7 @@
                                 "--- Principal GL (Taxable) ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForTaxiblePrincipalAmount" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxiblePrincipalAmount, "", new { @class = "text-danger" })
-                            <label>Principal GL (Taxable)</label>
+                            <label>@GlobalLoanProduct.principal_gl_taxable</label>
                         </div>
                     </div>
 
@@ -400,7 +401,7 @@
                                 "--- Interest GL (Taxable) ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForTaxibleInterestReceived" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTaxibleInterestReceived, "", new { @class = "text-danger" })
-                            <label>Interest GL (Taxable)</label>
+                            <label>@GlobalLoanProduct.interest_gl_taxable</label>
                         </div>
                     </div>
 
@@ -411,13 +412,13 @@
                                 "--- Tax / VAT GL ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForTax" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForTax, "", new { @class = "text-danger" })
-                            <label>Tax / VAT GL</label>
+                            <label>@GlobalShared.Tax / @GlobalLoanProduct.vat_gl</label>
                         </div>
                     </div>
 
                     <div class="col-12 mt-2">
                         <div class="fw-semibold mb-1">
-                            <i class="mdi mdi-alert-outline me-1"></i> Penalty
+                            <i class="mdi mdi-alert-outline me-1"></i> @GlobalShared.Penalty
                         </div>
                     </div>
 
@@ -428,7 +429,7 @@
                                 "--- Penalty GL ---",
                                 new { @class = "form-control select2", id = "ChartOfAccountIdForPenalty" })
                             @Html.ValidationMessageFor(m => m.CreateOrUpdate.ChartOfAccountIdForPenalty, "", new { @class = "text-danger" })
-                            <label>Penalty GL</label>
+                            <label>@GlobalLoanProduct.penalty_gl</label>
                         </div>
                     </div>
 
@@ -445,7 +446,7 @@
                 <i class="mdi mdi-content-save-outline me-1"></i> @saveText
             </button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                Close
+                @GlobalShared.Close
             </button>
         </div>
     }

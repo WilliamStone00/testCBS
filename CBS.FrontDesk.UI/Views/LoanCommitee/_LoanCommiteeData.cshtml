@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
+@model CBS.FrontDesk.Data.Entity.LoanCommitee.LoanCommitee
 @using Resources
 
 @if (Model != null && Model.LoanCommiteeGroups.Any())
@@ -16,11 +16,11 @@
         <table class="table table-hover" id="myDataTable_commitee_group">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalLoanCommitee.Name</th>
-                    <th>@GlobalLoanCommitee.Leader</th>
-                    <th>@GlobalLoanCommitee.Range</th>
-                    <th>@GlobalLoanCommitee.Size</th>
-                    <th>@GlobalLoanCommitee.ValidationRequired</th>
+                    <th>@GlobalShared.Name</th>
+                    <th>@GlobalShared.leader</th>
+                    <th>@GlobalShared.Range</th>
+                    <th>@GlobalShared.Size</th>
+                    <th>@GlobalShared.validation_required</th>
                     <th>@GlobalShared.Status</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
@@ -37,11 +37,11 @@
                         <td style="width:8%">
                             @if (d.Status)
                             {
-                                <span class="badge bg-info">@GlobalLoanCommitee.Active</span>
+                                <span class="badge bg-info">@GlobalShared.Active</span>
                             }
                             else
                             {
-                        <span class="badge bg-warning">@GlobalLoanCommitee.Inactive</span>
+                        <span class="badge bg-warning">@GlobalShared.InActive</span>
                             }
                         </td>
                         <td style="width:15%">
@@ -57,7 +57,7 @@
 else
 {
     <div class="text-center my-3">
-        <p>@GlobalLoanCommitee.NoCommiteeGroupsAreAvailableAtTheMoment.</p>
+        <p>@GlobalLoanCommitee.no_commitee_groups_are_available_at_the_moment.</p>
     </div>
    
 }

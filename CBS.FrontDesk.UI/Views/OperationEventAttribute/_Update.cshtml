@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttribute
+@model CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttribute
     @using Resources
 <div class="card-body">
 
@@ -9,16 +9,16 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>@GlobalOperationEventAttribute.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
           
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                     @Html.DropDownListFor(m => m.OperationEventId, new SelectList(( ViewBag.OperationEvents==null)?"": ViewBag.OperationEvents, "Id", "OperationEventName"),
-                        "---Select OperationEvent---", new { @class = "form-control select2", @search = "true" })
+                        $"---{@GlobalShared.select_operation_event}---", new { @class = "form-control select2", @search = "true" })
                     @Html.ValidationMessageFor(m => m.OperationEventId, "", new { @class = "text-danger " })
-                    <label>@GlobalOperationEventAttribute.OperationEvent</label>
+                    <label>@GlobalShared.operation_event</label>
                 </div>
             </div>
       

@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 @{
     ViewBag.Title = "Loan Details";
 }
@@ -164,17 +165,16 @@
             <div style="flex:1 1 auto; min-width: 260px;">
                 <h2 class="tsc-banner-title">
                     <i class="mdi mdi-file-document-outline"></i>
-                    LOAN DETAILS
+                    @GlobalShared.Loan_Details
                 </h2>
 
                 <div class="tsc-banner-desc">
-                    View and analyze full loan information including identity, money breakdown, payments, risk, documents,
-                    and accounting references — in one consolidated loan file.
+                    @GlobalMembersFSeries.view_and_analyze_full_loan_information_including_identity_money_breakdown_payments_risk_documents_and_accounting_references_in_one_consolidated_loan_file.
                 </div>
 
                 <div class="tsc-banner-tip">
                     <i class="mdi mdi-alert-circle-outline"></i>
-                    Use PRINT to generate a clean report view for audit and customer support.
+                    @GlobalMembersFSeries.use_print_to_generate_a_clean_report_view_for_audit_and_customer_support.
                 </div>
 
                 <div class="tsc-banner-divider"></div>
@@ -195,9 +195,9 @@
     <div class="tsc-content-card">
         <div class="tsc-content-header">
             <p class="title">
-                <i class="mdi mdi-folder-open-outline"></i> Loan File
+                <i class="mdi mdi-folder-open-outline"></i> @GlobalShared.loan_file
             </p>
-            <p class="hint">Tip: Switch tabs below (Overview, Money, Payments, Risk, Docs, Posting, Audit).</p>
+            <p class="hint">@GlobalShared.Tip: @GlobalMembersFSeries.switch_tabs_below_overview_money_payments_risk_docs_posting_audit.</p>
         </div>
 
         <div class="tsc-content-body">

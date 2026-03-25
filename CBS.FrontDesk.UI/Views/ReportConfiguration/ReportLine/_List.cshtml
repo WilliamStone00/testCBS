@@ -1,21 +1,21 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine>
-
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLine.ReportLine>
+@using Resources
 <div class="d-flex justify-content-between mb-2">
-    <h5>Report Lines</h5>
+    <h5>@GlobalReportConfiguration.report_lines</h5>
     <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportLineCreateModal()">
-        <i class="mdi mdi-plus"></i> New
+        <i class="mdi mdi-plus"></i> @GlobalShared.New
     </a>
 </div>
 
 <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable_line">
     <thead>
         <tr>
-            <th>Ref Code</th>
-            <th>Caption</th>
-            <th>Sort</th>
-            <th>Calc Mode</th>
-            <th>Show</th>
-            <th>Actions</th>
+            <th>@GlobalReportConfiguration.ref_code</th>
+            <th>@GlobalShared.caption</th>
+            <th>@GlobalShared.sort</th>
+            <th>@GlobalReportConfiguration.calc_mode</th>
+            <th>@GlobalShared.show</th>
+            <th>@GlobalShared.Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
                 <td>
                     <a href="javascript:void(0);" class="btn btn-sm btn-info"
                        onclick="openReportLineEditModal('@item.Id')">
-                        <i class="mdi mdi-pencil"></i> Edit
+                        <i class="mdi mdi-pencil"></i> @GlobalShared.Edit
                     </a>
                 </td>
             </tr>

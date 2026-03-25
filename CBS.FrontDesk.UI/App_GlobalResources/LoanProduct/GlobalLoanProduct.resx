@@ -117,648 +117,874 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccMap" xml:space="preserve">
+  <data name="above_36_months" xml:space="preserve">
+    <value>Above 36 months</value>
+  </data>
+  <data name="acc_map" xml:space="preserve">
     <value>AccMap</value>
   </data>
-  <data name="AccountMappings" xml:space="preserve">
-    <value>Account mappings</value>
+  <data name="adhering_to_the_correct_structure_is_essential_for_risk_controls_audit_consistency_and_sesame_reporting_compliance" xml:space="preserve">
+    <value>Adhering to the correct structure is essential for risk controls, audit consistency, and SESAME reporting compliance</value>
   </data>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="CategoryIsNotConfigured" xml:space="preserve">
-    <value>Category is not configured</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
-  </data>
-  <data name="InterestReceivedAccount" xml:space="preserve">
-    <value>Interest received account</value>
-  </data>
-  <data name="LoanTermIsNotConfigured" xml:space="preserve">
-    <value>Loan Term is not configured</value>
-  </data>
-  <data name="LoanTransitAccount" xml:space="preserve">
-    <value>Loan transit account</value>
-  </data>
-  <data name="MAIN" xml:space="preserve">
-    <value>MAIN</value>
-  </data>
-  <data name="MaxAmountMustBeGreaterThan0" xml:space="preserve">
-    <value>Max amount must be greater than 0</value>
-  </data>
-  <data name="MinAmountCannotExceedMaxAmount" xml:space="preserve">
-    <value>Min amount cannot exceed max amount</value>
-  </data>
-  <data name="MinAmountMustBeGreaterThan0" xml:space="preserve">
-    <value>Min amount must be greater than 0</value>
-  </data>
-  <data name="MinMax" xml:space="preserve">
-    <value>Min : Max</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NoLoanProductHasBeenCreated" xml:space="preserve">
-    <value>No loan product has been created</value>
-  </data>
-  <data name="PenaltyAccount" xml:space="preserve">
-    <value>Penalty account</value>
-  </data>
-  <data name="Policies" xml:space="preserve">
-    <value>Policies</value>
-  </data>
-  <data name="PrincipalDisbursementAccount" xml:space="preserve">
-    <value>Principal disbursement account</value>
-  </data>
-  <data name="ProductCode" xml:space="preserve">
-    <value>Product code</value>
-  </data>
-  <data name="ProductDescription" xml:space="preserve">
-    <value>Product description</value>
-  </data>
-  <data name="ProductName" xml:space="preserve">
-    <value>Product name</value>
-  </data>
-  <data name="PRODUCT_NAME" xml:space="preserve">
-    <value>PRODUCT NAME</value>
-  </data>
-  <data name="ProvisionAccountForLoansExceeding2Year" xml:space="preserve">
-    <value>Provision Account for Loans Exceeding 2 Years but Less Than 3 Years</value>
-  </data>
-  <data name="ProvisionAccountForLoansExceeding1Year" xml:space="preserve">
-    <value>Provision Account for Loans Exceeding 1 Year but Less Than 2 Years</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="SSF" xml:space="preserve">
-    <value>SSF</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Target" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="TargetTypIsNotConfigured" xml:space="preserve">
-    <value>Target Type is not configured</value>
-  </data>
-  <data name="TaxAccount" xml:space="preserve">
-    <value>Tax account</value>
-  </data>
-  <data name="TERM" xml:space="preserve">
-    <value>TERM</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="WriteOffAccount" xml:space="preserve">
-    <value>Write-off account</value>
-  </data>
-  <data name="ProvisionAccountForLoansExceeding3Year" xml:space="preserve">
-    <value>Provision Account for Loans Exceeding 3 Years but Less Than 4 Years</value>
-  </data>
-  <data name="ProvisionAccountForLoansExceeding4Year" xml:space="preserve">
-    <value>Provision Account for Loans Exceeding 4 Years</value>
-  </data>
-  <data name="MapAccounts" xml:space="preserve">
-    <value>Map accounts</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
-  </data>
-  <data name="CheckToReserveThisProductAsSSF" xml:space="preserve">
-    <value>Check to reserve this product as SSF (Special Saving Facility)</value>
-  </data>
-  <data name="LoanTerm" xml:space="preserve">
-    <value>Loan term</value>
-  </data>
-  <data name="LoanProductCategory" xml:space="preserve">
-    <value>Loan product category</value>
-  </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="Interest" xml:space="preserve">
-    <value>Interest</value>
-  </data>
-  <data name="LateFeeAreAppliedOn" xml:space="preserve">
-    <value>Late fee are applied on</value>
-  </data>
-  <data name="SpecifyInDaysWhenChargesShouldStopApplyingToThisProduct" xml:space="preserve">
-    <value>Specify in days when charges should stop applying to this product. (In Days)</value>
-  </data>
-  <data name="MaximumDaysToApplyChargesAfterDueDate" xml:space="preserve">
-    <value>Maximum days to apply charges after due date</value>
-  </data>
-  <data name="DefaultDaysToApplyChargesAfterDueDate" xml:space="preserve">
-    <value>Default days to apply charges after due date</value>
-  </data>
-  <data name="MinimumDaysToApplyChargesAfterDueDate" xml:space="preserve">
-    <value>Minimum days to apply charges after due date</value>
-  </data>
-  <data name="MaximumChargeToBeApplied" xml:space="preserve">
-    <value>Maximum charge to be applied (in %)</value>
-  </data>
-  <data name="DefaultChargeToBeApplied" xml:space="preserve">
-    <value>Default charge to be applied (in %)</value>
-  </data>
-  <data name="MinimumChargeToBeApplied" xml:space="preserve">
-    <value>Minimum charge to be applied (in %)</value>
-  </data>
-  <data name="CheckIfChargesShouldBeAppliedToThisProduct" xml:space="preserve">
-    <value>Check if charges should be applied to this product</value>
-  </data>
-  <data name="DefaultedLoans" xml:space="preserve">
-    <value>Defaulted loans (Late fee settings)</value>
-  </data>
-  <data name="ChargesDefineTheChargePoliciesForTheLoanProduct" xml:space="preserve">
-    <value>Charges: Define the charge policies for the loan product, including the application of charges, minimum and maximum charge rates, and conditions for charge cessation.</value>
-  </data>
-  <data name="KeyPoints" xml:space="preserve">
-    <value>Key Points</value>
-  </data>
-  <data name="ApplyChargesCheckThisBoxToApplyChargesToThisLoanProduct" xml:space="preserve">
-    <value>Apply Charges: Check this box to apply charges to this loan product</value>
-  </data>
-  <data name="MinimumChargeRateSetTheMinimumChargeRateApplicableToTheLoanProduct" xml:space="preserve">
-    <value>Minimum Charge Rate: Set the minimum charge rate applicable to the loan product</value>
-  </data>
-  <data name="DefaultChargeRateDefineTheDefaultChargeRateApplicableToTheLoanProduct" xml:space="preserve">
-    <value>Default Charge Rate: Define the default charge rate applicable to the loan product</value>
-  </data>
-  <data name="MinimumDaysToApplyChargesAfterDueDateSpecifyTheMinimumNumberOfDays" xml:space="preserve">
-    <value>Minimum Days to Apply Charges After Due Date: Specify the minimum number of days to apply charges after the loan due date</value>
-  </data>
-  <data name="MaximumDaysToApplyChargesAfterDueDateSpecifyTheMaximumNumberOfDaysToApply" xml:space="preserve">
-    <value>Maximum Days to Apply Charges After Due Date: Specify the maximum number of days to apply charges after the loan due date</value>
-  </data>
-  <data name="DefaultDaysToApplyChargesAfterDueDateSetTheDefaultNumberOfDaysToApply" xml:space="preserve">
-    <value>Default Days to Apply Charges After Due Date: Set the default number of days to apply charges after the loan due date</value>
-  </data>
-  <data name="MaximumChargeRateDefineTheMaximumChargeRateApplicableToTheLoanProduct" xml:space="preserve">
-    <value>Maximum Charge Rate: Define the maximum charge rate applicable to the loan product</value>
-  </data>
-  <data name="ChargesCessationSpecifyTheNumberOfDaysAfterWhichChargesShouldStopApplying" xml:space="preserve">
-    <value>Charges Cessation: Specify the number of days after which charges should stop applying to this product</value>
-  </data>
-  <data name="ChargesAppliedOnSelectWhetherChargesAreAppliedToInterestOrBalance" xml:space="preserve">
-    <value>Charges Applied On: Select whether charges are applied to interest or balance</value>
-  </data>
-  <data name="DefaultedLoanSettings" xml:space="preserve">
-    <value>Defaulted loan settings</value>
-  </data>
-  <data name="FinePercentToRefund" xml:space="preserve">
-    <value>Fine percent to refund</value>
-  </data>
-  <data name="CapitalPercentToRefund" xml:space="preserve">
-    <value>Capital percent to refund</value>
-  </data>
-  <data name="InterestPercentToRefund" xml:space="preserve">
-    <value>Interest percent to refund</value>
-  </data>
-  <data name="FineOrder" xml:space="preserve">
-    <value>Fine order</value>
-  </data>
-  <data name="CapitalOrder" xml:space="preserve">
-    <value>Capital order</value>
-  </data>
-  <data name="InterestOrder" xml:space="preserve">
-    <value>Interest order</value>
-  </data>
-  <data name="NoRepaymentCyclesSelected" xml:space="preserve">
-    <value>No repayment cycles selected</value>
-  </data>
-  <data name="RepaymentCycles" xml:space="preserve">
-    <value>Repayment cycles</value>
-  </data>
-  <data name="RepaymentPeriods" xml:space="preserve">
-    <value>Repayment periods</value>
-  </data>
-  <data name="Repayment" xml:space="preserve">
-    <value>Repayment</value>
-  </data>
-  <data name="CustomerEducationProvideClearInformation" xml:space="preserve">
-    <value>Customer Education: Provide clear information to borrowers about repayment terms and options to promote responsible borrowing and repayment behavior</value>
-  </data>
-  <data name="FlexibleOptionsOfferFlexibleRepaymentOptions" xml:space="preserve">
-    <value>Flexible Options: Offer flexible repayment options to accommodate varying borrower preferences and circumstances</value>
-  </data>
-  <data name="PenaltyChargesDefinePenaltiesForLateRepayments" xml:space="preserve">
-    <value>Penalty Charges: Define penalties for late repayments or defaults to encourage timely repayment</value>
-  </data>
-  <data name="GracePeriodSetAGracePeriodDuringWhichBorrowers" xml:space="preserve">
-    <value>Grace Period: Set a grace period during which borrowers are exempt from making repayments</value>
-  </data>
-  <data name="RepaymentMethodDetermineTheMethods" xml:space="preserve">
-    <value>Repayment Method: Determine the methods through which borrowers can make repayments, such as bank transfer, cash, or mobile payment</value>
-  </data>
-  <data name="RepaymentFrequencySpecifyHowOftenBorrowers" xml:space="preserve">
-    <value>Repayment Frequency: Specify how often borrowers are required to make repayments, such as monthly, bi-weekly, or quarterly</value>
-  </data>
-  <data name="RepaymentDefineTheRepaymentTermsAndOptionsForTheLoanProduct" xml:space="preserve">
-    <value>Repayment: Define the repayment terms and options for the loan product</value>
-  </data>
-  <data name="MaximumMonth" xml:space="preserve">
-    <value>Maximum month(s)</value>
-  </data>
-  <data name="MinimumMonth" xml:space="preserve">
-    <value>Minimum month(s)</value>
-  </data>
-  <data name="LoanDurationPeriod" xml:space="preserve">
-    <value>Loan duration period</value>
-  </data>
-  <data name="LoanDuration" xml:space="preserve">
-    <value>Loan Duration (In Months)</value>
-  </data>
-  <data name="DurationInMonths" xml:space="preserve">
-    <value>Duration in Months</value>
-  </data>
-  <data name="MarketAnalysisConsiderMarketTrends" xml:space="preserve">
-    <value>Market Analysis: Consider market trends and demand when determining loan duration limits</value>
-  </data>
-  <data name="RiskMitigationBalanceRiskAndBorrower" xml:space="preserve">
-    <value>Risk Mitigation: Balance risk and borrower preferences in setting loan duration parameters</value>
-  </data>
-  <data name="FlexibilityOfferCustomizableLoanDurations" xml:space="preserve">
-    <value>Flexibility: Offer customizable loan durations to meet borrower needs</value>
-  </data>
-  <data name="MaximumLoanDurationDefineTheLongestDuration" xml:space="preserve">
-    <value>Maximum Loan Duration: Define the longest duration allowed for the loan</value>
-  </data>
-  <data name="DefaultLoanDurationSetTheDefaultDurationForTheLoanProduct" xml:space="preserve">
-    <value>Default Loan Duration: Set the default duration for the loan product</value>
-  </data>
-  <data name="MinimumLoanDurationSpecifyTheShortestDurationAllowedForTheLoan" xml:space="preserve">
-    <value>Minimum Loan Duration: Specify the shortest duration allowed for the loan</value>
-  </data>
-  <data name="DurationSetTheLoanDurationParameters" xml:space="preserve">
-    <value>Duration: Set the loan duration parameters including the minimum, default, and maximum duration for the loan product</value>
-  </data>
-  <data name="ConfigurationMissing" xml:space="preserve">
-    <value>Configuration Missing</value>
-  </data>
-  <data name="LoanTermIsNotConfiguredForThisLoanProduct" xml:space="preserve">
-    <value>Loan Term is not configured for this loan product. Please set the loan term before updating duration parameters</value>
-  </data>
-  <data name="LoanTermDurationParametersAreNotProperlySet" xml:space="preserve">
-    <value>Loan Term duration parameters (Minimum or Maximum) are not properly set. Ensure both values are greater than 0 before updating duration parameters</value>
-  </data>
-  <data name="InterestMustBePaidUpfront" xml:space="preserve">
-    <value>Interest Must be paid upfront</value>
-  </data>
-  <data name="MaximumInterestWaiverRate" xml:space="preserve">
-    <value>Maximum interest waiver rate</value>
-  </data>
-  <data name="StopInterestCalculationAtLoaMaturityDate" xml:space="preserve">
-    <value>Stop interest calculation at loan maturity date</value>
-  </data>
-  <data name="MinimumInterestWaiverRate" xml:space="preserve">
-    <value>Minimum interest waiver rate</value>
-  </data>
-  <data name="CheckToAllowInterestWaiverForThisProduct" xml:space="preserve">
-    <value>Check to allow interest waiver for this product</value>
-  </data>
-  <data name="CheckToStartAccrualInterestAfterDisbustment" xml:space="preserve">
-    <value>Check to start accrual interest after disbustment</value>
-  </data>
-  <data name="MaximumInterestValue" xml:space="preserve">
-    <value>Maximum interest value</value>
-  </data>
-  <data name="MinimumInterestValue" xml:space="preserve">
-    <value>Minimum interest value</value>
-  </data>
-  <data name="InterestSettings" xml:space="preserve">
-    <value>Interest settings</value>
-  </data>
-  <data name="ValidationError" xml:space="preserve">
-    <value>Validation error</value>
-  </data>
-  <data name="MinimumLoanAmountMustBeGreaterThan0" xml:space="preserve">
-    <value>Minimum Loan Amount must be greater than 0</value>
-  </data>
-  <data name="MaximumLoanAmountMustBeGreaterThan0" xml:space="preserve">
-    <value>Maximum Loan Amount must be greater than 0</value>
-  </data>
-  <data name="MinimumLoanAmountCannotExceedMaximumLoanAmount" xml:space="preserve">
-    <value>Minimum Loan Amount cannot exceed Maximum Loan Amount</value>
-  </data>
-  <data name="LoanRangeSetTheMinimumDefaultAndMaximumLoanAmounts" xml:space="preserve">
-    <value>Loan Range: Set the minimum, default, and maximum loan amounts to define the range within which loan amounts can vary, providing flexibility while ensuring responsible lending practices</value>
-  </data>
-  <data name="MinimumLoanAmountDetermineAReasonableMinimumLoanAmount" xml:space="preserve">
-    <value>Minimum Loan Amount: Determine a reasonable minimum loan amount</value>
-  </data>
-  <data name="DefaultLoanAmountSetBasedOnMarketDemandAndHistoricalData" xml:space="preserve">
-    <value>Default Loan Amount: Set based on market demand and historical data</value>
-  </data>
-  <data name="MaximumLoanAmountDefineToLimitRiskExposure" xml:space="preserve">
-    <value>Maximum Loan Amount: Define to limit risk exposure</value>
-  </data>
-  <data name="MinimumLoanAmount" xml:space="preserve">
-    <value>Minimum loan amount</value>
-  </data>
-  <data name="MaximumLoanAmount" xml:space="preserve">
-    <value>Maximum loan amount</value>
-  </data>
-  <data name="MinimumDownPaymentRate" xml:space="preserve">
-    <value>Minimum down payment rate</value>
-  </data>
-  <data name="MustApartialFeeBePaidBeforeTheLoanApplicationIsProcessed" xml:space="preserve">
-    <value>Must a partial fee be paid before the loan application is processed</value>
-  </data>
-  <data name="MaximumInterestWaiverRateDefineTheMaximumRate" xml:space="preserve">
-    <value>Maximum Interest Waiver Rate: Define the maximum rate at which interest charges can be waived, expressed as a percentage</value>
-  </data>
-  <data name="MinimumInterestWaiverRateSpecifyTheMinimumRate" xml:space="preserve">
-    <value>Minimum Interest Waiver Rate: Specify the minimum rate at which interest charges can be waived, expressed as a percentage</value>
-  </data>
-  <data name="InterestWaiverAllowForTheWaiverOfInterestCharges" xml:space="preserve">
-    <value>Interest Waiver: Allow for the waiver of interest charges under specific conditions for the loan product</value>
-  </data>
-  <data name="StartGeneratingInterestAfterDisbursementDecideIfInterestAccrualStarts" xml:space="preserve">
-    <value>Start Generating Interest After Disbursement: Decide if interest accrual starts immediately after loan disbursement</value>
-  </data>
-  <data name="MaximumInterestRateDefineTheMaximumInterestRate" xml:space="preserve">
-    <value>Maximum Interest Rate: Define the maximum interest rate applicable to the loan</value>
-  </data>
-  <data name="DefaultInterestRateSetTheDefaultInterestRateForTheLoanProduct" xml:space="preserve">
-    <value>Default Interest Rate: Set the default interest rate for the loan product</value>
-  </data>
-  <data name="MinimumInterestRateDefineTheMinimumInterestRateApplicableToTheLoan" xml:space="preserve">
-    <value>Minimum Interest Rate: Define the minimum interest rate applicable to the loan</value>
-  </data>
-  <data name="LoanInterestPeriodSpecifyThePeriodForInterest" xml:space="preserve">
-    <value>Loan Interest Period: Specify the period for interest calculation, such as monthly or annually</value>
-  </data>
-  <data name="LoanInterestTypeDetermineTheTypeOfInterest" xml:space="preserve">
-    <value>Loan Interest Type: Determine the type of interest, such as flat or reducing balance</value>
-  </data>
-  <data name="InterestSetTheInterestTypePeriodAndRatesForTheLoanProduct" xml:space="preserve">
-    <value>Interest: Set the interest type, period, and rates for the loan product</value>
-  </data>
-  <data name="MinimumPercentageThatMustBeRefundedForToppingUp" xml:space="preserve">
-    <value>Minimum percentage that must be refunded for topping-up</value>
-  </data>
-  <data name="DoesThisProductReqiresRefinancing" xml:space="preserve">
-    <value>Does this product reqires refinancing</value>
-  </data>
-  <data name="LoanTopUpSettings" xml:space="preserve">
-    <value>Loan top-up settings</value>
-  </data>
-  <data name="MaximumTopUpAmountDefineTheMaximumAmountAllowed" xml:space="preserve">
-    <value>Maximum Top-up Amount: Define the maximum amount allowed for refinancing or top-up loans</value>
-  </data>
-  <data name="DefaultTopUpAmountSetTheDefaultAmountForRefinancing" xml:space="preserve">
-    <value>Default Top-up Amount: Set the default amount for refinancing or top-up loans</value>
-  </data>
-  <data name="MinimumTopUpAmountSpecifyTheMinimumAmountAllowed" xml:space="preserve">
-    <value>Minimum Top-up Amount: Specify the minimum amount allowed for refinancing or top-up loans</value>
-  </data>
-  <data name="HasTopUpDetermineIfTheProductOffersRefinancing" xml:space="preserve">
-    <value>Has Top-up: Determine if the product offers refinancing or top-up loan options</value>
-  </data>
-  <data name="LoanTopUpLimitsDefineTheLimitsAndCriteria" xml:space="preserve">
-    <value>Loan Top-up Limits: Define the limits and criteria for refinancing existing loans or providing top-up loans to borrowers</value>
-  </data>
-  <data name="TopupOption" xml:space="preserve">
-    <value>Top-up option</value>
-  </data>
-  <data name="AllowThirdPartyPropertyOwnership" xml:space="preserve">
+  <data name="allow_third_party_property_ownership" xml:space="preserve">
     <value>Allow third-party property ownership</value>
   </data>
-  <data name="EnablePhasedDisbursement" xml:space="preserve">
-    <value>Enable phased disbursement</value>
+  <data name="appears_correctly_in_sesame_cobac_reports" xml:space="preserve">
+    <value>Appears correctly in SESAME / COBAC reports</value>
   </data>
-  <data name="MinCollateralCoverage" xml:space="preserve">
-    <value>Min Collateral Coverage</value>
+  <data name="applied_to_equipment_financing_business_expansion_or_personal_projects_mapped_to_mediumterm_loan_accounts_in_pcmf" xml:space="preserve">
+    <value>Applied to equipment financing, business expansion, or personal projects. Mapped to &lt;strong&gt;medium-term loan accounts&lt;/strong&gt; in PCMF</value>
   </data>
-  <data name="MaxLTVRatio" xml:space="preserve">
-    <value>Max LTV Ratio</value>
+  <data name="apply_charges_check_this_box_to_apply_charges_to_this_loan_product" xml:space="preserve">
+    <value>Apply Charges: Check this box to apply charges to this loan product</value>
   </data>
-  <data name="GracePeriodMonths" xml:space="preserve">
-    <value>Grace period (months)</value>
+  <data name="apply_tax_if_loan_amount_meet_control" xml:space="preserve">
+    <value>Apply Tax If Loan Amount Meet Control</value>
   </data>
-  <data name="RequireLandTitleRegistratio" xml:space="preserve">
-    <value>Require land title registratio</value>
+  <data name="assign_only_authorized_editors" xml:space="preserve">
+    <value>Assign Only Authorized Editors</value>
   </data>
-  <data name="RequireInsuranceBeforeDisbursement" xml:space="preserve">
-    <value>Require insurance before disbursement</value>
+  <data name="a_wellstructured_loan_product" xml:space="preserve">
+    <value>A well-structured loan product</value>
   </data>
-  <data name="IsThisAMortgageLoanProduct" xml:space="preserve">
-    <value>Is this a mortgage loan product</value>
-  </data>
-  <data name="MortgageConfiguration" xml:space="preserve">
-    <value>Mortgage configuration</value>
-  </data>
-  <data name="MortgageSettingsConfigureSpecificParameters" xml:space="preserve">
-    <value>Mortgage Settings: Configure specific parameters for mortgage loan products such as insurance requirement, LTV ratio, grace period, and property ownership rules</value>
-  </data>
-  <data name="EnterShorteeMinimumPercentageCoverage" xml:space="preserve">
-    <value>Enter shortee minimum percentage coverage</value>
-  </data>
-  <data name="ShorteeMustHaveFundToGuaranteeThisLoan" xml:space="preserve">
-    <value>Shortee must have fund to guarantee this loan</value>
-  </data>
-  <data name="BlockedCoGuarantorsAccount" xml:space="preserve">
+  <data name="blocked_co_guarantors_account" xml:space="preserve">
     <value>Blocked co-guarantors account</value>
   </data>
-  <data name="BlockedSalaryAccountForStandingOrders" xml:space="preserve">
-    <value>Blocked salary account for standing orders</value>
-  </data>
-  <data name="MinimumSalaryAccountRate" xml:space="preserve">
-    <value>Minimum salary account rate</value>
-  </data>
-  <data name="MinimumSavingAccountRate" xml:space="preserve">
-    <value>Minimum saving account rate</value>
-  </data>
-  <data name="BlockedDownPaymentsForSavingAccount" xml:space="preserve">
+  <data name="blocked_down_payments_for_saving_account" xml:space="preserve">
     <value>Blocked down payments for saving account</value>
   </data>
-  <data name="MinimumShareAccountBalanceRequired" xml:space="preserve">
-    <value>Minimum share account balance required</value>
+  <data name="blocked_salary_account_for_standing_orders" xml:space="preserve">
+    <value>Blocked salary account for standing orders</value>
   </data>
-  <data name="MembersAccount" xml:space="preserve">
-    <value>Members account</value>
+  <data name="blocked_saving_account_for_standing_orders" xml:space="preserve">
+    <value>Block member's saving account for standing orders or loan security.</value>
   </data>
-  <data name="CollateralRate" xml:space="preserve">
-    <value>Collateral rate</value>
+  <data name="blocked_share_account_for_standing_orders" xml:space="preserve">
+    <value>Block member's share account for standing orders or loan security.</value>
   </data>
-  <data name="RequireLandTitleRegistration" xml:space="preserve">
-    <value>Require land title registration</value>
-  </data>
-  <data name="Collateral" xml:space="preserve">
-    <value>Collateral</value>
-  </data>
-  <data name="RequiresRegisteredPublicAuthority" xml:space="preserve">
-    <value>Requires registered public authority</value>
-  </data>
-  <data name="RequiresIrrivocableFundTransfer" xml:space="preserve">
-    <value>Requires irrivocable fund transfer</value>
-  </data>
-  <data name="RequiresMembersSavingAccount" xml:space="preserve">
-    <value>Requires members saving account</value>
-  </data>
-  <data name="RequiresMembersShareAccount" xml:space="preserve">
-    <value>Requires members share account</value>
-  </data>
-  <data name="CoObligorMustHaveFundToGuranteeThisLoan" xml:space="preserve">
-    <value>Co-obligor must have fund to gurantee this loan</value>
-  </data>
-  <data name="RequiresSalaryAccount" xml:space="preserve">
-    <value>Requires salary account</value>
-  </data>
-  <data name="DoesThisProductRequiresGuarantor" xml:space="preserve">
-    <value>Does this product requires guarantor</value>
-  </data>
-  <data name="RequiresCollateralSuchAsLandsBuildingCars" xml:space="preserve">
-    <value>Requires collateral such as lands, building, cars, etc</value>
-  </data>
-  <data name="CollateralValuesEvaluationSettingsDefineTheRequirements" xml:space="preserve">
-    <value>Collateral Values Evaluation Settings: Define the requirements and evaluation criteria for collateral values to mitigate risk and ensure loan security</value>
-  </data>
-  <data name="RequiresGuarantorDetermineIfTheProductRequiresGuarantor" xml:space="preserve">
-    <value>Requires Guarantor: Determine if the product requires a guarantor for collateral</value>
-  </data>
-  <data name="RequiresCollateralSpecifyIfCollateralIsNecessary" xml:space="preserve">
-    <value>Requires Collateral: Specify if collateral such as land, buildings, or cars is necessary</value>
-  </data>
-  <data name="RequiresSalaryAccountDecideIfAsalaryAccountIsNeededForTheLoan" xml:space="preserve">
-    <value>Requires Salary Account: Decide if a salary account is needed for the loan</value>
-  </data>
-  <data name="RequiresShareAccountDetermineIfAMemberShareAccountIsRequired" xml:space="preserve">
-    <value>Requires Share Account: Determine if a member's share account is required</value>
-  </data>
-  <data name="RequiresSavingAccountSpecifyIfAMemberSavingAccountIsRequired" xml:space="preserve">
-    <value>Requires Saving Account: Specify if a member's saving account is required</value>
-  </data>
-  <data name="RequiresIrrevocableSalaryTransferDecide" xml:space="preserve">
-    <value>Requires Irrevocable Salary Transfer: Decide if an irrevocable fund transfer is needed</value>
-  </data>
-  <data name="RequiresRegisteredPublicAuthorityDetermineIfARegistered" xml:space="preserve">
-    <value>Requires Registered Public Authority: Determine if a registered public authority is required for collateral evaluation</value>
-  </data>
-  <data name="CollateralCheckListSettings" xml:space="preserve">
-    <value>Collateral check-list settings</value>
-  </data>
-  <data name="MinimumAndDownPaymentSettings" xml:space="preserve">
-    <value>Minimum and Down Payment Settings</value>
-  </data>
-  <data name="FixedAmount" xml:space="preserve">
-    <value>Fixed amount</value>
-  </data>
-  <data name="Product" xml:space="preserve">
-    <value>Product</value>
-  </data>
-  <data name="Value" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="PenaltiesConfigurations" xml:space="preserve">
-    <value>Penalties configurations</value>
-  </data>
-  <data name="SetPenalty" xml:space="preserve">
-    <value>Set penalty</value>
-  </data>
-  <data name="PenaltyDescription" xml:space="preserve">
-    <value>Penalty description</value>
-  </data>
-  <data name="CheckToEnable" xml:space="preserve">
-    <value>Check to enable</value>
-  </data>
-  <data name="EnterDaysToApplyPenalt" xml:space="preserve">
-    <value>Enter days to apply penalt. Penalty will be applied after grace period</value>
-  </data>
-  <data name="GracePeriodInDaysOptional" xml:space="preserve">
-    <value>Grace priod in days (Optional)</value>
-  </data>
-  <data name="EnterPenaltyValue" xml:space="preserve">
-    <value>Enter penalty value. (Keep in mind of you have selectd rate or fix amount)</value>
-  </data>
-  <data name="CalculatePenaltyOn" xml:space="preserve">
+  <data name="calculate_penalty_on" xml:space="preserve">
     <value>Calculate penalty on</value>
   </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="capital_percent_to_refund" xml:space="preserve">
+    <value>Capital percent to refund</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+  <data name="category_is_not_configured" xml:space="preserve">
+    <value>Category is not configured</value>
   </data>
-  <data name="OptionalWaivePenaltyOnBranchHolidays" xml:space="preserve">
-    <value>(optional) Waive penalty on branch holidays</value>
+  <data name="charges_applied_on_select_whether_charges_are_applied_to_interest_or_balance" xml:space="preserve">
+    <value>Charges Applied On: Select whether charges are applied to interest or balance</value>
   </data>
-  <data name="IWantPenaltyToBeAFixedAmount" xml:space="preserve">
-    <value>I want Penalty to be a fixed amount</value>
+  <data name="charges_cessation_specify_the_number_of_days_after_which_charges_should_stop_applying" xml:space="preserve">
+    <value>Charges Cessation: Specify the number of days after which charges should stop applying to this product</value>
   </data>
-  <data name="IWantPenaltyToBePercentageBased" xml:space="preserve">
-    <value>I want Penalty to be percentage % based</value>
+  <data name="charges_define_the_charge_policies_for_the_loan_product" xml:space="preserve">
+    <value>Charges: Define the charge policies for the loan product, including the application of charges, minimum and maximum charge rates, and conditions for charge cessation.</value>
   </data>
-  <data name="EnterPenaltyUniqueName" xml:space="preserve">
+  <data name="chart_of_account_mapping" xml:space="preserve">
+    <value>Chart of Account Mapping</value>
+  </data>
+  <data name="check_if_charges_should_be_applied_to_this_product" xml:space="preserve">
+    <value>Check if charges should be applied to this product</value>
+  </data>
+  <data name="check_to_allow_interest_waiver_for_this_product" xml:space="preserve">
+    <value>Check to allow interest waiver for this product</value>
+  </data>
+  <data name="check_to_enable" xml:space="preserve">
+    <value>Check to enable</value>
+  </data>
+  <data name="check_to_reserve_this_product_as_ssf" xml:space="preserve">
+    <value>Check to reserve this product as SSF (Special Saving Facility)</value>
+  </data>
+  <data name="check_to_start_accrual_interest_after_disbustment" xml:space="preserve">
+    <value>Check to start accrual interest after disbustment</value>
+  </data>
+  <data name="choose_based_on_loan_use_eg_consumption_investment_working_capital_for_proper_pcmf_classification" xml:space="preserve">
+    <value>Choose based on loan use (e.g. Consumption, Investment, Working Capital) for proper PCMF classification</value>
+  </data>
+  <data name="click_manage_to_preview_or_configure_policies_accounting" xml:space="preserve">
+    <value>Click Manage to preview or configure policies &amp; accounting</value>
+  </data>
+  <data name="collateral_check_list_settings" xml:space="preserve">
+    <value>Collateral check-list settings</value>
+  </data>
+  <data name="collateral_rate" xml:space="preserve">
+    <value>Collateral rate</value>
+  </data>
+  <data name="collateral_requirements" xml:space="preserve">
+    <value>Collateral Requirements</value>
+  </data>
+  <data name="collateral_values_evaluation_settings_define_the_requirements" xml:space="preserve">
+    <value>Collateral Values Evaluation Settings: Define the requirements and evaluation criteria for collateral values to mitigate risk and ensure loan security</value>
+  </data>
+  <data name="configuration_missing" xml:space="preserve">
+    <value>Configuration Missing</value>
+  </data>
+  <data name="configure_and_manage_comprehensive_loan_product_settings_including_interest_rates_repayment_terms_collateral_requirements_and_eligibility_criteria" xml:space="preserve">
+    <value>Configure and manage comprehensive loan product settings including interest rates, repayment terms, collateral requirements, and eligibility criteria</value>
+  </data>
+  <data name="configure_later_via_manage_accounting_mapping_if_provided_ensure_consistency_across_taxablenontaxable" xml:space="preserve">
+    <value>Configure later via &lt;b&gt;Manage → Accounting Mapping&lt;/b&gt;. If provided, ensure consistency across taxable/non-taxable</value>
+  </data>
+  <data name="configure_minimum_and_maximum_loan_terms_in_months_to_align_with_borrower_repayment_capacity" xml:space="preserve">
+    <value>Configure minimum and maximum loan terms in months to align with borrower repayment capacity</value>
+  </data>
+  <data name="configure_minimum_down_payment_percentage_to_reduce_initial_risk_exposure" xml:space="preserve">
+    <value>Configure minimum down payment percentage to reduce initial risk exposure</value>
+  </data>
+  <data name="configure_only_the_gl_accounts_required_for_automated_posting_keep_it_minimal_and_consistent_with_pcmfcobac" xml:space="preserve">
+    <value>Configure only the GL accounts required for automated posting. Keep it minimal and consistent with PCMF/COBAC</value>
+  </data>
+  <data name="configure_refinancing_capabilities_and_minimum_repayment_percentages_required_for_topups" xml:space="preserve">
+    <value>Configure refinancing capabilities and minimum repayment percentages required for top-ups</value>
+  </data>
+  <data name="configure_required_account_types_share_savings_salary_and_minimum_balance_percentages" xml:space="preserve">
+    <value>Configure required account types (share, savings, salary) and minimum balance percentages</value>
+  </data>
+  <data name="core_accounting_gls_mapping" xml:space="preserve">
+    <value>Core Accounting GLs Mapping</value>
+  </data>
+  <data name="core_posting_gls" xml:space="preserve">
+    <value>Core Posting GLs</value>
+  </data>
+  <data name="courtmandated_loans_issued_based_on_legal_judgments_or_settlements" xml:space="preserve">
+    <value>&lt;em&gt;Court-mandated loans&lt;/em&gt; issued based on legal judgments or settlements</value>
+  </data>
+  <data name="co_obligor_must_have_fund_to_gurantee_this_loan" xml:space="preserve">
+    <value>Co-obligor must have fund to gurantee this loan</value>
+  </data>
+  <data name="customer_education_provide_clear_information" xml:space="preserve">
+    <value>Customer Education: Provide clear information to borrowers about repayment terms and options to promote responsible borrowing and repayment behavior</value>
+  </data>
+  <data name="defaulted_loans" xml:space="preserve">
+    <value>Defaulted loans (Late fee settings)</value>
+  </data>
+  <data name="defaulted_loan_settings" xml:space="preserve">
+    <value>Defaulted loan settings</value>
+  </data>
+  <data name="default_charge_rate_define_the_default_charge_rate_applicable_to_the_loan_product" xml:space="preserve">
+    <value>Default Charge Rate: Define the default charge rate applicable to the loan product</value>
+  </data>
+  <data name="default_charge_to_be_applied" xml:space="preserve">
+    <value>Default charge to be applied (in %)</value>
+  </data>
+  <data name="default_days_to_apply_charges_after_due_date" xml:space="preserve">
+    <value>Default days to apply charges after due date</value>
+  </data>
+  <data name="default_days_to_apply_charges_after_due_date_set_the_default_number_of_days_to_apply" xml:space="preserve">
+    <value>Default Days to Apply Charges After Due Date: Set the default number of days to apply charges after the loan due date</value>
+  </data>
+  <data name="default_interest_rate_set_the_default_interest_rate_for_the_loan_product" xml:space="preserve">
+    <value>Default Interest Rate: Set the default interest rate for the loan product</value>
+  </data>
+  <data name="default_loan_amount_set_based_on_market_demand_and_historical_data" xml:space="preserve">
+    <value>Default Loan Amount: Set based on market demand and historical data</value>
+  </data>
+  <data name="default_loan_duration_set_the_default_duration_for_the_loan_product" xml:space="preserve">
+    <value>Default Loan Duration: Set the default duration for the loan product</value>
+  </data>
+  <data name="default_top_up_amount_set_the_default_amount_for_refinancing" xml:space="preserve">
+    <value>Default Top-up Amount: Set the default amount for refinancing or top-up loans</value>
+  </data>
+  <data name="define_flexible_interest_rate_boundaries_that_can_be_adjusted_based_on_borrower_risk_profile" xml:space="preserve">
+    <value>Define flexible interest rate boundaries that can be adjusted based on borrower risk profile</value>
+  </data>
+  <data name="define_late_payment_penalties_interest_waiver_options_and_delinquency_management_rules" xml:space="preserve">
+    <value>Define late payment penalties, interest waiver options, and delinquency management rules</value>
+  </data>
+  <data name="define_product_policies_interest_structures_collateral_requirements_and_repayment_options_for_different_loan_types" xml:space="preserve">
+    <value>Define product policies, interest structures, collateral requirements, and repayment options for different loan types</value>
+  </data>
+  <data name="determine_if_guarantors_are_required_and_define_their_fund_coverage_obligations" xml:space="preserve">
+    <value>Determine if guarantors are required and define their fund coverage obligations</value>
+  </data>
+  <data name="disbursement_transition" xml:space="preserve">
+    <value>Disbursement / Transition</value>
+  </data>
+  <data name="does_this_product_reqires_refinancing" xml:space="preserve">
+    <value>Does this product reqires refinancing</value>
+  </data>
+  <data name="does_this_product_requires_guarantor" xml:space="preserve">
+    <value>Does this product requires guarantor</value>
+  </data>
+  <data name="dont_edit_active_products" xml:space="preserve">
+    <value>Don’t Edit Active Products</value>
+  </data>
+  <data name="down_payment" xml:space="preserve">
+    <value>Down Payment</value>
+  </data>
+  <data name="duration_in_months" xml:space="preserve">
+    <value>Duration in Months</value>
+  </data>
+  <data name="duration_set_the_loan_duration_parameters" xml:space="preserve">
+    <value>Duration: Set the loan duration parameters including the minimum, default, and maximum duration for the loan product</value>
+  </data>
+  <data name="edit_loan_product" xml:space="preserve">
+    <value>Edit Loan Product</value>
+  </data>
+  <data name="eligibility_criteria" xml:space="preserve">
+    <value>Eligibility Criteria</value>
+  </data>
+  <data name="enabled_after_purpose" xml:space="preserve">
+    <value>Enabled after purpose</value>
+  </data>
+  <data name="enable_phased_disbursement" xml:space="preserve">
+    <value>Enable phased disbursement</value>
+  </data>
+  <data name="enable_specialized_mortgage_settings_like_ltv_ratios_grace_periods_and_title_requirements" xml:space="preserve">
+    <value>Enable specialized mortgage settings like LTV ratios, grace periods, and title requirements</value>
+  </data>
+  <data name="enter_days_to_apply_penalt" xml:space="preserve">
+    <value>Enter days to apply penalt. Penalty will be applied after grace period</value>
+  </data>
+  <data name="enter_penalty_unique_name" xml:space="preserve">
     <value>Enter penalty unique name</value>
   </data>
-  <data name="PenaltyType" xml:space="preserve">
-    <value>Penalty type</value>
+  <data name="enter_penalty_value" xml:space="preserve">
+    <value>Enter penalty value. (Keep in mind of you have selectd rate or fix amount)</value>
   </data>
-  <data name="SetPenaltyConfigurationsFor" xml:space="preserve">
-    <value>Set penalty configurations for</value>
+  <data name="enter_shortee_minimum_percentage_coverage" xml:space="preserve">
+    <value>Enter shortee minimum percentage coverage</value>
   </data>
-  <data name="SelectPenaltyType" xml:space="preserve">
-    <value>Select penalty type</value>
+  <data name="every_loan_product_must_be_linked_to_the_correct_pcmf_chart_of_account_for_example_loans_of_short_term_must_map_to_shortterm_loan_accounts" xml:space="preserve">
+    <value>Every loan product must be linked to the correct PCMF Chart of Account. For example, loans of short term must map to short-term loan accounts</value>
   </data>
-  <data name="AccountNumber" xml:space="preserve">
-    <value>Account number</value>
+  <data name="facility_config" xml:space="preserve">
+    <value>Facility Config</value>
   </data>
-  <data name="OperationEvent" xml:space="preserve">
-    <value>Operation event</value>
+  <data name="facility_controls_whether_loan_term_is_required_and_how_pcmf_choices_are_filtered" xml:space="preserve">
+    <value>Facility controls whether &lt;b&gt;Loan Term&lt;/b&gt; is required and how PCMF choices are filtered</value>
   </data>
-  <data name="LoanProductAccountingConfigurations" xml:space="preserve">
-    <value>Loan Product Accounting Configurations</value>
+  <data name="fees_penalties" xml:space="preserve">
+    <value>Fees &amp; Penalties</value>
   </data>
-  <data name="LoanProduct" xml:space="preserve">
+  <data name="fee_account" xml:space="preserve">
+    <value>Fee Account</value>
+  </data>
+  <data name="fill_the_minimum_fields_for_pcmfcobac_configure_advanced_policyaccounting_later_via_manage_actions" xml:space="preserve">
+    <value>Fill the minimum fields for PCMF/COBAC. Configure advanced policy/accounting later via Manage actions</value>
+  </data>
+  <data name="filtered_by_termsection" xml:space="preserve">
+    <value>Filtered by term/section</value>
+  </data>
+  <data name="fine_order" xml:space="preserve">
+    <value>Fine order</value>
+  </data>
+  <data name="fine_percent_to_refund" xml:space="preserve">
+    <value>Fine percent to refund</value>
+  </data>
+  <data name="fixed_amount" xml:space="preserve">
+    <value>Fixed amount</value>
+  </data>
+  <data name="flexibility_offer_customizable_loan_durations" xml:space="preserve">
+    <value>Flexibility: Offer customizable loan durations to meet borrower needs</value>
+  </data>
+  <data name="flexible_options_offer_flexible_repayment_options" xml:space="preserve">
+    <value>Flexible Options: Offer flexible repayment options to accommodate varying borrower preferences and circumstances</value>
+  </data>
+  <data name="grace_period_in_days_optional" xml:space="preserve">
+    <value>Grace priod in days (Optional)</value>
+  </data>
+  <data name="grace_period_months" xml:space="preserve">
+    <value>Grace period (months)</value>
+  </data>
+  <data name="grace_period_set_agrace_period_during_which_borrowers" xml:space="preserve">
+    <value>Grace Period: Set a grace period during which borrowers are exempt from making repayments</value>
+  </data>
+  <data name="greater_than_12_months_and_up_to_36_months" xml:space="preserve">
+    <value>Greater than 12 months and up to 36 months</value>
+  </data>
+  <data name="guarantor_settings" xml:space="preserve">
+    <value>Guarantor Settings</value>
+  </data>
+  <data name="has_top_up_determine_if_the_product_offers_refinancing" xml:space="preserve">
+    <value>Has Top-up: Determine if the product offers refinancing or top-up loan options</value>
+  </data>
+  <data name="humanitarian_or_donorfunded_relief_credit_granted_after_disasters_or_crises" xml:space="preserve">
+    <value>&lt;em&gt;Humanitarian or donor-funded relief credit&lt;/em&gt; granted after disasters or crises</value>
+  </data>
+  <data name="identify_if_the_product_is_an_overdraft_line_of_credit_ssfbased_or_main_loan_this_affects_accounting_and_liquidity_reports" xml:space="preserve">
+    <value>Identify if the product is an Overdraft, Line of Credit, SSF-based, or Main Loan. This affects accounting and liquidity reports</value>
+  </data>
+  <data name="instead_deactivate_and_clone_to_avoid_inconsistencies_in_audit_trails_or_regulatory_forms" xml:space="preserve">
+    <value>Instead, deactivate and clone to avoid inconsistencies in audit trails or regulatory forms</value>
+  </data>
+  <data name="interest_gl_nontaxable" xml:space="preserve">
+    <value>Interest GL (Non-Taxable)</value>
+  </data>
+  <data name="interest_gl_taxable" xml:space="preserve">
+    <value>Interest GL (Taxable)</value>
+  </data>
+  <data name="interest_income_account_for_nontaxable_loans" xml:space="preserve">
+    <value>Interest income account for non-taxable loans</value>
+  </data>
+  <data name="interest_must_be_paid_upfront" xml:space="preserve">
+    <value>Interest Must be paid upfront</value>
+  </data>
+  <data name="interest_order" xml:space="preserve">
+    <value>Interest order</value>
+  </data>
+  <data name="interest_percent_to_refund" xml:space="preserve">
+    <value>Interest percent to refund</value>
+  </data>
+  <data name="interest_rate_range" xml:space="preserve">
+    <value>Interest Rate Range</value>
+  </data>
+  <data name="interest_received_account" xml:space="preserve">
+    <value>Interest received account</value>
+  </data>
+  <data name="interest_received_account_nontaxable" xml:space="preserve">
+    <value>Interest Received Account (Non-Taxable)</value>
+  </data>
+  <data name="interest_set_the_interest_type_period_and_rates_for_the_loan_product" xml:space="preserve">
+    <value>Interest: Set the interest type, period, and rates for the loan product</value>
+  </data>
+  <data name="interest_waiver_allow_for_the_waiver_of_interest_charges" xml:space="preserve">
+    <value>Interest Waiver: Allow for the waiver of interest charges under specific conditions for the loan product</value>
+  </data>
+  <data name="is_this_amortgage_loan_product" xml:space="preserve">
+    <value>Is this a mortgage loan product</value>
+  </data>
+  <data name="iwant_penalty_to_be_afixed_amount" xml:space="preserve">
+    <value>I want Penalty to be a fixed amount</value>
+  </data>
+  <data name="iwant_penalty_to_be_percentage_based" xml:space="preserve">
+    <value>I want Penalty to be percentage % based</value>
+  </data>
+  <data name="late_fee_are_applied_on" xml:space="preserve">
+    <value>Late fee are applied on</value>
+  </data>
+  <data name="line_of_credit" xml:space="preserve">
+    <value>Line of Credit</value>
+  </data>
+  <data name="live_pcmf_preview" xml:space="preserve">
+    <value>Live PCMF Preview</value>
+  </data>
+  <data name="loading_account_mapping_configuration" xml:space="preserve">
+    <value>Loading account mapping configuration</value>
+  </data>
+  <data name="loan_amount_range" xml:space="preserve">
+    <value>Loan Amount Range</value>
+  </data>
+  <data name="loan_classification" xml:space="preserve">
+    <value>Loan Classification</value>
+  </data>
+  <data name="loan_duration_period" xml:space="preserve">
+    <value>Loan duration period</value>
+  </data>
+  <data name="loan_interest_period_specify_the_period_for_interest" xml:space="preserve">
+    <value>Loan Interest Period: Specify the period for interest calculation, such as monthly or annually</value>
+  </data>
+  <data name="loan_interest_type_determine_the_type_of_interest" xml:space="preserve">
+    <value>Loan Interest Type: Determine the type of interest, such as flat or reducing balance</value>
+  </data>
+  <data name="loan_out_of_standard_saving_facilities_mainloan" xml:space="preserve">
+    <value>Loan Out Of Standard Saving Facilities (Main_Loan)</value>
+  </data>
+  <data name="loan_product" xml:space="preserve">
     <value>Loan product</value>
   </data>
-  <data name="LoanProductListingForAccountingMapping" xml:space="preserve">
-    <value>Loan product listing for accounting mapping</value>
+  <data name="loan_product_accounting_configurations" xml:space="preserve">
+    <value>Loan Product Accounting Configurations</value>
   </data>
-  <data name="LoanProductCategoryIsNotConfigured" xml:space="preserve">
+  <data name="loan_product_category" xml:space="preserve">
+    <value>Loan product category</value>
+  </data>
+  <data name="loan_product_category_is_not_configured" xml:space="preserve">
     <value>LoanProduct Category is not configured</value>
   </data>
-  <data name="TargetTypeIsNotSpecified" xml:space="preserve">
-    <value>Target Type is not specified</value>
+  <data name="loan_product_configuration_management" xml:space="preserve">
+    <value>Loan Product Configuration Management</value>
   </data>
-  <data name="PleaseEnsureAllFieldsAreProperlyConfigured" xml:space="preserve">
-    <value>Please ensure all fields are properly configured before proceeding</value>
+  <data name="loan_product_configuration_tips" xml:space="preserve">
+    <value>Loan Product Configuration Tips</value>
   </data>
-  <data name="SettingLoanPolicyFor" xml:space="preserve">
-    <value>Setting loan policy for</value>
+  <data name="loan_product_listing_for_accounting_mapping" xml:space="preserve">
+    <value>Loan product listing for accounting mapping</value>
   </data>
-  <data name="For" xml:space="preserve">
-    <value>For</value>
-  </data>
-  <data name="Between" xml:space="preserve">
-    <value>Between</value>
-  </data>
-  <data name="Months" xml:space="preserve">
-    <value>Months</value>
-  </data>
-  <data name="LoanProductListingForPolicySet" xml:space="preserve">
+  <data name="loan_product_listing_for_policy_set" xml:space="preserve">
     <value>Loan product listing for policy set</value>
   </data>
-  <data name="BlockedShareAccountForStandingOrders" xml:space="preserve">
-    <value>Block member's share account for standing orders or loan security.</value>
-    <comment>Block member's share account for standing orders or loan security.</comment>
+  <data name="loan_product_management" xml:space="preserve">
+    <value>Loan Product Management</value>
   </data>
-  <data name="BlockedSavingAccountForStandingOrders" xml:space="preserve">
-    <value>Block member's saving account for standing orders or loan security.</value>
-    <comment>Block member's saving account for standing orders or loan security.</comment>
+  <data name="loan_range_set_the_minimum_default_and_maximum_loan_amounts" xml:space="preserve">
+    <value>Loan Range: Set the minimum, default, and maximum loan amounts to define the range within which loan amounts can vary, providing flexibility while ensuring responsible lending practices</value>
+  </data>
+  <data name="loan_term_duration_parameters_are_not_properly_set" xml:space="preserve">
+    <value>Loan Term duration parameters (Minimum or Maximum) are not properly set. Ensure both values are greater than 0 before updating duration parameters</value>
+  </data>
+  <data name="loan_term_is_not_configured" xml:space="preserve">
+    <value>Loan Term is not configured</value>
+  </data>
+  <data name="loan_term_is_not_configured_for_this_loan_product" xml:space="preserve">
+    <value>Loan Term is not configured for this loan product. Please set the loan term before updating duration parameters</value>
+  </data>
+  <data name="loan_top_up_limits_define_the_limits_and_criteria" xml:space="preserve">
+    <value>Loan Top-up Limits: Define the limits and criteria for refinancing existing loans or providing top-up loans to borrowers</value>
+  </data>
+  <data name="loan_top_up_settings" xml:space="preserve">
+    <value>Loan top-up settings</value>
+  </data>
+  <data name="loan_transit_account" xml:space="preserve">
+    <value>Loan transit account</value>
+  </data>
+  <data name="loan_within_standard_saving_facilities" xml:space="preserve">
+    <value>Loan Within Standard Saving Facilities</value>
+  </data>
+  <data name="manage_cheque_categories_manage_system_users_and_apply_filters_to_search_by_branch_details_user_name" xml:space="preserve">
+    <value>Manage cheque categories Manage system users and apply filters to search by branch  details, user name.</value>
+  </data>
+  <data name="manage_the_creation_classification_and_lifecycle_of_loan_products_using_a_structure_that_aligns_with_cobac_and_pcmf_standards" xml:space="preserve">
+    <value>Manage the creation, classification, and lifecycle of loan products using a structure that aligns with COBAC and PCMF standards</value>
+  </data>
+  <data name="map_your_loan_product_to_the_appropriate_gl_accounts_this_ensures_proper_accounting_and_financial_reporting" xml:space="preserve">
+    <value>Map your loan product to the appropriate GL accounts. This ensures proper accounting and financial reporting</value>
+  </data>
+  <data name="market_analysis_consider_market_trends" xml:space="preserve">
+    <value>Market Analysis: Consider market trends and demand when determining loan duration limits</value>
+  </data>
+  <data name="mark_product_as_active" xml:space="preserve">
+    <value>Mark Product as Active</value>
+  </data>
+  <data name="maximum_charge_rate_define_the_maximum_charge_rate_applicable_to_the_loan_product" xml:space="preserve">
+    <value>Maximum Charge Rate: Define the maximum charge rate applicable to the loan product</value>
+  </data>
+  <data name="maximum_charge_to_be_applied" xml:space="preserve">
+    <value>Maximum charge to be applied (in %)</value>
+  </data>
+  <data name="maximum_days_to_apply_charges_after_due_date" xml:space="preserve">
+    <value>Maximum days to apply charges after due date</value>
+  </data>
+  <data name="maximum_days_to_apply_charges_after_due_date_specify_the_maximum_number_of_days_to_apply" xml:space="preserve">
+    <value>Maximum Days to Apply Charges After Due Date: Specify the maximum number of days to apply charges after the loan due date</value>
+  </data>
+  <data name="maximum_interest_rate_define_the_maximum_interest_rate" xml:space="preserve">
+    <value>Maximum Interest Rate: Define the maximum interest rate applicable to the loan</value>
+  </data>
+  <data name="maximum_interest_value" xml:space="preserve">
+    <value>Maximum interest value</value>
+  </data>
+  <data name="maximum_interest_waiver_rate" xml:space="preserve">
+    <value>Maximum interest waiver rate</value>
+  </data>
+  <data name="maximum_interest_waiver_rate_define_the_maximum_rate" xml:space="preserve">
+    <value>Maximum Interest Waiver Rate: Define the maximum rate at which interest charges can be waived, expressed as a percentage</value>
+  </data>
+  <data name="maximum_loan_amount" xml:space="preserve">
+    <value>Maximum loan amount</value>
+  </data>
+  <data name="maximum_loan_amount_define_to_limit_risk_exposure" xml:space="preserve">
+    <value>Maximum Loan Amount: Define to limit risk exposure</value>
+  </data>
+  <data name="maximum_loan_amount_must_be_greater_than0" xml:space="preserve">
+    <value>Maximum Loan Amount must be greater than 0</value>
+  </data>
+  <data name="maximum_loan_duration_define_the_longest_duration" xml:space="preserve">
+    <value>Maximum Loan Duration: Define the longest duration allowed for the loan</value>
+  </data>
+  <data name="maximum_month" xml:space="preserve">
+    <value>Maximum month(s)</value>
+  </data>
+  <data name="maximum_top_up_amount_define_the_maximum_amount_allowed" xml:space="preserve">
+    <value>Maximum Top-up Amount: Define the maximum amount allowed for refinancing or top-up loans</value>
+  </data>
+  <data name="max_amount_must_be_greater_than0" xml:space="preserve">
+    <value>Max amount must be greater than 0</value>
+  </data>
+  <data name="max_ltvratio" xml:space="preserve">
+    <value>Max LTV Ratio</value>
+  </data>
+  <data name="minimum_and_down_payment_settings" xml:space="preserve">
+    <value>Minimum and Down Payment Settings</value>
+  </data>
+  <data name="minimum_charge_rate_set_the_minimum_charge_rate_applicable_to_the_loan_product" xml:space="preserve">
+    <value>Minimum Charge Rate: Set the minimum charge rate applicable to the loan product</value>
+  </data>
+  <data name="minimum_charge_to_be_applied" xml:space="preserve">
+    <value>Minimum charge to be applied (in %)</value>
+  </data>
+  <data name="minimum_days_to_apply_charges_after_due_date" xml:space="preserve">
+    <value>Minimum days to apply charges after due date</value>
+  </data>
+  <data name="minimum_days_to_apply_charges_after_due_date_specify_the_minimum_number_of_days" xml:space="preserve">
+    <value>Minimum Days to Apply Charges After Due Date: Specify the minimum number of days to apply charges after the loan due date</value>
+  </data>
+  <data name="minimum_down_payment_rate" xml:space="preserve">
+    <value>Minimum down payment rate</value>
+  </data>
+  <data name="minimum_interest_rate_define_the_minimum_interest_rate_applicable_to_the_loan" xml:space="preserve">
+    <value>Minimum Interest Rate: Define the minimum interest rate applicable to the loan</value>
+  </data>
+  <data name="minimum_interest_value" xml:space="preserve">
+    <value>Minimum interest value</value>
+  </data>
+  <data name="minimum_interest_waiver_rate" xml:space="preserve">
+    <value>Minimum interest waiver rate</value>
+  </data>
+  <data name="minimum_interest_waiver_rate_specify_the_minimum_rate" xml:space="preserve">
+    <value>Minimum Interest Waiver Rate: Specify the minimum rate at which interest charges can be waived, expressed as a percentage</value>
+  </data>
+  <data name="minimum_loan_amount" xml:space="preserve">
+    <value>Minimum loan amount</value>
+  </data>
+  <data name="minimum_loan_amount_cannot_exceed_maximum_loan_amount" xml:space="preserve">
+    <value>Minimum Loan Amount cannot exceed Maximum Loan Amount</value>
+  </data>
+  <data name="minimum_loan_amount_determine_areasonable_minimum_loan_amount" xml:space="preserve">
+    <value>Minimum Loan Amount: Determine a reasonable minimum loan amount</value>
+  </data>
+  <data name="minimum_loan_amount_must_be_greater_than0" xml:space="preserve">
+    <value>Minimum Loan Amount must be greater than 0</value>
+  </data>
+  <data name="minimum_loan_duration_specify_the_shortest_duration_allowed_for_the_loan" xml:space="preserve">
+    <value>Minimum Loan Duration: Specify the shortest duration allowed for the loan</value>
+  </data>
+  <data name="minimum_month" xml:space="preserve">
+    <value>Minimum month(s)</value>
+  </data>
+  <data name="minimum_percentage_that_must_be_refunded_for_topping_up" xml:space="preserve">
+    <value>Minimum percentage that must be refunded for topping-up</value>
+  </data>
+  <data name="minimum_salary_account_rate" xml:space="preserve">
+    <value>Minimum salary account rate</value>
+  </data>
+  <data name="minimum_saving_account_rate" xml:space="preserve">
+    <value>Minimum saving account rate</value>
+  </data>
+  <data name="minimum_share_account_balance_required" xml:space="preserve">
+    <value>Minimum share account balance required</value>
+  </data>
+  <data name="minimum_top_up_amount_specify_the_minimum_amount_allowed" xml:space="preserve">
+    <value>Minimum Top-up Amount: Specify the minimum amount allowed for refinancing or top-up loans</value>
+  </data>
+  <data name="min_amount_cannot_exceed_max_amount" xml:space="preserve">
+    <value>Min amount cannot exceed max amount</value>
+  </data>
+  <data name="min_amount_must_be_greater_than0" xml:space="preserve">
+    <value>Min amount must be greater than 0</value>
+  </data>
+  <data name="min_collateral_coverage" xml:space="preserve">
+    <value>Min Collateral Coverage</value>
+  </data>
+  <data name="min_max" xml:space="preserve">
+    <value>Min : Max</value>
+  </data>
+  <data name="mortgage_configuration" xml:space="preserve">
+    <value>Mortgage configuration</value>
+  </data>
+  <data name="mortgage_settings_configure_specific_parameters" xml:space="preserve">
+    <value>Mortgage Settings: Configure specific parameters for mortgage loan products such as insurance requirement, LTV ratio, grace period, and property ownership rules</value>
+  </data>
+  <data name="must_apartial_fee_be_paid_before_the_loan_application_is_processed" xml:space="preserve">
+    <value>Must a partial fee be paid before the loan application is processed</value>
+  </data>
+  <data name="nontaxable" xml:space="preserve">
+    <value>Non-Taxable</value>
+  </data>
+  <data name="not_mapped" xml:space="preserve">
+    <value>Not Mapped</value>
+  </data>
+  <data name="no_loan_products_found_click_add_new_to_create_your_first_product" xml:space="preserve">
+    <value>No loan products found. Click &lt;strong&gt;Add New&lt;/strong&gt; to create your first product</value>
+  </data>
+  <data name="no_loan_product_has_been_created" xml:space="preserve">
+    <value>No loan product has been created</value>
+  </data>
+  <data name="no_repayment_cycles_selected" xml:space="preserve">
+    <value>No repayment cycles selected</value>
+  </data>
+  <data name="onetime_internal_loans_to_staff_or_community_members_under_special_authorization" xml:space="preserve">
+    <value>&lt;em&gt;One-time internal loans&lt;/em&gt; to staff or community members under special authorization</value>
+  </data>
+  <data name="optional_waive_penalty_on_branch_holidays" xml:space="preserve">
+    <value>(optional) Waive penalty on branch holidays</value>
+  </data>
+  <data name="pcmf_base_code" xml:space="preserve">
+    <value>PCMF Base Code</value>
+  </data>
+  <data name="pcmf_classification" xml:space="preserve">
+    <value>PCMF Classification</value>
+  </data>
+  <data name="pcmf_codes" xml:space="preserve">
+    <value>PCMF Codes</value>
+  </data>
+  <data name="pcmf_group_code" xml:space="preserve">
+    <value>PCMF Group Code</value>
+  </data>
+  <data name="pcmf_loan_purpose" xml:space="preserve">
+    <value>PCMF Loan Purpose</value>
+  </data>
+  <data name="pcmf_preview" xml:space="preserve">
+    <value>PCMF Preview</value>
+  </data>
+  <data name="penalty_charges_define_penalties_for_late_repayments" xml:space="preserve">
+    <value>Penalty Charges: Define penalties for late repayments or defaults to encourage timely repayment</value>
+  </data>
+  <data name="penalty_description" xml:space="preserve">
+    <value>Penalty description</value>
+  </data>
+  <data name="penalty_gl" xml:space="preserve">
+    <value>Penalty GL</value>
+  </data>
+  <data name="please_ensure_all_fields_are_properly_configured" xml:space="preserve">
+    <value>Please ensure all fields are properly configured before proceeding</value>
+  </data>
+  <data name="prevents_network_reporting_inconsistencies" xml:space="preserve">
+    <value>Prevents network reporting inconsistencies</value>
+  </data>
+  <data name="principal_disbursement_account" xml:space="preserve">
+    <value>Principal disbursement account</value>
+  </data>
+  <data name="principal_disbursement_account_nontaxable" xml:space="preserve">
+    <value>Principal Disbursement Account (Non-Taxable)</value>
+  </data>
+  <data name="principal_gl_nontaxable" xml:space="preserve">
+    <value>Principal GL (Non-Taxable)</value>
+  </data>
+  <data name="principal_gl_taxable" xml:space="preserve">
+    <value>Principal GL (Taxable)</value>
+  </data>
+  <data name="product_activation_facility_link_mortgage_tag" xml:space="preserve">
+    <value>Product Activation, Facility Link &amp; Mortgage Tag</value>
+  </data>
+  <data name="product_configuration_rights_should_be_restricted_to_approved_officers_or_compliance_managers" xml:space="preserve">
+    <value>Product configuration rights should be restricted to approved officers or compliance managers</value>
+  </data>
+  <data name="product_not_found" xml:space="preserve">
+    <value>Product not found</value>
+  </data>
+  <data name="product_target_binding" xml:space="preserve">
+    <value>Product &amp; Target Binding</value>
+  </data>
+  <data name="proper_setup_ensures_automatic_generation_of_sesame_and_cobac_reports_across_branches" xml:space="preserve">
+    <value>Proper setup ensures automatic generation of SESAME and COBAC reports across branches</value>
+  </data>
+  <data name="provision_account_for_loans_exceeding1_year" xml:space="preserve">
+    <value>Provision Account for Loans Exceeding 1 Year but Less Than 2 Years</value>
+  </data>
+  <data name="provision_account_for_loans_exceeding2_year" xml:space="preserve">
+    <value>Provision Account for Loans Exceeding 2 Years but Less Than 3 Years</value>
+  </data>
+  <data name="provision_account_for_loans_exceeding3_year" xml:space="preserve">
+    <value>Provision Account for Loans Exceeding 3 Years but Less Than 4 Years</value>
+  </data>
+  <data name="provision_account_for_loans_exceeding4_year" xml:space="preserve">
+    <value>Provision Account for Loans Exceeding 4 Years</value>
+  </data>
+  <data name="repayment_define_the_repayment_terms_and_options_for_the_loan_product" xml:space="preserve">
+    <value>Repayment: Define the repayment terms and options for the loan product</value>
+  </data>
+  <data name="repayment_frequency_specify_how_often_borrowers" xml:space="preserve">
+    <value>Repayment Frequency: Specify how often borrowers are required to make repayments, such as monthly, bi-weekly, or quarterly</value>
+  </data>
+  <data name="repayment_method_determine_the_methods" xml:space="preserve">
+    <value>Repayment Method: Determine the methods through which borrowers can make repayments, such as bank transfer, cash, or mobile payment</value>
+  </data>
+  <data name="repayment_periods" xml:space="preserve">
+    <value>Repayment periods</value>
+  </data>
+  <data name="reporting_alignment" xml:space="preserve">
+    <value>Reporting Alignment</value>
+  </data>
+  <data name="required_for_classic_ssf_loc_only_overdraft_can_be_empty" xml:space="preserve">
+    <value>Required for &lt;b&gt;Classic / SSF / LOC&lt;/b&gt;. Only &lt;b&gt;Overdraft&lt;/b&gt; can be empty</value>
+  </data>
+  <data name="requires_collateral_specify_if_collateral_is_necessary" xml:space="preserve">
+    <value>Requires Collateral: Specify if collateral such as land, buildings, or cars is necessary</value>
+  </data>
+  <data name="requires_collateral_such_as_lands_building_cars" xml:space="preserve">
+    <value>Requires collateral such as lands, building, cars, etc</value>
+  </data>
+  <data name="requires_guarantor_determine_if_the_product_requires_guarantor" xml:space="preserve">
+    <value>Requires Guarantor: Determine if the product requires a guarantor for collateral</value>
+  </data>
+  <data name="requires_irrevocable_salary_transfer_decide" xml:space="preserve">
+    <value>Requires Irrevocable Salary Transfer: Decide if an irrevocable fund transfer is needed</value>
+  </data>
+  <data name="requires_irrivocable_fund_transfer" xml:space="preserve">
+    <value>Requires irrivocable fund transfer</value>
+  </data>
+  <data name="requires_members_saving_account" xml:space="preserve">
+    <value>Requires members saving account</value>
+  </data>
+  <data name="requires_members_share_account" xml:space="preserve">
+    <value>Requires members share account</value>
+  </data>
+  <data name="requires_registered_public_authority" xml:space="preserve">
+    <value>Requires registered public authority</value>
+  </data>
+  <data name="requires_registered_public_authority_determine_if_aregistered" xml:space="preserve">
+    <value>Requires Registered Public Authority: Determine if a registered public authority is required for collateral evaluation</value>
+  </data>
+  <data name="requires_salary_account" xml:space="preserve">
+    <value>Requires salary account</value>
+  </data>
+  <data name="requires_salary_account_decide_if_asalary_account_is_needed_for_the_loan" xml:space="preserve">
+    <value>Requires Salary Account: Decide if a salary account is needed for the loan</value>
+  </data>
+  <data name="requires_saving_account_specify_if_amember_saving_account_is_required" xml:space="preserve">
+    <value>Requires Saving Account: Specify if a member's saving account is required</value>
+  </data>
+  <data name="requires_share_account_determine_if_amember_share_account_is_required" xml:space="preserve">
+    <value>Requires Share Account: Determine if a member's share account is required</value>
+  </data>
+  <data name="require_insurance_before_disbursement" xml:space="preserve">
+    <value>Require insurance before disbursement</value>
+  </data>
+  <data name="require_land_title_registratio" xml:space="preserve">
+    <value>Require land title registratio</value>
+  </data>
+  <data name="require_land_title_registration" xml:space="preserve">
+    <value>Require land title registration</value>
+  </data>
+  <data name="rescheduled_or_restructured_delinquent_loans_under_exceptional_board_approval" xml:space="preserve">
+    <value>&lt;em&gt;Rescheduled or restructured delinquent loans&lt;/em&gt; under exceptional board approval</value>
+  </data>
+  <data name="reserve_this_product_for_saving_facility_integration" xml:space="preserve">
+    <value>Reserve this product for Saving Facility Integration</value>
+  </data>
+  <data name="respect_pcmf_loan_terms" xml:space="preserve">
+    <value>Respect PCMF Loan Terms</value>
+  </data>
+  <data name="review_quarterly" xml:space="preserve">
+    <value>Review Quarterly</value>
+  </data>
+  <data name="revolving_facility" xml:space="preserve">
+    <value>Revolving Facility</value>
+  </data>
+  <data name="risk_mitigation_balance_risk_and_borrower" xml:space="preserve">
+    <value>Risk Mitigation: Balance risk and borrower preferences in setting loan duration parameters</value>
+  </data>
+  <data name="save_all_account_mapping_configurations_for_this_product" xml:space="preserve">
+    <value>Save all account mapping configurations for this product</value>
+  </data>
+  <data name="select_available_repayment_frequencies_daily_weekly_monthly_to_match_borrower_cash_flow" xml:space="preserve">
+    <value>Select available repayment frequencies (daily, weekly, monthly) to match borrower cash flow</value>
+  </data>
+  <data name="select_the_intended_customer_group_like_individual_sme_or_group_to_support_segmentation_and_reporting" xml:space="preserve">
+    <value>Select the intended customer group like Individual, SME, or Group to support segmentation and reporting</value>
+  </data>
+  <data name="setting_loan_policy_for" xml:space="preserve">
+    <value>Setting loan policy for</value>
+  </data>
+  <data name="set_minimum_and_maximum_loan_amounts_to_control_risk_exposure_and_ensure_reasonable_lending_limits" xml:space="preserve">
+    <value>Set minimum and maximum loan amounts to control risk exposure and ensure reasonable lending limits</value>
+  </data>
+  <data name="set_penalty_configurations_for" xml:space="preserve">
+    <value>Set penalty configurations for</value>
+  </data>
+  <data name="set_target_populations_individual_employee_corporate_and_purpose_classifications" xml:space="preserve">
+    <value>Set target populations (individual, employee, corporate) and purpose classifications</value>
+  </data>
+  <data name="shortee_must_have_fund_to_guarantee_this_loan" xml:space="preserve">
+    <value>Shortee must have fund to guarantee this loan</value>
+  </data>
+  <data name="simplifies_audit_trails_and_monitoring" xml:space="preserve">
+    <value>Simplifies audit trails and monitoring</value>
+  </data>
+  <data name="special_loan" xml:space="preserve">
+    <value>Special Loan</value>
+  </data>
+  <data name="specify_if_collateral_is_required_and_set_minimum_collateral_percentage_relative_to_loan_amount" xml:space="preserve">
+    <value>Specify if collateral is required and set minimum collateral percentage relative to loan amount</value>
+  </data>
+  <data name="specify_in_days_when_charges_should_stop_applying_to_this_product" xml:space="preserve">
+    <value>Specify in days when charges should stop applying to this product. (In Days)</value>
+  </data>
+  <data name="ssf" xml:space="preserve">
+    <value>SSF</value>
+  </data>
+  <data name="standard_loan_term_classification" xml:space="preserve">
+    <value>Standard Loan Term Classification</value>
+  </data>
+  <data name="start_generating_interest_after_disbursement_decide_if_interest_accrual_starts" xml:space="preserve">
+    <value>Start Generating Interest After Disbursement: Decide if interest accrual starts immediately after loan disbursement</value>
+  </data>
+  <data name="stop_interest_calculation_at_loa_maturity_date" xml:space="preserve">
+    <value>Stop interest calculation at loan maturity date</value>
+  </data>
+  <data name="supports_accurate_provisioning_and_risk_scoring" xml:space="preserve">
+    <value>Supports accurate provisioning and risk scoring</value>
+  </data>
+  <data name="tag_this_product_as_a_mortgage_loan_product" xml:space="preserve">
+    <value>Tag this product as a Mortgage Loan product</value>
+  </data>
+  <data name="target_type_is_not_specified" xml:space="preserve">
+    <value>Target Type is not specified</value>
+  </data>
+  <data name="target_typ_is_not_configured" xml:space="preserve">
+    <value>Target Type is not configured</value>
+  </data>
+  <data name="taxable_interest_received_account" xml:space="preserve">
+    <value>Taxable Interest Received Account</value>
+  </data>
+  <data name="taxable_loan_gls" xml:space="preserve">
+    <value>Taxable Loan GLs</value>
+  </data>
+  <data name="taxable_principal_disbursement_account" xml:space="preserve">
+    <value>Taxable Principal Disbursement Account</value>
+  </data>
+  <data name="these_classifications_are_essential_for_provisioning_rules_pcmf_account_mapping_and_generating_valid_sesame_reports_always_ensure_your_loan_products_respect_this_term_structure" xml:space="preserve">
+    <value>These classifications are essential for provisioning rules, PCMF account mapping, and generating valid SESAME reports. Always ensure your loan products respect this term structure</value>
+  </data>
+  <data name="these_products_must_be_handled_with_extra_care_and_require_written_justification_and_prior_validation_from_internal_control_compliance_or_the_board_of_directors_they_are_not_intended_for_public_offer_or_routine_lending_and_must_be_clearly_documented_for_audit_and_regulatory_reporting_purposes" xml:space="preserve">
+    <value>These products must be handled with extra care and require &lt;strong&gt;written justification&lt;/strong&gt; and &lt;strong&gt;prior validation&lt;/strong&gt; from Internal Control, Compliance, or the Board of Directors. They are not intended for public offer or routine lending, and must be clearly documented for audit and regulatory reporting purposes</value>
+  </data>
+  <data name="this_loan_type_is_reserved_for_special_nonstandard_credit_arrangements_that_fall_outside_the_structure_of_classic_or_revolving_loan_products_it_is_typically_used_in_rare_or_sensitive_scenarios_where_standard_loan_policies_do_not_apply_examples_include" xml:space="preserve">
+    <value>This loan type is reserved for special, non-standard credit arrangements that fall outside the structure of classic or revolving loan products. It is typically used in rare or sensitive scenarios where standard loan policies do not apply. Examples include</value>
+  </data>
+  <data name="this_structure_is_not_optional_its_critical_for_regulatory_compliance_and_system_scalability" xml:space="preserve">
+    <value>This structure is not optional — it’s critical for regulatory compliance and system scalability</value>
+  </data>
+  <data name="tips_for_configuring_loan_products_effectively" xml:space="preserve">
+    <value>Tips for Configuring Loan Products Effectively</value>
+  </data>
+  <data name="transit_waiting_gl_approved_pending_disbursement" xml:space="preserve">
+    <value>Transit / Waiting GL (Approved → Pending Disbursement)</value>
+  </data>
+  <data name="typically_used_for_working_capital_treasury_needs_or_revolving_credits_must_be_recorded_under_shortterm_loan_accounts_in_pcmf" xml:space="preserve">
+    <value>Typically used for working capital, treasury needs, or revolving credits. Must be recorded under &lt;strong&gt;short-term loan accounts&lt;/strong&gt; in PCMF</value>
+  </data>
+  <data name="unique_for_reportingintegrations" xml:space="preserve">
+    <value>Unique for reporting/integrations</value>
+  </data>
+  <data name="updates_automatically_as_you_pick_facility_term_purpose_target" xml:space="preserve">
+    <value>Updates automatically as you pick &lt;b&gt;Facility → Term → Purpose → Target&lt;/b&gt;</value>
+  </data>
+  <data name="up_to_12_months" xml:space="preserve">
+    <value>Up to 12 months</value>
+  </data>
+  <data name="used_as_a_waitingtransit_gl_for_loans_that_are_approved_but_not_yet_disbursed" xml:space="preserve">
+    <value>Used as a &lt;b&gt;waiting/transit GL&lt;/b&gt; for loans that are approved but not yet disbursed</value>
+  </data>
+  <data name="used_for_longduration_projects_like_housing_agriculture_investments_or_asset_acquisition_must_be_posted_to_longterm_loan_accounts" xml:space="preserve">
+    <value>Used for long-duration projects like housing, agriculture investments, or asset acquisition. Must be posted to &lt;strong&gt;long-term loan accounts&lt;/strong&gt;</value>
+  </data>
+  <data name="used_for_refinancinginternal_movements_and_transition_flows" xml:space="preserve">
+    <value>Used for refinancing/internal movements and transition flows</value>
+  </data>
+  <data name="used_for_standard_loan_disbursement_principal_posting" xml:space="preserve">
+    <value>Used for standard loan disbursement principal posting</value>
+  </data>
+  <data name="use_short_medium_or_long_term_to_comply_with_cobac_risk_and_provisioning_rules" xml:space="preserve">
+    <value>Use Short, Medium, or Long Term to comply with COBAC risk and provisioning rules</value>
+  </data>
+  <data name="use_these_codes_to_choose_the_correct_gl_accounts_for_reporting_sesamepcmf_mapping" xml:space="preserve">
+    <value>Use these codes to choose the correct GL accounts for reporting &amp; SESAME/PCMF mapping</value>
+  </data>
+  <data name="vat_gl" xml:space="preserve">
+    <value>VAT GL</value>
+  </data>
+  <data name="when_mapping_to_coa_ensure_that_the_selected_term_short_medium_long_matches_the_pcmf_account_level_structure" xml:space="preserve">
+    <value>When mapping to COA, ensure that the selected term (Short, Medium, Long) matches the PCMF account level structure</value>
+  </data>
+  <data name="writeoff_principal_account" xml:space="preserve">
+    <value>Write-Off Principal Account</value>
+  </data>
+  <data name="writeoff_provisioning" xml:space="preserve">
+    <value>Write-Off &amp; Provisioning</value>
+  </data>
+  <data name="write_off_account" xml:space="preserve">
+    <value>Write-off account</value>
   </data>
 </root>

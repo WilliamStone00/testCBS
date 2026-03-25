@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
-
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@using Resources
 @using (Html.BeginForm(
     "MemberAdjustmentRequest",
     "MemberAdjustmentConsole",
@@ -16,10 +16,10 @@
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <label for="accountDropdown" class="form-label">Choose Account</label>
+                    <label for="accountDropdown" class="form-label">@GlobalShared.choose_account</label>
                     <select id="accountDropdown" class="form-select" required>
                         <option value="" data-balance="0" data-blocked="0">
-                            -- Select Account --
+                            -- @GlobalShared.Select_account --
                         </option>
                         @if (Model.CustomerAccounts != null && Model.CustomerAccounts.Any())
                         {
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    @Html.LabelFor(m => m.OldBalance, "Balance", new { @class = "form-label" })
+                    @Html.LabelFor(m => m.OldBalance, $"{@GlobalShared.Balance}", new { @class = "form-label" })
                     @Html.TextBoxFor(
                         m => m.OldBalance,
                         new { @class = "form-control", @readonly = "readonly", id = "oldBalance" }
@@ -55,7 +55,7 @@
 
             <div class="row">
                 <div class="col-md-6 mb-1">
-                    @Html.LabelFor(m => m.OldBlockedAmount, "Old Blocked Amount", new { @class = "form-label" })
+                    @Html.LabelFor(m => m.OldBlockedAmount, $"{@GlobalMemberAdjustmentConsole.old_blocked_amount}", new { @class = "form-label" })
                     @Html.TextBoxFor(
                         m => m.OldBlockedAmount,
                         new { @class = "form-control", @readonly = "readonly", id = "oldBlockedAmount" }
@@ -78,7 +78,7 @@
                     )
 
                     <small class="text-danger d-none" id="blockError">
-                        New blocked amount cannot be greater than available balance.
+                        @GlobalMemberAdjustmentConsole.new_blocked_amount_cannot_be_greater_than_available_balance.
                     </small>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             <!-- Reason -->
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    @Html.LabelFor(m => m.Reason, "Reason for Adjustment", new { @class = "form-label" })
+                    @Html.LabelFor(m => m.Reason, $"{@GlobalMemberAdjustmentConsole.reason_for_adjustment}", new { @class = "form-label" })
                     @Html.TextAreaFor(
                         m => m.Reason,
                         new
@@ -102,10 +102,10 @@
                             @class = "form-control",
                             rows = "3",
                             required = "required",
-                            placeholder = "Please provide a reason for this adjustment"
+                            placeholder = $"{@GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_adjustment}"
                         }
                     )
-                    <div class="invalid-feedback">Please provide a reason</div>
+                    <div class="invalid-feedback">@GlobalShared.please_provide_a_reason</div>
                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                 </div>
             </div>
@@ -117,7 +117,7 @@
         <!-- ===================== -->
         <div class="text-end mt-3">
             <button type="submit" id="submitBlockAdjustment" class="btn btn-primary">
-                <i class="mdi mdi-lock-outline me-1"></i> Submit Block Adjustment
+                <i class="mdi mdi-lock-outline me-1"></i> @GlobalMemberAdjustmentConsole.submit_block_adjustment
             </button>
         </div>
 

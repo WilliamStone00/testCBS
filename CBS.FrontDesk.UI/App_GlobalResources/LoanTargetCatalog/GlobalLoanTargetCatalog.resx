@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="accurate_segmentation_in_financial_inclusion_reports" xml:space="preserve">
+    <value>Accurate segmentation in financial inclusion reports</value>
+  </data>
+  <data name="available_for_new_loan_product_creation" xml:space="preserve">
+    <value>Available for new loan product creation</value>
+  </data>
+  <data name="before_creating_new_ones_check_if_similar_targets_exist" xml:space="preserve">
+    <value>Before creating new ones, check if similar targets exist</value>
+  </data>
+  <data name="cannot_delete_targets_used_in_existing_loans" xml:space="preserve">
+    <value>Cannot delete targets used in existing loans</value>
+  </data>
+  <data name="changes_to_loan_targets_affect_all_loan_products_using_that_target_category" xml:space="preserve">
+    <value>Changes to loan targets affect all loan products using that target category</value>
+  </data>
+  <data name="cobac_compliance" xml:space="preserve">
+    <value>COBAC Compliance</value>
+  </data>
+  <data name="common_loan_target_examples" xml:space="preserve">
+    <value>Common Loan Target Examples</value>
+  </data>
+  <data name="correct_mapping_to_banking_supervision_systems" xml:space="preserve">
+    <value>Correct mapping to banking supervision systems</value>
+  </data>
+  <data name="create_new_target_categories" xml:space="preserve">
+    <value>Create new target categories</value>
+  </data>
+  <data name="detailed_view_of_loan_target_catalog_entry" xml:space="preserve">
+    <value>Detailed view of loan target catalog entry</value>
+  </data>
+  <data name="each_target_category_helps_classify_loans_by_customer_type_supporting_pcmf_compliance_and_strategic_lending" xml:space="preserve">
+    <value>Each target category helps classify loans by customer type, supporting PCMF compliance and strategic lending</value>
+  </data>
+  <data name="enter_current_population_numbers_for_accurate_reporting" xml:space="preserve">
+    <value>Enter current population numbers for accurate reporting</value>
+  </data>
+  <data name="hidden_from_new_loans_existing_loans_unaffected" xml:space="preserve">
+    <value>Hidden from new loans, existing loans unaffected</value>
+  </data>
+  <data name="informal_sector_workers" xml:space="preserve">
+    <value>Informal Sector Workers</value>
+  </data>
+  <data name="loan_target_catalog" xml:space="preserve">
+    <value>Loan Target Catalog</value>
+  </data>
+  <data name="loan_target_details" xml:space="preserve">
+    <value>Loan Target Details</value>
+  </data>
+  <data name="maintain_consistent_naming_across_all_loan_products" xml:space="preserve">
+    <value>Maintain consistent naming across all loan products</value>
+  </data>
+  <data name="manage_loan_target_categories_for_pcmf_population_classification" xml:space="preserve">
+    <value>Manage loan target categories for PCMF population classification</value>
+  </data>
+  <data name="modify_existing_target_details" xml:space="preserve">
+    <value>Modify existing target details</value>
+  </data>
+  <data name="note_reasons_for_status_changes_in_comments" xml:space="preserve">
+    <value>Note reasons for status changes in comments</value>
+  </data>
+  <data name="only_deactivate_targets_no_longer_relevant" xml:space="preserve">
+    <value>Only deactivate targets no longer relevant</value>
+  </data>
+  <data name="pcmf_reporting" xml:space="preserve">
+    <value>PCMF Reporting</value>
+  </data>
+  <data name="pcmf_targeted_population_category" xml:space="preserve">
+    <value>PCMF Targeted Population Category</value>
+  </data>
+  <data name="portfolio_analysis_by_customer_segment" xml:space="preserve">
+    <value>Portfolio analysis by customer segment</value>
+  </data>
+  <data name="proper_loan_target_classification_is_essential_for" xml:space="preserve">
+    <value>Proper loan target classification is essential for</value>
+  </data>
+  <data name="proper_risk_categorization_and_provisioning" xml:space="preserve">
+    <value>Proper risk categorization and provisioning</value>
+  </data>
+  <data name="provide_accurate_french_translations_for_bilingual_reporting" xml:space="preserve">
+    <value>Provide accurate French translations for bilingual reporting</value>
+  </data>
+  <data name="regulatory_importance" xml:space="preserve">
+    <value>Regulatory Importance</value>
+  </data>
+  <data name="remove_unused_targets_if_no_loans_attached" xml:space="preserve">
+    <value>Remove unused targets (if no loans attached)</value>
+  </data>
+  <data name="review_existing_targets" xml:space="preserve">
+    <value>Review Existing Targets</value>
+  </data>
+  <data name="rural_population" xml:space="preserve">
+    <value>Rural Population</value>
+  </data>
+  <data name="see_complete_target_information" xml:space="preserve">
+    <value>See complete target information</value>
+  </data>
+  <data name="sesame_integration" xml:space="preserve">
+    <value>SESAME Integration</value>
+  </data>
+  <data name="smallholder_farmers" xml:space="preserve">
+    <value>Smallholder Farmers</value>
+  </data>
+  <data name="strategic_analysis" xml:space="preserve">
+    <value>Strategic Analysis</value>
+  </data>
+  <data name="update_population_counts_quarterly_for_accurate_pcmf_reporting" xml:space="preserve">
+    <value>Update population counts quarterly for accurate PCMF reporting</value>
+  </data>
+  <data name="use_0_for_targets_without_current_population_data" xml:space="preserve">
+    <value>Use 0 for targets without current population data</value>
+  </data>
+  <data name="use_clear_descriptive_names_eg_microentrepreneurs_smallholder_farmers" xml:space="preserve">
+    <value>Use clear, descriptive names (e.g., "Micro-Entrepreneurs", "Smallholder Farmers")</value>
+  </data>
+  <data name="the_loan_target_catalog_defines_borrower_segmentation_for_inclusive_finance_reporting" xml:space="preserve">
+    <value> The Loan Target Catalog defines &lt;strong&gt;borrower segmentation&lt;/strong&gt; for inclusive finance reporting</value>
+  </data>
+</root>

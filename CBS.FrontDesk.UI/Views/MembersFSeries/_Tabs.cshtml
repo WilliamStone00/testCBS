@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+    @using Resources
 <div class="card-body d-sm-flex d-block flex-wrap">
     <!-- 🔎 Accounts Overview -->
     <a href="#"
@@ -6,7 +7,7 @@
        class="btn btn-outline-primary d-flex align-items-center me-2 mb-2"
        data-bs-toggle="tooltip" title="Members account status">
         <i class="fas fa-money-check me-2"></i>
-        <span>Accounts</span>
+        <span>@GlobalShared.Accounts</span>
     </a>
 
     <!-- 💳 Transactions -->
@@ -15,7 +16,7 @@
        class="btn btn-outline-success d-flex align-items-center me-2 mb-2"
        data-bs-toggle="tooltip" title="View all member transactions">
         <i class="fas fa-exchange-alt me-2"></i>
-        <span>Transactions</span>
+        <span>@GlobalShared.Transactions</span>
     </a>
 
     <!-- 👤 Profile Information -->
@@ -24,6 +25,6 @@
        class="btn btn-outline-secondary d-flex align-items-center me-2 mb-2"
        data-bs-toggle="tooltip" title="View member profile details">
         <i class="fas fa-user me-2"></i>
-        <span>Profile</span>
+        <span>@GlobalShared.Profile</span>
     </a>
 </div>

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <div class="row g-4">
     <div class="col-md-3">
@@ -66,33 +66,33 @@
             <div id="datalistingview_inner">
                 <div class="card mb-4 border-2">
                     <div class="card-header">
-                        <h5 class="card-title">@GlobalMembersFSeries.MembersProfile</h5>
+                        <h5 class="card-title">@GlobalShared.Members_Profile</h5>
                     </div>
                     <div class="mt-3">
 
                         <table class="table" id="myDataTable">
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.CustomerNumber:</strong></td>
+                                <td><strong>@GlobalShared.Customer_Number:</strong></td>
                                 <td>@Model.Customer.CustomerId</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.CustomerCode:</strong></td>
+                                <td><strong>@GlobalShared.Customer_Code:</strong></td>
                                 <td>@Model.Customer.CustomerCode</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.Name</strong></td>
+                                <td><strong>@GlobalShared.Name</strong></td>
                                 <td>@Model.Customer.name</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.Telephone</strong></td>
+                                <td><strong>@GlobalShared.Telephone</strong></td>
                                 <td>@Model.Customer.Phone</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.Branch:</strong></td>
+                                <td><strong>@GlobalShared.Branch:</strong></td>
                                 <td>@Model.Customer.BankName</td>
                             </tr>
                             <tr>
-                                <td><strong>@GlobalMembersFSeries.ApprovalStatus</strong></td>
+                                <td><strong>@GlobalShared.Approval_status</strong></td>
                                 <td>
                                     @if (Model.Customer.MembershipApprovalStatus == "Approved")
                                     {

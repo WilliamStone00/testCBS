@@ -1,9 +1,10 @@
-﻿<div class="row mb-2">
+@using Resources
+<div class="row mb-2">
     <div class="col-12">
         <div class="card border-primary shadow-sm">
             <div class="card-header bg-light text-primary fw-bold d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="mdi mdi-information-outline me-2"></i> Overdraft Activation Request Steps
+                    <i class="mdi mdi-information-outline me-2"></i> @GlobalOverdraftActivation.overdraft_activation_request_steps
                 </span>
                 <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#overdraftGuidelinesBody">
                     <i class="mdi mdi-chevron-down"></i>
@@ -17,50 +18,50 @@
                         <!-- 🔍 Filter/Search -->
                         <li class="mb-2">
                             <i class="mdi mdi-filter-outline text-secondary me-2"></i>
-                            <strong>1. Filter Requests:</strong> Use the top filter panel to locate requests by <code>Status</code>, <code>Branch</code>, <code>Customer ID</code>, or date range.
+                            <strong>1. @GlobalShared.filter_requests:</strong> @Html.Raw(@GlobalOverdraftActivation.use_the_top_filter_panel_to_locate_requests_by_status_branch_customer_id_or_date_range).
                         </li>
 
                         <!-- 👁️ View -->
                         <li class="mb-2">
                             <i class="mdi mdi-eye-outline text-info me-2"></i>
-                            <strong>2. View Request:</strong> Click the <i class="mdi mdi-eye-outline text-info"></i> icon to see full request details including account, limit, interest rate, and recovery method.
+                            <strong>2. @GlobalShared.view_request:</strong> @Html.Raw(@GlobalOverdraftActivation.click_the_icon_to_see_full_request_details_including_account_limit_interest_rate_and_recovery_method).
                         </li>
 
                         <!-- ✅ Approve -->
                         <li class="mb-2">
                             <i class="mdi mdi-check-bold text-success me-2"></i>
-                            <strong>3. Approve Request:</strong> Approving confirms the request meets all internal criteria and makes the overdraft facility eligible for activation.
+                            <strong>3. @GlobalShared.approve_request:</strong> @GlobalOverdraftActivation.approving_confirms_the_request_meets_all_internal_criteria_and_makes_the_overdraft_facility_eligible_for_activation.
                         </li>
 
                         <!-- ❌ Reject -->
                         <li class="mb-2">
                             <i class="mdi mdi-close-thick text-danger me-2"></i>
-                            <strong>4. Reject Request:</strong> Use the <i class="mdi mdi-close-thick text-danger"></i> icon to deny any non-compliant or invalid request.
+                            <strong>4. @GlobalShared.reject_request:</strong> @Html.Raw(@GlobalOverdraftActivation.use_the_icon_to_deny_any_noncompliant_or_invalid_request).
                         </li>
 
                         <!-- 🚀 Activate -->
                         <li class="mb-2">
                             <i class="mdi mdi-check-decagram text-primary me-2"></i>
-                            <strong>5. Activate Facility:</strong> Some requests may require a final manual activation after approval, depending on the overdraft configuration rules.
+                            <strong>5. @GlobalShared.activate_facility:</strong> @GlobalOverdraftActivation.some_requests_may_require_a_final_manual_activation_after_approval_depending_on_the_overdraft_configuration_rules.
                         </li>
 
                         <!-- 📥 New Request -->
                         <li class="mb-2">
                             <i class="mdi mdi-plus-circle-outline text-muted me-2"></i>
-                            <strong>6. Submit New:</strong> Use the <code>New Request</code> button to start a new activation linked to a valid customer and account.
+                            <strong>6. @GlobalShared.submit_new:</strong> @Html.Raw(@GlobalOverdraftActivation.use_the_new_request_button_to_start_a_new_activation_linked_to_a_valid_customer_and_account).
                         </li>
                     </ul>
 
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="mdi mdi-alert-circle-outline me-2 fs-4 text-warning"></i>
                         <div>
-                            <strong>Important:</strong> If an overdraft request is not validated and approved, the overdraft service will remain unavailable for the customer. Always ensure requests go through proper review and approval before expecting activation.
+                            <strong>@GlobalShared.Important:</strong> @GlobalOverdraftActivation.if_an_overdraft_request_is_not_validated_and_approved_the_overdraft_service_will_remain_unavailable_for_the_customer_always_ensure_requests_go_through_proper_review_and_approval_before_expecting_activation.
                         </div>
                     </div>
 
                     <p class="text-muted mb-0">
                         <i class="mdi mdi-shield-check-outline me-2"></i>
-                        Align all approvals with credit policy, product rules, and authorization limits defined by your branch or institution.
+                        @GlobalOverdraftActivation.align_all_approvals_with_credit_policy_product_rules_and_authorization_limits_defined_by_your_branch_or_institution.
                     </p>
                 </div>
             </div>

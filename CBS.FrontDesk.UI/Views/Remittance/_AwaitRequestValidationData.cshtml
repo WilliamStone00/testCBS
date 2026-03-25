@@ -1,12 +1,12 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.Remittance>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.Remittance>
 @using Resources
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalRemittance.PendingRemittanceRequests</legend>
+    <legend id="select_base">@GlobalRemittance.pending_remittance_requests</legend>
     @if (Model.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalRemittance.NoPendingRemittanceRequestsFound</p>
+            <p>@GlobalRemittance.no_pending_remittance_requests_found</p>
         </div>
     }
     else
@@ -15,13 +15,13 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalRemittance.Date</th>
-                        <th>@GlobalRemittance.Sender</th>
-                        <th>@GlobalRemittance.Amount</th>
-                        <th>@GlobalRemittance.Reference</th>
-                        <th>@GlobalRemittance.Type</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.sender</th>
+                        <th>@GlobalShared.Amount</th>
+                        <th>@GlobalShared.Reference</th>
+                        <th>@GlobalShared.Type</th>
                         <th>@GlobalShared.Status</th>
-                        <th>@GlobalRemittance.InitiatedBy</th>
+                        <th>@GlobalShared.Initiated_By</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                             </td>
                             <td style="width:15%">@d.InitiatedBy</td>
                             <td style="width:10%">
-                                <a href="/Remittance/RequestValidationForm?remittanceid=@d.Id" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="@GlobalRemittance.ValidateRemittanceRequest.">
+                                <a href="/Remittance/RequestValidationForm?remittanceid=@d.Id" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="@GlobalRemittance.validate_remittance_request.">
                                     @GlobalShared.Validate
                                 </a>
                             </td>

@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -11,10 +11,10 @@
         <div class="card bg-light">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalMemberNoneCashOperation.ValidateMemberNoneCashOperation
+                    <i class="mdi mdi-check-circle-outline me-2"></i> @GlobalMemberNoneCashOperation.validate_member_none_cash_operation
                 </h1>
                 <p class="card-text">
-                    @GlobalMemberNoneCashOperation.ApproveOrRejectTheMembersOperationBasedOnTheProvidedDetails.
+                    @GlobalMemberNoneCashOperation.approve_or_reject_the_members_operation_based_on_the_provided_details.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,48 +25,48 @@
 <!-- Operation Details Section -->
 <div class="card mb-4">
     <div class="card-header bg-light text-primary fw-bold">
-        <i class="mdi mdi-information-outline me-2"></i> @GlobalMemberNoneCashOperation.OperationDetails
+        <i class="mdi mdi-information-outline me-2"></i> @GlobalShared.operation_details
     </div>
     <div class="card-body">
         <div class="row gy-3">
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.TransactionReference:</label>
+                <label class="form-label fw-bold">@GlobalShared.Transaction_Reference:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.TransactionReference" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.MemberReference:</label>
+                <label class="form-label fw-bold">@GlobalShared.Member_reference:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.MemberReference" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.MemberName:</label>
+                <label class="form-label fw-bold">@GlobalShared.Member_name:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.MemberName" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.AccountNumber:</label>
+                <label class="form-label fw-bold">@GlobalShared.AccountNumber:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.AccountNUmber" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.ChartOfAccount:</label>
+                <label class="form-label fw-bold">@GlobalShared.Chart_Of_Account:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.ChartOfAccountName" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.BookingDirection:</label>
+                <label class="form-label fw-bold">@GlobalShared.booking_direction:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.BookingDirection" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.Amount:</label>
+                <label class="form-label fw-bold">@GlobalShared.Amount:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.Amount.ToString("N1")" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.InitiatedBy:</label>
+                <label class="form-label fw-bold">@GlobalShared.Initiated_By:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.InitiatedUserName" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.RequestDate:</label>
+                <label class="form-label fw-bold">@GlobalShared.Request_Date:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.RequestDate.ToString("dd/MM/yyyy HH:mm")" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label fw-bold">@GlobalMemberNoneCashOperation.ApprovalStatus:</label>
+                <label class="form-label fw-bold">@GlobalShared.Approval_status:</label>
                 <input type="text" class="form-control" value="@Model.MemberNoneCashOperation.ApprovalStatus ?? " Pending"" readonly />
             </div>
         </div>
@@ -76,7 +76,7 @@
 <!-- Tips Section -->
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMemberNoneCashOperation.TIPS</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.Tips</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseValidationTips" aria-expanded="false" aria-controls="collapseValidationTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -84,11 +84,11 @@
     <div id="collapseValidationTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.VerifyAllOperationDetailsBeforeApprovingOrRejecting.</li>
-                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalMemberNoneCashOperation.UseTheCommentFieldToProvideAnyRemarks.</li>
-                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalMemberNoneCashOperation.ApprovalIsFinalEnsureTheCorrectDecisionIsMade.</li>
-                <li><i class="mdi mdi-timer-sand text-warning me-2"></i> @GlobalMemberNoneCashOperation.ReviewPendingOperationsRegularly.</li>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.ApprovedTransactionsWillProceedToTheNextStep.</li>
+                <li><i class="mdi mdi-check-circle-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.verify_all_operation_details_before_approving_or_rejecting.</li>
+                <li><i class="mdi mdi-information-outline text-primary me-2"></i> @GlobalMemberNoneCashOperation.use_the_comment_field_to_provide_any_remarks.</li>
+                <li><i class="mdi mdi-lock-outline text-danger me-2"></i> @GlobalMemberNoneCashOperation.approval_is_final_ensure_the_correct_decision_is_made.</li>
+                <li><i class="mdi mdi-timer-sand text-warning me-2"></i> @GlobalMemberNoneCashOperation.review_pending_operations_regularly.</li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i> @GlobalMemberNoneCashOperation.approved_transactions_will_proceed_to_the_next_step.</li>
             </ul>
         </div>
     </div>
@@ -97,7 +97,7 @@
 <!-- Validation Form -->
 <form id="validateOperationForm">
     <div class="mb-3">
-        <label for="IsApproved" class="form-label fw-bold">@GlobalMemberNoneCashOperation.ApprovalDecision</label>
+        <label for="IsApproved" class="form-label fw-bold">@GlobalShared.approval_decision</label>
         <div class="form-check">
             <input type="radio" id="Approve" name="IsApproved" value="true" class="form-check-input" checked />
             <label for="Approve" class="form-check-label">@GlobalShared.Approve</label>
@@ -109,13 +109,13 @@
     </div>
     <input type="hidden" id="OperationId" name="OperationId" class="form-control" value="@Model.MemberNoneCashOperation.Id" readonly />
     <div class="mb-3">
-        <label for="ValidationComment" class="form-label fw-bold">@GlobalMemberNoneCashOperation.ValidationComment</label>
-        <textarea id="ValidationComment" name="ValidationComment" class="form-control" rows="4" placeholder="@GlobalMemberNoneCashOperation.ProvideACommentForTheValidation"></textarea>
+        <label for="ValidationComment" class="form-label fw-bold">@GlobalShared.validation_comment</label>
+        <textarea id="ValidationComment" name="ValidationComment" class="form-control" rows="4" placeholder="@GlobalMemberNoneCashOperation.provide_acomment_for_the_validation"></textarea>
     </div>
 
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">
-            <i class="fas fa-check-circle me-1"></i> @GlobalMemberNoneCashOperation.SubmitValidation
+            <i class="fas fa-check-circle me-1"></i> @GlobalShared.submit_validation
         </button>
         <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">
             <i class="fas fa-times me-1"></i> @GlobalShared.Cancel

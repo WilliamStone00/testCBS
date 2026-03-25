@@ -117,79 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="ActiveStatus" xml:space="preserve">
-    <value>Active status</value>
-  </data>
-  <data name="AddNewCommittee" xml:space="preserve">
+  <data name="add_new_committee" xml:space="preserve">
     <value>Add new committee</value>
   </data>
-  <data name="AddUsersInToCommiteeGroups" xml:space="preserve">
+  <data name="add_users_in_to_commitee_groups" xml:space="preserve">
     <value>Add users in to commitee groups</value>
   </data>
-  <data name="AssignMembersToCommittee" xml:space="preserve">
+  <data name="assign_members_to_committee" xml:space="preserve">
     <value>Assign members to committee</value>
   </data>
-  <data name="CommiteeName" xml:space="preserve">
+  <data name="commitee_name" xml:space="preserve">
     <value>Commitee name</value>
   </data>
-  <data name="CommiteeSize" xml:space="preserve">
+  <data name="commitee_size" xml:space="preserve">
     <value>Commitee size</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="EnterAcceptableNumberOfApprovals" xml:space="preserve">
+  <data name="enter_acceptable_number_of_approvals" xml:space="preserve">
     <value>Enter acceptable number of approvals</value>
   </data>
-  <data name="Inactive" xml:space="preserve">
-    <value>Inactive</value>
-  </data>
-  <data name="Leader" xml:space="preserve">
-    <value>Leader</value>
-  </data>
-  <data name="LoanCommitee" xml:space="preserve">
+  <data name="loan_commitee" xml:space="preserve">
     <value>Loan commitee</value>
   </data>
-  <data name="LoanCommiteeGroup" xml:space="preserve">
-    <value>Loan commitee group</value>
-  </data>
-  <data name="LOAN_COMMITEE_CONFIGURATION" xml:space="preserve">
+  <data name="loan_commitee_configuration" xml:space="preserve">
     <value>LOAN COMMITEE CONFIGURATION</value>
   </data>
-  <data name="MaximumAmountToValide" xml:space="preserve">
+  <data name="loan_commitee_group" xml:space="preserve">
+    <value>Loan commitee group</value>
+  </data>
+  <data name="maximum_amount_to_valide" xml:space="preserve">
     <value>Maximum amount to valide</value>
   </data>
-  <data name="Member" xml:space="preserve">
-    <value>Member</value>
-  </data>
-  <data name="MinimumAmountToValide" xml:space="preserve">
+  <data name="minimum_amount_to_valide" xml:space="preserve">
     <value>Minimum amount to valide</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NoCommiteeGroupsAreAvailableAtTheMoment" xml:space="preserve">
+  <data name="no_commitee_groups_are_available_at_the_moment" xml:space="preserve">
     <value>No commitee groups are available at the moment</value>
   </data>
-  <data name="Range" xml:space="preserve">
-    <value>Range</value>
-  </data>
-  <data name="SelectGroup" xml:space="preserve">
-    <value>Select group</value>
-  </data>
-  <data name="SelectGroupLeader" xml:space="preserve">
+  <data name="select_group_leader" xml:space="preserve">
     <value>Select group leader</value>
-  </data>
-  <data name="SelectUser" xml:space="preserve">
-    <value>Select user</value>
-  </data>
-  <data name="Size" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="ValidationRequired" xml:space="preserve">
-    <value>Validation required</value>
   </data>
 </root>

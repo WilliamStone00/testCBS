@@ -1,23 +1,23 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
+@model CBS.FrontDesk.Data.Entity.SavingProducts.Account
 @using Resources
     <div class="card-body d-sm-flex d-block">
         <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
-            <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.PerformMemberDepositOperationIn @Model.AccountNumber (@Model.AccountType)">
+            <a href="/Operation/Deposit?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.perform_member_deposit_operation_in @Model.AccountNumber (@Model.AccountType)">
                 <span class="tf-icons mdi mdi-octagram-plus mdi-18px"></span>
             </a>
-            <a href="/Operation/Withdrawal?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.PerformMemberWithdrawalOperation">
+            <a href="/Operation/Withdrawal?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.perform_member_withdrawal_operation">
                 <span class="tf-icons mdi mdi-outdoor-lamp mdi-18px"></span>
             </a>
-            <a href="/Operation/TransferRequest" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" target="_blank" data-bs-toggle="tooltip" title="@GlobalOperation.PerformTransferFrom @Model.AccountNumber (@Model.AccountType) @GlobalOperation.toAnotherAccount">
+            <a href="/Operation/TransferRequest" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" target="_blank" data-bs-toggle="tooltip" title="@GlobalOperation.perform_transfer_from @Model.AccountNumber (@Model.AccountType) @GlobalOperation.to_another_account">
                 <span class="tf-icons mdi mdi-transfer mdi-18px"></span>
             </a>
-            <a href="/Operation/LoanRepayment?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.PerformMemberLoanRepaymentOperationIn @Model.AccountNumber (@Model.AccountType)">
+            <a href="/Operation/LoanRepayment?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.perform_member_loan_repayment_operation_in @Model.AccountNumber (@Model.AccountType)">
                 <span class="tf-icons mdi mdi-contactless-payment mdi-18px"></span>
             </a>
-            <a href="/Operation/AccountDetails?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.ViewOfAllmMemberAccountInformation">
+            <a href="/Operation/AccountDetails?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.view_of_allm_member_account_information">
                 <span class="tf-icons mdi mdi-folder-information-outline mdi-18px"></span>
             </a>
-            <a href="/Operation/Statement?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.MembersAccountStatementOf @Model.AccountNumber (@Model.AccountType)">
+            <a href="/Operation/Statement?KEY=@Model.AccountNumber" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" data-bs-toggle="tooltip" title="@GlobalOperation.members_account_statement_of @Model.AccountNumber (@Model.AccountType)">
                 <span class="tf-icons mdi mdi-format-list-bulleted mdi-18px"></span>
             </a>
             @*<a href="#" class="btn btn-icon btn-label-primary btn-sm btn-fab demo btn-space" onclick="GetTransactionHistory('@Model.AccountNumber','datalistingview','_TransactionHistrotriesData','histories','myDataTable','1')" data-bs-toggle="tooltip" title="Member account statements">

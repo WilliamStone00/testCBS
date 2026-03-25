@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 
 <div class="change-group">
@@ -7,14 +7,14 @@
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.PrintDate.DateFrom, new { @class = "form-control date-picker", @id = "DateFrom" })
                 @Html.ValidationMessageFor(m => m.PrintDate.DateFrom, "", new { @class = "text-danger" })
-                <label>@GlobalMembersFSeries.StartDate</label>
+                <label>@GlobalShared.Start_Date</label>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-floating form-floating-outline">
                 @Html.TextBoxFor(m => m.PrintDate.DateTo, new { @class = "form-control date-picker", @id = "DateTo" })
                 @Html.ValidationMessageFor(m => m.PrintDate.DateTo, "", new { @class = "text-danger" })
-                <label>@GlobalMembersFSeries.EndDate</label>
+                <label>@GlobalShared.End_Date</label>
             </div>
         </div>
         <div class="col-md-12">

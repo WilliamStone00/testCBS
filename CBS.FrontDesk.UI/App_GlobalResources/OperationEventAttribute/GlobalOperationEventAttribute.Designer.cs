@@ -63,36 +63,36 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string Description {
+        internal static string description {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string Name {
+        internal static string name {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation event.
         /// </summary>
-        internal static string OperationEvent {
+        internal static string operation_event {
             get {
-                return ResourceManager.GetString("OperationEvent", resourceCulture);
+                return ResourceManager.GetString("operation_event", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to user account.
         /// </summary>
-        internal static string userAccount {
+        internal static string user_account {
             get {
-                return ResourceManager.GetString("userAccount", resourceCulture);
+                return ResourceManager.GetString("user_account", resourceCulture);
             }
         }
     }

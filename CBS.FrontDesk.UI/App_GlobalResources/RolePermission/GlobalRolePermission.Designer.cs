@@ -63,99 +63,45 @@ namespace CBS.FrontDesk.UI.App_GlobalResources.RolePermission {
         /// <summary>
         ///   Looks up a localized string similar to Controller.
         /// </summary>
-        public static string Controller {
+        public static string controller {
             get {
-                return ResourceManager.GetString("Controller", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Group.
-        /// </summary>
-        public static string Group {
-            get {
-                return ResourceManager.GetString("Group", resourceCulture);
+                return ResourceManager.GetString("controller", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Menu text.
         /// </summary>
-        public static string MenuText {
+        public static string menu_text {
             get {
-                return ResourceManager.GetString("MenuText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        public static string None {
-            get {
-                return ResourceManager.GetString("None", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parent.
-        /// </summary>
-        public static string Parent {
-            get {
-                return ResourceManager.GetString("Parent", resourceCulture);
+                return ResourceManager.GetString("menu_text", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to PERMISSIONS.
         /// </summary>
-        public static string PERMISSIONS {
+        public static string permissions {
             get {
-                return ResourceManager.GetString("PERMISSIONS", resourceCulture);
+                return ResourceManager.GetString("permissions", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ROLE MANAGEMENT.
         /// </summary>
-        public static string ROLE_MANAGEMENT {
+        public static string role_management {
             get {
-                return ResourceManager.GetString("ROLE_MANAGEMENT", resourceCulture);
+                return ResourceManager.GetString("role_management", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Role(s)/Rights.
         /// </summary>
-        public static string SelectRoleRights {
+        public static string select_role_rights {
             get {
-                return ResourceManager.GetString("SelectRoleRights", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Visible.
-        /// </summary>
-        public static string Visible {
-            get {
-                return ResourceManager.GetString("Visible", resourceCulture);
+                return ResourceManager.GetString("select_role_rights", resourceCulture);
             }
         }
     }

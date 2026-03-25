@@ -117,37 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Colateral" xml:space="preserve">
+  <data name="colateral" xml:space="preserve">
     <value>Colateral</value>
   </data>
-  <data name="EnterParameters" xml:space="preserve">
-    <value>Enter parameters</value>
-  </data>
-  <data name="LOAN_PRODUCT_COLLATERAL_CONFIGURATION" xml:space="preserve">
+  <data name="loan_product_collateral_configuration" xml:space="preserve">
     <value>LOAN PRODUCT COLLATERAL CONFIGURATION</value>
   </data>
-  <data name="MaximumCollateralRate" xml:space="preserve">
+  <data name="maximum_collateral_rate" xml:space="preserve">
     <value>Maximum collateral rate</value>
   </data>
-  <data name="MinimumCollateralRate" xml:space="preserve">
+  <data name="minimum_collateral_rate" xml:space="preserve">
     <value>Minimum collateral rate</value>
   </data>
-  <data name="Product" xml:space="preserve">
-    <value>Product</value>
-  </data>
-  <data name="Range" xml:space="preserve">
-    <value>Range</value>
-  </data>
-  <data name="Select" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="SelectCollateral" xml:space="preserve">
+  <data name="select_collateral" xml:space="preserve">
     <value>Select collateral</value>
-  </data>
-  <data name="SelectProduct" xml:space="preserve">
-    <value>Select product</value>
-  </data>
-  <data name="Tag" xml:space="preserve">
-    <value>Tag</value>
   </data>
 </root>

@@ -1,22 +1,22 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping>
-
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportLineMapping.ReportLineMapping>
+@using Resources
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Line Mappings</h5>
     <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportLineMappingCreateModal()">
-        <i class="mdi mdi-plus"></i> New
+        <i class="mdi mdi-plus"></i> @GlobalShared.New
     </a>
 </div>
 
 <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable_line_mapping">
     <thead>
         <tr>
-            <th>Match Type</th>
+            <th>@GlobalShared.match_type</th>
             @*<th>From</th>
             <th>To</th>*@
-            <th>Side</th>
-            <th>Sign</th>
-            <th>Include Liaison</th>
-            <th>Actions</th>
+            <th>@GlobalShared.side</th>
+            <th>@GlobalShared.sign</th>
+            <th>@GlobalReportConfiguration.include_liaison</th>
+            <th>@GlobalShared.Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
                 <td>
                     <a href="javascript:void(0);" class="btn btn-sm btn-info"
                        onclick="openReportLineMappingEditModal('@item.Id')">
-                        <i class="mdi mdi-pencil"></i> Edit
+                        <i class="mdi mdi-pencil"></i> @GlobalShared.Edit
                     </a>
                 </td>
             </tr>

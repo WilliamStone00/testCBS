@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AddRemittanceCommand
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AddRemittanceCommand
 @using Resources
 
 
@@ -11,7 +11,7 @@
         <div class="accordion-item mt-2">
             <h2 class="accordion-header" id="requestPropertiesHeader">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#requestProperties" aria-expanded="true" aria-controls="requestProperties">
-                    @GlobalRemittance.RequestProperties
+                    @GlobalRemittance.request_properties
                 </button>
             </h2>
             <div id="requestProperties" class="accordion-collapse collapse show" aria-labelledby="requestPropertiesHeader" data-bs-parent="#remittanceAccordion">
@@ -19,19 +19,19 @@
                     <!-- Help Note -->
                     <div class="mb-3">
                         <p class="text-muted">
-                            @GlobalRemittance.ThisSectionAllowsYouToConfigureTheEssentialDetails.
-                            @GlobalRemittance.EnsureThatAllInputsAlignWithTheRemittancesRequirements
-                            @GlobalRemittance.determinesTheProcessingFlowAndEnsuresProperIdentification.
+                            @GlobalRemittance.this_section_allows_you_to_configure_the_essential_details.
+                            @GlobalRemittance.ensure_that_all_inputs_align_with_the_remittances_requirements
+                            @GlobalRemittance.determines_the_processing_flow_and_ensures_proper_identification.
                         </p>
                     </div>
                     <fieldset class="fieldset-custom mb-4">
-                        <legend class="text-black">@GlobalRemittance.RequestProperties</legend>
+                        <legend class="text-black">@GlobalRemittance.request_properties</legend>
                         <div class="row mt-2 gy-4">
 
 
                             <!-- Transfer Source -->
                             <div class="col-md-12 mt-3">
-                                <label class="form-label">@GlobalRemittance.TransferSource</label>
+                                <label class="form-label">@GlobalShared.transfer_source</label>
                                 <div class="d-flex align-items-center">
                                     <!-- Local Remittance -->
                                     <div class="form-check me-3">
@@ -42,7 +42,7 @@
                                        @checked = (Model.TransferSource == "Local_Remittance" || Model.TransferSource == null) ? "checked" : null,
                                        @onchange = "HandleTransferSourceChange()"
                                    })
-                                        <label class="form-check-label" for="transferSourceLocal">@GlobalRemittance.LocalRemittance</label>
+                                        <label class="form-check-label" for="transferSourceLocal">@GlobalRemittance.local_remittance</label>
                                     </div>
 
                                     <!-- International Remittance -->
@@ -53,7 +53,7 @@
                                        @class = "form-check-input",
                                        @onchange = "HandleTransferSourceChange()"
                                    })
-                                        <label class="form-check-label" for="transferSourceInternational">@GlobalRemittance.InternationalRemittance</label>
+                                        <label class="form-check-label" for="transferSourceInternational">@GlobalRemittance.international_remittance</label>
                                     </div>
                                 </div>
                                 @Html.ValidationMessageFor(m => m.TransferSource, "", new { @class = "text-danger" })
@@ -61,14 +61,14 @@
                             <!-- Source Branch -->
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalRemittance.SelectBranch+"---", new { @class = "form-control select2", @search = "true", @onchange = "GetBranchRemittanceAccounts(this.value)", @id = "BranchId" })
+                                    @Html.DropDownListFor(m => m.SourceBranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---"+ @GlobalShared.Select_Branch+"---", new { @class = "form-control select2", @search = "true", @onchange = "GetBranchRemittanceAccounts(this.value)", @id = "BranchId" })
                                     @Html.ValidationMessageFor(m => m.SourceBranchId, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SourceBranch</label>
+                                    <label>@GlobalShared.Source_branch</label>
                                 </div>
                             </div>
                             <!-- Transfer Type (Hidden by default) -->
                             <div id="transferTypeSection" class="col-md-12 mt-2" style="display: none;">
-                                <label class="form-label">@GlobalRemittance.TransferType</label>
+                                <label class="form-label">@GlobalShared.transfer_type</label>
                                 <div class="d-flex align-items-center">
                                     <!-- Local Transfer -->
                                     <div class="form-check me-3 transfer-type local">
@@ -77,7 +77,7 @@
                                        @id = "transferTypeLocal",
                                        @class = "form-check-input",
                                    })
-                                        <label class="form-check-label" for="transferTypeLocal">@GlobalRemittance.LocalTransfer</label>
+                                        <label class="form-check-label" for="transferTypeLocal">@GlobalRemittance.local_transfer</label>
                                     </div>
 
                                     <!-- Incoming International Transfer -->
@@ -87,7 +87,7 @@
                                        @id = "transferTypeIncoming",
                                        @class = "form-check-input",
                                    })
-                                        <label class="form-check-label" for="transferTypeIncoming">@GlobalRemittance.IncomingInternationalTransfer</label>
+                                        <label class="form-check-label" for="transferTypeIncoming">@GlobalRemittance.incoming_international_transfer</label>
                                     </div>
 
                                     <!-- Outgoing International Transfer -->
@@ -97,7 +97,7 @@
                                        @id = "transferTypeOutgoing",
                                        @class = "form-check-input",
                                    })
-                                        <label class="form-check-label" for="transferTypeOutgoing">@GlobalRemittance.OutgoingInternationalTransfer</label>
+                                        <label class="form-check-label" for="transferTypeOutgoing">@GlobalRemittance.outgoing_international_transfer</label>
                                     </div>
                                 </div>
                                 @Html.ValidationMessageFor(m => m.TransferType, "", new { @class = "text-danger" })
@@ -106,9 +106,9 @@
                             <!-- Remittance Type -->
                             <div class="col-md-9 mt-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.RemittanceType, new SelectList(ViewBag.RemittanceTypes, "AccountType", "AccountType"), "---"+ @GlobalRemittance.SelectRemittanceType + "---", new { @class = "form-control select2", @search = "true", @id = "RemittanceTypeId", @onchange = "GetAccountNumber(this.value)" })
+                                    @Html.DropDownListFor(m => m.RemittanceType, new SelectList(ViewBag.RemittanceTypes, "AccountType", "AccountType"), "---"+ @GlobalRemittance.select_remittance_type + "---", new { @class = "form-control select2", @search = "true", @id = "RemittanceTypeId", @onchange = "GetAccountNumber(this.value)" })
                                     @Html.ValidationMessageFor(m => m.RemittanceType, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.RemittanceType</label>
+                                    <label>@GlobalRemittance.remittance_type</label>
                                 </div>
                             </div>
 
@@ -117,7 +117,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", placeholder = "Account Number", @id = "AccountNumberId", @readonly = true })
                                     @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
-                                    <label id="AccountName">@GlobalRemittance.AccountNumber</label>
+                                    <label id="AccountName">@GlobalShared.Account_Number</label>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
         <div class="accordion-item  mt-2">
             <h2 class="accordion-header" id="senderInfoHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#senderInfo" aria-expanded="false" aria-controls="senderInfo">
-                    @GlobalRemittance.SenderInformation
+                    @GlobalShared.sender_information
                 </button>
             </h2>
             <div id="senderInfo" class="accordion-collapse collapse" aria-labelledby="senderInfoHeader" data-bs-parent="#remittanceAccordion">
@@ -138,91 +138,91 @@
                     <!-- Help Note -->
                     <div class="mb-3">
                         <p class="text-muted">
-                            @GlobalRemittance.ThisSectionCapturesDetailsAboutTheSenderOfTheRemittance
-                            @GlobalRemittance.TheTransactionIsSecurelyProcessedAndCompliesWithNecessaryIdentificationRequirements.
+                            @GlobalRemittance.this_section_captures_details_about_the_sender_of_the_remittance
+                            @GlobalRemittance.the_transaction_is_securely_processed_and_complies_with_necessary_identification_requirements.
                         </p>
                     </div>
                     <fieldset class="fieldset-custom mb-4">
-                        <legend class="text-black">@GlobalRemittance.SenderInformation</legend>
+                        <legend class="text-black">@GlobalShared.sender_information</legend>
                         <div class="row mt-2 gy-4">
                             <!-- Sender Name -->
                             <div class="col-md-5">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderName, new { @class = "form-control", placeholder = @GlobalRemittance.SenderName })
+                                    @Html.TextBoxFor(m => m.SenderName, new { @class = "form-control", placeholder = @GlobalShared.sender_name })
                                     @Html.ValidationMessageFor(m => m.SenderName, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderName</label>
+                                    <label>@GlobalShared.sender_name</label>
                                 </div>
                             </div>
 
                             <!-- Sender Phone Number -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderPhoneNumber, new { @class = "form-control", placeholder = @GlobalRemittance.SenderPhoneNumber })
+                                    @Html.TextBoxFor(m => m.SenderPhoneNumber, new { @class = "form-control", placeholder = @GlobalShared.sender_phone_number })
                                     @Html.ValidationMessageFor(m => m.SenderPhoneNumber, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderPhoneNumber</label>
+                                    <label>@GlobalShared.sender_phone_number</label>
                                 </div>
                             </div>
 
                             <!-- Sender CNI -->
                             <div class="col-md-4">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderCNI, new { @class = "form-control", placeholder = @GlobalRemittance.SenderNationalIdentityCardInformation })
+                                    @Html.TextBoxFor(m => m.SenderCNI, new { @class = "form-control", placeholder = @GlobalRemittance.sender_national_identity_card_information })
                                     @Html.ValidationMessageFor(m => m.SenderCNI, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderCNI</label>
+                                    <label>@GlobalShared.sender_cni</label>
                                 </div>
                             </div>
 
                             <!-- Date of Issue -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.DateOfIssue, new { @class = "form-control", @type = "date", placeholder = @GlobalRemittance.DateOfIssue })
+                                    @Html.TextBoxFor(m => m.DateOfIssue, new { @class = "form-control", @type = "date", placeholder = @GlobalShared.date_of_issue })
                                     @Html.ValidationMessageFor(m => m.DateOfIssue, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.DateOfIssue</label>
+                                    <label>@GlobalShared.date_of_issue</label>
                                 </div>
                             </div>
 
                             <!-- Expiry Date -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.ExpirationDate, new { @class = "form-control", @type = "date", placeholder = @GlobalRemittance.ExpiryDate })
+                                    @Html.TextBoxFor(m => m.ExpirationDate, new { @class = "form-control", @type = "date", placeholder = @GlobalShared.Expiry_Date })
                                     @Html.ValidationMessageFor(m => m.ExpirationDate, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.ExpiryDate</label>
+                                    <label>@GlobalShared.Expiry_Date</label>
                                 </div>
                             </div>
 
                             <!-- Place of Issue -->
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = @GlobalRemittance.PlaceOfIssue })
+                                    @Html.TextBoxFor(m => m.PlaceOfIssue, new { @class = "form-control", placeholder = @GlobalShared.Place_of_Issue })
                                     @Html.ValidationMessageFor(m => m.PlaceOfIssue, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.PlaceOfIssue</label>
+                                    <label>@GlobalShared.Place_of_Issue</label>
                                 </div>
                             </div>
 
                             <!-- Sender Secret Code -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderSecreteCode, new { @class = "form-control", placeholder = @GlobalRemittance.WithdrawalSecretCode })
+                                    @Html.TextBoxFor(m => m.SenderSecreteCode, new { @class = "form-control", placeholder = @GlobalRemittance.withdrawal_secret_code })
                                     @Html.ValidationMessageFor(m => m.SenderSecreteCode, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SecretCode</label>
+                                    <label>@GlobalShared.secret_code</label>
                                 </div>
                             </div>
 
                             <!-- Sender Address -->
                             <div class="col-md-9">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderAddress, new { @class = "form-control", placeholder = @GlobalRemittance.SenderAddress })
+                                    @Html.TextBoxFor(m => m.SenderAddress, new { @class = "form-control", placeholder = @GlobalShared.sender_address })
                                     @Html.ValidationMessageFor(m => m.SenderAddress, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderAddress</label>
+                                    <label>@GlobalShared.sender_address</label>
                                 </div>
                             </div>
 
                             <!-- Sender Country -->
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.SenderCountry, new { @class = "form-control", placeholder = @GlobalRemittance.SenderCountry })
+                                    @Html.TextBoxFor(m => m.SenderCountry, new { @class = "form-control", placeholder = @GlobalShared.sender_country })
                                     @Html.ValidationMessageFor(m => m.SenderCountry, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderCountry</label>
+                                    <label>@GlobalShared.sender_country</label>
                                 </div>
                             </div>
 
@@ -231,7 +231,7 @@
                                 <div class="form-floating form-floating-outline">
                                     @Html.TextAreaFor(m => m.SenderNote, new { @class = "form-control", @style = "height: 150px;" })
                                     @Html.ValidationMessageFor(m => m.SenderNote, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SenderNoteIoTheReceiver</label>
+                                    <label>@GlobalRemittance.sender_note_io_the_receiver</label>
                                 </div>
                             </div>
 
@@ -240,7 +240,7 @@
                                 <div class="form-check">
                                     @Html.CheckBoxFor(m => m.SendSMSTotReceiver, new { @class = "form-check-input", @id = "sendSmsToReceiver" })
                                     <label class="form-check-label" for="sendSmsToReceiver">
-                                        @GlobalRemittance.SendSMSNotificationToReceiver
+                                        @GlobalRemittance.send_smsnotification_to_receiver
                                     </label>
                                 </div>
                                 @Html.ValidationMessageFor(m => m.SendSMSTotReceiver, "", new { @class = "text-danger" })
@@ -257,7 +257,7 @@
         <div class="accordion-item mt-2">
             <h2 class="accordion-header" id="receiverInfoHeader">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#receiverInfo" aria-expanded="true" aria-controls="receiverInfo">
-                    @GlobalRemittance.ReceiverInformation
+                    @GlobalShared.receiver_information
                 </button>
             </h2>
             <div id="receiverInfo" class="accordion-collapse collapse" aria-labelledby="receiverInfoHeader" data-bs-parent="#remittanceAccordion">
@@ -265,50 +265,50 @@
                     <!-- Help Note -->
                     <div class="mb-3">
                         <p class="text-muted">
-                            @GlobalRemittance.ThisSectionCapturesEssentialDetails
-                            @GlobalRemittance.canSecurelyCollectTheFunds.
+                            @GlobalRemittance.this_section_captures_essential_details
+                            @GlobalRemittance.can_securely_collect_the_funds.
                         </p>
                     </div>
                     <fieldset class="fieldset-custom mb-4">
-                        <legend class="text-black">@GlobalRemittance.ReceiverInformation</legend>
+                        <legend class="text-black">@GlobalShared.receiver_information</legend>
                         <div class="row mt-2 gy-4">
                             <!-- Receiver Name -->
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.ReceiverName, new { @class = "form-control", placeholder = @GlobalRemittance.ReceiverName })
+                                    @Html.TextBoxFor(m => m.ReceiverName, new { @class = "form-control", placeholder = @GlobalShared.Receiver_Name })
                                     @Html.ValidationMessageFor(m => m.ReceiverName, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.ReceiverName</label>
+                                    <label>@GlobalShared.Receiver_Name</label>
                                 </div>
                             </div>
                             <!-- Receiver Phone Number -->
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.ReceiverPhoneNumber, new { @class = "form-control", placeholder = @GlobalRemittance.ReceiverPhoneNumber })
+                                    @Html.TextBoxFor(m => m.ReceiverPhoneNumber, new { @class = "form-control", placeholder = @GlobalShared.receiver_phone_number })
                                     @Html.ValidationMessageFor(m => m.ReceiverPhoneNumber, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.ReceiverPhoneNumber</label>
+                                    <label>@GlobalShared.receiver_phone_number</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.DropDownListFor(m => m.ReceiverLanguage, new SelectList(ViewBag.Languages, "Value", "Text"), "---"+ @GlobalRemittance.SelectLanguage+"---", new { @class = "form-control select2", @search = "true" })
+                                    @Html.DropDownListFor(m => m.ReceiverLanguage, new SelectList(ViewBag.Languages, "Value", "Text"), "---"+ @GlobalShared.Select_Language+"---", new { @class = "form-control select2", @search = "true" })
                                     @Html.ValidationMessageFor(m => m.ReceiverLanguage, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.SelectReceiverPreferredLanguageForSMS</label>
+                                    <label>@GlobalRemittance.select_receiver_preferred_language_for_sms</label>
                                 </div>
                             </div>
                             <!-- Sender Country -->
                             <div class="col-md-5">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.ReceiverCountry, new { @class = "form-control", placeholder = @GlobalRemittance.ReceiverCountry })
+                                    @Html.TextBoxFor(m => m.ReceiverCountry, new { @class = "form-control", placeholder = @GlobalShared.receiver_country })
                                     @Html.ValidationMessageFor(m => m.ReceiverCountry, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.ReceiverCountry</label>
+                                    <label>@GlobalShared.receiver_country</label>
                                 </div>
                             </div>
                             <!-- Receiver Address -->
                             <div class="col-md-7">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.ReceiverAddress, new { @class = "form-control", placeholder = @GlobalRemittance.ReceiverAddress })
+                                    @Html.TextBoxFor(m => m.ReceiverAddress, new { @class = "form-control", placeholder = @GlobalShared.receiver_address })
                                     @Html.ValidationMessageFor(m => m.ReceiverAddress, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.ReceiverAddress</label>
+                                    <label>@GlobalShared.receiver_address</label>
                                 </div>
                             </div>
                         </div>
@@ -321,7 +321,7 @@
         <div class="accordion-item mt-2">
             <h2 class="accordion-header" id="chargesSectionHeader">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chargesSection" aria-expanded="false" aria-controls="chargesSection">
-                    @GlobalRemittance.ChargesSection
+                    @GlobalRemittance.charges_section
                 </button>
             </h2>
             <div id="chargesSection" class="accordion-collapse collapse" aria-labelledby="chargesSectionHeader" data-bs-parent="#remittanceAccordion">
@@ -329,51 +329,51 @@
                     <!-- Help Note -->
                     <div class="mb-3">
                         <p class="text-muted">
-                            @GlobalRemittance.ThisSectionOutlinesTheChargesAssociatedWithTheRemittanceTransaction,
-                            @GlobalRemittance.andReviewTheCalculatedFinalAmounts.
+                            @GlobalRemittance.this_section_outlines_the_charges_associated_with_the_remittance_transaction,
+                            @GlobalRemittance.and_review_the_calculated_final_amounts.
                         </p>
                         <p class="text-muted">
-                            <strong>@GlobalRemittance.InclusiveCharges:</strong> @GlobalRemittance.TheChargesAreIncludedInTheSpecifiedAmount,
-                            @GlobalRemittance.andTheReceiversAmountIsReducedByTheApplicableCharges.
+                            <strong>@GlobalShared.inclusive_charges:</strong> @GlobalRemittance.the_charges_are_included_in_the_specified_amount,
+                            @GlobalRemittance.and_the_receivers_amount_is_reduced_by_the_applicable_charges.
                         </p>
                         <p class="text-muted">
-                            <strong>@GlobalRemittance.ExclusiveCharges:</strong> @GlobalRemittance.TheChargesAreAddedOnTopOfTheSpecifiedAmount
-                            @GlobalRemittance.plusTheChargesWhileTheReceiversAmountRemains.
+                            <strong>@GlobalRemittance.exclusive_charges:</strong> @GlobalRemittance.the_charges_are_added_on_top_of_the_specified_amount
+                            @GlobalRemittance.plus_the_charges_while_the_receivers_amount_remains.
                         </p>
                     </div>
                     <fieldset class="fieldset-custom mb-4">
-                        <legend class="text-black">@GlobalRemittance.ChargesSection</legend>
+                        <legend class="text-black">@GlobalRemittance.charges_section</legend>
                         <div class="row gy-4">
                             <!-- Initial Amount -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.InitailAmount, new { @class = "form-control", @id = "initialAmount", type = "number", step = "0.01", placeholder = @GlobalRemittance.Amount })
+                                    @Html.TextBoxFor(m => m.InitailAmount, new { @class = "form-control", @id = "initialAmount", type = "number", step = "0.01", placeholder = @GlobalShared.Amount })
                                     @Html.ValidationMessageFor(m => m.InitailAmount, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.EnterAmountToTransfer</label>
+                                    <label>@GlobalRemittance.enter_amount_to_transfer</label>
                                 </div>
                             </div>
 
                             <!-- Final Amount -->
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @id = "AmountId", type = "number", step = "0.01", placeholder = @GlobalRemittance.Amount, ReadOnly = true })
+                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @id = "AmountId", type = "number", step = "0.01", placeholder = @GlobalShared.Amount, ReadOnly = true })
                                     @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.FinalAmountToTransfer</label>
+                                    <label>@GlobalRemittance.final_amount_to_transfer</label>
                                 </div>
                             </div>
 
                             <!-- Charges -->
                             <div class="col-md-2">
                                 <div class="form-floating form-floating-outline">
-                                    @Html.TextBoxFor(m => m.Fee, new { @class = "form-control", @id = "FeeId", placeholder = @GlobalRemittance.RemittanceCharge, ReadOnly = true })
+                                    @Html.TextBoxFor(m => m.Fee, new { @class = "form-control", @id = "FeeId", placeholder = @GlobalRemittance.remittance_charge, ReadOnly = true })
                                     @Html.ValidationMessageFor(m => m.Fee, "", new { @class = "text-danger" })
-                                    <label>@GlobalRemittance.Charges</label>
+                                    <label>@GlobalShared.Charges</label>
                                 </div>
                             </div>
 
                             <!-- Charge Type Radio Buttons -->
                             <div class="col-md-4">
-                                <label class="form-label">@GlobalRemittance.ChargeType</label>
+                                <label class="form-label">@GlobalRemittance.charge_type</label>
                                 <div class="d-flex align-items-center">
                                     <div class="form-check me-3">
                                         @Html.RadioButtonFor(m => m.ChargeType, "Inclussive", new
@@ -385,8 +385,8 @@
                                         <label class="form-check-label" for="chargeTypeInclusive"
                                                data-bs-toggle="tooltip"
                                                data-bs-placement="top"
-                                               title="@GlobalRemittance.InclusiveChargesAreIncludedInTheFinalAmount.">
-                                            @GlobalRemittance.Inclusive
+                                               title="@GlobalRemittance.inclusive_charges_are_included_in_the_final_amount.">
+                                            @GlobalShared.Inclusive
                                         </label>
                                     </div>
                                     <div class="form-check">
@@ -399,8 +399,8 @@
                                         <label class="form-check-label" for="chargeTypeExclusive"
                                                data-bs-toggle="tooltip"
                                                data-bs-placement="top"
-                                               title="@GlobalRemittance.ExclusiveChargesAreAddedOnTopOfTheSpecifiedAmount.">
-                                            @GlobalRemittance.Exclusive
+                                               title="@GlobalRemittance.exclusive_charges_are_added_on_top_of_the_specified_amount.">
+                                            @GlobalShared.Exclusive
                                         </label>
                                     </div>
                                 </div>
@@ -409,7 +409,7 @@
 
                             <!-- Button to Get Charges -->
                             <div class="col-md-4 d-flex align-items-end">
-                                <button type="button" id="getChargesBtn" class="btn btn-primary" onclick="GetRemittanceCharge()">@GlobalRemittance.ComputeCharges</button>
+                                <button type="button" id="getChargesBtn" class="btn btn-primary" onclick="GetRemittanceCharge()">@GlobalRemittance.compute_charges</button>
                             </div>
                         </div>
 
@@ -419,13 +419,13 @@
                                 <table class="table table-hover table-bordered table-sm" id="myDataTable">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>@GlobalRemittance.RemittanceType</th>
-                                            <th>@GlobalRemittance.INITAmount</th>
-                                            <th>@GlobalRemittance.ReceiverAmount</th>
-                                            <th>@GlobalRemittance.ServiceCharge</th>
-                                            <th>@GlobalRemittance.Value</th>
-                                            <th>@GlobalRemittance.FeeType</th>
-                                            <th>@GlobalRemittance.Total</th>
+                                            <th>@GlobalRemittance.remittance_type</th>
+                                            <th>@GlobalRemittance.init_amount</th>
+                                            <th>@GlobalShared.receiver_amount</th>
+                                            <th>@GlobalRemittance.service_charge</th>
+                                            <th>@GlobalShared.Value</th>
+                                            <th>@GlobalShared.Fee_Type</th>
+                                            <th>@GlobalShared.Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>

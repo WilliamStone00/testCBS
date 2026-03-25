@@ -117,229 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
-  </data>
-  <data name="AnOTPHasBeenSentToYourRegisteredPhoneNumber" xml:space="preserve">
-    <value>An OTP has been sent to your registered phone number. Please check your messages</value>
-  </data>
-  <data name="AnyBranchWithinTheNetwork" xml:space="preserve">
+  <data name="any_branch_within_the_network" xml:space="preserve">
     <value>any branch within the network</value>
   </data>
-  <data name="ApprovalStatus" xml:space="preserve">
-    <value>Approval status</value>
+  <data name="an_otp_has_been_sent_to_your_registered_phone_number" xml:space="preserve">
+    <value>An OTP has been sent to your registered phone number. Please check your messages</value>
   </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="CantCashinFor" xml:space="preserve">
+  <data name="cant_cashin_for" xml:space="preserve">
     <value>Can't cashin for</value>
   </data>
-  <data name="CashCollectedBy" xml:space="preserve">
-    <value>Cash collected by</value>
-  </data>
-  <data name="CashIn" xml:space="preserve">
-    <value>Cash-In</value>
-  </data>
-  <data name="Cashout" xml:space="preserve">
-    <value>Cash-out</value>
-  </data>
-  <data name="CashoutDashboard" xml:space="preserve">
+  <data name="cashout_dashboard" xml:space="preserve">
     <value>Cashout Dashboard</value>
   </data>
-  <data name="CashWithdrawnedBy" xml:space="preserve">
+  <data name="cash_collected_by" xml:space="preserve">
+    <value>Cash collected by</value>
+  </data>
+  <data name="cash_withdrawned_by" xml:space="preserve">
     <value>Cash withdrawned by</value>
   </data>
-  <data name="ChargeExcluded" xml:space="preserve">
-    <value>Charge excluded</value>
-  </data>
-  <data name="ChargeIncluded" xml:space="preserve">
-    <value>Charge included</value>
-  </data>
-  <data name="CNIDateOfExpiration" xml:space="preserve">
-    <value>CNI date of expiration</value>
-  </data>
-  <data name="CNIDateOfIssue" xml:space="preserve">
-    <value>CNI date of issue</value>
-  </data>
-  <data name="CNIPlaceOfIssue" xml:space="preserve">
-    <value>CNI place of Issue</value>
-  </data>
-  <data name="Coins" xml:space="preserve">
-    <value>Coins</value>
-  </data>
-  <data name="confirm" xml:space="preserve">
-    <value>confirm</value>
-  </data>
-  <data name="CustomerCode" xml:space="preserve">
-    <value>Customer code</value>
-  </data>
-  <data name="CustomerNumber" xml:space="preserve">
-    <value>Customer number</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateExpire" xml:space="preserve">
-    <value>Date expire</value>
-  </data>
-  <data name="DateIssue" xml:space="preserve">
-    <value>Date issue</value>
-  </data>
-  <data name="Denomination" xml:space="preserve">
-    <value>Denomination</value>
-  </data>
-  <data name="DepositerNote" xml:space="preserve">
-    <value>Depositer note</value>
-  </data>
-  <data name="DepositorName" xml:space="preserve">
-    <value>Depositor name</value>
-  </data>
-  <data name="EnterAmount" xml:space="preserve">
-    <value>Enter amount</value>
-  </data>
-  <data name="EnterInterest" xml:space="preserve">
-    <value>Enter interest</value>
-  </data>
-  <data name="EnterNoteHere" xml:space="preserve">
-    <value>Enter note here</value>
-  </data>
-  <data name="EnterPenalty" xml:space="preserve">
-    <value>Enter penalty</value>
-  </data>
-  <data name="EnterRemittanceReferenceNumber" xml:space="preserve">
+  <data name="enter_remittance_reference_number" xml:space="preserve">
     <value>Enter remittance reference number</value>
   </data>
-  <data name="Fee" xml:space="preserve">
-    <value>Fee</value>
-  </data>
-  <data name="GenerateOTP" xml:space="preserve">
-    <value>Generate OTP</value>
-  </data>
-  <data name="IfYouEncounterIssuesPleaseContactSupport" xml:space="preserve">
+  <data name="if_you_encounter_issues_please_contact_support" xml:space="preserve">
     <value>If you encounter issues, please contact support</value>
   </data>
-  <data name="ImportantNotification" xml:space="preserve">
-    <value>Important notification</value>
-  </data>
-  <data name="Inc" xml:space="preserve">
-    <value>Inc</value>
-  </data>
-  <data name="InitiatedAmount" xml:space="preserve">
-    <value>Initiated amount</value>
-  </data>
-  <data name="isEligibleForWithdrawalFrom" xml:space="preserve">
+  <data name="is_eligible_for_withdrawal_from" xml:space="preserve">
     <value>is eligible for withdrawal from</value>
   </data>
-  <data name="LoanPayment" xml:space="preserve">
+  <data name="loan_payment" xml:space="preserve">
     <value>Loan payment</value>
   </data>
-  <data name="MembersDetails" xml:space="preserve">
-    <value>Member's details</value>
-  </data>
-  <data name="MembersName" xml:space="preserve">
-    <value>Member's name</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
-  </data>
-  <data name="OTPIsNotEnabledForThisTypeOfRemittance" xml:space="preserve">
-    <value>OTP is not enabled for this type of remittance</value>
-  </data>
-  <data name="OTPVerification" xml:space="preserve">
+  <data name="otp_verification" xml:space="preserve">
     <value>OTP Verification</value>
   </data>
-  <data name="PayableAmount" xml:space="preserve">
-    <value>Payable amount</value>
+  <data name="otp_is_not_enabled_for_this_type_of_remittance" xml:space="preserve">
+    <value>OTP is not enabled for this type of remittance</value>
   </data>
-  <data name="PerformRemittanceCashinOperation" xml:space="preserve">
+  <data name="perform_remittance_cashin_operation" xml:space="preserve">
     <value>Perform remittance cashin operation</value>
   </data>
-  <data name="PerformRemittanceCashoutOperation" xml:space="preserve">
+  <data name="perform_remittance_cashout_operation" xml:space="preserve">
     <value>Perform remittance cashout operation</value>
   </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone number</value>
-  </data>
-  <data name="PlaceOfIssue" xml:space="preserve">
-    <value>Place of issue</value>
-  </data>
-  <data name="PleaseProceedWithoutOTPOrContactSupport" xml:space="preserve">
+  <data name="please_proceed_without_otpor_contact_support" xml:space="preserve">
     <value>Please proceed without OTP or contact support</value>
   </data>
-  <data name="PleaseProvideYourTransactionReference" xml:space="preserve">
+  <data name="please_provide_your_transaction_reference" xml:space="preserve">
     <value>Please provide your transaction reference and valid identification at the branch for processing</value>
   </data>
-  <data name="ProductID" xml:space="preserve">
-    <value>Product id</value>
-  </data>
-  <data name="Receiver" xml:space="preserve">
-    <value>Receiver</value>
-  </data>
-  <data name="ReceiverCNI" xml:space="preserve">
-    <value>Receiver CNI</value>
-  </data>
-  <data name="ReceiverInformationVerification" xml:space="preserve">
+  <data name="receiver_information_verification" xml:space="preserve">
     <value>Receiver Information Verification</value>
   </data>
-  <data name="ReceiverName" xml:space="preserve">
-    <value>Receiver name</value>
-  </data>
-  <data name="ReceiverPhoneNumber" xml:space="preserve">
-    <value>Receiver phone number</value>
-  </data>
-  <data name="Reference" xml:space="preserve">
-    <value>Reference</value>
-  </data>
-  <data name="RemittanceAccountType" xml:space="preserve">
+  <data name="remittance_account_type" xml:space="preserve">
     <value>Remittance account type</value>
   </data>
-  <data name="REMITTANCE_CASH_IN" xml:space="preserve">
+  <data name="remittance_cash_in" xml:space="preserve">
     <value>REMITTANCE CASH IN</value>
   </data>
-  <data name="REMITTANCE_CASH_OPERATIONS" xml:space="preserve">
+  <data name="remittance_cash_operations" xml:space="preserve">
     <value>REMITTANCE CASH OPERATIONS</value>
   </data>
-  <data name="REMITTANCE_CASH_OUT" xml:space="preserve">
+  <data name="remittance_cash_out" xml:space="preserve">
     <value>REMITTANCE CASH OUT</value>
   </data>
-  <data name="RePrint" xml:space="preserve">
-    <value>Re-print</value>
-  </data>
-  <data name="SecretCode" xml:space="preserve">
-    <value>Secret code</value>
-  </data>
-  <data name="Sender" xml:space="preserve">
-    <value>Sender</value>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-  </data>
-  <data name="SourceBranch" xml:space="preserve">
-    <value>Source branch</value>
-  </data>
-  <data name="Telephone" xml:space="preserve">
-    <value>Telephone</value>
-  </data>
-  <data name="ThisRemittanceOf" xml:space="preserve">
+  <data name="this_remittance_of" xml:space="preserve">
     <value>This remittance of</value>
   </data>
-  <data name="Total" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="TotalAmountPayable" xml:space="preserve">
+  <data name="total_amount_payable" xml:space="preserve">
     <value>Total amount payable</value>
   </data>
-  <data name="TotalAmountReceivable" xml:space="preserve">
+  <data name="total_amount_receivable" xml:space="preserve">
     <value>Total amount receivable</value>
-  </data>
-  <data name="TotalPayable" xml:space="preserve">
-    <value>Total payable</value>
   </data>
 </root>

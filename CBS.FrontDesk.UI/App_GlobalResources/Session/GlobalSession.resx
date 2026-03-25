@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PleaseEnterYourSessionRecoveryCodeToContinue" xml:space="preserve">
+  <data name="please_enter_your_session_recovery_code_to_continue" xml:space="preserve">
     <value>Please enter your session recovery code to continue</value>
   </data>
-  <data name="RecoverMySession" xml:space="preserve">
-    <value>Recover my session</value>
-  </data>
-  <data name="RecoveryCode" xml:space="preserve">
+  <data name="recovery_code" xml:space="preserve">
     <value>Recovery code</value>
   </data>
-  <data name="ReturnToLoginPage" xml:space="preserve">
+  <data name="recover_my_session" xml:space="preserve">
+    <value>Recover my session</value>
+  </data>
+  <data name="return_to_login_page" xml:space="preserve">
     <value>Return to login page</value>
   </data>
-  <data name="SessionLockEnterRecoveryCode" xml:space="preserve">
+  <data name="session_lock_enter_recovery_code" xml:space="preserve">
     <value>Session Lock: Enter Recovery Code</value>
   </data>
-  <data name="YourSessionWasLockedDueToInactivity" xml:space="preserve">
+  <data name="your_session_was_locked_due_to_inactivity" xml:space="preserve">
     <value>Your session was locked due to inactivity</value>
   </data>
 </root>

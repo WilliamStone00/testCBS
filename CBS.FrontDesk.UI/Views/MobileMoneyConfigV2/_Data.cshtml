@@ -1,12 +1,12 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney>
-
+@model List<CBS.FrontDesk.Data.Entity.AccountingV2.MobileMoneyV2.MobileMoney>
+@using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">Mobile Money Configurations</legend>
+    <legend id="select_base">@GlobalMobileMoneyConfigV2.mobile_money_configurations</legend>
 
     @if (!Model.Any())
     {
         <div class="text-center my-3">
-            <p>No Mobile Money configurations have been set up yet.</p>
+            <p>@GlobalMobileMoneyConfigV2.no_mobile_money_configurations_have_been_set_up_yet.</p>
         </div>
     }
     else
@@ -15,13 +15,13 @@
             <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 12%;">Creation Date</th>
-                        <th style="width: 18%;">Account Name</th>
-                        <th style="width: 15%;">Phone Number</th>
-                        <th style="width: 12%;">Branch Code</th>
-                        <th style="width: 18%;">Branch Name</th>
-                        <th style="width: 10%;" class="text-center">Status</th>
-                        <th style="width: 15%;" class="text-center">Actions</th>
+                        <th style="width: 12%;">@GlobalShared.Creation_Date</th>
+                        <th style="width: 18%;">@GlobalShared.Account_Name</th>
+                        <th style="width: 15%;">@GlobalShared.Phone_Number</th>
+                        <th style="width: 12%;">@GlobalShared.Branch_Code</th>
+                        <th style="width: 18%;">@GlobalShared.Branch_Name</th>
+                        <th style="width: 10%;" class="text-center">@GlobalShared.Status</th>
+                        <th style="width: 15%;" class="text-center">@GlobalShared.Actions</th>
                     </tr>
                 </thead>
 
@@ -38,14 +38,14 @@
                                 @if (mobileMoney.ActiveStatus)
                                 {
                                     <span class="badge rounded-pill bg-success fs-6">
-                                        <i class="fas fa-check-circle"></i> Active
+                                        <i class="fas fa-check-circle"></i> @GlobalShared.Active
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge rounded-pill bg-danger fs-6">
-                                        <i class="fas fa-times-circle"></i> Inactive
-                                    </span>
+                            <span class="badge rounded-pill bg-danger fs-6">
+                                <i class="fas fa-times-circle"></i> @GlobalShared.InActive
+                            </span>
                                 }
                             </td>
                             <td class="text-center">
@@ -57,7 +57,7 @@
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
                                             title="Edit @mobileMoney.Name">
-                                        <i class="fas fa-edit me-1"></i> Edit
+                                        <i class="fas fa-edit me-1"></i> @GlobalShared.Edit
                                     </button>
 
                                     <!-- Details -->
@@ -67,7 +67,7 @@
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
                                             title="View Details">
-                                        <i class="fas fa-info-circle me-1"></i> Details
+                                        <i class="fas fa-info-circle me-1"></i> @GlobalShared.Details
                                     </button>
 
 

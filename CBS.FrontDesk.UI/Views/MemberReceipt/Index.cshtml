@@ -1,19 +1,19 @@
-﻿@{
+@{
     ViewBag.Title = "Member Receipts Overview";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-receipt-text-outline me-2"></i> Member Receipts
+                    <i class="mdi mdi-receipt-text-outline me-2"></i> @GlobalMemberReceipt.member_receipts
                 </h1>
                 <p class="card-text">
-                    Track, search, and analyze member payment receipts across branches.
+                    @GlobalMemberReceipt.track_search_and_analyze_member_payment_receipts_across_branches.
                 </p>
                 <p class="card-text text-muted small">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use filters like branch, date range, member reference, or transaction reference.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i>@GlobalMemberReceipt.use_filters_like_branch_date_range_member_reference_or_transaction_reference.
                 </p>
                 <hr style="border: 2px solid rgba(0, 128, 128, 0.2);" />
             </div>

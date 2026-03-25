@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.FileDetailsDto
-
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.FileDetailsDto
+@using Resources
 <div class="row g-4">
     <!-- File Identity Section -->
     <div class="col-xl-3 col-lg-4 col-md-6">
@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <i class="bi bi-file-earmark-text text-primary me-2"></i>
-                    <h6 class="card-title text-primary mb-0">File Information</h6>
+                    <h6 class="card-title text-primary mb-0">@GlobalShared.File_Information</h6>
                 </div>
                 <h5 class="mb-1 text-truncate fw-semibold text-primary" title="@Model.FileName">@(Model.FileName ?? "N/A")</h5>
                 <div class="d-flex justify-content-between align-items-center">
@@ -24,7 +24,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <i class="bi bi-building text-primary me-2"></i>
-                    <h6 class="card-title text-primary mb-0">Branch Details</h6>
+                    <h6 class="card-title text-primary mb-0">@GlobalSalaryUpload.branch_details</h6>
                 </div>
                 <h5 class="mb-1 text-truncate fw-semibold text-primary" title="@Model.BranchName">@(Model.BranchName ?? "N/A")</h5>
                 <div class="text-primary-emphasis small">
@@ -40,7 +40,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <i class="bi bi-cloud-upload text-primary me-2"></i>
-                    <h6 class="card-title text-primary mb-0">Upload Details</h6>
+                    <h6 class="card-title text-primary mb-0">@GlobalSalaryUpload.upload_details</h6>
                 </div>
                 <h5 class="mb-1 text-truncate fw-semibold text-primary" title="@Model.UploadedBy">@(Model.UploadedBy ?? "N/A")</h5>
                 <div class="text-primary-emphasis small">
@@ -58,14 +58,14 @@
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <i class="bi bi-check-circle text-primary me-2"></i>
-                    <h6 class="card-title text-primary mb-0">Status</h6>
+                    <h6 class="card-title text-primary mb-0">@GlobalShared.Status</h6>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <span class="badge fs-6 px-3 py-2 @(Model.SalaryProcessingStatus == "Completed" ? "bg-success" : "bg-warning text-dark")">
                         @(Model.SalaryProcessingStatus ?? "Pending")
                     </span>
                     <div class="text-end">
-                        <span class="text-primary-emphasis small d-block">Category</span>
+                        <span class="text-primary-emphasis small d-block">@GlobalShared.Category</span>
                         <span class="fw-semibold small text-primary">@(Model.FileCategory ?? "N/A")</span>
                     </div>
                 </div>
@@ -83,13 +83,13 @@
                         @if (!string.IsNullOrEmpty(Model.FileType))
                         {
                             <span class="text-primary-emphasis small">
-                                <i class="bi bi-file-earmark me-1"></i>Type: <span class="fw-semibold text-primary">@Model.FileType</span>
+                                <i class="bi bi-file-earmark me-1"></i>@GlobalShared.Type: <span class="fw-semibold text-primary">@Model.FileType</span>
                             </span>
                         }
                         @if (!string.IsNullOrEmpty(Model.FileCode))
                         {
                             <span class="text-primary-emphasis small">
-                                <i class="bi bi-upc-scan me-1"></i>Code: <span class="fw-semibold text-primary">@Model.FileCode</span>
+                                <i class="bi bi-upc-scan me-1"></i>@GlobalShared.Code: <span class="fw-semibold text-primary">@Model.FileCode</span>
                             </span>
                         }
                     </div>

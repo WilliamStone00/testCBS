@@ -117,76 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AffectMembersScoring" xml:space="preserve">
+  <data name="affect_members_scoring" xml:space="preserve">
     <value>Affect member's scoring</value>
   </data>
-  <data name="AM_Score" xml:space="preserve">
+  <data name="am_score" xml:space="preserve">
     <value>A-M.Score</value>
   </data>
-  <data name="ApplyFines" xml:space="preserve">
-    <value>Apply fines</value>
-  </data>
-  <data name="CreditO" xml:space="preserve">
+  <data name="credit_o" xml:space="preserve">
     <value>Credit-O</value>
   </data>
-  <data name="EmailTeam" xml:space="preserve">
-    <value>Email-team</value>
-  </data>
-  <data name="Fine" xml:space="preserve">
-    <value>Fine</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
-  </data>
-  <data name="LoanDeliquencyConfiguration" xml:space="preserve">
-    <value>Loan deliquency configuration</value>
-  </data>
-  <data name="LoansFromDay" xml:space="preserve">
+  <data name="loans_from_day" xml:space="preserve">
     <value>Loans from day</value>
   </data>
-  <data name="LoansToDay" xml:space="preserve">
+  <data name="loans_to_day" xml:space="preserve">
     <value>Loans to day</value>
   </data>
-  <data name="MemberActions" xml:space="preserve">
-    <value>Member actions</value>
+  <data name="loan_deliquency_configuration" xml:space="preserve">
+    <value>Loan deliquency configuration</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="NoLoanLoanDeliquencyConfigurationTypeIsCreated" xml:space="preserve">
+  <data name="no_loan_loan_deliquency_configuration_type_is_created" xml:space="preserve">
     <value>No loan LoanDeliquencyConfiguration type is created</value>
   </data>
-  <data name="ReportToCreditOffice" xml:space="preserve">
+  <data name="report_to_credit_office" xml:space="preserve">
     <value>Report to credit office</value>
   </data>
-  <data name="SelectLoanStatus" xml:space="preserve">
-    <value>Select loan status</value>
-  </data>
-  <data name="SendEmailToFolloUpTeam" xml:space="preserve">
+  <data name="send_email_to_follo_up_team" xml:space="preserve">
     <value>Send email to follow-up team</value>
   </data>
-  <data name="SendSMSToFollowUpTeam" xml:space="preserve">
+  <data name="send_sms_to_follow_up_team" xml:space="preserve">
     <value>Send SMS to follow-up team</value>
   </data>
-  <data name="SendSMSToMembers" xml:space="preserve">
+  <data name="send_sms_to_members" xml:space="preserve">
     <value>Send SMS to members</value>
-  </data>
-  <data name="SMSMembers" xml:space="preserve">
-    <value>SMS-members</value>
-  </data>
-  <data name="SMSTeam" xml:space="preserve">
-    <value>SMS-team</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>To</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
   </data>
 </root>

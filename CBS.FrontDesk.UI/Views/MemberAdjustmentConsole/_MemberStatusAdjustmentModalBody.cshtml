@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+@model CBS.FrontDesk.Data.Entity.MemberAdjustmentConsole.MemberAdjustmentModel
+    @using Resources
 @using (Html.BeginForm("MemberAdjustmentRequest", "MemberAdjustmentConsole", FormMethod.Post, new { id = "memberStatusAdjustmentForm", onsubmit = "return postMemberAdjustmentRequest(this);" }))
 {
     <div class="container-fluid">
@@ -8,14 +9,14 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-primary">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-account-check-outline me-2"></i>Current Member Status Information
+                            <i class="mdi mdi-account-check-outline me-2"></i>@GlobalMemberAdjustmentConsole.current_member_status_information
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- Current Member ID -->
                             <div class="col-md-6 mb-3">
-                                @Html.LabelFor(m => m.MemberId, "Current Member ID", new { @class = "form-label" })
+                                @Html.LabelFor(m => m.MemberId, $"{@GlobalShared.current_member_id}", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.MemberId, new { @class = "form-control", @readonly = "readonly" })
                             </div>
 
@@ -33,7 +34,7 @@
                 <div class="card mb-4">
                     <div class="card-header bg-light-warning">
                         <h5 class="card-title mb-0">
-                            <i class="mdi mdi-pencil-outline me-2"></i>New Member Status Information
+                            <i class="mdi mdi-pencil-outline me-2"></i>@GlobalMemberAdjustmentConsole.new_member_status_information
                         </h5>
                     </div>
                     <div class="card-body">
@@ -49,7 +50,7 @@
                             <div class="row">
                                 <!-- New Status -->
                                 <div class="col-md-6 mb-3">
-                                    @Html.LabelFor(m => m.NewStatus, "New Status (Active / Inactive)", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.NewStatus, $"{@GlobalShared.new_status} ({@GlobalShared.Active} / {@GlobalShared.InActive})", new { @class = "form-label" })
                                     @Html.DropDownListFor(m => m.NewStatus,
                                         new List<SelectListItem>
                                         {
@@ -57,7 +58,7 @@
                                             new SelectListItem { Text = "Inactive", Value = "false" }
                                         },
                                        new { @class = "form-select", required = "required" })
-                                    <div class="invalid-feedback">Please select a new status</div>
+                                    <div class="invalid-feedback">@GlobalShared.please_select_a_new_status</div>
                                     @Html.ValidationMessageFor(m => m.NewStatus, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -65,11 +66,11 @@
                             <!-- Reason -->
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    @Html.LabelFor(m => m.Reason, "Reason for Status Change", new { @class = "form-label" })
+                                    @Html.LabelFor(m => m.Reason, $"{@GlobalMemberAdjustmentConsole.reason_for_status_change}", new { @class = "form-label" })
                                     @Html.TextAreaFor(m => m.Reason,
                                     new { 
-                                        @class = "form-control", rows = "3", required = "required", placeholder = "Please provide a reason for this status change" })
-                                    <div class="invalid-feedback">Please provide a reason</div>
+                                        @class = "form-control", rows = "3", required = "required", placeholder = @GlobalMemberAdjustmentConsole.please_provide_a_reason_for_this_status_change })
+                                    <div class="invalid-feedback">@GlobalShared.please_provide_a_reason</div>
                                     @Html.ValidationMessageFor(m => m.Reason, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
@@ -79,10 +80,10 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="mdi mdi-close me-1"></i>Cancel
+                                            <i class="mdi mdi-close me-1"></i>@GlobalShared.Cancel
                                         </button>
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="mdi mdi-content-save-check me-1"></i>Submit Status Change
+                                            <i class="mdi mdi-content-save-check me-1"></i>@GlobalMemberAdjustmentConsole.submit_status_change
                                         </button>
                                     </div>
                                 </div>

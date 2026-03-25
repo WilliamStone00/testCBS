@@ -1,6 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.RequestAction
+@model CBS.FrontDesk.Data.Entity.Accounting_V2.PendingAccount.RequestAction
 @* Adjust namespace of requestAction if needed *@
-
+@using Resources
 <fieldset class="fieldset-custom">
 
     <!-- Header Card -->
@@ -16,21 +16,21 @@
              ? "Validate Account Request"
              : "Reject Account Request")
             </h1>
-            <p class="card-text text-muted mb-1">Provide the required information and confirm this action.</p>
+            <p class="card-text text-muted mb-1">@GlobalPendingAccount.provide_the_required_information_and_confirm_this_action.</p>
         </div>
     </div>
 
     <div class="row">
         <!-- Left: Context -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> Context</h6>
+            <h6 class="text-primary"><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.context</h6>
             <table class="table table-sm table-bordered">
                 <tr>
-                    <td class="fw-bold">Account Number</td>
+                    <td class="fw-bold">@GlobalShared.Account_Number</td>
                     <td>@(Model?.Account ?? "-")</td>
                 </tr>
                 <tr>
-                    <td class="fw-bold">Action</td>
+                    <td class="fw-bold">@GlobalShared.Action</td>
                     <td>@(Model?.ActionType ?? "-")</td>
                 </tr>
             </table>
@@ -38,7 +38,7 @@
 
         <!-- Right: Inputs (strongly-typed helpers) -->
         <div class="col-md-6">
-            <h6 class="text-primary"><i class="mdi mdi-form-textbox me-2"></i> Provide Details</h6>
+            <h6 class="text-primary"><i class="mdi mdi-form-textbox me-2"></i> @GlobalShared.provide_details</h6>
 
             @{
                 var isValidation =
@@ -64,7 +64,7 @@
                 {
                     <div class="mb-3">
                         @Html.LabelFor(m => m.ApprovalNotes,"Approval Notes", new { @class = "form-label text-primary fw-semibold" })
-                        @Html.TextAreaFor(m => m.ApprovalNotes, new { @class = "form-control", rows = "3", placeholder = "Optional notes for the approval" })
+                        @Html.TextAreaFor(m => m.ApprovalNotes, new { @class = "form-control", rows = "3", placeholder = $"{@GlobalPendingAccount.optional_notes_for_the_approval}" })
                         @Html.ValidationMessageFor(m => m.ApprovalNotes, "", new { @class = "text-danger" })
                     </div>
                 }
@@ -72,22 +72,22 @@
                 {
                     <div class="mb-3">
                         @Html.LabelFor(m => m.RejectionReason,"Reason For Rejection", new { @class = "form-label text-primary fw-semibold" })
-                        @Html.TextAreaFor(m => m.RejectionReason, new { @class = "form-control", rows = "3", placeholder = "Explain why this request is rejected" })
+                        @Html.TextAreaFor(m => m.RejectionReason, new { @class = "form-control", rows = "3", placeholder = $"{@GlobalPendingAccount.explain_why_this_request_is_rejected}" })
                         @Html.ValidationMessageFor(m => m.RejectionReason, "", new { @class = "text-danger" })
                     </div>
                 }
 
                 <div class="alert alert-warning">
                     <i class="mdi mdi-alert-outline me-2"></i>
-                    <strong>Warning:</strong> Please review details carefully before confirming.
+                    <strong>@GlobalShared.Warning:</strong> @GlobalPendingAccount.please_review_details_carefully_before_confirming.
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Cancel
+                        <i class="mdi mdi-close"></i> @GlobalShared.Cancel
                     </button>
                     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-check-circle-outline"></i> Confirm
+                        <i class="mdi mdi-check-circle-outline"></i> @GlobalShared.Confirm
                     </button>
                 </div>
             }

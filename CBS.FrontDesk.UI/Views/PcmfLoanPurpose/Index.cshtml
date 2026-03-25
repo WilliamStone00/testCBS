@@ -1,14 +1,15 @@
-﻿<!-- Index.cshtml -->
+<!-- Index.cshtml -->
+@using Resources
 <div id="datalistingview">
     <div class="row">
         <div class="col-12">
             <div class="card bg-light mb-2 shadow-sm">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary fw-bold">
-                        <i class="mdi mdi-bank-transfer me-2"></i> PCMF Loan Purpose
+                        <i class="mdi mdi-bank-transfer me-2"></i> @GlobalPcmfLoanPurpose.pcmf_loan_purpose
                     </h1>
                     <p class="card-text">
-                        Manage PCMF loan purpose categories for different loan term groups
+                        @GlobalPcmfLoanPurpose.manage_pcmf_loan_purpose_categories_for_different_loan_term_groups
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -22,12 +23,12 @@
             <button type="button"
                     onclick="return false;"
                     class="btn btn-label-primary btn-sm me-2">
-                <i class="mdi mdi-plus mdi-18px"></i> Add New
+                <i class="mdi mdi-plus mdi-18px"></i> @GlobalShared.ADD_NEW
             </button>
             <button type="button"
                     onclick="refreshTable()"
                     class="btn btn-label-secondary btn-sm">
-                <i class="mdi mdi-refresh mdi-18px"></i> Refresh
+                <i class="mdi mdi-refresh mdi-18px"></i> @GlobalShared.Refresh
             </button>
         </div>
     </div>
@@ -35,24 +36,24 @@
     <!-- DataTable -->
     <div class="card p-3 shadow mb-4">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-table"></i> PCMF Loan Purpose Catalog
+            <i class="mdi mdi-table"></i> @GlobalPcmfLoanPurpose.pcmf_loan_purpose_catalog
             <small class="text-muted ms-2">
-                <span id="recordCount" class="badge bg-info">Loading...</span>
+                <span id="recordCount" class="badge bg-info">@GlobalShared.Loading...</span>
             </small>
         </h5>
         <div class="table-responsive">
             <table id="pcmfLoanPurposeDataTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th>Pcmf PurposeKey</th>
-                        <th>Name (English)</th>
-                        <th>Name (French)</th>
-                        <th>LT Group</th>
-                        <th>MT Group</th>
-                        <th>CT Group</th>
-                        <th>OD Group</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>@GlobalPcmfLoanPurpose.pcmf_purposekey</th>
+                        <th>@GlobalShared.Name (@GlobalShared.English)</th>
+                        <th>@GlobalShared.Name (@GlobalShared.French)</th>
+                        <th>@GlobalPcmfLoanPurpose.lt_group</th>
+                        <th>@GlobalPcmfLoanPurpose.mt_group</th>
+                        <th>@GlobalPcmfLoanPurpose.ct_group</th>
+                        <th>@GlobalPcmfLoanPurpose.od_group</th>
+                        <th>@GlobalShared.Status</th>
+                        <th>@GlobalShared.Actions</th>
                     </tr>
                 </thead>
                 <tbody>

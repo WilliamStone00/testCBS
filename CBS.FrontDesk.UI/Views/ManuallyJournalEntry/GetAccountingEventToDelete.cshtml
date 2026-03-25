@@ -1,4 +1,4 @@
-﻿@using Resources
+@using Resources
 @model CBS.FrontDesk.Data.Entity.Accounting.ManuallyJournalEntryDataSet
 @{
     ViewBag.Title = "Accounting Event -DELETE";
@@ -17,22 +17,22 @@
     <div class="col-12 card-body">
         <div class="card col-12 alert alert-outline-danger">
             <h3>
-                @GlobalManuallyJournalEntry.YouHaveRequestedToDeleteTheAccountingEventRule:
+                @GlobalManuallyJournalEntry.you_have_requested_to_delete_the_accounting_event_rule:
             </h3>
             <ul>
-                <li><strong>@GlobalManuallyJournalEntry.EventName:</strong> @Model.AccountingEventRule.EventName</li>
-                <li><strong>@GlobalManuallyJournalEntry.Description:</strong> @Model.AccountingEventRule.Description</li>
-                <li><strong>@GlobalManuallyJournalEntry.EntryType:</strong> @Model.AccountingEventRule.EntryType</li>
-                <li><strong>@GlobalManuallyJournalEntry.LevelOfExecution:</strong> @Model.AccountingEventRule.LevelOfExecution</li>
-                <li><strong>@GlobalManuallyJournalEntry.DoubleValidationNeeded:</strong> @(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Yes" : "No")</li>
-                <li><strong>@GlobalManuallyJournalEntry.ChainEntry:</strong> @(Model.AccountingEventRule.IsChainEntry ? "Yes" : "No")</li>
+                <li><strong>@GlobalShared.event_name:</strong> @Model.AccountingEventRule.EventName</li>
+                <li><strong>@GlobalShared.Description:</strong> @Model.AccountingEventRule.Description</li>
+                <li><strong>@GlobalShared.entry_type:</strong> @Model.AccountingEventRule.EntryType</li>
+                <li><strong>@GlobalManuallyJournalEntry.level_of_execution:</strong> @Model.AccountingEventRule.LevelOfExecution</li>
+                <li><strong>@GlobalManuallyJournalEntry.double_validation_needed:</strong> @(Model.AccountingEventRule.IsDoubleValidationNeeded ? "Yes" : "No")</li>
+                <li><strong>@GlobalShared.chain_entry:</strong> @(Model.AccountingEventRule.IsChainEntry ? "Yes" : "No")</li>
 
             </ul>
             <table id="accountingRuleTable" class="table table-bordered">
                 <thead class="table-dark text-center">
                     <tr>
 
-                        <th>@GlobalManuallyJournalEntry.BranchsEligibleForTheExecutionOf @Model.AccountingEventRule.EventName</th>
+                        <th>@GlobalManuallyJournalEntry.branchs_eligible_for_the_execution_of @Model.AccountingEventRule.EventName</th>
 
                     </tr>
                 </thead>
@@ -49,7 +49,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="accountDesc"> @GlobalManuallyJournalEntry.ListOfAccountingEntriesInvolve</td>
+                        <td class="accountDesc"> @GlobalManuallyJournalEntry.list_of_accounting_entries_involve</td>
 
                     </tr>
                     @foreach (var rule in Model.AccountingEventRule.AccountingRules)
@@ -62,11 +62,11 @@
                 </tfoot>
             </table>
             <p class="red-text">
-                @GlobalManuallyJournalEntry.PleaseConfirmThatYouWouldLikeToPermanentlyDeleteThisAccountingEvent.
-                @GlobalManuallyJournalEntry.ThisActionCannotBeUndone.
+                @GlobalManuallyJournalEntry.please_confirm_that_you_would_like_to_permanently_delete_this_accounting_event.
+                @GlobalShared.This_action_cannot_be_undone.
             </p>
             <div class="col-md-12 col-12">
-                <button onclick="DeleteAutomatedEntryData('ManuallyJournalEntry', '@Model.AccountingEventRule.Id')" class="btn btn-danger waves-effect waves-light mdi-bag-checked">@GlobalManuallyJournalEntry.YES</button>
+                <button onclick="DeleteAutomatedEntryData('ManuallyJournalEntry', '@Model.AccountingEventRule.Id')" class="btn btn-danger waves-effect waves-light mdi-bag-checked">@GlobalShared.Yes</button>
             </div>
             @*<div class="col-md-12 col-12">
                     <button onclick="DeleteData('ManuallyJournalEntry', '@Model.AccountingEventRule.Id')" class="btn btn-danger waves-effect waves-light mdi-bag-checked">YES</button>

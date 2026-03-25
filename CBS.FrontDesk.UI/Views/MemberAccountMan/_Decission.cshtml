@@ -1,6 +1,6 @@
-﻿@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
+@model CBS.FrontDesk.Data.Entity.MemberAccountManagement.ManageAccountStatusCommand
 @using CBS.FrontDesk.Data.Entity.MemberAccountManagement
-
+@using Resources
 <div class="card shadow-lg border-0">
 
     <!-- Card Body - Scrollable Area -->
@@ -9,11 +9,11 @@
             <div class="card-body text-center">
                 <h5 class="modal-title">
                     <i class="mdi mdi-cog-outline me-2"></i>
-                    <span id="actionModalTitle">Update Account Status</span>
+                    <span id="actionModalTitle">@GlobalShared.update_account_status</span>
                 </h5>
                 <div class="alert alert-info mt-3 py-2">
                     <i class="mdi mdi-information-outline me-1"></i>
-                    Update the status of this account request. Select the new status and provide a reason.
+                    @GlobalMemberAccountMan.update_the_status_of_this_account_request_select_the_new_status_and_provide_a_reason.
                 </div>
                 <hr style="border-top: 1px solid rgba(0,0,0,0.1);" />
             </div>
@@ -23,20 +23,20 @@
         <div class="card mb-4 border-0 bg-light">
             <div class="card-header bg-secondary bg-opacity-10 border-bottom">
                 <h6 class="mb-0 fw-bold text-primary">
-                    <i class="mdi mdi-account-details me-2"></i>Account Information
+                    <i class="mdi mdi-account-details me-2"></i>@GlobalShared.Account_Information
                 </h6>
             </div>
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Member Name</label>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.Member_name</label>
                             <p class="fw-bold text-dark mb-0 fs-5">@Model.MemberName</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Member Reference</label>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.Member_reference</label>
                             <p class="fw-bold text-dark mb-0 fs-5">@Model.MemberReference</p>
                         </div>
                     </div>
@@ -45,13 +45,13 @@
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Account Number</label>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.Account_Number</label>
                             <p class="fw-bold text-dark mb-0 fs-5">@Model.AccountNumber</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Account Type</label>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.Account_type</label>
                             <p class="fw-bold text-dark mb-0 fs-5">@Model.AccountType</p>
                         </div>
                     </div>
@@ -60,13 +60,13 @@
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Requested Action</label><br>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.requested_action</label><br>
                             <span class="badge bg-light bg-opacity-10 text-primary px-3 py-2 fs-6">@Model.Action</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Current Status</label><br>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.Current_Status</label><br>
                             @{
                                 string badgeClass;
                                 string statusText = Model.Status ?? "Unknown";
@@ -112,7 +112,7 @@
                     <!-- Request Reason -->
                     <div class="col-md-6">
                         <div class="bg-white p-3 rounded shadow-sm">
-                            <label class="text-muted small text-uppercase mb-1">Request Reason</label>
+                            <label class="text-muted small text-uppercase mb-1">@GlobalShared.request_reason</label>
                             <p class="fw-bold text-dark mb-0 fs-5">
                                 @(string.IsNullOrEmpty(Model.RequestReason) ? "N/A" : Model.RequestReason)
                             </p>
@@ -125,7 +125,7 @@
                     {
                         <div class="col-md-6">
                             <div class="bg-white p-3 rounded shadow-sm">
-                                <label class="text-muted small text-uppercase mb-1">Amount</label>
+                                <label class="text-muted small text-uppercase mb-1">@GlobalShared.Amount</label>
                                 <p class="fw-bold text-dark mb-0 fs-5">
                                     @Model.Amount.ToString("N1")
                                 </p>
@@ -144,7 +144,7 @@
         <div class="card border-0 bg-light">
             <div class="card-header bg-secondary bg-opacity-10 border-bottom">
                 <h6 class="mb-0 fw-bold text-primary">
-                    <i class="mdi mdi-format-list-bulleted me-2"></i>Status Update Form
+                    <i class="mdi mdi-format-list-bulleted me-2"></i>@GlobalMemberAccountMan.status_update_form
                 </h6>
             </div>
             <div class="card-body">
@@ -155,26 +155,26 @@
                     <div class="mb-4">
                         <label for="decisionStatus" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-format-list-bulleted me-1 text-primary"></i>
-                            Decision
+                            @GlobalShared.Decision
                             <span class="text-danger">*</span>
                         </label>
                         <select id="decisionStatus" name="decisionStatus" class="form-control select2" required>
-                            <option value="">-- Select New Status --</option>
-                            <option value="Draft">Draft</option>
-                            <option value="PendingApproval">Pending Approval</option>
-                            <option value="Approve">Approved</option>
-                            <option value="Reject">Rejected</option>
-                            <option value="Cancel">Cancelled</option>
-                            <option value="Apply">Applied</option>
-                            <option value="Fail">Failed</option>
+                            <option value="">-- @GlobalShared.select_new_status --</option>
+                            <option value="Draft">@GlobalShared.draft</option>
+                            <option value="PendingApproval">@GlobalShared.pending_approval</option>
+                            <option value="Approve">@GlobalShared.Approved</option>
+                            <option value="Reject">@GlobalShared.Rejected</option>
+                            <option value="Cancel">@GlobalShared.Cancelled</option>
+                            <option value="Apply">@GlobalShared.applied</option>
+                            <option value="Fail">@GlobalShared.Failed</option>
                         </select>
                         <div class="invalid-feedback">
-                            Please select a new status.
+                            @GlobalShared.please_select_a_new_status.
                         </div>
                         <div class="form-text text-muted mt-2">
                             <small>
                                 <i class="mdi mdi-information-outline me-1"></i>
-                                Select the new status for this request.
+                                @GlobalMemberAccountMan.select_the_new_status_for_this_request.
                             </small>
                         </div>
                     </div>
@@ -182,14 +182,14 @@
                     <div class="mb-4">
                         <label for="decisionNote" class="form-label fw-bold text-dark">
                             <i class="mdi mdi-text-box-edit-outline me-1 text-primary"></i>
-                            Decision Note / Reason
+                            @GlobalShared.decision_note / @GlobalShared.Reason
                             <span class="text-danger">*</span>
                         </label>
                         <textarea id="decisionNote" name="decisionNote" class="form-control" rows="4"
-                                  placeholder="Please provide a detailed reason for this status change."
+                                  placeholder="@GlobalMemberAccountMan.please_provide_a_detailed_reason_for_this_status_change."
                                   required minlength="5"></textarea>
                         <div class="invalid-feedback">
-                            Please provide a reason (minimum 5 characters).
+                            @GlobalShared.please_provide_a_reason (@GlobalShared.minimum_5_characters).
                         </div>
                         <div class="mt-2">
                             <small class="text-muted">
@@ -202,7 +202,7 @@
                     <div class="alert alert-warning d-flex align-items-center mb-0" role="alert">
                         <i class="mdi mdi-alert-circle-outline me-2 fs-5"></i>
                         <div>
-                            <strong>Important:</strong> Changing the status will trigger workflow actions.
+                            <strong>@GlobalShared.Important:</strong> @GlobalMemberAccountMan.changing_the_status_will_trigger_workflow_actions.
                         </div>
                     </div>
                 </form>
@@ -214,10 +214,10 @@
     <div class="card-footer bg-white border-top py-3">
         <div class="d-flex justify-content-end gap-2">
             <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                <i class="mdi mdi-close-circle-outline me-1"></i> Cancel
+                <i class="mdi mdi-close-circle-outline me-1"></i> @GlobalShared.Cancel
             </button>
             <button type="button" class="btn btn-primary px-4" id="actionSubmitBtn">
-                <i class="mdi mdi-content-save-outline me-1"></i> Submit
+                <i class="mdi mdi-content-save-outline me-1"></i> @GlobalShared.Submit
             </button>
         </div>
     </div>

@@ -1,9 +1,10 @@
-﻿<div class="row mb-2">
+@using Resources
+<div class="row mb-2">
     <div class="col-12">
         <div class="card border-info shadow-sm">
             <div class="card-header bg-light text-primary fw-bold d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="mdi mdi-information-outline me-2"></i> Overdraft Configuration Guidelines
+                    <i class="mdi mdi-information-outline me-2"></i> @GlobalOverdraftFacilityConfig.overdraft_configuration_guidelines
                 </span>
                 <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#overdraftGuidelinesBody">
                     <i class="mdi mdi-chevron-down"></i>
@@ -17,73 +18,73 @@
                         <!-- ✅ Eligibility -->
                         <li class="mb-2">
                             <i class="mdi mdi-shield-check-outline text-success me-2"></i>
-                            <strong>Eligibility Rules:</strong> Define which account product the OD applies to. Set minimum credit score, salary linkage, and allowed member segments.
+                            <strong>@GlobalOverdraftFacilityConfig.eligibility_rules:</strong> @GlobalOverdraftFacilityConfig.define_which_account_product_the_od_applies_to_set_minimum_credit_score_salary_linkage_and_allowed_member_segments.
                         </li>
 
                         <!-- 💰 Limits -->
                         <li class="mb-2">
                             <i class="mdi mdi-percent-outline text-info me-2"></i>
-                            <strong>Limit Calculations:</strong> OD limits can be based on salary percentage, income bands, or fixed default values. Legal and internal caps must both be respected.
+                            <strong>@GlobalShared.limit_calculations:</strong> @GlobalOverdraftFacilityConfig.od_limits_can_be_based_on_salary_percentage_income_bands_or_fixed_default_values_legal_and_internal_caps_must_both_be_respected.
                         </li>
 
                         <!-- 🧠 Interest -->
                         <li class="mb-2">
                             <i class="mdi mdi-chart-line text-dark me-2"></i>
-                            <strong>Interest Strategy:</strong> Define a flat fee rate or use tiered interest based on utilization brackets (e.g., 0–50%, 51–100%). Tiers override the flat rate.
+                            <strong>@GlobalOverdraftFacilityConfig.interest_strategy:</strong> @GlobalOverdraftFacilityConfig.define_a_flat_fee_rate_or_use_tiered_interest_based_on_utilization_brackets_eg_050_51100_tiers_override_the_flat_rate.
                         </li>
 
                         <!-- 💸 Disbursement -->
                         <li class="mb-2">
                             <i class="mdi mdi-bank-transfer-in text-primary me-2"></i>
-                            <strong>Disbursement Behavior:</strong> Enable full or partial draws. OD can be auto-disbursed to a linked account. Exceeding limits can trigger additional fees or blocks.
+                            <strong>@GlobalOverdraftFacilityConfig.disbursement_behavior:</strong> @GlobalOverdraftFacilityConfig.enable_full_or_partial_draws_od_can_be_autodisbursed_to_a_linked_account_exceeding_limits_can_trigger_additional_fees_or_blocks.
                         </li>
 
                         <!-- 📅 Tenure & Expiry -->
                         <li class="mb-2">
                             <i class="mdi mdi-calendar-clock-outline text-secondary me-2"></i>
-                            <strong>Tenure Control:</strong> Specify how long the OD is active (e.g., 90 days). You can set expiry dates and whether the OD is renewable after expiration.
+                            <strong>@GlobalOverdraftFacilityConfig.tenure_control:</strong> @GlobalOverdraftFacilityConfig.specify_how_long_the_od_is_active_eg_90_days_you_can_set_expiry_dates_and_whether_the_od_is_renewable_after_expiration.
                         </li>
 
                         <!-- 🔁 Replenishment -->
                         <li class="mb-2">
                             <i class="mdi mdi-autorenew text-warning me-2"></i>
-                            <strong>Replenishment:</strong> Use the auto-replenishment frequency to refresh OD usage — monthly, quarterly, etc.
+                            <strong>@GlobalShared.replenishment:</strong> @GlobalOverdraftFacilityConfig.use_the_autoreplenishment_frequency_to_refresh_od_usage_monthly_quarterly_etc.
                         </li>
 
                         <!-- 💳 Repayment -->
                         <li class="mb-2">
                             <i class="mdi mdi-cash-refund text-success me-2"></i>
-                            <strong>Recovery Logic:</strong> OD can be auto-recovered from incoming deposits or repaid manually. Grace period and delayed interest options are available.
+                            <strong>@GlobalOverdraftFacilityConfig.recovery_logic:</strong> @GlobalOverdraftFacilityConfig.od_can_be_autorecovered_from_incoming_deposits_or_repaid_manually_grace_period_and_delayed_interest_options_are_available.
                         </li>
 
                         <!-- ⬆️ Top-Ups -->
                         <li class="mb-2">
                             <i class="mdi mdi-cash-plus text-info me-2"></i>
-                            <strong>Top-Up Requests:</strong> Members may request overdraft increases, subject to a top-up fee and configured maximums.
+                            <strong>@GlobalOverdraftFacilityConfig.topup_requests:</strong> @GlobalOverdraftFacilityConfig.members_may_request_overdraft_increases_subject_to_a_topup_fee_and_configured_maximums.
                         </li>
 
                         <!-- 🔔 Notifications -->
                         <li class="mb-2">
                             <i class="mdi mdi-bell-alert-outline text-primary me-2"></i>
-                            <strong>Notifications:</strong> Notify members when OD usage reaches a defined percentage threshold. Useful for monitoring and self-control.
+                            <strong>@GlobalShared.Notifications:</strong> @GlobalOverdraftFacilityConfig.notify_members_when_od_usage_reaches_a_defined_percentage_threshold_useful_for_monitoring_and_selfcontrol.
                         </li>
 
                         <!-- 💼 Income Tiering -->
                         <li class="mb-2">
                             <i class="mdi mdi-account-cash-outline text-teal me-2"></i>
-                            <strong>Income-Based OD:</strong> Use limit bands to assign OD amounts based on income ranges (e.g. 0–100k, 100k–250k).
+                            <strong>@GlobalOverdraftFacilityConfig.incomebased_od:</strong> @GlobalOverdraftFacilityConfig.use_limit_bands_to_assign_od_amounts_based_on_income_ranges (e.g. 0–100k, 100k–250k).
                         </li>
 
                         <!-- ⚠️ Penalties -->
                         <li class="mb-2">
                             <i class="mdi mdi-alert-circle-outline text-danger me-2"></i>
-                            <strong>Penalty Enforcement:</strong> Associate penalty rules for overdraft misuse, late repayment, or limit breaches. These are enforced at runtime if enabled.
+                            <strong>@GlobalOverdraftFacilityConfig.penalty_enforcement:</strong> @GlobalOverdraftFacilityConfig.associate_penalty_rules_for_overdraft_misuse_late_repayment_or_limit_breaches_these_are_enforced_at_runtime_if_enabled.
                         </li>
 
                         <!-- ⚠️ Risk -->
                         <li class="mb-2">
                             <i class="mdi mdi-alert-outline text-danger me-2"></i>
-                            <strong>Important:</strong> Misconfigured overdraft settings may block legitimate usage or create financial risk. Always validate values before enabling.
+                            <strong>@GlobalShared.Important:</strong> @GlobalOverdraftFacilityConfig.misconfigured_overdraft_settings_may_block_legitimate_usage_or_create_financial_risk_always_validate_values_before_enabling.
                         </li>
                     </ul>
 
@@ -91,7 +92,7 @@
 
                     <p class="text-muted mb-0">
                         <i class="mdi mdi-help-circle-outline me-2"></i>
-                        For compliance, legal, or credit policy guidance, consult your internal control or risk department before applying changes to active overdraft products.
+                        @GlobalOverdraftFacilityConfig.for_compliance_legal_or_credit_policy_guidance_consult_your_internal_control_or_risk_department_before_applying_changes_to_active_overdraft_products.
                     </p>
                 </div>
             </div>

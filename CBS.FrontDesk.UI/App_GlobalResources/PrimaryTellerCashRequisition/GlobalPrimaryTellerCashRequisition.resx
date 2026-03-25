@@ -117,79 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddNewRequest" xml:space="preserve">
-    <value>Add new request</value>
-  </data>
-  <data name="Amount" xml:space="preserve">
-    <value>Amount</value>
-  </data>
-  <data name="ApprovalNote" xml:space="preserve">
-    <value>Approval note</value>
-  </data>
-  <data name="Balance" xml:space="preserve">
-    <value>Balance</value>
-  </data>
-  <data name="Branch" xml:space="preserve">
-    <value>Branch</value>
-  </data>
-  <data name="CheckToApprove" xml:space="preserve">
-    <value>Check to approve</value>
-  </data>
-  <data name="DataListings" xml:space="preserve">
-    <value>Data listings</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="DateFrom" xml:space="preserve">
-    <value>Date from</value>
-  </data>
-  <data name="DateTo" xml:space="preserve">
-    <value>Date to</value>
-  </data>
-  <data name="InitiatedBy" xml:space="preserve">
-    <value>Initiated by</value>
-  </data>
-  <data name="intoOperation" xml:space="preserve">
-    <value>into operation</value>
-  </data>
-  <data name="NoDataFound" xml:space="preserve">
-    <value>No data found</value>
-  </data>
-  <data name="PendingRequests" xml:space="preserve">
-    <value>Pending Requests</value>
-  </data>
-  <data name="PrimaryTellerCashRequisition" xml:space="preserve">
-    <value>Primary teller cash requisition</value>
-  </data>
-  <data name="PrimaryTellersRequests" xml:space="preserve">
+  <data name="primary_tellers_requests" xml:space="preserve">
     <value>Primary Tellers Requests</value>
   </data>
-  <data name="PRIMARY_TELLER_CASH_REQUEST_VALIDATION" xml:space="preserve">
+  <data name="primary_teller_cash_request_validation" xml:space="preserve">
     <value>PRIMARY-TELLER CASH REQUEST VALIDATION</value>
   </data>
-  <data name="RequestedAmount" xml:space="preserve">
-    <value>Requested amount</value>
-  </data>
-  <data name="RequestFilters" xml:space="preserve">
-    <value>Request filters</value>
-  </data>
-  <data name="RequestForm" xml:space="preserve">
-    <value>Request form</value>
-  </data>
-  <data name="RequestNote" xml:space="preserve">
-    <value>Request note</value>
-  </data>
-  <data name="RequestValidation" xml:space="preserve">
-    <value>Request validation</value>
-  </data>
-  <data name="SelectBranch" xml:space="preserve">
-    <value>Select branch</value>
-  </data>
-  <data name="TotalAmount" xml:space="preserve">
-    <value>Total amount</value>
-  </data>
-  <data name="ViewPendingRequests" xml:space="preserve">
-    <value>View pending requests</value>
+  <data name="primary_teller_cash_requisition" xml:space="preserve">
+    <value>Primary teller cash requisition</value>
   </data>
 </root>

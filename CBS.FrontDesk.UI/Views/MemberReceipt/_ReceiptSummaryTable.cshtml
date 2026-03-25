@@ -1,4 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountOperation.PaymentReceipt
+    @using Resources
 <style>
     .section-header {
         font-weight: bold;
@@ -32,36 +33,36 @@
     }
 
     <!-- 🔷 Member Information -->
-    <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-account-circle-outline me-1"></i> Member Information
-    </h6>
+<h6 class="fw-bold border-bottom text-primary">
+    <i class="mdi mdi-account-circle-outline me-1"></i> @GlobalShared.Member_Information
+</h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-light" style="width: 220px;">Member Name</th><td>@Model.MemberName</td></tr>
-            <tr><th class="bg-light">Member Reference</th><td>@Model.MemberReference</td></tr>
+            <tr><th class="bg-light" style="width: 220px;">@GlobalShared.Member_name</th><td>@Model.MemberName</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Member_reference</th><td>@Model.MemberReference</td></tr>
         </tbody>
     </table>
 
     <!-- 🔷 Depositor Information -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-account-box-outline me-1"></i> Depositor Information
+        <i class="mdi mdi-account-box-outline me-1"></i> @GlobalMemberReceipt.depositor_information
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-light" style="width: 220px;">Depositor Name</th><td>@Model.DepositorName</td></tr>
-            <tr><th class="bg-light">Phone</th><td>@Model.DepositorPhone</td></tr>
+            <tr><th class="bg-light" style="width: 220px;">@GlobalMemberReceipt.depositor_name</th><td>@Model.DepositorName</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Phone</th><td>@Model.DepositorPhone</td></tr>
             <tr><th class="bg-light">CNI</th><td>@Model.DepositorCNI</td></tr>
         </tbody>
     </table>
 
     <!-- 🔷 Account Information -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-bank-outline me-1"></i> Account Information
+        <i class="mdi mdi-bank-outline me-1"></i> @GlobalShared.Account_Information
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
             <tr>
-                <th class="bg-light" style="width: 220px;">Total Account Balances</th>
+                <th class="bg-light" style="width: 220px;">@GlobalMemberReceipt.total_account_balances</th>
                 <td>@Model.TotalAccountBalances</td>
             </tr>
         </tbody>
@@ -69,47 +70,47 @@
 
     <!-- 🔷 Cashier Information -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-human-greeting me-1"></i> Cashier Information
+        <i class="mdi mdi-human-greeting me-1"></i> @GlobalMemberReceipt.cashier_information
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-light" style="width: 220px;">Cashier</th><td>@Model.CashierName</td></tr>
-            <tr><th class="bg-light">Till</th><td>@Model.TillName</td></tr>
+            <tr><th class="bg-light" style="width: 220px;">@GlobalShared.Cashier</th><td>@Model.CashierName</td></tr>
+            <tr><th class="bg-light">@GlobalShared.till</th><td>@Model.TillName</td></tr>
         </tbody>
     </table>
 
     <!-- 🔷 Teller Information -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-account-badge-outline me-1"></i> Teller Information
+        <i class="mdi mdi-account-badge-outline me-1"></i> @GlobalShared.teller_information
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-light" style="width: 220px;">Teller ID</th><td>@Model.TellerId</td></tr>
-            <tr><th class="bg-light">Branch</th><td>@Model.BranchId</td></tr>
-            <tr><th class="bg-light">Bank ID</th><td>@Model.BankId</td></tr>
+            <tr><th class="bg-light" style="width: 220px;">@GlobalShared.teller_id</th><td>@Model.TellerId</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Branch</th><td>@Model.BranchId</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Bank_ID</th><td>@Model.BankId</td></tr>
         </tbody>
     </table>
 
     <!-- 🔷 Transaction Details -->
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-cash-multiple me-1"></i> Transaction Details
+        <i class="mdi mdi-cash-multiple me-1"></i> @GlobalShared.transaction_details
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <tbody>
-            <tr><th class="bg-light" style="width: 220px;">Transaction Date</th><td>@Model.Date.ToString("dd/MM/yyyy HH:mm")</td></tr>
-            <tr><th class="bg-light">Accounting Day</th><td>@Model.AccountingDay.ToString("dd/MM/yyyy")</td></tr>
-            <tr><th class="bg-light">Service Type</th><td>@Model.ServiceType</td></tr>
-            <tr><th class="bg-light">Operation Type</th><td>@Model.OperationType</td></tr>
-            <tr><th class="bg-light">Operation Grouping</th><td>@Model.OperationTypeGrouping</td></tr>
-            <tr><th class="bg-light">Receipt Type</th><td>@Model.ReceiptType</td></tr>
-            <tr><th class="bg-light">Internal Ref</th><td>@Model.InternalReferenceNumber</td></tr>
-            <tr><th class="bg-light">External Ref</th><td>@Model.ExternalReferenceNumber</td></tr>
-            <tr><th class="bg-light">Source of Request</th><td>@Model.SourceOfRequest</td></tr>
-            <tr><th class="bg-light">Portal Used</th><td>@Model.PortalUsed</td></tr>
-            <tr><th class="bg-light">Amount</th><td><strong>@Model.Amount.ToString("N0") FCFA</strong></td></tr>
-            <tr><th class="bg-light">Charges</th><td>@Model.Charges.ToString("N0") FCFA</td></tr>
-            <tr><th class="bg-light">Total Paid</th><td class="fw-bold text-success">@Model.TotalAmount.ToString("N0") FCFA</td></tr>
-            <tr><th class="bg-light">In Words</th><td>@Model.AmountInWord</td></tr>
+            <tr><th class="bg-light" style="width: 220px;">@GlobalShared.transaction_date</th><td>@Model.Date.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th class="bg-light">@GlobalShared.accounting_day</th><td>@Model.AccountingDay.ToString("dd/MM/yyyy")</td></tr>
+            <tr><th class="bg-light">@GlobalShared.service_type</th><td>@Model.ServiceType</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Operation_type</th><td>@Model.OperationType</td></tr>
+            <tr><th class="bg-light">@GlobalMemberReceipt.operation_grouping</th><td>@Model.OperationTypeGrouping</td></tr>
+            <tr><th class="bg-light">@GlobalShared.receipt_type</th><td>@Model.ReceiptType</td></tr>
+            <tr><th class="bg-light">@GlobalMemberReceipt.internal_ref</th><td>@Model.InternalReferenceNumber</td></tr>
+            <tr><th class="bg-light">@GlobalMemberReceipt.external_ref</th><td>@Model.ExternalReferenceNumber</td></tr>
+            <tr><th class="bg-light">@GlobalShared.source_of_request</th><td>@Model.SourceOfRequest</td></tr>
+            <tr><th class="bg-light">@GlobalMemberReceipt.portal_used</th><td>@Model.PortalUsed</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Amount</th><td><strong>@Model.Amount.ToString("N0") FCFA</strong></td></tr>
+            <tr><th class="bg-light">@GlobalShared.Charges</th><td>@Model.Charges.ToString("N0") FCFA</td></tr>
+            <tr><th class="bg-light">@GlobalShared.Total_Paid</th><td class="fw-bold text-success">@Model.TotalAmount.ToString("N0") FCFA</td></tr>
+            <tr><th class="bg-light">@GlobalMemberReceipt.in_words</th><td>@Model.AmountInWord</td></tr>
         </tbody>
     </table>
 </div>
@@ -118,21 +119,21 @@
 @if (Model.PaymentDetails != null && Model.PaymentDetails.Any())
 {
     <h6 class="fw-bold mt-4 border-bottom text-primary">
-        <i class="mdi mdi-format-list-bulleted-type me-1"></i> Breakdown
+        <i class="mdi mdi-format-list-bulleted-type me-1"></i> @GlobalShared.Breakdown
     </h6>
     <table class="table table-bordered table-sm">
         <thead class="table-light">
             <tr>
-                <th>Service</th>
-                <th>Amount</th>
+                <th>@GlobalShared.Service</th>
+                <th>@GlobalShared.Amount</th>
                 @if (Model.ServiceType?.ToLower().Contains("loan") == true)
                 {
-                    <th>Interest</th>
-                    <th>VAT</th>
+                    <th>@GlobalShared.Interest</th>
+                    <th>@GlobalShared.VAT</th>
                 }
-                <th>Fee</th>
-                <th>Account No.</th>
-                <th>Balance</th>
+                <th>@GlobalShared.Fee</th>
+                <th>@GlobalShared.Account_No.</th>
+                <th>@GlobalShared.Balance</th>
             </tr>
         </thead>
         <tbody>
@@ -154,7 +155,7 @@
         </tbody>
         <tfoot class="table-light">
             <tr>
-                <th>Total</th>
+                <th>@GlobalShared.Total</th>
                 <th>@Model.PaymentDetails.Sum(x => x.Amount).ToString("N0")</th>
                 @if (Model.ServiceType?.ToLower().Contains("loan") == true)
                 {
@@ -196,14 +197,14 @@
 @if (notes.Any())
 {
     <h6 class="fw-bold mt-4 border-bottom text-primary">
-        <i class="mdi mdi-cash me-1"></i> Denominations - Notes
+        <i class="mdi mdi-cash me-1"></i> @GlobalMemberReceipt.denominations_notes
     </h6>
     <table class="table table-sm table-bordered mb-3">
         <thead class="table-light">
             <tr>
-                <th>Denomination</th>
+                <th>@GlobalShared.Denomination</th>
                 <th>Qty</th>
-                <th>Total</th>
+                <th>@GlobalShared.Total</th>
             </tr>
         </thead>
         <tbody>
@@ -218,7 +219,7 @@
         </tbody>
         <tfoot class="table-light">
             <tr>
-                <th colspan="2">Total Notes</th>
+                <th colspan="2">@GlobalShared.total_notes</th>
                 <th>@notes.Sum(x => x.Item3).ToString("N0")</th>
             </tr>
         </tfoot>
@@ -228,14 +229,14 @@
 @if (coins.Any())
 {
     <h6 class="fw-bold border-bottom text-primary">
-        <i class="mdi mdi-coin me-1"></i> Denominations - Coins
+        <i class="mdi mdi-coin me-1"></i> @GlobalMemberReceipt.denominations_coins
     </h6>
     <table class="table table-sm table-bordered">
         <thead class="table-light">
             <tr>
-                <th>Denomination</th>
+                <th>@GlobalShared.Denomination</th>
                 <th>Qty</th>
-                <th>Total</th>
+                <th>@GlobalShared.Total</th>
             </tr>
         </thead>
         <tbody>
@@ -250,7 +251,7 @@
         </tbody>
         <tfoot class="table-light">
             <tr>
-                <th colspan="2">Total Coins</th>
+                <th colspan="2">@GlobalShared.total_coins</th>
                 <th>@coins.Sum(x => x.Item3).ToString("N0")</th>
             </tr>
         </tfoot>

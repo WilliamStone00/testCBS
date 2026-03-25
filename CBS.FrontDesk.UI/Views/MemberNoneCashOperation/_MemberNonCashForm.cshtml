@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
 @using Resources
 <style>
     /* General fieldset spacing */
@@ -69,9 +69,9 @@
         <div class="row g-1 align-items-center">
             <div class="col-12">
                 <span class="formatted-amount shadow-sm d-block py-2 px-3 bg-light rounded border border-secondary">
-                    <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
-                    <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
-                    <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                    <strong>@GlobalShared.Members_name:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                    <strong>@GlobalShared.Branch_Name:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                    <strong>@GlobalShared.Branch_Code:</strong> @Model.Branch.BranchCode
                 </span>
             </div>
         </div>
@@ -80,17 +80,17 @@
 
     <!-- Branch (standalone section) -->
     <div class="section">
-        <h6 class="text-dark">@GlobalLoanRepaymentBackOffice.BranchName</h6>
+        <h6 class="text-dark">@GlobalShared.Branch_Name</h6>
         <div class="row g-2 mb-1">
             <div class="col-md-12">
                 <div class="form-floating border rounded">
                     @Html.DropDownListFor(
                         m => m.AddMembersNoneCashOperationCommand.BranchId,
                         new SelectList(ViewBag.Branches, "Id", "Name"),
-                        "---" + @GlobalLoanApplication.SelectAll + "---",
+                        "---" + GlobalShared.Select_All + "---",
                         new { @class = "form-control shadow-sm select2", id = "branchInput" })
                     @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.BranchId, "", new { @class = "text-danger" })
-                    <label for="branchInput">@GlobalLoanRepaymentBackOffice.BranchName</label>
+                    <label for="branchInput">@GlobalShared.Branch_Name</label>
                 </div>
             </div>
         </div>
@@ -105,13 +105,13 @@
                         m => m.AddMembersNoneCashOperationCommand.IsMobileMoneyOperation,
                         new { @class = "form-check-input", id = "isMobileMoneyOperationChk" })
                     <label class="form-check-label fw-semibold ms-1" for="isMobileMoneyOperationChk">
-                        Is Mobile Money operation
+                        @GlobalMemberNoneCashOperation.is_mobile_money_operation
                     </label>
                 </div>
 
                 <!-- ✅ Categories directly under checkbox -->
                 <div id="momoCategoryContainer" class="d-none mt-2 border rounded p-2">
-                    <label class="fw-semibold d-block mb-2">Service type/Category</label>
+                    <label class="fw-semibold d-block mb-2">@GlobalShared.service_type/@GlobalShared.Category</label>
 
                     <div class="form-check">
                         <input type="radio" id="orangeMoneyRadio"
@@ -137,9 +137,9 @@
                 </div>
                 <!-- ✅ Mobile Money Path (shown only when checkbox is checked) -->
                 <div id="momoPathContainer" class="d-none mt-2 border rounded p-3">
-                    <label class="fw-bold text-dark d-block mb-2">MoMo / Orange Money – How should the funds move?</label>
+                    <label class="fw-bold text-dark d-block mb-2">MoMo / @GlobalMemberNoneCashOperation.orange_money_how_should_the_funds_move?</label>
                     <small class="text-muted d-block mb-3">
-                        Choose the flow. We’ll auto-set the Booking Direction (Debit/Credit) and you’ll see which side increases or decreases.
+                        @GlobalMemberNoneCashOperation.choose_the_flow_well_autoset_the_booking_direction_debitcredit_and_youll_see_which_side_increases_or_decreases.
                     </small>
 
                     <!-- Option 1 -->
@@ -151,10 +151,10 @@
                                class="form-check-input"
                                disabled />
                         <label class="form-check-label" for="path_member_to_float">
-                            <strong>Member Account → MoMo Float</strong>
+                            <strong>@GlobalMemberNoneCashOperation.member_account_momo_float</strong>
                             <div class="text-muted small mt-1">
-                                <span class="d-block">Effect: <b>Member Account = Debited (↓)</b>, <b>MoMo Float = Credited (↑)</b></span>
-                                <span class="d-block">Use when the branch transfers money from the member’s account to the MoMo/OM float.</span>
+                                <span class="d-block">@GlobalShared.effect: <b>@GlobalMemberNoneCashOperation.member_account_debited (↓)</b>, <b>@GlobalMemberNoneCashOperation.momo_float_credited (↑)</b></span>
+                                <span class="d-block">@GlobalMemberNoneCashOperation.use_when_the_branch_transfers_money_from_the_members_account_to_the_momoom_float.</span>
                             </div>
                         </label>
                     </div>
@@ -168,10 +168,10 @@
                                value="FromMembersAccountToMobilemoneyAndToMembersPhone"
                                class="form-check-input" />
                         <label class="form-check-label" for="path_member_to_float_to_phone">
-                            <strong>Member Account → MoMo Float → Member’s Phone (wallet payout)</strong>
+                            <strong>@GlobalMemberNoneCashOperation.member_account_momo_float_members_phone_wallet_payout</strong>
                             <div class="text-muted small mt-1">
-                                <span class="d-block">Effect: <b>Member Account = Debited (↓)</b>, <b>MoMo Float = Credited (↓)</b> (float decreases when cash leaves to wallet)</span>
-                                <span class="d-block">Use when the member requests a payout to their MTN/Orange wallet.</span>
+                                <span class="d-block">@GlobalShared.effect: <b>@GlobalMemberNoneCashOperation.member_account_debited (↓)</b>, <b>@GlobalMemberNoneCashOperation.momo_float_credited (↓)</b> (@GlobalMemberNoneCashOperation.float_decreases_when_cash_leaves_to_wallet)</span>
+                                <span class="d-block">@GlobalMemberNoneCashOperation.use_when_the_member_requests_a_payout_to_their_mtnorange_wallet.</span>
                             </div>
                         </label>
                     </div>
@@ -184,10 +184,10 @@
                                value="FloatFromMobileMoneyToMembersAccount"
                                class="form-check-input" />
                         <label class="form-check-label" for="path_phone_to_member">
-                            <strong>Member’s Phone (wallet) → MoMo Float → Member Account</strong>
+                            <strong>@GlobalMemberNoneCashOperation.members_phone_wallet_momo_float → @GlobalShared.Member_account</strong>
                             <div class="text-muted small mt-1">
-                                <span class="d-block">Effect: <b>Member Account = Credited (↑)</b>, <b>MoMo Float = Debited (↑)</b></span>
-                                <span class="d-block">The member sends funds from their MoMo wallet; branch float increases in debit, and the member’s local account is credited.</span>
+                                <span class="d-block">@GlobalShared.effect: <b>@GlobalShared.Member_account = @GlobalShared.credited (↑)</b>, <b>@GlobalMemberNoneCashOperation.momo_float = @GlobalShared.debited (↑)</b></span>
+                                <span class="d-block">@GlobalMemberNoneCashOperation.the_member_sends_funds_from_their_momo_wallet_branch_float_increases_in_debit_and_the_members_local_account_is_credited.</span>
                             </div>
                         </label>
                     </div>
@@ -205,7 +205,7 @@
                         "--- MoMo reference ---",
                         new { @class = "form-control shadow-sm select2", id = "noneMemberMobileReference" })
                     @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.NoneMemberMobileReference, "", new { @class = "text-danger" })
-                    <label for="noneMemberMobileReference">Select MM/OM operation collection account</label>
+                    <label for="noneMemberMobileReference">@GlobalMemberNoneCashOperation.select_mmom_operation_collection_account</label>
                 </div>
             </div>
         </div>
@@ -217,20 +217,20 @@
     <div class="section">
         <div class="row g-2 align-items-center">
             <div class="col-md-8">
-                <label class="fw-semibold text-dark mb-1">@GlobalMemberNoneCashOperation.BookingDirection:</label>
+                <label class="fw-semibold text-dark mb-1">@GlobalShared.booking_direction:</label>
                 <div class="d-flex flex-wrap gap-3">
                     <label class="booking-option">
                         @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Debit", new { id = "Debit" })
-                        @GlobalMemberNoneCashOperation.DebitMembersAccount
+                        @GlobalMemberNoneCashOperation.debit_members_account
                     </label>
                     <label class="booking-option">
                         @Html.RadioButtonFor(m => m.AddMembersNoneCashOperationCommand.BookingDirection, "Credit", new { id = "Credit" })
-                        @GlobalMemberNoneCashOperation.CreditMembersAccount
+                        @GlobalMemberNoneCashOperation.credit_members_account
                     </label>
                 </div>
             </div>
             <div class="col-md-4 text-md-end">
-                <label class="form-label fw-semibold me-2 mb-0">Accounting Date</label>
+                <label class="form-label fw-semibold me-2 mb-0">@GlobalShared.Accounting_Date</label>
                 @Html.TextBoxFor(
                     m => m.BulkDeposit.AccountingDate,
                     Model.BulkDeposit.AccountingDate.HasValue
@@ -250,19 +250,19 @@
         <input type="hidden" id="memberName" value="@Model.AddMembersNoneCashOperationCommand.MemberName" />
     </div>    <!-- Members Accounts (compact table) -->
     <div class="section">
-        <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.MembersAccounts</h6>
+        <h6 class="text-dark mb-1">@GlobalShared.MEMBERS_ACCOUNTS</h6>
         <div class="table-responsive">
             <table class="table table-sm table-hover align-middle" id="myDataTableT">
                 <thead class="table-light">
                     <tr>
-                        <th style="display:none;">@GlobalMemberNoneCashOperation.ProductID</th>
-                        <th>@GlobalMemberNoneCashOperation.Accounts</th>
-                        <th>@GlobalMemberNoneCashOperation.Balance</th>
-                        <th>@GlobalMemberNoneCashOperation.Amount</th>
-                        <th style="display:none">@GlobalMemberNoneCashOperation.Fee</th>
-                        <th>@GlobalMemberNoneCashOperation.Total</th>
-                        <th>@GlobalMemberNoneCashOperation.confirm</th>
-                        <th style="display:none">@GlobalMemberNoneCashOperation.Inc</th>
+                        <th style="display:none;">@GlobalShared.Product_ID</th>
+                        <th>@GlobalShared.Accounts</th>
+                        <th>@GlobalShared.Balance</th>
+                        <th>@GlobalShared.Amount</th>
+                        <th style="display:none">@GlobalShared.Fee</th>
+                        <th>@GlobalShared.Total</th>
+                        <th>@GlobalShared.Confirm</th>
+                        <th style="display:none">@GlobalShared.Inc</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -282,7 +282,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end"><strong>@GlobalMemberNoneCashOperation.Total:</strong></td>
+                        <td colspan="3" class="text-end"><strong>@GlobalShared.Total:</strong></td>
                         <td id="tableTotal">0</td>
                     </tr>
                 </tfoot>
@@ -293,7 +293,7 @@
 
     <!-- Corresponding accounts + Note on one line on md+ -->
     <div class="section">
-        <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.CorrespondingAccounts</h6>
+        <h6 class="text-dark mb-1">@GlobalMemberNoneCashOperation.corresponding_accounts</h6>
         <div class="row g-2">
             <div class="col-md-12" id="glContainer">
                 <div class="form-floating border rounded">
@@ -303,7 +303,7 @@
                         "---GL Account---",
                         new { @class = "form-control select2", id = "account_number", @search = "true" })
                     @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.ChartOfAccountId, "", new { @class = "text-danger" })
-                    <label id="accountNumberLabel" for="account_number">@GlobalMemberNoneCashOperation.SelectCorrespondentAccount</label>
+                    <label id="accountNumberLabel" for="account_number">@GlobalMemberNoneCashOperation.select_correspondent_account</label>
                 </div>
             </div>
 
@@ -311,7 +311,7 @@
                 <div class="form-floating border rounded">
                     @Html.TextAreaFor(m => m.AddMembersNoneCashOperationCommand.Note, new { @class = "form-control", id = "Note", style = "height: 60px;" })
                     @Html.ValidationMessageFor(m => m.AddMembersNoneCashOperationCommand.Note, "", new { @class = "text-danger" })
-                    <label for="Note">@GlobalMemberNoneCashOperation.EnterReasonsForTheOperation</label>
+                    <label for="Note">@GlobalMemberNoneCashOperation.enter_reasons_for_the_operation</label>
                 </div>
             </div>
         </div>
@@ -323,7 +323,7 @@
         <input type="hidden" name="customerId" value="@Model.CustomerId" id="customerId" />
 
         <button type="submit" class="btn btn-primary btn-sm px-3" onclick="PostOperation()">
-            <i class="fas fa-money-bill-wave me-2"></i>@GlobalMemberNoneCashOperation.CreateRequest
+            <i class="fas fa-money-bill-wave me-2"></i>@GlobalShared.create_request
         </button>
     </div>
 

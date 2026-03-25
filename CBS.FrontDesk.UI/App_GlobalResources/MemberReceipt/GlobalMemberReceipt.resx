@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="accounting_day" xml:space="preserve">
+    <value>Accounting Day</value>
+  </data>
+  <data name="always_doublecheck_internalexternal_reference_numbers" xml:space="preserve">
+    <value>Always double-check internal/external reference numbers</value>
+  </data>
+  <data name="cashier_information" xml:space="preserve">
+    <value>Cashier Information</value>
+  </data>
+  <data name="cash_breakdown_should_match_physical_notes_and_coins" xml:space="preserve">
+    <value>Cash breakdown should match physical notes and coins</value>
+  </data>
+  <data name="check_denominations" xml:space="preserve">
+    <value>Check Denominations</value>
+  </data>
+  <data name="confirm_identity" xml:space="preserve">
+    <value>Confirm Identity</value>
+  </data>
+  <data name="denominations_coins" xml:space="preserve">
+    <value>Denominations - Coins</value>
+  </data>
+  <data name="denominations_notes" xml:space="preserve">
+    <value>Denominations - Notes</value>
+  </data>
+  <data name="depositor_information" xml:space="preserve">
+    <value>Depositor Information</value>
+  </data>
+  <data name="depositor_name" xml:space="preserve">
+    <value>Depositor Name</value>
+  </data>
+  <data name="download_filtered_results_to_excel" xml:space="preserve">
+    <value>Download filtered results to Excel</value>
+  </data>
+  <data name="ensure_the_names_match_verified_member_and_depositor_information" xml:space="preserve">
+    <value>Ensure the names match verified member and depositor information</value>
+  </data>
+  <data name="external_ref" xml:space="preserve">
+    <value>External Ref</value>
+  </data>
+  <data name="find_receipts_by_internal_or_external_transaction_numbers" xml:space="preserve">
+    <value>Find receipts by internal or external transaction numbers</value>
+  </data>
+  <data name="internal_ref" xml:space="preserve">
+    <value>Internal Ref</value>
+  </data>
+  <data name="in_words" xml:space="preserve">
+    <value>In Words</value>
+  </data>
+  <data name="loading_receipt_details_please_wait" xml:space="preserve">
+    <value>Loading receipt details... Please wait</value>
+  </data>
+  <data name="make_sure_the_total_paid_equals_the_breakdown_charges" xml:space="preserve">
+    <value>Make sure the total paid equals the breakdown + charges</value>
+  </data>
+  <data name="member_receipts" xml:space="preserve">
+    <value>Member Receipts</value>
+  </data>
+  <data name="narrow_down_receipts_using_branch_code_or_name" xml:space="preserve">
+    <value>Narrow down receipts using branch code or name</value>
+  </data>
+  <data name="operation_grouping" xml:space="preserve">
+    <value>Operation Grouping</value>
+  </data>
+  <data name="portal_used" xml:space="preserve">
+    <value>Portal Used</value>
+  </data>
+  <data name="receipt_type" xml:space="preserve">
+    <value>Receipt Type</value>
+  </data>
+  <data name="receipt_validation_tips" xml:space="preserve">
+    <value>Receipt Validation Tips</value>
+  </data>
+  <data name="receipt_viewer" xml:space="preserve">
+    <value>Receipt Viewer</value>
+  </data>
+  <data name="report_mismatches_for_audit_followup" xml:space="preserve">
+    <value>Report mismatches for audit follow-up</value>
+  </data>
+  <data name="review_totals" xml:space="preserve">
+    <value>Review Totals</value>
+  </data>
+  <data name="select_start_and_end_dates_to_limit_results" xml:space="preserve">
+    <value>Select start and end dates to limit results</value>
+  </data>
+  <data name="source_of_request" xml:space="preserve">
+    <value>Source of Request</value>
+  </data>
+  <data name="suspect_discrepancy" xml:space="preserve">
+    <value>Suspect Discrepancy</value>
+  </data>
+  <data name="teller_id" xml:space="preserve">
+    <value>Teller ID</value>
+  </data>
+  <data name="teller_information" xml:space="preserve">
+    <value>Teller Information</value>
+  </data>
+  <data name="till" xml:space="preserve">
+    <value>Till</value>
+  </data>
+  <data name="tips_for_using_the_receipt_filters_effectively" xml:space="preserve">
+    <value>Tips for using the receipt filters effectively</value>
+  </data>
+  <data name="total_account_balances" xml:space="preserve">
+    <value>Total Account Balances</value>
+  </data>
+  <data name="total_coins" xml:space="preserve">
+    <value>Total Coins</value>
+  </data>
+  <data name="total_notes" xml:space="preserve">
+    <value>Total Notes</value>
+  </data>
+  <data name="to_ensure_the_latest_data_is_displayed" xml:space="preserve">
+    <value>To ensure the latest data is displayed</value>
+  </data>
+  <data name="track_search_and_analyze_member_payment_receipts_across_branches" xml:space="preserve">
+    <value>Track, search, and analyze member payment receipts across branches</value>
+  </data>
+  <data name="transaction_date" xml:space="preserve">
+    <value>Transaction Date</value>
+  </data>
+  <data name="transaction_details" xml:space="preserve">
+    <value>Transaction Details</value>
+  </data>
+  <data name="use_audit_references" xml:space="preserve">
+    <value>Use Audit References</value>
+  </data>
+  <data name="use_filters_like_branch_date_range_member_reference_or_transaction_reference" xml:space="preserve">
+    <value>Use filters like branch, date range, member reference, or transaction reference</value>
+  </data>
+  <data name="use_the_unique_member_reference_for_precise_search" xml:space="preserve">
+    <value>Use the unique member reference for precise search</value>
+  </data>
+  <data name="you_are_viewing_a_detailed_summary_of_the_selected_member_payment_receipt_use_the_tips_below_to_guide_your_validation_process" xml:space="preserve">
+    <value>You are viewing a detailed summary of the selected member payment receipt. Use the tips below to guide your validation process</value>
+  </data>
+</root>

@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
+@model CBS.FrontDesk.Data.Entity.Accounting.CashDemandDataEntity
     @using Resources
 @{
     ViewBag.Title = "View Cash Replenishment Details";
@@ -22,7 +22,7 @@
                             aria-expanded="true"
                             aria-controls="accordionPopoutIcon-3">
                         <i class="mdi mdi-bank-plus me-2"></i>
-                        @GlobalNotification.RequestReferenceId :@Model.CashReplenimentRequestdto.Id @GlobalNotification.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested
+                        @GlobalNotification.request_reference_id :@Model.CashReplenimentRequestdto.Id @GlobalShared.Amount : XFA @Model.CashReplenimentRequestdto.AmountRequested
                     </button>
                 </h2>
                 <div class="card-body">
@@ -32,7 +32,7 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>@GlobalNotification.CashReplenishmentDetails</th>
+                                    <th>@GlobalNotification.cash_replenishment_details</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -40,28 +40,28 @@
                                 @if (Convert.ToBoolean(Session["IsHeadOffice"]) == true)
                                 {
                                     <tr>
-                                        <td>@GlobalNotification.BranchOffice</td>
+                                        <td>@GlobalShared.Branch_Office</td>
                                         <td>@Model.CashReplenimentRequestdto.BranchOffice </td>
                                     </tr>
                                 }
                                 <tr>
-                                    <td>@GlobalNotification.InvoiceNumber</td>
+                                    <td>@GlobalNotification.invoice_number</td>
                                     <td>@Model.CashReplenimentRequestdto.ReferenceId </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.Amount Requested</td>
+                                    <td>@GlobalShared.Amount Requested</td>
                                     <td>XAF @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.RequestMessage</td>
+                                    <td>@GlobalNotification.request_message</td>
                                     <td>@Model.CashReplenimentRequestdto.RequestMessage </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.RequestedBy </td>
+                                    <td>@GlobalShared.Requested_by </td>
                                     <td> @Model.CashReplenimentRequestdto.TempId1 </td>
                                 </tr>
                                 <tr>
-                                    <td>@GlobalNotification.RequestedDate</td>
+                                    <td>@GlobalShared.Requested_Date</td>
                                     <td>@Model.CashReplenimentRequestdto.IssuedDate </td>
                                 </tr>
                                 <tr>
@@ -95,20 +95,20 @@
                         </table>
                     </div>
                     <div class="card card-action mb-5">
-                        <h5 class="card-title">@GlobalNotification.CashReplenishmentRequestStatus</h5>
+                        <h5 class="card-title">@GlobalNotification.cash_replenishment_request_status</h5>
                         <div class="card-body">
                             <div class="mb-3 col-12 mb-0">
                                 @if (@Model.CashReplenimentRequestdto.IsApproved)
                                 {
                                     <div class="alert alert-outline-success" role="alert">
-                                        <h6 class="alert-heading mb-1">@GlobalNotification.TheCashReplenishmentRequestOf @Model.CashReplenimentRequestdto.TempId1 @GlobalNotification.isAlreadyApproved.</h6>
+                                        <h6 class="alert-heading mb-1">@GlobalNotification.TheCashReplenishmentRequestOf @Model.CashReplenimentRequestdto.TempId1 @GlobalShared.is_already_approved.</h6>
                                         <p class="mb-0">@Model.CashReplenimentRequestdto.AmountApproved.ToString("N") @GlobalNotification.wasReplenished</p>
                                     </div>
                                 }
                                 else
                                 {<div class="alert alert-outline-primary" role="alert">
-                                     <h6 class="alert-heading mb-1">@GlobalNotification.ReferenceId :@Model.CashReplenimentRequestdto.Id  @GlobalNotification.withAmount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalNotification.hasNotYetBeenApproved</h6>
-                                     <p class="mb-0">@GlobalNotification.SelectSourceAccountToWhichTheVaultWillBe </p>
+                                     <h6 class="alert-heading mb-1">@GlobalShared.reference_id :@Model.CashReplenimentRequestdto.Id  @GlobalNotification.with_amount XFA @Model.CashReplenimentRequestdto.AmountRequested.ToString("N") @GlobalShared.has_not_yet_been_approved</h6>
+                                     <p class="mb-0">@GlobalNotification.select_source_account_to_which_the_vault_will_be </p>
                                     </div>
                                 }
 
@@ -131,11 +131,11 @@
                                         <div class="form-check mb-3">
                                             <div class="form-check">
                                                 @Html.CheckBoxFor(m => m.CashReplenimentRequestdto.IsApproved, new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="isActive">@GlobalNotification.TheCashReplenishmentRequestOfIssuedBy @Model.CashReplenimentRequestdto.TempId1 @GlobalNotification.hasBeenApprovedBy @Model.CashReplenimentRequestdto.TempId2</label>
+                                                <label class="form-check-label" for="isActive">@GlobalShared.the_cash_replenishment_request_of_issued_by @Model.CashReplenimentRequestdto.TempId1 @GlobalShared.has_been_approved_by @Model.CashReplenimentRequestdto.TempId2</label>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">@GlobalNotification.AlreadyApprovedAccountReplenishment</button>
+                                            <button type="submit" class="btn btn-primary">@GlobalNotification.already_approved_account_replenishment</button>
                                         </div>
 
                                     }
@@ -166,7 +166,7 @@
 
                                                 @Html.DropDownListFor(m => m.CashReplenimentRequestdto.TempId2, new SelectList(ViewBag.Decisions == null ? "" : ViewBag.Decisions, "Text", "Value"), "", new { @class = "form-control select2", @search = "true", @id = "CorrespondingBranchID" })
                                                 @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedBy, "", new { @class = "text-danger" })
-                                                <label for="Account">@GlobalNotification.MakeDecision</label>
+                                                <label for="Account">@GlobalShared.make_decision</label>
                                             </div>
                                         </div>
                                         <div class="form-check mb-3" id="hideBranchID">
@@ -174,7 +174,7 @@
 
                                                 @Html.DropDownListFor(m => m.CashReplenimentRequestdto.CorrespondingBranchId, new SelectList(ViewBag.Branches == null ? "" : ViewBag.Branches, "Text", "Value"), "", new { @class = "form-control select2", @search = "true" })
                                                 @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.CorrespondingBranchId, "", new { @class = "text-danger" })
-                                                <label for="Account">@GlobalNotification.SelectBranch</label>
+                                                <label for="Account">@GlobalShared.Select_Branch</label>
                                             </div>
                                         </div>
                                         <div class="form-check mb-3">
@@ -182,7 +182,7 @@
                                                 @Html.TextBoxFor(m => m.CashReplenimentRequestdto.AmountApproved, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.AmountApproved, "", new { @class = "text-danger" })
 
-                                                <label for="Description"> @GlobalNotification.ApprovedAmount</label>
+                                                <label for="Description"> @GlobalShared.Approved_Amount</label>
                                             </div>
                                         </div>
                                         <div class="form-check mb-3">
@@ -190,7 +190,7 @@
                                                 @Html.TextAreaFor(m => m.CashReplenimentRequestdto.ApprovedMessage, new { @class = "form-control", @style = "height: 200px;" })
                                                 @Html.ValidationMessageFor(model => model.CashReplenimentRequestdto.ApprovedMessage, "", new { @class = "text-danger" })
 
-                                                <label for="Description"> @GlobalNotification.ApprovedMessageDescription</label>
+                                                <label for="Description"> @GlobalShared.approved_message_description</label>
                                             </div>
                                         </div>
                                         <div class="col-12 text-end">

@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
-
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryExtract
+@using Resources
 @functions {
     public string Money(decimal v) =>
         v.ToString("N0");
@@ -65,7 +65,7 @@
     <!-- Header + conditional Activate -->
     <div class="d-flex justify-content-between align-items-start">
         <h5 class="fw-bold text-uppercase text-primary border-bottom mb-3">
-            <i class="mdi mdi-file-document-outline me-1"></i> Processed Salary – Details
+            <i class="mdi mdi-file-document-outline me-1"></i> @GlobalSalaryProcessed.processed_salary_details
         </h5>
 
         @if (canActivate)
@@ -82,10 +82,10 @@
                         branchCode: '@(Model.BranchCode ?? "")'
                 })">
                     <i class="mdi mdi-account-plus-outline me-1"></i>
-                    Activate / Register
+                    @GlobalShared.Activate / @GlobalShared.register
                 </button>
                 <div class="small text-muted mt-1">
-                    Non-member reference detected (@(string.IsNullOrEmpty(Model.MemberReference) ? "—" : Model.MemberReference)).
+                    @GlobalSalaryProcessed.non_member_reference_detected (@(string.IsNullOrEmpty(Model.MemberReference) ? "—" : Model.MemberReference)).
                 </div>
             </div>
         }
@@ -95,31 +95,31 @@
     <!-- Member summary -->
     <div class="row g-3">
         <div class="col-md-7">
-            <h6 class="section-title"><i class="mdi mdi-account-circle-outline"></i> Member</h6>
+            <h6 class="section-title"><i class="mdi mdi-account-circle-outline"></i> @GlobalShared.Member</h6>
             <table class="table table-sm table-bordered kv mb-3">
                 <tbody>
-                    <tr><th>Name</th><td>@Model.MemberName</td></tr>
-                    <tr><th>Member Reference</th><td class="mono">@Model.MemberReference</td></tr>
-                    <tr><th>Matricule</th><td class="mono">@Model.Matricule</td></tr>
-                    <tr><th>Non-Member Reference</th><td class="mono">@Model.NonMemberReference</td></tr>
-                    <tr><th>Branch</th><td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td></tr>
-                    <tr><th>Paid Status</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
-                    <tr><th>Is Old Loan?</th><td>@Html.Raw(YesNo(Model.IsOnldLoan)) <span class="ms-2 text-muted">@Model.LoanType</span></td></tr>
+                    <tr><th>@GlobalShared.Name</th><td>@Model.MemberName</td></tr>
+                    <tr><th>@GlobalShared.Member_reference</th><td class="mono">@Model.MemberReference</td></tr>
+                    <tr><th>@GlobalShared.matricule</th><td class="mono">@Model.Matricule</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.non_member_reference</th><td class="mono">@Model.NonMemberReference</td></tr>
+                    <tr><th>@GlobalShared.Branch</th><td>@Model.BranchName <span class="text-muted">(@Model.BranchCode)</span></td></tr>
+                    <tr><th>@GlobalShared.paid_status</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.is_old_loan?</th><td>@Html.Raw(YesNo(Model.IsOnldLoan)) <span class="ms-2 text-muted">@Model.LoanType</span></td></tr>
                 </tbody>
             </table>
         </div>
 
         <div class="col-md-5">
-            <h6 class="section-title"><i class="mdi mdi-clipboard-text-outline"></i> File / Batch</h6>
+            <h6 class="section-title"><i class="mdi mdi-clipboard-text-outline"></i> @GlobalShared.File / @GlobalShared.batch</h6>
             <table class="table table-sm table-bordered kv mb-3">
                 <tbody>
-                    <tr><th>File Upload Id</th><td class="mono">@Model.FileUploadId</td></tr>
-                    <tr><th>File Ref Id</th><td class="mono">@Model.FileUploadIdReferenceId</td></tr>
-                    <tr><th>Salary Analysis Result Id</th><td class="mono">@Model.SalaryAnalysisResultId</td></tr>
-                    <tr><th>Temp Pay Code</th><td class="mono">@Model.LastTempPayCodeId</td></tr>
-                    <tr><th>Temp Code Status</th><td>@Model.LastTempPayCodeStatus</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.file_upload_id</th><td class="mono">@Model.FileUploadId</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.file_ref_id</th><td class="mono">@Model.FileUploadIdReferenceId</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.salary_analysis_result_id</th><td class="mono">@Model.SalaryAnalysisResultId</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.temp_pay_code</th><td class="mono">@Model.LastTempPayCodeId</td></tr>
+                    <tr><th>@GlobalSalaryProcessed.temp_code_status</th><td>@Model.LastTempPayCodeStatus</td></tr>
                     <tr>
-                        <th>Temp Code Expires</th>
+                        <th>@GlobalSalaryProcessed.temp_code_expires</th>
                         <td class="nowrap">
                             @(Model.LastTempPayCodeExpiresAt == DateTime.MinValue ? "—" : Model.LastTempPayCodeExpiresAt.ToString("dd/MM/yyyy HH:mm"))
                         </td>
@@ -130,19 +130,19 @@
     </div>
 
     <!-- Amounts -->
-    <h6 class="section-title"><i class="mdi mdi-cash-multiple"></i> Amounts</h6>
+    <h6 class="section-title"><i class="mdi mdi-cash-multiple"></i> @GlobalShared.amounts</h6>
     <table class="table table-sm table-bordered mb-3">
         <thead class="table-light">
             <tr>
-                <th class="text-end">Gross Salary</th>
-                <th class="text-end">Saving</th>
-                <th class="text-end">Deposit</th>
-                <th class="text-end">Shares</th>
-                <th class="text-end">Preference Shares</th>
-                <th class="text-end">Charges</th>
-                <th class="text-end">Standing Order</th>
-                <th class="text-end">Remaining</th>
-                <th class="text-end">Net Salary</th>
+                <th class="text-end">@GlobalSalaryProcessed.gross_salary</th>
+                <th class="text-end">@GlobalShared.Saving</th>
+                <th class="text-end">@GlobalShared.Deposit</th>
+                <th class="text-end">@GlobalShared.Shares</th>
+                <th class="text-end">@GlobalSalaryProcessed.preference_shares</th>
+                <th class="text-end">@GlobalShared.Charges</th>
+                <th class="text-end">@GlobalSalaryProcessed.standing_order</th>
+                <th class="text-end">@GlobalShared.Remaining</th>
+                <th class="text-end">@GlobalShared.net_salary</th>
             </tr>
         </thead>
         <tbody>
@@ -165,22 +165,22 @@
     </table>
 
     <!-- Savings (Special) -->
-    <h6 class="section-title"><i class="mdi mdi-safe-square-outline"></i> Savings (Special)</h6>
+    <h6 class="section-title"><i class="mdi mdi-safe-square-outline"></i> @GlobalShared.Savings (@GlobalShared.special)</h6>
     <table class="table table-sm table-bordered kv mb-3">
         <tbody>
-            <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.SpSavingId_Used))</td></tr>
-            <tr><th>Type</th><td>@Model.SpSavingType</td></tr>
-            <tr><th>Product</th><td>@Model.SpSavingProductName <span class="text-muted">(@Model.SpSavingProductId)</span></td></tr>
-            <tr><th>Saving Id</th><td class="mono">@Model.SpSavingId</td></tr>
+            <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.SpSavingId_Used))</td></tr>
+            <tr><th>@GlobalShared.Type</th><td>@Model.SpSavingType</td></tr>
+            <tr><th>@GlobalShared.Product</th><td>@Model.SpSavingProductName <span class="text-muted">(@Model.SpSavingProductId)</span></td></tr>
+            <tr><th>@GlobalSalaryProcessed.saving_id</th><td class="mono">@Model.SpSavingId</td></tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered mb-3">
         <thead class="table-light">
             <tr>
-                <th class="text-end">Capital</th>
-                <th class="text-end">Interest</th>
-                <th class="text-end">VAT</th>
-                <th class="text-end">Total Repayment</th>
+                <th class="text-end">@GlobalShared.Capital</th>
+                <th class="text-end">@GlobalShared.Interest</th>
+                <th class="text-end">@GlobalShared.VAT</th>
+                <th class="text-end">@GlobalShared.total_repayment</th>
             </tr>
         </thead>
         <tbody>
@@ -201,15 +201,15 @@
         <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 1 – Main</h6>
         <table class="table table-sm table-bordered kv mb-2">
             <tbody>
-                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan1_Main_Loan_Id_Used))</td></tr>
-                <tr><th>Loan Id</th><td class="mono">@Model.Loan1_Main_Loan_Id</td></tr>
-                <tr><th>Type</th><td>@Model.Loan1_Main_Loan_Type</td></tr>
-                <tr><th>Product</th><td>@Model.Loan1_Main_Loan_ProductName <span class="text-muted">(@Model.Loan1_Main_Loan_ProductId)</span></td></tr>
+                <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.Loan1_Main_Loan_Id_Used))</td></tr>
+                <tr><th>@GlobalShared.Loan_ID</th><td class="mono">@Model.Loan1_Main_Loan_Id</td></tr>
+                <tr><th>@GlobalShared.Type</th><td>@Model.Loan1_Main_Loan_Type</td></tr>
+                <tr><th>@GlobalShared.Product</th><td>@Model.Loan1_Main_Loan_ProductName <span class="text-muted">(@Model.Loan1_Main_Loan_ProductId)</span></td></tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered mb-3">
             <thead class="table-light">
-                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+                <tr><th class="text-end">@GlobalShared.Capital</th><th class="text-end">@GlobalShared.Interest</th><th class="text-end">@GlobalShared.VAT</th><th class="text-end">@GlobalShared.Total</th></tr>
             </thead>
             <tbody>
                 <tr>
@@ -226,18 +226,18 @@
     @if ((!string.IsNullOrWhiteSpace(Model.Loan2_Exceptional_Loan_Id)) ||
          (Model.Loan2_Exceptional_Loan_Capital + Model.Loan2_Exceptional_Loan_Interest + Model.Loan2_Exceptional_Loan_VAT + Model.Loan2_Exceptional_Loan_TotalRepayment) > 0)
     {
-        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 2 – Exceptional</h6>
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> @GlobalSalaryProcessed.loan_2_exceptional</h6>
         <table class="table table-sm table-bordered kv mb-2">
             <tbody>
-                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan2_Exceptional_Loan_Id_Used))</td></tr>
-                <tr><th>Loan Id</th><td class="mono">@Model.Loan2_Exceptional_Loan_Id</td></tr>
-                <tr><th>Type</th><td>@Model.Loan2_Exceptional_Loan_Type</td></tr>
-                <tr><th>Product</th><td>@Model.Loan2_Exceptional_Loan_ProductName <span class="text-muted">(@Model.Loan2_Exceptional_Loan_ProductId)</span></td></tr>
+                <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.Loan2_Exceptional_Loan_Id_Used))</td></tr>
+                <tr><th>@GlobalShared.Loan_ID</th><td class="mono">@Model.Loan2_Exceptional_Loan_Id</td></tr>
+                <tr><th>@GlobalShared.Type</th><td>@Model.Loan2_Exceptional_Loan_Type</td></tr>
+                <tr><th>@GlobalShared.Product</th><td>@Model.Loan2_Exceptional_Loan_ProductName <span class="text-muted">(@Model.Loan2_Exceptional_Loan_ProductId)</span></td></tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered mb-3">
             <thead class="table-light">
-                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+                <tr><th class="text-end">@GlobalShared.Capital</th><th class="text-end">@GlobalShared.Interest</th><th class="text-end">@GlobalShared.VAT</th><th class="text-end">@GlobalShared.Total</th></tr>
             </thead>
             <tbody>
                 <tr>
@@ -254,18 +254,18 @@
     @if ((!string.IsNullOrWhiteSpace(Model.Loan3_Elected_Staff_Id)) ||
          (Model.Loan3_Elected_Staff_Capital + Model.Loan3_Elected_Staff_Interest + Model.Loan3_Elected_Staff_VAT + Model.Loan3_Elected_Staff_TotalRepayment) > 0)
     {
-        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 3 – Elected Staff</h6>
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> @GlobalSalaryProcessed.loan_3_elected_staff</h6>
         <table class="table table-sm table-bordered kv mb-2">
             <tbody>
-                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan3_Elected_Staff_Id_Used))</td></tr>
-                <tr><th>Loan Id</th><td class="mono">@Model.Loan3_Elected_Staff_Id</td></tr>
-                <tr><th>Type</th><td>@Model.Loan3_Elected_Staff_Type</td></tr>
-                <tr><th>Product</th><td>@Model.Loan3_Elected_Staff_ProductName <span class="text-muted">(@Model.Loan3_Elected_Staff_ProductId)</span></td></tr>
+                <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.Loan3_Elected_Staff_Id_Used))</td></tr>
+                <tr><th>@GlobalShared.Loan_ID</th><td class="mono">@Model.Loan3_Elected_Staff_Id</td></tr>
+                <tr><th>@GlobalShared.Type</th><td>@Model.Loan3_Elected_Staff_Type</td></tr>
+                <tr><th>@GlobalShared.Product</th><td>@Model.Loan3_Elected_Staff_ProductName <span class="text-muted">(@Model.Loan3_Elected_Staff_ProductId)</span></td></tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered mb-3">
             <thead class="table-light">
-                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+                <tr><th class="text-end">@GlobalShared.Capital</th><th class="text-end">@GlobalShared.Interest</th><th class="text-end">@GlobalShared.VAT</th><th class="text-end">@GlobalShared.Total</th></tr>
             </thead>
             <tbody>
                 <tr>
@@ -282,18 +282,18 @@
     @if ((!string.IsNullOrWhiteSpace(Model.Loan4_Special_Loan_With_Overdraft_Id)) ||
          (Model.Loan4_Special_Loan_With_Overdraft_Capital + Model.Loan4_Special_Loan_With_Overdraft_Interest + Model.Loan4_Special_Loan_With_Overdraft_VAT + Model.Loan4_Special_Loan_With_Overdraft_TotalRepayment) > 0)
     {
-        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 4 – Special / Overdraft</h6>
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> @GlobalSalaryProcessed.loan_4_special_overdraft</h6>
         <table class="table table-sm table-bordered kv mb-2">
             <tbody>
-                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan4_Special_Loan_With_Overdraft_Id_Used))</td></tr>
-                <tr><th>Loan Id</th><td class="mono">@Model.Loan4_Special_Loan_With_Overdraft_Id</td></tr>
-                <tr><th>Type</th><td>@Model.Loan4_Special_Loan_With_Overdraft_Type</td></tr>
-                <tr><th>Product</th><td>@Model.Loan4_Special_Loan_With_Overdraft_ProductName <span class="text-muted">(@Model.Loan4_Special_Loan_With_Overdraft_ProductId)</span></td></tr>
+                <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.Loan4_Special_Loan_With_Overdraft_Id_Used))</td></tr>
+                <tr><th>@GlobalShared.Loan_ID</th><td class="mono">@Model.Loan4_Special_Loan_With_Overdraft_Id</td></tr>
+                <tr><th>@GlobalShared.Type</th><td>@Model.Loan4_Special_Loan_With_Overdraft_Type</td></tr>
+                <tr><th>@GlobalShared.Product</th><td>@Model.Loan4_Special_Loan_With_Overdraft_ProductName <span class="text-muted">(@Model.Loan4_Special_Loan_With_Overdraft_ProductId)</span></td></tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered mb-3">
             <thead class="table-light">
-                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+                <tr><th class="text-end">@GlobalShared.Capital</th><th class="text-end">@GlobalShared.Interest</th><th class="text-end">@GlobalShared.VAT</th><th class="text-end">@GlobalShared.Total</th></tr>
             </thead>
             <tbody>
                 <tr>
@@ -310,18 +310,18 @@
     @if ((!string.IsNullOrWhiteSpace(Model.Loan8_Micro_Loan_Id)) ||
          (Model.Loan8_Micro_Loan_Capital + Model.Loan8_Micro_Loan_Interest + Model.Loan8_Micro_Loan_VAT + Model.Loan8_Micro_Loan_TotalRepayment) > 0)
     {
-        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> Loan 8 – Micro</h6>
+        <h6 class="section-title"><i class="mdi mdi-file-document-edit-outline"></i> @GlobalSalaryProcessed.loan_8_micro</h6>
         <table class="table table-sm table-bordered kv mb-2">
             <tbody>
-                <tr><th>Used?</th><td>@Html.Raw(YesNo(Model.Loan8_Micro_Loan_Id_Used))</td></tr>
-                <tr><th>Loan Id</th><td class="mono">@Model.Loan8_Micro_Loan_Id</td></tr>
-                <tr><th>Type</th><td>@Model.Loan8_Micro_Loan_Type</td></tr>
-                <tr><th>Product</th><td>@Model.Loan8_Micro_Loan_ProductName <span class="text-muted">(@Model.Loan8_Micro_Loan_ProductId)</span></td></tr>
+                <tr><th>@GlobalShared.Used?</th><td>@Html.Raw(YesNo(Model.Loan8_Micro_Loan_Id_Used))</td></tr>
+                <tr><th>@GlobalShared.Loan_ID</th><td class="mono">@Model.Loan8_Micro_Loan_Id</td></tr>
+                <tr><th>@GlobalShared.Type</th><td>@Model.Loan8_Micro_Loan_Type</td></tr>
+                <tr><th>@GlobalShared.Product</th><td>@Model.Loan8_Micro_Loan_ProductName <span class="text-muted">(@Model.Loan8_Micro_Loan_ProductId)</span></td></tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered mb-3">
             <thead class="table-light">
-                <tr><th class="text-end">Capital</th><th class="text-end">Interest</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr>
+                <tr><th class="text-end">@GlobalShared.Capital</th><th class="text-end">@GlobalShared.Interest</th><th class="text-end">@GlobalShared.VAT</th><th class="text-end">@GlobalShared.Total</th></tr>
             </thead>
             <tbody>
                 <tr>
@@ -335,25 +335,25 @@
     }
 
     <!-- Operators / Status -->
-    <h6 class="section-title"><i class="mdi mdi-account-badge-outline"></i> Operators / Status</h6>
+<h6 class="section-title"><i class="mdi mdi-account-badge-outline"></i> @GlobalShared.operators / @GlobalShared.Status</h6>
     <table class="table table-sm table-bordered kv mb-3">
         <tbody>
-            <tr><th>Uploaded By</th><td>@Model.UploadedBy</td></tr>
-            <tr><th>Executed By</th><td>@Model.ExecutedBy</td></tr>
-            <tr><th>Payment Comment</th><td>@Model.PaymentComment</td></tr>
-            <tr><th>Is Paid (Execution)</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
-            <tr><th>Is Paid (Flag)</th><td>@Html.Raw(YesNo(Model.Ispaid))</td></tr>
+            <tr><th>@GlobalShared.Uploaded_By</th><td>@Model.UploadedBy</td></tr>
+            <tr><th>@GlobalShared.executed_by</th><td>@Model.ExecutedBy</td></tr>
+            <tr><th>@GlobalSalaryProcessed.payment_comment</th><td>@Model.PaymentComment</td></tr>
+            <tr><th>@GlobalSalaryProcessed.is_paid (@GlobalShared.execution)</th><td>@Html.Raw(Paid(Model.Status))</td></tr>
+            <tr><th>@GlobalSalaryProcessed.is_paid (@GlobalShared.flag)</th><td>@Html.Raw(YesNo(Model.Ispaid))</td></tr>
         </tbody>
     </table>
 
     <!-- Dates -->
-    <h6 class="section-title"><i class="mdi mdi-calendar-multiselect"></i> Dates</h6>
+    <h6 class="section-title"><i class="mdi mdi-calendar-multiselect"></i> @GlobalShared.Dates</h6>
     <table class="table table-sm table-bordered kv mb-1">
         <tbody>
-            <tr><th>Extraction Date</th><td>@Model.ExtrationDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
-            <tr><th>Execution Date</th><td>@Model.ExecutionDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
-            <tr><th>Accounting Date</th><td>@Model.AccountingDate.ToString("dd/MM/yyyy")</td></tr>
-            <tr><th>Created Date</th><td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th>@GlobalShared.extraction_date</th><td>@Model.ExtrationDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th>@GlobalShared.execution_date</th><td>@Model.ExecutionDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
+            <tr><th>@GlobalShared.Accounting_Date</th><td>@Model.AccountingDate.ToString("dd/MM/yyyy")</td></tr>
+            <tr><th>@GlobalShared.Created_Date</th><td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td></tr>
         </tbody>
     </table>
 </div>

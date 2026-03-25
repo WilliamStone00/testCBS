@@ -63,63 +63,63 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Loan Term Management.
         /// </summary>
-        internal static string header {
+        internal static string loan_term_management {
             get {
-                return ResourceManager.GetString("header", resourceCulture);
+                return ResourceManager.GetString("loan_term_management", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loan Term Settings.
         /// </summary>
-        internal static string Loan_Term_Settings {
+        internal static string loan_term_settings {
             get {
-                return ResourceManager.GetString("Loan_Term_Settings", resourceCulture);
+                return ResourceManager.GetString("loan_term_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage loan terms configurations here.
+        /// </summary>
+        internal static string manage_loan_terms_configurations_here {
+            get {
+                return ResourceManager.GetString("manage_loan_terms_configurations_here", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Maximum value in months.
         /// </summary>
-        internal static string Maximum_value_in_months {
+        internal static string maximum_value_in_months {
             get {
-                return ResourceManager.GetString("Maximum_value_in_months", resourceCulture);
+                return ResourceManager.GetString("maximum_value_in_months", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minimum value in months.
         /// </summary>
-        internal static string Minimum_value_in_months {
+        internal static string minimum_value_in_months {
             get {
-                return ResourceManager.GetString("Minimum_value_in_months", resourceCulture);
+                return ResourceManager.GetString("minimum_value_in_months", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Min : Max.
         /// </summary>
-        internal static string Min_Max {
+        internal static string min_max {
             get {
-                return ResourceManager.GetString("Min_Max", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("min_max", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Term Kind.
         /// </summary>
-        internal static string TermKind {
+        internal static string term_kind {
             get {
-                return ResourceManager.GetString("TermKind", resourceCulture);
+                return ResourceManager.GetString("term_kind", resourceCulture);
             }
         }
     }

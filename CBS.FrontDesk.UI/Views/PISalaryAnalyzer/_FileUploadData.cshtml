@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
+@model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 <fieldset class="fieldset-custom">
     <div class="mb-3 border-2">
@@ -9,9 +9,9 @@
                     <table class="table table-hover" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th>@GlobalSalaryAnalyzer.FileName</th>
-                                <th>@GlobalSalaryAnalyzer.UploadedBy</th>
-                                <th>@GlobalSalaryAnalyzer.UploadedOn</th>
+                                <th>@GlobalShared.File_Name</th>
+                                <th>@GlobalShared.Uploaded_By</th>
+                                <th>@GlobalShared.Uploaded_On</th>
                                 <th>@GlobalShared.Status</th>
                                 <th>@GlobalShared.Action</th>
                             </tr>
@@ -57,7 +57,7 @@
                 {
 
                     <div class="text-center my-3">
-                        <p>@GlobalSalaryAnalyzer.NoFilesIsAvailableForAnalysis.</p>
+                        <p>@GlobalPISalaryAnalyzer.no_files_is_available_for_analysis.</p>
                     </div>
                 }
             </div>

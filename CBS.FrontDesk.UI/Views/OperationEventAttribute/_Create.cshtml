@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttribute
+@model CBS.FrontDesk.Data.Entity.Accounting.OperationEventAttribute
     @using Resources
 <div class="card-body">
     @using (Html.BeginForm("Create", "OperationEventAttribute", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -9,14 +9,14 @@
                 <div class="form-floating form-floating-outline">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                    <label>@GlobalOperationEventAttribute.Name</label>
+                    <label>@GlobalShared.Name</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-floating form-floating-outline">
                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height: 200px;" })
                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                    <label>@GlobalOperationEventAttribute.Description</label>
+                    <label>@GlobalShared.Description</label>
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
         <div class="mt-4">
             <button type="submit" onclick="" class="btn btn-primary me-2">@GlobalShared.Save</button>
             <button type="reset" onclick="" class="btn btn-outline-secondary" data-bs-dismiss="modal"> @GlobalShared.Close</button>
-            <div class="text-center text-muted"><small>C B S 4 U @GlobalOperationEventAttribute.userAccount (@Session["FullName"])</small></div>
+            <div class="text-center text-muted"><small>C B S 4 U @GlobalShared.user_account (@Session["FullName"])</small></div>
         </div>
        
     }

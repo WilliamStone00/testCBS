@@ -1,5 +1,6 @@
-﻿@using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
+@using CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation
 @model ReportParameters
+@using Resources
 @using System.Web.Mvc
 
 <div class="container-fluid">
@@ -11,11 +12,10 @@
             <div class="card bg-light mb-3">
                 <div class="card-body text-center">
                     <h1 class="card-title text-primary">
-                        <i class="mdi mdi-chart-bar me-2"></i> Individual Member's Operation Report Generator
+                        <i class="mdi mdi-chart-bar me-2"></i> @GlobalMembersFSeries.individual_members_operation_report_generator
                     </h1>
                     <p class="card-text">
-                        Generate detailed financial reports for members, accounts, and loans. Select your report type,
-                        customize parameters, and generate professional reports instantly.
+                        @GlobalMembersFSeries.generate_detailed_financial_reports_for_members_accounts_and_loans_select_your_report_type_customize_parameters_and_generate_professional_reports_instantly.
                     </p>
                     <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                 </div>
@@ -24,7 +24,7 @@
     </div>
 
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Report Generation Guide</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalMembersFSeries.report_generation_guide</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReportTips" aria-expanded="false" aria-controls="collapseReportTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -34,15 +34,15 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h6 class="text-primary mb-3">Report Types Overview</h6>
+                    <h6 class="text-primary mb-3">@GlobalShared.report_types_overview</h6>
                     <div class="steps">
                         <div class="step-item mb-3">
                             <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px;">
                                 <i class="mdi mdi-account-multiple-outline"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Member Situation</strong>
-                                <div class="small text-muted">Comprehensive member account overview with balances and status</div>
+                                <strong>@GlobalShared.member_situation</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.comprehensive_member_account_overview_with_balances_and_status</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
@@ -50,8 +50,8 @@
                                 <i class="mdi mdi-account-box-multiple-outline"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Account Situation</strong>
-                                <div class="small text-muted">Multiple account analysis with selection options</div>
+                                <strong>@GlobalShared.account_situation</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.multiple_account_analysis_with_selection_options</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
@@ -59,8 +59,8 @@
                                 <i class="mdi mdi-bank-transfer"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Account Statement</strong>
-                                <div class="small text-muted">Detailed transaction history for specific accounts</div>
+                                <strong>@GlobalShared.Account_Statement</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.detailed_transaction_history_for_specific_accounts</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
@@ -68,8 +68,8 @@
                                 <i class="mdi mdi-cash-multiple"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Loan Repayment</strong>
-                                <div class="small text-muted">Loan payment schedules and repayment progress</div>
+                                <strong>@GlobalShared.Loan_Repayment</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.loan_payment_schedules_and_repayment_progress</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
@@ -77,8 +77,8 @@
                                 <i class="mdi mdi-chart-line"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Loan History</strong>
-                                <div class="small text-muted">Overall loan portfolio analysis and statistics</div>
+                                <strong>@GlobalShared.Loan_History</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.overall_loan_portfolio_analysis_and_statistics</div>
                             </div>
                         </div>
                         <div class="step-item mb-3">
@@ -86,37 +86,37 @@
                                 <i class="mdi mdi-percent"></i>
                             </div>
                             <div class="step-content d-inline-block">
-                                <strong>Interest/VAD/Penalty</strong>
-                                <div class="small text-muted">Interest, VAD, and Penalty reports with date range filtering</div>
+                                <strong>@GlobalShared.Interest/@GlobalMembersFSeries.vad/@GlobalShared.Penalty</strong>
+                                <div class="small text-muted">@GlobalMembersFSeries.interest_vad_and_penalty_reports_with_date_range_filtering</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="text-primary mb-3">Quick Reference</h6>
+                    <h6 class="text-primary mb-3">@GlobalShared.quick_reference</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="mdi mdi-calendar-text-outline text-success me-2"></i>
-                            <strong>Date Range:</strong> Most reports support custom date filtering
+                            <strong>@GlobalShared.Date_Range:</strong> @GlobalMembersFSeries.most_reports_support_custom_date_filtering
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-format-list-bulleted-type text-warning me-2"></i>
-                            <strong>Multiple Formats:</strong> PDF, Excel, and Print-ready formats available
+                            <strong>@GlobalShared.multiple_formats:</strong> @GlobalMembersFSeries.pdf_excel_and_printready_formats_available
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-filter-outline text-info me-2"></i>
-                            <strong>Flexible Filtering:</strong> Filter by account type, loan type, and date range
+                            <strong>@GlobalShared.flexible_filtering:</strong> @GlobalMembersFSeries.filter_by_account_type_loan_type_and_date_range
                         </li>
                         <li class="mb-2">
                             <i class="mdi mdi-shield-check-outline text-success me-2"></i>
-                            <strong>Secure:</strong> All reports are generated with enterprise-grade security
+                            <strong>@GlobalShared.Secure:</strong> @GlobalMembersFSeries.all_reports_are_generated_with_enterprisegrade_security
                         </li>
                     </ul>
 
                     <div class="mt-3 p-3 bg-light rounded">
                         <div class="small text-muted">
                             <i class="mdi mdi-lightbulb-on-outline me-1"></i>
-                            <strong>Pro Tip:</strong> Select your report type first, then fill in the required parameters. Use Reset to clear all fields and start over.
+                            <strong>@GlobalShared.Pro_Tip:</strong> @GlobalMembersFSeries.select_your_report_type_first_then_fill_in_the_required_parameters_use_reset_to_clear_all_fields_and_start_over.
                         </div>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
     <!-- Report Type Selection -->
     <div class="card mb-3">
         <div class="card-header bg-light">
-            <h5 class="mb-0 text-primary"><i class="mdi mdi-filter-outline me-2"></i>Step 1: Select Report Type</h5>
+            <h5 class="mb-0 text-primary"><i class="mdi mdi-filter-outline me-2"></i>@GlobalShared.Step 1: @GlobalShared.Select_Report_Type</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -145,7 +145,7 @@
                                   onclick="switchReport('MemberSituation')">
                             <label class="form-check-label" for="memberSituation">
                                 <i class="mdi mdi-account-multiple-outline me-2"></i>
-                                Member Situation
+                                @GlobalShared.member_situation
                             </label>
                         </div>
 
@@ -158,7 +158,7 @@
                                    onclick="switchReport('AccountSituation')">
                             <label class="form-check-label" for="accountSituation">
                                 <i class="mdi mdi-account-box-multiple-outline me-2"></i>
-                                Account Situation
+                                @GlobalShared.account_situation
                             </label>
                         </div>
 
@@ -171,7 +171,7 @@
                                    onclick="switchReport('AccountStatement')">
                             <label class="form-check-label" for="accountStatement">
                                 <i class="mdi mdi-bank-transfer me-2"></i>
-                                Account Statement
+                                @GlobalShared.Account_Statement
                             </label>
                         </div>
 
@@ -184,7 +184,7 @@
                                    onclick="switchReport('LoanRepayment')">
                             <label class="form-check-label" for="loanRepayment">
                                 <i class="mdi mdi-cash-multiple me-2"></i>
-                                Loan Repayment
+                                @GlobalShared.Loan_Repayment
                             </label>
                         </div>
 
@@ -197,7 +197,7 @@
                                    onclick="switchReport('LoanSituation')">
                             <label class="form-check-label" for="loanSituation">
                                 <i class="mdi mdi-chart-line me-2"></i>
-                                Loan History
+                                @GlobalShared.Loan_History
                             </label>
                         </div>
 
@@ -210,7 +210,7 @@
                                    @*onclick="switchReport('InterestVadPenalty')"*@>
                             <label class="form-check-label" for="interestVadPenalty">
                                 <i class="mdi mdi-percent me-2"></i>
-                                Interest/VAT/Penalty
+                                @GlobalShared.Interest/@GlobalShared.VAT/@GlobalShared.Penalty
                             </label>
                         </div>
 
@@ -220,7 +220,7 @@
                     <!-- Help text -->
                     <div class="mt-2 small text-muted">
                         <span id="reportTypeHelp" class="text-success">
-                            <strong>Member Situation Selected:</strong> Generate comprehensive member account reports with balances and activity details
+                            <strong>@GlobalMembersFSeries.member_situation_selected:</strong> @GlobalMembersFSeries.generate_comprehensive_member_account_reports_with_balances_and_activity_details
                         </span>
                     </div>
                 </div>
@@ -248,18 +248,18 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-account-card-outline me-2 text-primary"></i>
-                                        Select Accounts
+                                        @GlobalShared.Select_Accounts
                                     </label>
                                     <div class="form-floating">
                                         @Html.ListBox("AccountIds",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
                                             new { @class = "form-control select2", id = "memberAccountIds", multiple = "multiple" })
-                                        <label for="memberAccountIds">Select multiple accounts</label>
+                                        <label for="memberAccountIds">@GlobalMembersFSeries.select_multiple_accounts</label>
                                         <div class="invalid-feedback">
-                                            Please select at least one account
+                                            @GlobalMembersFSeries.please_select_at_least_one_account
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Select one or multiple member accounts for the report
+                                            @GlobalMembersFSeries.select_one_or_multiple_member_accounts_for_the_report
                                         </div>
                                     </div>
                                 </div>
@@ -268,24 +268,24 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                        Loan Status Filter
+                                        @GlobalMembersFSeries.loan_status_filter
                                     </label>
                                     <div class="form-floating">
                                         <select class="form-control" id="memberLoanStatus" name="LoanStatus">
-                                            <option value="" disabled selected>Select Filter</option>
-                                            <option value="all">All Loans</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="rescheduled">Rescheduled</option>
-                                            <option value="refinanced">Refinanced</option>
-                                            <option value="restructured">Restructured</option>
-                                            <option value="current">Current</option>
+                                            <option value="" disabled selected>@GlobalShared.select_filter</option>
+                                            <option value="all">@GlobalShared.All_loans</option>
+                                            <option value="approved">@GlobalShared.Approved</option>
+                                            <option value="rescheduled">@GlobalShared.Rescheduled</option>
+                                            <option value="refinanced">@GlobalShared.Refinanced</option>
+                                            <option value="restructured">@GlobalShared.Restructured</option>
+                                            <option value="current">@GlobalShared.Current</option>
                                         </select>
-                                        <label for="memberLoanStatus">Filter by loan status</label>
+                                        <label for="memberLoanStatus">@GlobalShared.filter_by_loan_status</label>
                                         <div class="invalid-feedback">
-                                            Please select a loan status filter
+                                            @GlobalMembersFSeries.please_select_a_loan_status_filter
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Filter loans by their current status
+                                            @GlobalMembersFSeries.filter_loans_by_their_current_status
                                         </div>
                                     </div>
                                 </div>
@@ -297,7 +297,7 @@
                                         <div class="col-md-12">
                                             <label class="fw-medium">
                                                 <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                                Date
+                                                @GlobalShared.Date
                                             </label>
                                             <div class="form-floating">
                                                 @Html.TextBox(
@@ -310,9 +310,9 @@
                                                         required = "required",
                                                         id = "memberDateTo"
                                                     })
-                                                <label for="memberDateTo">operation date</label>
+                                                <label for="memberDateTo">@GlobalShared.operation_date</label>
                                                 <div class="invalid-feedback">
-                                                    Please select an end date
+                                                    @GlobalMembersFSeries.please_select_an_end_date
                                                 </div>
                                             </div>
 
@@ -334,18 +334,18 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-account-box-multiple-outline me-2 text-primary"></i>
-                                        Select Accounts
+                                        @GlobalShared.Select_Accounts
                                     </label>
                                     <div class="form-floating">
                                         @Html.ListBox("AccountIds_Situation",
                                             (IEnumerable<SelectListItem>)ViewBag.Accounts,
                                             new { @class = "form-control select2", id = "accountSituationIds", multiple = "multiple" })
-                                        <label for="accountSituationIds">Select multiple accounts</label>
+                                        <label for="accountSituationIds">@GlobalMembersFSeries.select_multiple_accounts</label>
                                         <div class="invalid-feedback">
-                                            Please select at least one account
+                                            @GlobalMembersFSeries.please_select_at_least_one_account
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Select one or multiple accounts for situation analysis
+                                            @GlobalMembersFSeries.select_one_or_multiple_accounts_for_situation_analysis
                                         </div>
                                     </div>
                                 </div>
@@ -356,7 +356,7 @@
                                     <div class="col-md-12">
                                         <label class="fw-medium">
                                             <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                            Date
+                                            @GlobalShared.Date
                                         </label>
                                         <div class="form-floating">
                                             @Html.TextBox(
@@ -370,9 +370,9 @@
                                                     id = "accountSituationDateTo",
                                                     max = DateTime.Now.ToString("dd-MM-yyyy")
                                                 })
-                                            <label for="accountSituationDateTo">Operation date</label>
+                                            <label for="accountSituationDateTo">@GlobalShared.operation_date</label>
                                             <div class="invalid-feedback">
-                                                Please select the Operation date
+                                                @GlobalMembersFSeries.please_select_the_operation_date
                                             </div>
                                         </div>
                                     </div>
@@ -391,16 +391,16 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-bank me-2 text-primary"></i>
-                                        Account Selection
+                                        @GlobalShared.account_selection
                                     </label>
                                     <div class="form-floating">
                                         @Html.DropDownList("AccountTypeId_Statement",
                                             (IEnumerable<SelectListItem>)ViewBag.Account,
                                             "Select Account",
                                             new { @class = "form-control select2", required = "required", id = "accountStatementAccount" })
-                                        <label for="accountStatementAccount">Select account</label>
+                                        <label for="accountStatementAccount">@GlobalShared.Select_account</label>
                                         <div class="invalid-feedback">
-                                            Please select an account
+                                            @GlobalMembersFSeries.please_select_an_account
                                         </div>
                                     </div>
                                 </div>
@@ -411,7 +411,7 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date
+                                        @GlobalShared.From_Date
                                     </label>
                                     <div class="form-floating">
                                         @Html.TextBox("DateFrom_Statement",
@@ -424,9 +424,9 @@
                                                 id = "accountDateFrom",
                                                 max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="accountDateFrom">Start date</label>
+                                        <label for="accountDateFrom">@GlobalShared.Start_Date</label>
                                         <div class="invalid-feedback">
-                                            Please select a start date
+                                            @GlobalMembersFSeries.please_select_a_start_date
                                         </div>
                                     </div>
                                 </div>
@@ -435,7 +435,7 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date
+                                        @GlobalShared.To_Date
                                     </label>
                                     <div class="form-floating">
                                         @Html.TextBox("DateTo_Statement",
@@ -448,9 +448,9 @@
                                                 id = "accountDateTo",
                                                 max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="accountDateTo">End date</label>
+                                        <label for="accountDateTo">@GlobalShared.End_Date</label>
                                         <div class="invalid-feedback">
-                                            Please select an end date
+                                            @GlobalMembersFSeries.please_select_an_end_date
                                         </div>
                                     </div>
                                 </div>
@@ -469,25 +469,25 @@
                                 <div class="col-md-12 mb-3">
                                     <label class="fw-medium mb-2">
                                         <i class="mdi mdi-filter-outline me-2 text-primary"></i>
-                                        Report Type
+                                        @GlobalShared.Report_Type
                                     </label>
                                     <div class="d-flex gap-4">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="repaymentByLoan" name="repaymentType" value="byLoan" checked>
                                             <label class="form-check-label" for="repaymentByLoan">
-                                                By Specific Loan
+                                                @GlobalMembersFSeries.by_specific_loan
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="repaymentByRepayment" name="repaymentType" value="byRepayment">
                                             <label class="form-check-label" for="repaymentByRepayment">
-                                                By Repayment Period
+                                                @GlobalMembersFSeries.by_repayment_period
                                             </label>
                                         </div>
                                     </div>
                                     <!-- Add this help text div -->
                                     <div class="mt-2 small text-muted" id="repaymentTypeHelp">
-                                        <strong>By Specific Loan Selected:</strong> Generate repayment schedule for a specific loan
+                                        <strong>@GlobalMembersFSeries.by_specific_loan_selected:</strong> @GlobalMembersFSeries.generate_repayment_schedule_for_a_specific_loan
                                     </div>
                                 </div>
 
@@ -496,16 +496,16 @@
                                 <div id="loanSelectionSection" class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                        Loan Selection
+                                        @GlobalShared.loan_selection
                                     </label>
                                     <div class="form-floating">
                                         @Html.DropDownList("LoanId_Repayment",
                                             (IEnumerable<SelectListItem>)ViewBag.Loans,
                                             "Select Loan",
                                             new { @class = "form-control select2", id = "loanRepaymentLoan" })
-                                        <label for="loanRepaymentLoan">Select loan</label>
+                                        <label for="loanRepaymentLoan">@GlobalShared.select_loan</label>
                                         <div class="invalid-feedback">
-                                            Please select a loan
+                                            @GlobalMembersFSeries.please_select_a_loan
                                         </div>
                                     </div>
                                 </div>
@@ -515,7 +515,7 @@
                                         <div class="col-md-6">
                                             <label class="fw-medium">
                                                 <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                                From Date
+                                                @GlobalShared.From_Date
                                             </label>
                                             <div class="form-floating">
                                                 @Html.TextBox("DateFrom_Repayment",
@@ -528,9 +528,9 @@
                                                         id = "loanRepaymentDateFrom",
                                                         max = DateTime.Now.ToString("yyyy-MM-dd")
                                                     })
-                                                <label for="loanRepaymentDateFrom">Start date</label>
+                                                <label for="loanRepaymentDateFrom">@GlobalShared.Start_Date</label>
                                                 <div class="invalid-feedback">
-                                                    Please select a start date
+                                                    @GlobalMembersFSeries.please_select_a_start_date
                                                 </div>
                                             </div>
                                         </div>
@@ -538,7 +538,7 @@
                                         <div class="col-md-6">
                                             <label class="fw-medium">
                                                 <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                                To Date
+                                                @GlobalShared.To_Date
                                             </label>
                                             <div class="form-floating">
                                                 @Html.TextBox("DateTo_Repayment",
@@ -551,9 +551,9 @@
                                                         id = "loanRepaymentDateTo",
                                                         max = DateTime.Now.ToString("yyyy-MM-dd")
                                                     })
-                                                <label for="loanRepaymentDateTo">End date</label>
+                                                <label for="loanRepaymentDateTo">@GlobalShared.End_Date</label>
                                                 <div class="invalid-feedback">
-                                                    Please select an end date
+                                                    @GlobalMembersFSeries.please_select_an_end_date
                                                 </div>
                                             </div>
                                         </div>
@@ -573,24 +573,24 @@
                                 <div class="col-md-12">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-hand-coin-outline me-2 text-primary"></i>
-                                        Loan Status Filter
+                                        @GlobalMembersFSeries.loan_status_filter
                                     </label>
                                     <div class="form-floating">
                                         <select class="form-control" id="LoanHistoryStatus" name="LoanStatus">
-                                            <option value="" disabled selected>Select Filter</option>
-                                            <option value="all">All Loans</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="rescheduled">Rescheduled</option>
-                                            <option value="refinanced">Refinanced</option>
-                                            <option value="restructured">Restructured</option>
-                                            <option value="current">Current</option>
+                                            <option value="" disabled selected>@GlobalShared.select_filter</option>
+                                            <option value="all">@GlobalShared.All_loans</option>
+                                            <option value="approved">@GlobalShared.Approved</option>
+                                            <option value="rescheduled">@GlobalShared.Rescheduled</option>
+                                            <option value="refinanced">@GlobalShared.Refinanced</option>
+                                            <option value="restructured">@GlobalShared.Restructured</option>
+                                            <option value="current">@GlobalShared.Current</option>
                                         </select>
-                                        <label for="memberLoanStatus">Filter by loan status</label>
+                                        <label for="memberLoanStatus">@GlobalShared.filter_by_loan_status</label>
                                         <div class="invalid-feedback">
-                                            Please select a loan status filter
+                                            @GlobalMembersFSeries.please_select_a_loan_status_filter
                                         </div>
                                         <div class="mt-1 small text-muted">
-                                            Filter loans by their current status
+                                            @GlobalMembersFSeries.filter_loans_by_their_current_status
                                         </div>
                                     </div>
                                 </div>
@@ -599,7 +599,7 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                        From Date
+                                        @GlobalShared.From_Date
                                     </label>
                                     <div class="form-floating">
                                         @Html.TextBox("DateFrom_LoanSituation",
@@ -612,9 +612,9 @@
                                                 id = "loanSituationDateFrom",
                                                 max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="loanSituationDateFrom">Start date</label>
+                                        <label for="loanSituationDateFrom">@GlobalShared.Start_Date</label>
                                         <div class="invalid-feedback">
-                                            Please select a start date
+                                            @GlobalMembersFSeries.please_select_a_start_date
                                         </div>
                                     </div>
                                 </div>
@@ -623,7 +623,7 @@
                                 <div class="col-md-6">
                                     <label class="fw-medium">
                                         <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                        To Date
+                                        @GlobalShared.To_Date
                                     </label>
                                     <div class="form-floating">
                                         @Html.TextBox("DateTo_LoanSituation",
@@ -636,9 +636,9 @@
                                                 id = "loanSituationDateTo",
                                                 max = DateTime.Now.ToString("yyyy-MM-dd")
                                             })
-                                        <label for="loanSituationDateTo">End date</label>
+                                        <label for="loanSituationDateTo">@GlobalShared.End_Date</label>
                                         <div class="invalid-feedback">
-                                            Please select an end date
+                                            @GlobalMembersFSeries.please_select_an_end_date
                                         </div>
                                     </div>
                                 </div>
@@ -651,10 +651,9 @@
                                         <i class="mdi mdi-information-outline"></i>
                                     </div>
                                     <div>
-                                        <h6 class="alert-heading mb-1">Loan Portfolio Analysis</h6>
+                                        <h6 class="alert-heading mb-1">@GlobalMembersFSeries.loan_portfolio_analysis</h6>
                                         <p class="mb-0 small">
-                                            This report provides comprehensive analysis of the entire loan portfolio
-                                            including performance metrics, risk analysis, and portfolio health.
+                                            @GlobalMembersFSeries.this_report_provides_comprehensive_analysis_of_the_entire_loan_portfolio_including_performance_metrics_risk_analysis_and_portfolio_health.
                                         </p>
                                     </div>
                                 </div>
@@ -672,33 +671,33 @@
                                 <div class="col-md-12 mb-3">
                                     <label class="fw-medium mb-2">
                                         <i class="mdi mdi-filter-outline me-2 text-primary"></i>
-                                        Select Report Type
+                                        @GlobalShared.Select_Report_Type
                                     </label>
                                     <div class="d-flex flex-wrap gap-4">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="interestReport" name="interestVadPenaltyType" value="Interest" checked>
                                             <label class="form-check-label" for="interestReport">
                                                 <i class="mdi mdi-cash-usd me-2 text-success"></i>
-                                                Interest Report
+                                                @GlobalShared.interest_report
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="vadReport" name="interestVadPenaltyType" value="VAD">
                                             <label class="form-check-label" for="vadReport">
                                                 <i class="mdi mdi-scale-balance me-2 text-warning"></i>
-                                                VAT Report
+                                                @GlobalShared.vat_report
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="penaltyReport" name="interestVadPenaltyType" value="Penalty">
                                             <label class="form-check-label" for="penaltyReport">
                                                 <i class="mdi mdi-alert-circle me-2 text-danger"></i>
-                                                Penalty Report
+                                                @GlobalShared.penalty_report
                                             </label>
                                         </div>
                                     </div>
                                     <div class="mt-2 small text-muted" id="interestVadPenaltyHelp">
-                                        <strong>Interest Report Selected:</strong> Generate interest calculation report for the selected date range
+                                        <strong>@GlobalMembersFSeries.interest_report_selected:</strong> @GlobalMembersFSeries.generate_interest_calculation_report_for_the_selected_date_range
                                     </div>
                                 </div>
 
@@ -707,7 +706,7 @@
                                     <div class="col-md-6">
                                         <label class="fw-medium">
                                             <i class="mdi mdi-calendar-start me-2 text-primary"></i>
-                                            From Date
+                                            @GlobalShared.From_Date
                                         </label>
                                         <div class="form-floating">
                                             @Html.TextBox("DateFrom_InterestVadPenalty",
@@ -720,9 +719,9 @@
                                                     id = "interestVadPenaltyDateFrom",
                                                     max = DateTime.Now.ToString("yyyy-MM-dd")
                                                 })
-                                            <label for="interestVadPenaltyDateFrom">Start date</label>
+                                            <label for="interestVadPenaltyDateFrom">@GlobalShared.Start_Date</label>
                                             <div class="invalid-feedback">
-                                                Please select a start date (cannot be in the future)
+                                                @GlobalMembersFSeries.please_select_a_start_date_cannot_be_in_the_future
                                             </div>
                                         </div>
                                     </div>
@@ -730,7 +729,7 @@
                                     <div class="col-md-6">
                                         <label class="fw-medium">
                                             <i class="mdi mdi-calendar-end me-2 text-primary"></i>
-                                            To Date
+                                            @GlobalShared.To_Date
                                         </label>
                                         <div class="form-floating">
                                             @Html.TextBox("DateTo_InterestVadPenalty",
@@ -743,9 +742,9 @@
                                                     id = "interestVadPenaltyDateTo",
                                                     max = DateTime.Now.ToString("yyyy-MM-dd")
                                                 })
-                                            <label for="interestVadPenaltyDateTo">End date</label>
+                                            <label for="interestVadPenaltyDateTo">@GlobalShared.End_Date</label>
                                             <div class="invalid-feedback">
-                                                Please select an end date (cannot be in the future)
+                                                @GlobalMembersFSeries.please_select_an_end_date_cannot_be_in_the_future
                                             </div>
                                         </div>
                                     </div>
@@ -768,11 +767,11 @@
                                                 <i class="mdi mdi-information-outline"></i>
                                             </div>
                                             <div>
-                                                <h6 class="alert-heading mb-1">Report Information</h6>
+                                                <h6 class="alert-heading mb-1">@GlobalShared.report_information</h6>
                                                 <p class="mb-0 small">
-                                                    <strong>Interest Report:</strong> Shows interest calculations and accruals<br>
-                                                    <strong>VAT Report:</strong> Shows Value Added Tax details and calculations<br>
-                                                    <strong>Penalty Report:</strong> Shows penalty charges and calculations
+                                                    <strong>@GlobalShared.interest_report:</strong> @GlobalMembersFSeries.shows_interest_calculations_and_accruals<br>
+                                                    <strong>@GlobalShared.vat_report:</strong> @GlobalMembersFSeries.shows_value_added_tax_details_and_calculations<br>
+                                                    <strong>@GlobalShared.penalty_report:</strong> @GlobalMembersFSeries.shows_penalty_charges_and_calculations
                                                 </p>
                                             </div>
                                         </div>
@@ -788,10 +787,10 @@
                     <div class="col-12">
                         <div class="d-flex justify-content-end gap-3">
                             <button type="button" class="btn btn-light btn-lg px-4" id="btnResetReport">
-                                <i class="mdi mdi-refresh me-2"></i> Reset Form
+                                <i class="mdi mdi-refresh me-2"></i> @GlobalShared.Reset_Form
                             </button>
                             <button type="submit" id="btnGenerateReport" class="btn btn-primary btn-lg px-4">
-                                <i class="mdi mdi-printer-outline me-2"></i> Generate Report
+                                <i class="mdi mdi-printer-outline me-2"></i> @GlobalShared.Generate_Report
                             </button>
                         </div>
                     </div>
@@ -807,9 +806,9 @@
     <div class="d-flex justify-content-center align-items-center h-100">
         <div class="text-center">
             <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">@GlobalShared.Loading...</span>
             </div>
-            <div class="text-white mt-3 fs-5">Generating Report...</div>
+            <div class="text-white mt-3 fs-5">@GlobalShared.generating_report...</div>
         </div>
     </div>
 </div>

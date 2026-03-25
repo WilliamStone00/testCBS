@@ -1,5 +1,5 @@
-﻿@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CustomerCheckbooksDto
-
+@model CBS.FrontDesk.Data.Entity.CheckManagementSystem.LossManagementSystem.CustomerCheckbooksDto
+@using Resources
 @{
     ViewBag.Title = "Loss Management";
 }
@@ -9,13 +9,13 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-book-alert me-2"></i> Loss Management System
+                    <i class="mdi mdi-book-alert me-2"></i> @GlobalLossManagement.loss_management_system
                 </h1>
                 <p class="card-text">
-                    Search for customer checkbooks and manage loss declarations efficiently.
+                    @GlobalLossManagement.search_for_customer_checkbooks_and_manage_loss_declarations_efficiently.
                 </p>
                 <p class="card-text fw-bold">
-                    <i class="mdi mdi-alert-circle-outline me-1"></i> Use the filters below to narrow down checkbook search results.
+                    <i class="mdi mdi-alert-circle-outline me-1"></i> @GlobalLossManagement.use_the_filters_below_to_narrow_down_checkbook_search_results.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 
 <div class="card mb-3">
     <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-        <span><i class="mdi mdi-information-outline me-2"></i> Loss Management Guidelines</span>
+        <span><i class="mdi mdi-information-outline me-2"></i> @GlobalLossManagement.loss_management_guidelines</span>
         <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGuidelines" aria-expanded="false">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,11 +33,11 @@
     <div id="collapseGuidelines" class="collapse show">
         <div class="card-body">
             <ul>
-                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>Customer Member Reference:</strong> Unique identifier for the customer whose checkbooks you want to manage.</li>
-                <li><i class="mdi mdi-book-search text-info me-2"></i><strong>Checkbook Search:</strong> Enter the customer reference to retrieve all associated checkbooks.</li>
-                <li><i class="mdi mdi-eye-outline text-primary me-2"></i><strong>View Check Leaves:</strong> Inspect individual checks within each checkbook for detailed status.</li>
-                <li><i class="mdi mdi-alert-outline text-warning me-2"></i><strong>Loss Reporting:</strong> Report lost or stolen checkbooks or individual check leaves promptly.</li>
-                <li><i class="mdi mdi-book-information-variant text-secondary me-2"></i><strong>Detailed Information:</strong> Access comprehensive details for each checkbook and its leaves.</li>
+                <li><i class="mdi mdi-account-check-outline text-success me-2"></i><strong>@GlobalLossManagement.customer_member_reference:</strong> @GlobalLossManagement.unique_identifier_for_the_customer_whose_checkbooks_you_want_to_manage.</li>
+                <li><i class="mdi mdi-book-search text-info me-2"></i><strong>@GlobalLossManagement.checkbook_search:</strong> @GlobalLossManagement.enter_the_customer_reference_to_retrieve_all_associated_checkbooks.</li>
+                <li><i class="mdi mdi-eye-outline text-primary me-2"></i><strong>@GlobalLossManagement.view_check_leaves:</strong> @GlobalLossManagement.inspect_individual_checks_within_each_checkbook_for_detailed_status.</li>
+                <li><i class="mdi mdi-alert-outline text-warning me-2"></i><strong>@GlobalLossManagement.loss_reporting:</strong> @GlobalLossManagement.report_lost_or_stolen_checkbooks_or_individual_check_leaves_promptly.</li>
+                <li><i class="mdi mdi-book-information-variant text-secondary me-2"></i><strong>@GlobalShared.Detailed_Information:</strong> @GlobalLossManagement.access_comprehensive_details_for_each_checkbook_and_its_leaves.</li>
             </ul>
         </div>
     </div>
@@ -45,7 +45,7 @@
 
 <!-- Advanced Filters -->
 <div class="card shadow p-3 mb-4">
-    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> Checkbook Search Filters</h5>
+    <h5 class="text-primary mb-3"><i class="mdi mdi-filter-outline me-1"></i> @GlobalLossManagement.checkbook_search_filters</h5>
     <form id="checkbookFilterForm">
         <div class="card p-3 mb-3 bg-light">
             <!-- Toggle switches for additional filters -->
@@ -53,20 +53,20 @@
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleStatus" onclick="document.getElementById('statusFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleStatus">Show Status Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleStatus">@GlobalShared.Show_Status_Filter</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleCategory" onclick="document.getElementBy                             *
                             Id('categoryFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleCategory">Show Category Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleCategory">@GlobalShared.show_category_filter</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="toggleDate" onclick="document.getElementById('dateFilter').classList.toggle('d-none')">
-                        <label class="form-check-label fw-bold" for="toggleDate">Show Date Filter</label>
+                        <label class="form-check-label fw-bold" for="toggleDate">@GlobalShared.show_date_filter</label>
                     </div>
                 </div>
             </div>
@@ -74,12 +74,12 @@
             <!-- Default Filters -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Customer Member Reference</label>
-                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="Enter customer ID" />
+                    <label class="form-label fw-bold">@GlobalLossManagement.customer_member_reference</label>
+                    <input type="text" id="customerId" name="customerId" class="form-control" placeholder="@GlobalLossManagement.enter_customer_id" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Checkbook ID</label>
-                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="Enter specific checkbook ID" />
+                    <label class="form-label fw-bold">@GlobalShared.CheckBook_ID</label>
+                    <input type="text" id="checkbookId" name="checkbookId" class="form-control" placeholder="@GlobalLossManagement.enter_specific_checkbook_id" />
                 </div>
             </div>
 
@@ -87,14 +87,14 @@
             <div id="statusFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Checkbook Status</label>
+                        <label class="form-label fw-bold">@GlobalLossManagement.checkbook_status</label>
                         <select id="status" name="status" class="form-select">
-                            <option value="">All Status</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                            <option value="Blocked">Blocked</option>
-                            <option value="Lost">Lost</option>
-                            <option value="Suspended">Suspended</option>
+                            <option value="">@GlobalShared.All_status</option>
+                            <option value="Active">@GlobalShared.Active</option>
+                            <option value="Inactive">@GlobalShared.InActive</option>
+                            <option value="Blocked">@GlobalShared.Blocked</option>
+                            <option value="Lost">@GlobalShared.Lost</option>
+                            <option value="Suspended">@GlobalShared.suspended</option>
                         </select>
                     </div>
                 </div>
@@ -104,14 +104,14 @@
             <div id="categoryFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label fw-bold">Checkbook Category</label>
+                        <label class="form-label fw-bold">@GlobalLossManagement.checkbook_category</label>
                         <select id="category" name="category" class="form-select">
-                            <option value="">All Categories</option>
-                            <option value="Personal">Personal</option>
-                            <option value="Business">Business</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Premium">Premium</option>
-                            <option value="Corporate">Corporate</option>
+                            <option value="">@GlobalShared.All_Categories</option>
+                            <option value="Personal">@GlobalShared.Personal</option>
+                            <option value="Business">@GlobalShared.business</option>
+                            <option value="Savings">@GlobalShared.Savings</option>
+                            <option value="Premium">@GlobalShared.premium</option>
+                            <option value="Corporate">@GlobalShared.Corporate</option>
                         </select>
                     </div>
                 </div>
@@ -121,11 +121,11 @@
             <div id="dateFilter" class="d-none">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Issue Date From</label>
+                        <label class="form-label fw-bold">@GlobalShared.issue_date_from</label>
                         <input type="date" id="issueDateFrom" name="issueDateFrom" class="form-control" />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Issue Date To</label>
+                        <label class="form-label fw-bold">@GlobalShared.issue_date_to</label>
                         <input type="date" id="issueDateTo" name="issueDateTo" class="form-control" />
                     </div>
                 </div>
@@ -134,8 +134,8 @@
 
         <div class="row mt-2">
             <div class="col-md-12 d-flex">
-                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> Search Checkbooks</button>
-                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> Reset Filters</button>
+                <button id="applyFilterBtn" class="btn btn-primary me-2 w-100"><i class="mdi mdi-magnify"></i> @GlobalShared.search_checkbooks</button>
+                <button id="resetFilterBtn" type="reset" class="btn btn-secondary me-2 w-100"><i class="mdi mdi-refresh"></i> @GlobalShared.Reset_Filters</button>
                 @* <button id="clearResultsBtn" class="btn btn-label-secondary w-100"><i class="mdi mdi-close"></i> Clear Results</button>*@
             </div>
         </div>
@@ -159,14 +159,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Checkbook Details</h5>
+                <h5 class="modal-title" id="modalTitle">@GlobalShared.CheckBook_Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalBody">
                 <!-- Content will be loaded here via AJAX -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">@GlobalShared.Close</button>
             </div>
         </div>
     </div>

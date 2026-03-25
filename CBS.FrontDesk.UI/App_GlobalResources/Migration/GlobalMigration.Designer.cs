@@ -63,45 +63,27 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Accounts Upload Param.
         /// </summary>
-        internal static string AccountsUploadParam {
+        internal static string accounts_upload_param {
             get {
-                return ResourceManager.GetString("AccountsUploadParam", resourceCulture);
+                return ResourceManager.GetString("accounts_upload_param", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Members Account Migration.
         /// </summary>
-        internal static string MembersAccountMigration {
+        internal static string members_account_migration {
             get {
-                return ResourceManager.GetString("MembersAccountMigration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select account type.
-        /// </summary>
-        internal static string SelectAccountType {
-            get {
-                return ResourceManager.GetString("SelectAccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select branch.
-        /// </summary>
-        internal static string SelectBranch {
-            get {
-                return ResourceManager.GetString("SelectBranch", resourceCulture);
+                return ResourceManager.GetString("members_account_migration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Select members individual account balance file (Formated: AccountNumber, OpeningBalance).
         /// </summary>
-        internal static string SelectMembersIndividualAccountBalanceFile {
+        internal static string select_members_individual_account_balance_file {
             get {
-                return ResourceManager.GetString("SelectMembersIndividualAccountBalanceFile", resourceCulture);
+                return ResourceManager.GetString("select_members_individual_account_balance_file", resourceCulture);
             }
         }
     }

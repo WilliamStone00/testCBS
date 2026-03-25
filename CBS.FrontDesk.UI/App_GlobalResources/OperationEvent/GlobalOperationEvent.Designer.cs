@@ -63,72 +63,36 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Check this box if event has multiple entries.
         /// </summary>
-        internal static string CheckThisBoxIfEventHasMultipleEntries {
+        internal static string check_this_box_if_event_has_multiple_entries {
             get {
-                return ResourceManager.GetString("CheckThisBoxIfEventHasMultipleEntries", resourceCulture);
+                return ResourceManager.GetString("check_this_box_if_event_has_multiple_entries", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Create accounting rule for event.
         /// </summary>
-        internal static string CreateAccountingRuleForEvent {
+        internal static string create_accounting_rule_for_event {
             get {
-                return ResourceManager.GetString("CreateAccountingRuleForEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("create_accounting_rule_for_event", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Event attribute.
         /// </summary>
-        internal static string EventAttribute {
+        internal static string event_attribute {
             get {
-                return ResourceManager.GetString("EventAttribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Event code.
-        /// </summary>
-        internal static string EventCode {
-            get {
-                return ResourceManager.GetString("EventCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("event_attribute", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation event name.
         /// </summary>
-        internal static string OperationEventName {
+        internal static string operation_event_name {
             get {
-                return ResourceManager.GetString("OperationEventName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set rule.
-        /// </summary>
-        internal static string SetRule {
-            get {
-                return ResourceManager.GetString("SetRule", resourceCulture);
+                return ResourceManager.GetString("operation_event_name", resourceCulture);
             }
         }
     }

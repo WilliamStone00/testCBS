@@ -1,33 +1,34 @@
-﻿<div class="card p-3 shadow mb-2">
+@using Resources
+<div class="card p-3 shadow mb-2">
     <div class="table-responsive">
 
         <!-- Column toggles -->
         <div class="mb-2">
-            <label class="fw-bold me-2">Add Columns:</label>
+            <label class="fw-bold me-2">@GlobalShared.add_columns:</label>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="2" id="toggleTCode">
-                <label class="form-check-label" for="toggleTCode">Transaction code</label>
+                <label class="form-check-label" for="toggleTCode">@GlobalShared.transaction_code</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="7" id="toggleVat">
-                <label class="form-check-label" for="toggleVat">VAT</label>
+                <label class="form-check-label" for="toggleVat">@GlobalShared.VAT</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="8" id="togglePenalty">
-                <label class="form-check-label" for="togglePenalty">Penalty</label>
+                <label class="form-check-label" for="togglePenalty">@GlobalShared.Penalty</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="9" id="toggleBalance">
-                <label class="form-check-label" for="toggleBalance">Balance</label>
+                <label class="form-check-label" for="toggleBalance">@GlobalShared.Balance</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input column-toggle" type="checkbox" data-column="10" id="toggleAcctype">
-                <label class="form-check-label" for="toggleAcctype">Account Type</label>
+                <label class="form-check-label" for="toggleAcctype">@GlobalShared.Account_type</label>
             </div>
         </div>
 
@@ -37,17 +38,17 @@
                     <th width="40">
                         <input type="checkbox" id="selectAll" />
                     </th>
-                    <th>Entry Date</th>
-                    <th>T.Code</th>
-                    <th>Member Name</th>
-                    <th class="text-end">Amount</th>
-                    <th class="text-end">Principal</th>
-                    <th class="text-end">Interest</th>
-                    <th class="text-end">VAT</th>
-                    <th class="text-end">Penalty</th>
-                    <th class="text-end">Balance</th>
-                    <th class="text-start">Account Type</th>
-                    <th>Actions</th>
+                    <th>@GlobalShared.Entry_Date</th>
+                    <th>@GlobalRefund.tcode</th>
+                    <th>@GlobalShared.Member_name</th>
+                    <th class="text-end">@GlobalShared.Amount</th>
+                    <th class="text-end">@GlobalShared.Principal</th>
+                    <th class="text-end">@GlobalShared.Interest</th>
+                    <th class="text-end">@GlobalShared.VAT</th>
+                    <th class="text-end">@GlobalShared.Penalty</th>
+                    <th class="text-end">@GlobalShared.Balance</th>
+                    <th class="text-start">@GlobalShared.Account_type</th>
+                    <th>@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>

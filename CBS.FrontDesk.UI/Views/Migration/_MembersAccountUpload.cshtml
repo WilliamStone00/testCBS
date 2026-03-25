@@ -1,30 +1,30 @@
 ﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.MemberAccountUpload
     @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalMigration.AccountsUploadParam</legend>
+    <legend id="select_base">@GlobalMigration.accounts_upload_param</legend>
     <div class="card-body">
         @using (Html.BeginForm("MembersAccount", "Migration", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
         {
             <div class="row mt-2 gy-4">
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.ProductId, new SelectList(ViewBag.Products, "Id", "AccountType"), "---"+ @GlobalMigration.SelectAccountType+"---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.ProductId, new SelectList(ViewBag.Products, "Id", "AccountType"), "---"+ GlobalShared.select_account_type+"---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.ProductId, "", new { @class = "text-danger " })
-                        <label>@GlobalMigration.SelectAccountType</label>
+                        <label>@GlobalShared.select_account_type</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
-                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---´"+ @GlobalMigration.SelectBranch + "---", new { @class = "form-control select2", @search = "true" })
+                        @Html.DropDownListFor(m => m.BranchId, new SelectList(ViewBag.Branches, "Id", "Name"), "---´"+ GlobalShared.Select_Branch + "---", new { @class = "form-control select2", @search = "true" })
                         @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger " })
-                        <label>@GlobalMigration.SelectBranch</label>
+                        <label>@GlobalShared.Select_Branch</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating form-floating-outline">
                         <input type="file" id="file" name="file" class="form-control" required />
                         @Html.ValidationMessageFor(m => m.File, "", new { @class = "text-danger " })
-                    <label>@GlobalMigration.SelectMembersIndividualAccountBalanceFile</label>
+                    <label>@GlobalMigration.select_members_individual_account_balance_file</label>
                     </div>
                 </div>
             </div>

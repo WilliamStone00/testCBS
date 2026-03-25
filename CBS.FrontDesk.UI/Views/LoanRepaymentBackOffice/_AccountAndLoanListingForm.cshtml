@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
+@model CBS.FrontDesk.Data.Entity.SavingProducts.AccountActivation.CashDesk
     @using Resources
 
 <input type="hidden" id="customerId" value="@Model.Customer.CustomerId" />
@@ -15,9 +15,9 @@
             <div class="col-md-12">
                 <div class="form-floating">
                     <span class="formatted-amount shadow-sm d-block py-3 px-4 bg-light rounded border border-secondary">
-                        <strong>@GlobalLoanRepaymentBackOffice.MembersName:</strong> @Model.Customer.name &nbsp; | &nbsp;
-                        <strong>@GlobalLoanRepaymentBackOffice.BranchName:</strong> @Model.Branch.Name &nbsp; | &nbsp;
-                        <strong>@GlobalLoanRepaymentBackOffice.BranchCode:</strong> @Model.Branch.BranchCode
+                        <strong>@GlobalShared.Members_name:</strong> @Model.Customer.name &nbsp; | &nbsp;
+                        <strong>@GlobalShared.Branch_Name:</strong> @Model.Branch.Name &nbsp; | &nbsp;
+                        <strong>@GlobalShared.Branch_Code:</strong> @Model.Branch.BranchCode
                     </span>
                 </div>
             </div>
@@ -34,16 +34,16 @@
                         <thead class="table-light">
                             <!-- Merged Header Row -->
                             <tr>
-                                <th colspan="7" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_ACCOUNT_BALANCES</th>
+                                <th colspan="7" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.members_account_balances</th>
                             </tr>
                             <tr>
-                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.ProductID</th>
-                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.AccountNumber</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Accounts</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
-                                <th>@GlobalLoanRepaymentBackOffice.AmountToDebit</th>
-                                <th>@GlobalLoanRepaymentBackOffice.ABValidation</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Confirm</th>
+                                <th style="display:none;">@GlobalShared.Product_ID</th>
+                                <th style="display:none;">@GlobalShared.AccountNumber</th>
+                                <th>@GlobalShared.Accounts</th>
+                                <th>@GlobalShared.Balance</th>
+                                <th>@GlobalShared.Amount_to_debit</th>
+                                <th>@GlobalLoanRepaymentBackOffice.abvalidation</th>
+                                <th>@GlobalShared.Confirm</th>
                             </tr>
                         </thead>
                         <tbody id="memberAccountsTable">
@@ -66,7 +66,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalDebited:</strong></td>
+                                <td colspan="2" style="text-align: right;"><strong>@GlobalShared.total_debited:</strong></td>
                                 <td id="totalDebitedAmount">0</td>
                                 <td colspan="3"></td>
                             </tr>
@@ -79,7 +79,7 @@
                 <!-- Left: Accounting Date (col-6) -->
                 <div class="col-12 col-md-6">
                     <div class="d-flex align-items-center gap-2">
-                        <label class="form-label fw-semibold mb-0">Accounting Date</label>
+                        <label class="form-label fw-semibold mb-0">@GlobalShared.Accounting_Date</label>
                         @Html.TextBoxFor(
                             m => m.BulkDeposit.AccountingDate,
                             Model.BulkDeposit.AccountingDate.HasValue
@@ -105,14 +105,14 @@
                                value="exclusive"
                                onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                         <label class="btn btn-outline-primary" for="vatModeExclusive">
-                            VAT Exclusive (19.25%)
+                            @GlobalShared.VAT_Exclusive (19.25%)
                         </label>
 
                         <input class="btn-check" type="radio" name="vatMode" id="vatModeInclusive"
                                value="inclusive" checked
                                onchange="applyVatModeToAllRows()" onclick="applyVatModeToAllRows()">
                         <label class="btn btn-outline-primary" for="vatModeInclusive">
-                            VAT Inclusive (16.1425%)
+                            @GlobalShared.VAT_Inclusive (16.1425%)
                         </label>
                     </div>
                 </div>
@@ -126,20 +126,20 @@
                         <thead class="table-light">
                             <!-- Merged Header Row -->
                             <tr>
-                                <th colspan="10" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.MEMBERS_OPENED_LOANS</th>
+                                <th colspan="10" class="text-center fw-bold bg-light text-dark">@GlobalLoanRepaymentBackOffice.members_opened_loans</th>
                             </tr>
                             <tr>
-                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.LRef</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Date</th>
-                                <th>@GlobalLoanRepaymentBackOffice.LAmount</th>
-                                <th>@GlobalLoanRepaymentBackOffice.AI</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Balance</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Capital</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Interest</th>
-                                <th>@GlobalLoanRepaymentBackOffice.VAT (19.25%)</th> <!-- ✅ NEW VAT COLUMN -->
-                                <th>@GlobalLoanRepaymentBackOffice.Penalty</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Total</th>
-                                <th>@GlobalLoanRepaymentBackOffice.Conf</th>
+                                <th style="display:none;">@GlobalLoanRepaymentBackOffice.lref</th>
+                                <th>@GlobalShared.Date</th>
+                                <th>@GlobalLoanRepaymentBackOffice.lamount</th>
+                                <th>@GlobalLoanRepaymentBackOffice.ai</th>
+                                <th>@GlobalShared.Balance</th>
+                                <th>@GlobalShared.Capital</th>
+                                <th>@GlobalShared.Interest</th>
+                                <th>@GlobalShared.VAT (19.25%)</th> <!-- ✅ NEW VAT COLUMN -->
+                                <th>@GlobalShared.Penalty</th>
+                                <th>@GlobalShared.Total</th>
+                                <th>@GlobalShared.Conf</th>
                             </tr>
                         </thead>
                         <tbody id="loanRepaymentTable">
@@ -180,12 +180,12 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalRepayment:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalShared.total_repayment:</strong></td>
                                 <td id="totalRepaymentAmount">0</td>
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.BalanceRemaining:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.balance_remaining:</strong></td>
                                 <td>
                                     <span id="remainingBalance">0</span>
                                     <span id="balanceIndicator" style="font-size: 1.5rem;"></span>
@@ -193,7 +193,7 @@
                                 <td colspan="2"></td>
                             </tr>
                             <tr style="display:none;">
-                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.TotalCalculatedVATIfApplicable:</strong></td>
+                                <td colspan="7" style="text-align: right;"><strong>@GlobalLoanRepaymentBackOffice.total_calculated_vatif_applicable:</strong></td>
                                 <td id="calculatedVat">0</td>
                                 <td colspan="2"></td>
                             </tr>
@@ -209,9 +209,9 @@
                 <div class="col-md-12 mt-2">
                     <div class="form-floating form-floating-outline">
                         @Html.TextAreaFor(m => m.BulkDeposit.Note,
-                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.EnterReasonForTransaction, style = "height: 90px;" })
+                            new { @class = "form-control shadow-input-boxes", @id = "Note", rows = "3", placeholder = @GlobalLoanRepaymentBackOffice.enter_reason_for_transaction, style = "height: 90px;" })
                         @Html.ValidationMessageFor(m => m.BulkDeposit.Note, "", new { @class = "text-danger " })
-                        <label for="Note">@GlobalLoanRepaymentBackOffice.TransactionNoteReason</label>
+                        <label for="Note">@GlobalLoanRepaymentBackOffice.transaction_note_reason</label>
                     </div>
                 </div>
             </div>
@@ -219,10 +219,10 @@
             <!-- Action Buttons -->
             <div class="text-end mt-4">
                 <button class="btn btn-primary me-2" onclick="PostLoanRepayment()">
-                    <i class="mdi mdi-check me-1"></i> @GlobalLoanRepaymentBackOffice.ConfirmRepayment
+                    <i class="mdi mdi-check me-1"></i> @GlobalShared.confirm_repayment
                 </button>
                 <button class="btn btn-secondary" onclick="Reprint()">
-                    <i class="mdi mdi-printer me-1"></i> @GlobalLoanRepaymentBackOffice.ReprintReceipt
+                    <i class="mdi mdi-printer me-1"></i> @GlobalShared.reprint_receipt
                 </button>
             </div>
         </div>

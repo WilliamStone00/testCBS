@@ -1,4 +1,4 @@
-﻿@*@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@*@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
     @using Resources
 
     <div class="card border shadow-sm mb-4">
@@ -16,13 +16,13 @@
                     <table class="table table-hover table-bordered table-sm" id="myDataTable">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 10%;">@GlobalLoanProduct.Target</th>
-                                <th style="width: 16%;">@GlobalLoanProduct.Category</th>
-                                <th style="width: 4%;">@GlobalLoanProduct.Code</th>
-                                <th style="width: 27%;">@GlobalLoanProduct.Name</th>
-                                <th style="width: 16%;">@GlobalLoanProduct.MinMax</th>
-                                <th style="width: 5%;">@GlobalLoanProduct.Status</th>
-                                <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                                <th style="width: 10%;">@GlobalShared.target</th>
+                                <th style="width: 16%;">@GlobalShared.Category</th>
+                                <th style="width: 4%;">@GlobalShared.Code</th>
+                                <th style="width: 27%;">@GlobalShared.Name</th>
+                                <th style="width: 16%;">@GlobalLoanProduct.min_max</th>
+                                <th style="width: 5%;">@GlobalShared.Status</th>
+                                <th style="width: 5%;">@GlobalLoanProduct.ssf</th>
                                 <th style="width: 22%;">@GlobalShared.Action</th>
                             </tr>
                         </thead>
@@ -53,35 +53,35 @@
                                                 <ul class="mb-0">
                                                     @if (d.LoanMinimumAmount <= 0)
                                                     {
-                                                        <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
+                                                        <li>@GlobalLoanProduct.min_amount_must_be_greater_than0.</li>
                                                     }
                                                     @if (d.LoanMaximumAmount <= 0)
                                                     {
-                                                        <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
+                                                        <li>@GlobalLoanProduct.max_amount_must_be_greater_than0.</li>
                                                     }
                                                     @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
                                                     {
-                                                        <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
+                                                        <li>@GlobalLoanProduct.min_amount_cannot_exceed_max_amount.</li>
                                                     }
                                                     @if (d.LoanProductCategory.Name == "N/A")
                                                     {
-                                                        <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                        <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                     }
                                                     @if (d.LoanTypeCategory == "")
                                                     {
-                                                        <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                        <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                     }
                                                     @if (d.LoanTypeCategory == string.Empty)
                                                     {
-                                                        <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                        <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                     }
                                                     @if (d.TargetType == "N/A")
                                                     {
-                                                        <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
+                                                        <li>@GlobalLoanProduct.target_typ_is_not_configured.</li>
                                                     }
                                                     @if (d.LoanTerm.Name == "N/A")
                                                     {
-                                                        <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                                                        <li>@GlobalLoanProduct.loan_term_is_not_configured.</li>
                                                     }
                                                 </ul>
                                             </div>
@@ -91,11 +91,11 @@
                                     <td>
                                         @if (d.ActiveStatus)
                                         {
-                                            <span class="badge bg-info">@GlobalLoanProduct.Active</span>
+                                            <span class="badge bg-info">@GlobalShared.Active</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
+                                            <span class="badge bg-warning">@GlobalShared.InActive</span>
                                         }
                                     </td>
                                     <td>
@@ -137,7 +137,7 @@
             else
             {
                 <div class="text-center py-3 text-muted">
-                    <i class="mdi mdi-information-outline me-1"></i> @GlobalLoanProduct.NoLoanProductHasBeenCreated.
+                    <i class="mdi mdi-information-outline me-1"></i> @GlobalLoanProduct.no_loan_product_has_been_created.
                 </div>
             }
         </div>
@@ -150,7 +150,7 @@
 <div class="card border shadow-sm mb-4">
     <div class="card-header d-flex justify-content-between align-items-center bg-light">
         <h6 class="mb-0 text-primary">
-            <i class="mdi mdi-format-list-bulleted-type me-1"></i> Registered Loan Products
+            <i class="mdi mdi-format-list-bulleted-type me-1"></i> @GlobalShared.registered_loan_products
         </h6>
         <small class="text-muted">@DateTime.Now.ToString("dddd, dd MMMM yyyy")</small>
     </div>
@@ -162,13 +162,13 @@
                 <table class="table table-hover table-bordered table-sm" id="myDataTable">
                     <thead class="table-light">
                         <tr>
-                            <th style="width: 10%;">@GlobalLoanProduct.Target</th>
-                            <th style="width: 16%;">@GlobalLoanProduct.Category</th>
-                            <th style="width: 4%;">@GlobalLoanProduct.Code</th>
-                            <th style="width: 27%;">@GlobalLoanProduct.Name</th>
-                            <th style="width: 16%;">@GlobalLoanProduct.MinMax</th>
-                            <th style="width: 5%;">@GlobalLoanProduct.Status</th>
-                            <th style="width: 5%;">@GlobalLoanProduct.SSF</th>
+                            <th style="width: 10%;">@GlobalShared.target</th>
+                            <th style="width: 16%;">@GlobalShared.Category</th>
+                            <th style="width: 4%;">@GlobalShared.Code</th>
+                            <th style="width: 27%;">@GlobalShared.Name</th>
+                            <th style="width: 16%;">@GlobalLoanProduct.min_max</th>
+                            <th style="width: 5%;">@GlobalShared.Status</th>
+                            <th style="width: 5%;">@GlobalLoanProduct.ssf</th>
                             <th style="width: 22%;">@GlobalShared.Action</th>
                         </tr>
                     </thead>
@@ -199,35 +199,35 @@
                                             <ul class="mb-0">
                                                 @if (d.LoanMinimumAmount <= 0)
                                                 {
-                                                    <li>@GlobalLoanProduct.MinAmountMustBeGreaterThan0.</li>
+                                                    <li>@GlobalLoanProduct.min_amount_must_be_greater_than0.</li>
                                                 }
                                                 @if (d.LoanMaximumAmount <= 0)
                                                 {
-                                                    <li>@GlobalLoanProduct.MaxAmountMustBeGreaterThan0.</li>
+                                                    <li>@GlobalLoanProduct.max_amount_must_be_greater_than0.</li>
                                                 }
                                                 @if (d.LoanMinimumAmount > d.LoanMaximumAmount)
                                                 {
-                                                    <li>@GlobalLoanProduct.MinAmountCannotExceedMaxAmount.</li>
+                                                    <li>@GlobalLoanProduct.min_amount_cannot_exceed_max_amount.</li>
                                                 }
                                                 @if (d.LoanProductCategory.Name == "N/A")
                                                 {
-                                                    <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                    <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                 }
                                                 @if (d.LoanTypeCategory == "")
                                                 {
-                                                    <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                    <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                 }
                                                 @if (d.LoanTypeCategory == string.Empty)
                                                 {
-                                                    <li>@GlobalLoanProduct.CategoryIsNotConfigured.</li>
+                                                    <li>@GlobalLoanProduct.category_is_not_configured.</li>
                                                 }
                                                 @if (d.TargetType == "N/A")
                                                 {
-                                                    <li>@GlobalLoanProduct.TargetTypIsNotConfigured.</li>
+                                                    <li>@GlobalLoanProduct.target_typ_is_not_configured.</li>
                                                 }
                                                 @if (d.LoanTerm.Name == "N/A")
                                                 {
-                                                    <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                                                    <li>@GlobalLoanProduct.loan_term_is_not_configured.</li>
                                                 }
                                             </ul>
                                         </div>
@@ -237,11 +237,11 @@
                                 <td>
                                     @if (d.ActiveStatus)
                                     {
-                                        <span class="badge bg-info">@GlobalLoanProduct.Active</span>
+                                        <span class="badge bg-info">@GlobalShared.Active</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning">@GlobalLoanProduct.Inactive</span>
+                                        <span class="badge bg-warning">@GlobalShared.InActive</span>
                                     }
                                 </td>
                                 <td>
@@ -288,7 +288,7 @@
         else
         {
             <div class="text-center py-3 text-muted">
-                <i class="mdi mdi-information-outline me-1"></i> @GlobalLoanProduct.NoLoanProductHasBeenCreated.
+                <i class="mdi mdi-information-outline me-1"></i> @GlobalLoanProduct.no_loan_product_has_been_created.
             </div>
         }
     </div>
@@ -304,9 +304,9 @@
             <div class="modal-body" id="editProductModalBody">
                 <div class="text-center py-4">
                     <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">@GlobalShared.Loading...</span>
                     </div>
-                    <p class="mt-2">Loading product details...</p>
+                    <p class="mt-2">@GlobalShared.loading_product_details...</p>
                 </div>
             </div>
         </div>

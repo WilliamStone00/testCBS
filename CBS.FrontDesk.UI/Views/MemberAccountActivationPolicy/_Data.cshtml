@@ -1,15 +1,15 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.MemberRegistrationFeePolicy>
     @using Resources
 @if (Model != null)
 {<div class="table-responsive mb-3">
         <table class="table table-hover" id="myDataTable">
             <thead class="table-light">
                 <tr>
-                    <th>@GlobalMemberAccountActivationPolicy.Policy</th>
-                    <th>@GlobalMemberAccountActivationPolicy.EntranceFee</th>
-                    <th>@GlobalMemberAccountActivationPolicy.ByeLawsFee</th>
-                    <th>@GlobalMemberAccountActivationPolicy.LoanPFee</th>
-                    <th>@GlobalMemberAccountActivationPolicy.BuildinCFee</th>
+                    <th>@GlobalShared.policy</th>
+                    <th>@GlobalShared.entrance_fee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.bye_laws_fee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.loan_pfee</th>
+                    <th>@GlobalMemberAccountActivationPolicy.buildin_cfee</th>
                     <th>@GlobalShared.Status</th>
                     <th>@GlobalShared.Action</th>
                 </tr>
@@ -47,6 +47,6 @@
 else
 {
 <div class="alert alert-info" role="alert">
-    @GlobalMemberAccountActivationPolicy.NoMemberFeePolicyWasFoundAtTheMoment.
+    @GlobalMemberAccountActivationPolicy.no_member_fee_policy_was_found_at_the_moment.
 </div>
 }

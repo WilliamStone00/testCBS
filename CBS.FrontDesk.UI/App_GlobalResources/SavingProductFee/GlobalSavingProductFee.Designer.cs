@@ -59,41 +59,5 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account type.
-        /// </summary>
-        internal static string AccountType {
-            get {
-                return ResourceManager.GetString("AccountType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Charges type.
-        /// </summary>
-        internal static string ChargesType {
-            get {
-                return ResourceManager.GetString("ChargesType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee policy type.
-        /// </summary>
-        internal static string FeePolicyType {
-            get {
-                return ResourceManager.GetString("FeePolicyType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fee type.
-        /// </summary>
-        internal static string FeeType {
-            get {
-                return ResourceManager.GetString("FeeType", resourceCulture);
-            }
-        }
     }
 }

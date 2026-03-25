@@ -61,92 +61,47 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Is this role teller.
         /// </summary>
-        internal static string IsThisRoleTeller {
+        internal static string is_this_role_teller {
             get {
-                return ResourceManager.GetString("IsThisRoleTeller", resourceCulture);
+                return ResourceManager.GetString("is_this_role_teller", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Menu text.
         /// </summary>
-        internal static string MenuText {
+        internal static string menu_text {
             get {
-                return ResourceManager.GetString("MenuText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
+                return ResourceManager.GetString("menu_text", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No Permision associated to selected role.
         /// </summary>
-        internal static string NoPermisionAssociatedToSelectedRole {
+        internal static string no_permision_associated_to_selected_role {
             get {
-                return ResourceManager.GetString("NoPermisionAssociatedToSelectedRole", resourceCulture);
+                return ResourceManager.GetString("no_permision_associated_to_selected_role", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Permision associated to role.
         /// </summary>
-        internal static string PermisionAssociatedToRole {
+        internal static string permision_associated_to_role {
             get {
-                return ResourceManager.GetString("PermisionAssociatedToRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teller.
-        /// </summary>
-        internal static string Teller {
-            get {
-                return ResourceManager.GetString("Teller", resourceCulture);
+                return ResourceManager.GetString("permision_associated_to_role", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to View permissions.
         /// </summary>
-        internal static string ViewPermissions {
+        internal static string view_permissions {
             get {
-                return ResourceManager.GetString("ViewPermissions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
+                return ResourceManager.GetString("view_permissions", resourceCulture);
             }
         }
     }

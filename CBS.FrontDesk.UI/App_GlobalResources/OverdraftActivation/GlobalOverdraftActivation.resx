@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="align_all_approvals_with_credit_policy_product_rules_and_authorization_limits_defined_by_your_branch_or_institution" xml:space="preserve">
+    <value>Align all approvals with credit policy, product rules, and authorization limits defined by your branch or institution</value>
+  </data>
+  <data name="approving_confirms_the_request_meets_all_internal_criteria_and_makes_the_overdraft_facility_eligible_for_activation" xml:space="preserve">
+    <value>Approving confirms the request meets all internal criteria and makes the overdraft facility eligible for activation</value>
+  </data>
+  <data name="automatically_replenishes_od_limit_based_on_defined_frequency" xml:space="preserve">
+    <value>Automatically replenishes OD limit based on defined frequency</value>
+  </data>
+  <data name="automatically_settles_overdraft_when_deposits_are_received" xml:space="preserve">
+    <value>Automatically settles overdraft when deposits are received</value>
+  </data>
+  <data name="average_monthly_salary" xml:space="preserve">
+    <value>Average Monthly Salary</value>
+  </data>
+  <data name="charges_are_incurred_only_when_a_portion_of_the_overdraft_is_consumed_based_on_a_usage_percentage_as_configured" xml:space="preserve">
+    <value>Charges are incurred only when a portion of the overdraft is consumed, based on a usage percentage as configured</value>
+  </data>
+  <data name="charges_fixed_interest_periodically_regardless_of_usage" xml:space="preserve">
+    <value>Charges fixed interest periodically, regardless of usage</value>
+  </data>
+  <data name="choose_the_account_to_enable_overdraft_it_must_be_active_valid_and_compatible_with_the_selected_facility_config" xml:space="preserve">
+    <value>Choose the account to enable overdraft. It must be active, valid, and compatible with the selected facility config</value>
+  </data>
+  <data name="click_the_icon_to_see_full_request_details_including_account_limit_interest_rate_and_recovery_method" xml:space="preserve">
+    <value>Click the &lt;i class="mdi mdi-eye-outline text-info"&gt;&lt;/i&gt; icon to see full request details including account, limit, interest rate, and recovery method</value>
+  </data>
+  <data name="enable_auto_provision" xml:space="preserve">
+    <value>Enable Auto-Provision</value>
+  </data>
+  <data name="enabling_autorecoverondeposit_allows_the_system_to_recover_overdrawn_balances_automatically_upon_deposit" xml:space="preserve">
+    <value>Enabling &lt;code&gt;AutoRecoverOnDeposit&lt;/code&gt; allows the system to recover overdrawn balances automatically upon deposit</value>
+  </data>
+  <data name="ensure_all_submitted_requests_follow_internal_credit_risk_regulatory_and_approval_workflow_protocols" xml:space="preserve">
+    <value>Ensure all submitted requests follow internal credit risk, regulatory, and approval workflow protocols</value>
+  </data>
+  <data name="ensure_customer_eligibility_configuration_alignment_and_correct_data_inputs_before_approval" xml:space="preserve">
+    <value>Ensure customer eligibility, configuration alignment, and correct data inputs before approval</value>
+  </data>
+  <data name="ensure_requests_are_processed_after_confirming_customer_qualification_financial_limits_and_overdraft_configuration_parameters" xml:space="preserve">
+    <value>Ensure requests are processed after confirming customer qualification, financial limits, and overdraft configuration parameters</value>
+  </data>
+  <data name="enter_or_search_the_member_account_reference_number_to_fetch_related_details" xml:space="preserve">
+    <value>Enter or search the Member account reference number to fetch related details</value>
+  </data>
+  <data name="enter_the_interest_rate_applicable_to_the_overdraft" xml:space="preserve">
+    <value>Enter the interest rate applicable to the overdraft</value>
+  </data>
+  <data name="enter_the_members_average_salary_amount_this_value_helps_compute_the_eligible_overdraft_limit" xml:space="preserve">
+    <value>Enter the member’s average salary amount. This value helps compute the eligible overdraft limit</value>
+  </data>
+  <data name="filter_overdraft_activation_requests" xml:space="preserve">
+    <value>Filter Overdraft Activation Requests</value>
+  </data>
+  <data name="helps_apply_segmentbased_overdraft_rules_optional" xml:space="preserve">
+    <value>Helps apply segment-based overdraft rules (optional)</value>
+  </data>
+  <data name="how_often_in_days_the_od_limit_is_refreshed_automatically" xml:space="preserve">
+    <value>How often (in days) the OD limit is refreshed automatically</value>
+  </data>
+  <data name="if_an_overdraft_request_is_not_validated_and_approved_the_overdraft_service_will_remain_unavailable_for_the_customer_always_ensure_requests_go_through_proper_review_and_approval_before_expecting_activation" xml:space="preserve">
+    <value>If an overdraft request is not validated and approved, the overdraft service will remain unavailable for the customer. Always ensure requests go through proper review and approval before expecting activation</value>
+  </data>
+  <data name="if_issalaryoverdraftaccount_is_enabled_a_linkedsalaryaccountid_must_be_provided_for_reference" xml:space="preserve">
+    <value>If &lt;code&gt;IsSalaryOverdraftAccount&lt;/code&gt; is enabled, a &lt;code&gt;LinkedSalaryAccountId&lt;/code&gt; must be provided for reference</value>
+  </data>
+  <data name="if_you_use_20000_from_a_100000_overdraft_limit_interest_applies_only_on_the_20000_used" xml:space="preserve">
+    <value>If you use 20,000 from a 100,000 overdraft limit, interest applies only on the 20,000 used</value>
+  </data>
+  <data name="late_repayment_penalties_applied_when_repayment_terms_are_violated" xml:space="preserve">
+    <value>Late repayment penalties applied when repayment terms are violated</value>
+  </data>
+  <data name="linked_salary_account_id" xml:space="preserve">
+    <value>Linked Salary Account ID</value>
+  </data>
+  <data name="link_salary_account_to_overdraft" xml:space="preserve">
+    <value>Link Salary Account to Overdraft</value>
+  </data>
+  <data name="list_of_overdraft_activation_requests" xml:space="preserve">
+    <value>List of Overdraft Activation Requests</value>
+  </data>
+  <data name="main_overdraft_account" xml:space="preserve">
+    <value>Main Overdraft Account</value>
+  </data>
+  <data name="manage_activation_requests" xml:space="preserve">
+    <value>Manage Activation Requests</value>
+  </data>
+  <data name="manage_overdraft_requests" xml:space="preserve">
+    <value>Manage Overdraft Requests</value>
+  </data>
+  <data name="mandatory_for_salarybased_overdrafts_used_in_calculating_max_allowed_limit_and_eligibility" xml:space="preserve">
+    <value>Mandatory for salary-based overdrafts. Used in calculating max allowed limit and eligibility</value>
+  </data>
+  <data name="member_account_information" xml:space="preserve">
+    <value>Member &amp; Account Information</value>
+  </data>
+  <data name="member_account_reference_number" xml:space="preserve">
+    <value>Member account reference number</value>
+  </data>
+  <data name="multiselect_list_of_accounts_to_recover_from_usually_includes_main_savings_salary_or_designated_income_channels" xml:space="preserve">
+    <value>Multi-select list of accounts to recover from. Usually includes main savings, salary, or designated income channels</value>
+  </data>
+  <data name="od_will_be_autorecovered_from_these_accounts_when_funds_are_available" xml:space="preserve">
+    <value>OD will be auto-recovered from these accounts when funds are available</value>
+  </data>
+  <data name="optional_feature_if_enabled_overdraft_is_reprovisioned_every_autoprovisionfrequencyindays_useful_for_recurring_credit_lines" xml:space="preserve">
+    <value>Optional feature. If enabled, overdraft is re-provisioned every &lt;code&gt;AutoProvisionFrequencyInDays&lt;/code&gt;. Useful for recurring credit lines</value>
+  </data>
+  <data name="overdraft_activation_guidelines" xml:space="preserve">
+    <value>Overdraft Activation Guidelines</value>
+  </data>
+  <data name="overdraft_activation_request_steps" xml:space="preserve">
+    <value>Overdraft Activation Request Steps</value>
+  </data>
+  <data name="overdraft_activation_service" xml:space="preserve">
+    <value>Overdraft Activation Service</value>
+  </data>
+  <data name="overdraft_facility_config" xml:space="preserve">
+    <value>Overdraft Facility Config</value>
+  </data>
+  <data name="overdraft_parameters" xml:space="preserve">
+    <value>Overdraft Parameters</value>
+  </data>
+  <data name="pay_as_you_go" xml:space="preserve">
+    <value>Pay-as-you-go</value>
+  </data>
+  <data name="provide_the_account_to_which_salary_is_credited" xml:space="preserve">
+    <value>Provide the account to which salary is credited</value>
+  </data>
+  <data name="provide_valid_customerid_the_system_will_autofill_customername_and_associated_branch_details_upon_lookup" xml:space="preserve">
+    <value>Provide valid &lt;code&gt;CustomerId&lt;/code&gt;. The system will auto-fill &lt;code&gt;CustomerName&lt;/code&gt; and associated branch details upon lookup</value>
+  </data>
+  <data name="provisioning_expiry" xml:space="preserve">
+    <value>Provisioning &amp; Expiry</value>
+  </data>
+  <data name="provision_frequency_days" xml:space="preserve">
+    <value>Provision Frequency (days)</value>
+  </data>
+  <data name="recovery_source_accounts" xml:space="preserve">
+    <value>Recovery Source Accounts</value>
+  </data>
+  <data name="reload_and_display_all_overdraft_activation_requests" xml:space="preserve">
+    <value>Reload and display all overdraft activation requests</value>
+  </data>
+  <data name="request_for_overdraft_service_activations" xml:space="preserve">
+    <value>Request for Overdraft Service Activations</value>
+  </data>
+  <data name="required_field_that_defines_the_duration_the_overdraft_is_active_extensions_may_require_reapproval" xml:space="preserve">
+    <value>Required field that defines the duration the overdraft is active. Extensions may require re-approval</value>
+  </data>
+  <data name="required_if_the_overdraft_depends_on_salarybased_crediting" xml:space="preserve">
+    <value>Required if the overdraft depends on salary-based crediting</value>
+  </data>
+  <data name="review_and_manage_customer_requests_for_activating_overdraft_facilities_each_request_follows_approval_workflow_and_must_comply_with_configured_eligibility_and_product_rules" xml:space="preserve">
+    <value>Review and manage customer requests for activating overdraft facilities. Each request follows approval workflow and must comply with configured eligibility and product rules</value>
+  </data>
+  <data name="salary_based_od" xml:space="preserve">
+    <value>Salary-Based OD</value>
+  </data>
+  <data name="salary_recovery_settings" xml:space="preserve">
+    <value>Salary &amp; Recovery Settings</value>
+  </data>
+  <data name="select_a_valid_overdraftfacilityconfigid_to_apply_applicable_limits_interest_rules_and_eligibility_policies" xml:space="preserve">
+    <value>Select a valid &lt;code&gt;OverdraftFacilityConfigId&lt;/code&gt; to apply applicable limits, interest rules, and eligibility policies</value>
+  </data>
+  <data name="set_the_eligible_overdraft_limit_as_determined_by_credit_score_analysis" xml:space="preserve">
+    <value>Set the eligible overdraft limit as determined by credit score analysis</value>
+  </data>
+  <data name="should_not_exceed_the_configured_maximum_always_align_with_salary_or_credit_score_where_applicable" xml:space="preserve">
+    <value>Should not exceed the configured maximum. Always align with salary or credit score where applicable</value>
+  </data>
+  <data name="some_requests_may_require_a_final_manual_activation_after_approval_depending_on_the_overdraft_configuration_rules" xml:space="preserve">
+    <value>Some requests may require a final manual activation after approval, depending on the overdraft configuration rules</value>
+  </data>
+  <data name="specify_either_flatinterestrate_or_payasyougointerest_system_will_calculate_charges_accordingly" xml:space="preserve">
+    <value>Specify either &lt;code&gt;FlatInterestRate&lt;/code&gt; or &lt;code&gt;PayAsYouGoInterest&lt;/code&gt;. System will calculate charges accordingly</value>
+  </data>
+  <data name="submit_and_manage_overdraft_activation_requests_linked_to_customer_accounts_these_activations_are_governed_by_preconfigured_facility_rules" xml:space="preserve">
+    <value>Submit and manage overdraft activation requests linked to customer accounts. These activations are governed by preconfigured facility rules</value>
+  </data>
+  <data name="submit_and_send_overdraft_activation_request_for_processing" xml:space="preserve">
+    <value>Submit and send overdraft activation request for processing</value>
+  </data>
+  <data name="submit_overdraft_request" xml:space="preserve">
+    <value>Submit Overdraft Request</value>
+  </data>
+  <data name="the_proposed_date_when_this_overdraft_facility_expires" xml:space="preserve">
+    <value>The proposed date when this overdraft facility expires</value>
+  </data>
+  <data name="use_the_icon_to_deny_any_noncompliant_or_invalid_request" xml:space="preserve">
+    <value>Use the &lt;i class="mdi mdi-close-thick text-danger"&gt;&lt;/i&gt; icon to deny any non-compliant or invalid request</value>
+  </data>
+  <data name="use_the_new_request_button_to_start_a_new_activation_linked_to_a_valid_customer_and_account" xml:space="preserve">
+    <value>Use the &lt;code&gt;New Request&lt;/code&gt; button to start a new activation linked to a valid customer and account</value>
+  </data>
+  <data name="use_the_top_filter_panel_to_locate_requests_by_status_branch_customer_id_or_date_range" xml:space="preserve">
+    <value>Use the top filter panel to locate requests by &lt;code&gt;Status&lt;/code&gt;, &lt;code&gt;Branch&lt;/code&gt;, &lt;code&gt;Customer ID&lt;/code&gt;, or date range</value>
+  </data>
+  <data name="validate_overdraft_parameters_with_internal_policy_product_definition_and_risk_assessment_teams_before_approval" xml:space="preserve">
+    <value>Validate overdraft parameters with internal policy, product definition, and risk assessment teams before approval</value>
+  </data>
+</root>

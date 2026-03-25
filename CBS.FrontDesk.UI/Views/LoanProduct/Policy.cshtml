@@ -1,4 +1,4 @@
-﻿@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
+@model CBS.FrontDesk.Data.Entity.LoanConf.LoanProductObject
 @using Resources
 @{
     ViewBag.Title = "Loan Policies Setting";
@@ -9,22 +9,22 @@
         @if (@Model.UpdateLoanProductCommand.LoanProductCategory.Name == "N/A" || @Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A" || string.IsNullOrEmpty(@Model.UpdateLoanProductCommand.TargetType))
         {
             <div class="alert alert-danger" role="alert">
-                <strong>@GlobalLoanProduct.ConfigurationMissing:</strong>
+                <strong>@GlobalLoanProduct.configuration_missing:</strong>
                 <ul>
                     @if (@Model.UpdateLoanProductCommand.LoanProductCategory.Name == "N/A")
                     {
-                        <li>@GlobalLoanProduct.LoanProductCategoryIsNotConfigured.</li>
+                        <li>@GlobalLoanProduct.loan_product_category_is_not_configured.</li>
                     }
                     @if (@Model.UpdateLoanProductCommand.LoanTerm.Name == "N/A")
                     {
-                        <li>@GlobalLoanProduct.LoanTermIsNotConfigured.</li>
+                        <li>@GlobalLoanProduct.loan_term_is_not_configured.</li>
                     }
                     @if (string.IsNullOrEmpty(@Model.UpdateLoanProductCommand.TargetType))
                     {
-                        <li>@GlobalLoanProduct.TargetTypeIsNotSpecified.</li>
+                        <li>@GlobalLoanProduct.target_type_is_not_specified.</li>
                     }
                 </ul>
-                @GlobalLoanProduct.PleaseEnsureAllFieldsAreProperlyConfigured.
+                @GlobalLoanProduct.please_ensure_all_fields_are_properly_configured.
             </div>
         }
 
@@ -43,9 +43,9 @@
                                 aria-controls="accordionPopoutIcon-3">
                             <i class="mdi mdi-police-badge me-2"></i>
                             <b>
-                                @GlobalLoanProduct.SettingLoanPolicyFor @Model.UpdateLoanProductCommand.LoanProductCategory.Name
+                                @GlobalLoanProduct.setting_loan_policy_for @Model.UpdateLoanProductCommand.LoanProductCategory.Name
                                 [@Model.UpdateLoanProductCommand.ProductName] -
-                                [@GlobalLoanProduct.For @Model.UpdateLoanProductCommand.LoanTerm.Name, @GlobalLoanProduct.Between @Model.UpdateLoanProductCommand.LoanTerm.MinInMonth : @Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth @GlobalLoanProduct.Months]
+                                [@GlobalShared._for @Model.UpdateLoanProductCommand.LoanTerm.Name, @GlobalShared.between @Model.UpdateLoanProductCommand.LoanTerm.MinInMonth : @Model.UpdateLoanProductCommand.LoanTerm.MaxInMonth @GlobalShared.months]
                             </b>
                         </button>
                     </h2>

@@ -1,11 +1,11 @@
-﻿@model List<CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentPrimaryTeller>
+@model List<CBS.FrontDesk.Data.Entity.SavingProducts.CashReplenishmentPrimaryTeller>
 @using Resources
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalPrimaryTellerCashRequisition.DataListings </legend>
+    <legend id="select_base">@GlobalShared.data_listings </legend>
     @if (Model.Count() == 0)
     {
         <div class="text-center my-3">
-            <p>@GlobalPrimaryTellerCashRequisition.NoDataFound</p>
+            <p>@GlobalShared.no_data_found</p>
         </div>
     }
     else
@@ -14,11 +14,11 @@
             <table class="table table-hover" id="myDataTable">
                 <thead class="table-light">
                     <tr>
-                        <th>@GlobalPrimaryTellerCashRequisition.Date</th>
-                        <th>@GlobalPrimaryTellerCashRequisition.Amount</th>
-                        <th>@GlobalPrimaryTellerCashRequisition.Branch</th>
+                        <th>@GlobalShared.Date</th>
+                        <th>@GlobalShared.Amount</th>
+                        <th>@GlobalShared.Branch</th>
                         <th>@GlobalShared.Status</th>
-                        <th>@GlobalPrimaryTellerCashRequisition.InitiatedBy</th>
+                        <th>@GlobalShared.Initiated_By</th>
                         <th>@GlobalShared.Action</th>
                     </tr>
                 </thead>
@@ -41,7 +41,7 @@
                             </td>
                             <td style="width:20%">@d.RequesterName</td>
                             <td style="width:10%">
-                                <a href="/PrimaryTellerCashRequisition/RequestValidation?ProvisionKey=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Validate @d.RequestedAmount @GlobalPrimaryTellerCashRequisition.intoOperation.">@GlobalShared.Validate</a>
+                                <a href="/PrimaryTellerCashRequisition/RequestValidation?ProvisionKey=@d.Id" class="mr-2" data-toggle="tooltip" data-placement="top" title="@GlobalShared.Validate @d.RequestedAmount @GlobalShared.into_operation.">@GlobalShared.Validate</a>
                             </td>
                         </tr>
                     }

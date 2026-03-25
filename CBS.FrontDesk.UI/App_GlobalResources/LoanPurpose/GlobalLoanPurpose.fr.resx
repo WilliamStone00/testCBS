@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoanPurpose" xml:space="preserve">
+  <data name="loan_purpose" xml:space="preserve">
     <value>Objet du prêt</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Nom</value>
-  </data>
-  <data name="NoLoanPurposesAvailable" xml:space="preserve">
+  <data name="no_loan_purposes_available" xml:space="preserve">
     <value>Aucun objet de prêt disponible</value>
   </data>
-  <data name="ProductCategory" xml:space="preserve">
-    <value>Catégorie de produit</value>
-  </data>
-  <data name="SelectCategory" xml:space="preserve">
-    <value>Sélectionner une catégorie</value>
-  </data>
-  <data name="SelectLoanProductCategory" xml:space="preserve">
+  <data name="select_loan_product_category" xml:space="preserve">
     <value>Sélectionner une catégorie de produit de prêt</value>
   </data>
 </root>

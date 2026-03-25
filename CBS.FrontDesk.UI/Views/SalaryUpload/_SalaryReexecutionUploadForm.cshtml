@@ -1,4 +1,4 @@
-﻿
+
 @model CBS.FrontDesk.Data.Entity.SalaryManagement.SalaryUploadModelCarrier
 @using Resources
 
@@ -7,7 +7,7 @@
 }
 
 <fieldset class="fieldset-custom">
-    <legend id="select_base">@GlobalSalaryUpload.SalaryUploadForm</legend>
+    <legend id="select_base">@GlobalSalaryUpload.salary_upload_form</legend>
 
     <div class="card-body">
         @using (Html.BeginForm("ReexecuteSalaryFileUpload", "SalaryUpload", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return AjaxPostAndUpdate(this);" }))
@@ -27,10 +27,10 @@
                                accept=".xlsx,.csv"
                                aria-describedby="help-file"
                                required />
-                        <label for="file">@GlobalSalaryUpload.SelectSalaryFile</label>
+                        <label for="file">@GlobalSalaryUpload.select_salary_file</label>
                     </div>
                     <small id="help-file" class="text-muted d-block mt-1">
-                        Allowed: <code>.xlsx</code> or <code>.csv</code>. Please use the official template — do not change headers or column order.
+                        @Html.Raw(@GlobalSalaryUpload.allowed_xlsx_or_csv_please_use_the_official_template_do_not_change_headers_or_column_order).
                     </small>
                     @Html.ValidationMessageFor(m => m.AddSalaryUploadModelCommand.File, "", new { @class = "text-danger" })
                 </div>

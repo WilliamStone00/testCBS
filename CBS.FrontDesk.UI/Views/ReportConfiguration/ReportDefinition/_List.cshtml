@@ -1,22 +1,22 @@
-﻿@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>
-
+@model IEnumerable<CBS.FrontDesk.Data.Entity.AccountingV2.ReportingV2.ReportDefinition.ReportDefinition>
+@using Resources
 <div class="d-flex justify-content-between mb-2">
     <h5>Report Definitions</h5>
-   <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportDefinitionCreateModal()">
-    <i class="mdi mdi-plus"></i> New
-   </a>
+    <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="openReportDefinitionCreateModal()">
+        <i class="mdi mdi-plus"></i> @GlobalShared.New
+    </a>
 </div>
 
     <div class="table-responsive mb-3">
         <table class="table table-hover table-bordered align-middle text-nowrap" id="myDataTable_definition">
             <thead class="table-light">
                 <tr>
-                    <th style="width: 17%;">Code</th>
-                    <th style="width: 30%;">Name</th>
-                    <th style="width: 17%;">Type</th>
-                    <th style="width: 12%;">Currency</th>
-                    <th style="width: 12%;">Active</th>
-                    <th style="width: 12%;">Actions</th>
+                    <th style="width: 17%;">@GlobalShared.Code</th>
+                    <th style="width: 30%;">@GlobalShared.Name</th>
+                    <th style="width: 17%;">@GlobalShared.Type</th>
+                    <th style="width: 12%;">@GlobalShared.Currency</th>
+                    <th style="width: 12%;">@GlobalShared.Active</th>
+                    <th style="width: 12%;">@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +30,7 @@
                         <td>@(item.IsActive ? "Yes" : "No")</td>
                         <td>
                             <a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="openReportDefinitionEditModal('@item.Id')">
-                                <i class="mdi mdi-pencil"></i> Edit
+                                <i class="mdi mdi-pencil"></i> @GlobalShared.Edit
                             </a>
                         </td>
                     </tr>

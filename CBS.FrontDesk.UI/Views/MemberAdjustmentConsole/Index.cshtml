@@ -1,20 +1,20 @@
-﻿@{
+@{
     ViewBag.Title = "Member Adjustment Console";
 }
-
+@using Resources
 <div class="row">
     <div class="col-12">
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary fw-bold mb-2">
-                    <i class="mdi mdi-tune-variant me-2"></i> Member Adjustment Console
+                    <i class="mdi mdi-tune-variant me-2"></i> @GlobalMemberAdjustmentConsole.member_adjustment_console
                 </h1>
                 <p class="card-text text-muted mb-1">
-                    Review, approve, and track member adjustment requests across branches.
+                    @GlobalMemberAdjustmentConsole.review_approve_and_track_member_adjustment_requests_across_branches.
                 </p>
                 <p class="card-text text-warning fw-semibold">
                     <i class="mdi mdi-alert-circle-outline me-1"></i>
-                    Use filters to narrow down pending or processed requests.
+                    @GlobalMemberAdjustmentConsole.use_filters_to_narrow_down_pending_or_processed_requests.
                 </p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
@@ -25,7 +25,7 @@
 <!-- 💡 Tips Section -->
 <div class="card mb-2 shadow-sm">
     <h6 class="card-header d-flex justify-content-between align-items-center bg-light text-info">
-        <span><i class="mdi mdi-lightbulb-outline me-2"></i> Tips for Using the Adjustment Console</span>
+        <span><i class="mdi mdi-lightbulb-outline me-2"></i> @GlobalMemberAdjustmentConsole.tips_for_using_the_adjustment_console</span>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips">
             <i class="mdi mdi-chevron-down"></i>
         </button>
@@ -33,12 +33,12 @@
     <div id="collapseTips" class="collapse">
         <div class="card-body">
             <ul class="mb-0">
-                <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>Member ID or Customer ID:</strong> Filter specific requests quickly.</li>
-                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>Branch Filter:</strong> View requests from specific branches.</li>
-                <li><i class="mdi mdi-calendar-range-outline text-warning me-2"></i> <strong>Date Range:</strong> Narrow down requests by request date.</li>
-                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>Requested / Approved By:</strong> Track who initiated or approved changes.</li>
-                <li><i class="mdi mdi-file-check-outline text-danger me-2"></i> <strong>Status:</strong> Easily separate pending, approved, or rejected entries.</li>
-                <li><i class="mdi mdi-export-variant text-success me-2"></i> <strong>Export:</strong> Use the export button to download your current view.</li>
+                <li><i class="mdi mdi-account-outline text-primary me-2"></i> <strong>@GlobalMemberAdjustmentConsole.member_id_or_customer_id:</strong> @GlobalMemberAdjustmentConsole.filter_specific_requests_quickly.</li>
+                <li><i class="mdi mdi-bank-outline text-success me-2"></i> <strong>@GlobalShared.Branch_Filter:</strong> @GlobalMemberAdjustmentConsole.view_requests_from_specific_branches.</li>
+                <li><i class="mdi mdi-calendar-range-outline text-warning me-2"></i> <strong>@GlobalShared.Date_Range:</strong> @GlobalMemberAdjustmentConsole.narrow_down_requests_by_request_date.</li>
+                <li><i class="mdi mdi-account-check-outline text-info me-2"></i> <strong>@GlobalShared.requested / @GlobalShared.Approved_by:</strong> @GlobalMemberAdjustmentConsole.track_who_initiated_or_approved_changes.</li>
+                <li><i class="mdi mdi-file-check-outline text-danger me-2"></i> <strong>@GlobalShared.Status:</strong> @GlobalMemberAdjustmentConsole.easily_separate_pending_approved_or_rejected_entries.</li>
+                <li><i class="mdi mdi-export-variant text-success me-2"></i> <strong>@GlobalShared.Export:</strong> @GlobalMemberAdjustmentConsole.use_the_export_button_to_download_your_current_view.</li>
             </ul>
         </div>
     </div>
@@ -46,37 +46,37 @@
 
 <!-- 🔍 Filter Panel -->
 <div class="card shadow p-3 mb-2">
-    <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> Adjustment Request Filters</h5>
+    <h5 class="text-primary mb-2"><i class="mdi mdi-filter-outline me-1"></i> @GlobalMemberAdjustmentConsole.adjustment_request_filters</h5>
 
     <div class="card p-3 mb-2 bg-light">
         <!-- Toggle Checkboxes -->
         <div class="row mb-1">
             <div class="col-md-6 form-check mb-1">
                 <input class="form-check-input" type="checkbox" id="toggleBranch" />
-                <label class="form-check-label fw-bold" for="toggleBranch">Filter by Branch</label>
+                <label class="form-check-label fw-bold" for="toggleBranch">@GlobalShared.Filter_by_Branch</label>
             </div>
             <div class="col-md-6 form-check mb-1">
                 <input class="form-check-input" type="checkbox" id="toggleDate" />
-                <label class="form-check-label fw-bold" for="toggleDate">Filter by Date Range</label>
+                <label class="form-check-label fw-bold" for="toggleDate">@GlobalShared.Filter_by_Date_Range</label>
             </div>
         </div>
 
         <!-- Branch Filter -->
         <div id="branchFilterGroup" class="row mb-2" style="display:none;">
             <div class="col-md-12 mb-1">
-                <label for="branchId" class="form-label fw-bold">Branch</label>
-                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), "--- Select Branch ---", new { @class = "form-select select2", @id = "branchId" })
+                <label for="branchId" class="form-label fw-bold">@GlobalShared.Branch</label>
+                @Html.DropDownList("BranchId", new SelectList(ViewBag.Branches, "Id", "Name"), $"--- {@GlobalShared.Select_Branch} ---", new { @class = "form-select select2", @id = "branchId" })
             </div>
         </div>
 
         <!-- Date Range Filter -->
         <div id="dateFilterGroup" class="row mb-2" style="display:none;">
             <div class="col-md-6 mb-1">
-                <label for="startDate" class="form-label fw-bold">Start Date</label>
+                <label for="startDate" class="form-label fw-bold">@GlobalShared.Start_Date</label>
                 <input type="date" id="startDate" class="form-control" />
             </div>
             <div class="col-md-6 mb-1">
-                <label for="endDate" class="form-label fw-bold">End Date</label>
+                <label for="endDate" class="form-label fw-bold">@GlobalShared.End_Date</label>
                 <input type="date" id="endDate" class="form-control" />
             </div>
         </div>
@@ -85,27 +85,27 @@
 
         <div class="row mb-1">
             <div class="col-md-4 mb-1">
-                <label for="customerId" class="form-label fw-bold">Customer ID</label>
-                <input type="text" id="customerId" class="form-control" placeholder="Enter member account number/refernce" />
+                <label for="customerId" class="form-label fw-bold">@GlobalShared.Customer_ID</label>
+                <input type="text" id="customerId" class="form-control" placeholder="@GlobalMemberAdjustmentConsole.enter_member_account_number/ @GlobalShared.Reference" />
             </div>
             <div class="col-md-4 mb-1">
-                <label for="status" class="form-label fw-bold">Status</label>
+                <label for="status" class="form-label fw-bold">@GlobalShared.Status</label>
                 <select id="status" class="form-select">
-                    <option value="">All</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="">@GlobalShared.All</option>
+                    <option value="Pending">@GlobalShared.Pending</option>
+                    <option value="Approved">@GlobalShared.Approved</option>
+                    <option value="Rejected">@GlobalShared.Rejected</option>
                 </select>
             </div>
 
         </div>
         <div class="row mb-1">
             <div class="col-md-6 mb-1">
-                <label for="requestedBy" class="form-label fw-bold">Requested By</label>
+                <label for="requestedBy" class="form-label fw-bold">@GlobalShared.Requested_by</label>
                 <input type="text" id="requestedBy" class="form-control" placeholder="Requested By" />
             </div>
             <div class="col-md-6 mb-1">
-                <label for="approvedBy" class="form-label fw-bold">Approved By</label>
+                <label for="approvedBy" class="form-label fw-bold">@GlobalShared.Approved_by</label>
                 <input type="text" id="approvedBy" class="form-control" placeholder="Approved By" />
             </div>
         </div>
@@ -115,10 +115,10 @@
     <div class="row mt-2">
         <div class="col-md-12 d-flex">
             <button id="applyFilterBtn" class="btn btn-primary me-2 w-100">
-                <i class="mdi mdi-magnify"></i> Apply Filter
+                <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_Filter
             </button>
             <button id="resetFilterBtn" class="btn btn-secondary w-100">
-                <i class="mdi mdi-refresh"></i> Reset
+                <i class="mdi mdi-refresh"></i> @GlobalShared.Reset
             </button>
         </div>
     </div>
@@ -141,7 +141,7 @@
             <div id="memberAdjustmentLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">Processing, please wait...</p>
+                    <p class="fw-semibold text-primary">@GlobalMemberAdjustmentConsole.processing_please_wait...</p>
                 </div>
             </div>
 
@@ -151,10 +151,10 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="memberAdjustmentModalTitle">
-                                <i class="mdi mdi-file-document-edit-outline me-2"></i> member Adjustment Details
+                                <i class="mdi mdi-file-document-edit-outline me-2"></i> @GlobalMemberAdjustmentConsole.member_adjustment_details
                             </h1>
                             <p class="card-text" id="memberAdjustmentModalDescription">
-                                View original and new member values, and approval history.
+                                @GlobalMemberAdjustmentConsole.view_original_and_new_member_values_and_approval_history.
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -165,7 +165,7 @@
             <!-- Collapsible Tips -->
             <div class="card mx-3">
                 <h6 class="card-header d-flex justify-content-between align-items-center text-primary">
-                    <span><i class="mdi mdi-information-outline me-2"></i> When to Use This</span>
+                    <span><i class="mdi mdi-information-outline me-2"></i> @GlobalShared.when_to_use_this</span>
                     <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjustmentTips">
                         <i class="mdi mdi-chevron-down"></i>
                     </button>
@@ -173,9 +173,9 @@
                 <div id="collapseAdjustmentTips" class="collapse">
                     <div class="card-body">
                         <ul class="mb-0">
-                            <li><i class="mdi mdi-cash-edit text-primary me-2"></i><strong>Waivers:</strong> Use for interest, VAT, penalty waivers.</li>
-                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>Corrections:</strong> Use for fixing calculation or data errors.</li>
-                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>Exclusions:</strong> Not for rescheduling or refinancing.</li>
+                            <li><i class="mdi mdi-cash-edit text-primary me-2"></i><strong>@GlobalShared.waivers:</strong> @GlobalMemberAdjustmentConsole.use_for_interest_vat_penalty_waivers.</li>
+                            <li><i class="mdi mdi-pencil-box-outline text-success me-2"></i><strong>@GlobalShared.corrections:</strong> @GlobalMemberAdjustmentConsole.use_for_fixing_calculation_or_data_errors.</li>
+                            <li><i class="mdi mdi-close-box-outline text-danger me-2"></i><strong>@GlobalShared.exclusions:</strong> @GlobalMemberAdjustmentConsole.not_for_rescheduling_or_refinancing.</li>
                         </ul>
                     </div>
                 </div>
@@ -192,20 +192,20 @@
             <div class="modal-footer justify-content-between">
                 <div class="d-flex flex-column">
                     <span class="text-muted fw-semibold">
-                        Adjustment Reference: <span class="text-dark" id="memberAdjustmentReference">N/A</span>
+                        @GlobalMemberAdjustmentConsole.adjustment_reference: <span class="text-dark" id="memberAdjustmentReference">N/A</span>
                     </span>
                 </div>
                 <div class="d-flex flex-row gap-4">
                     <span class="text-muted fw-semibold">
-                        Member Reference: <span class="text-dark" id="memberReference">N/A</span>
+                        @GlobalShared.Member_reference: <span class="text-dark" id="memberReference">N/A</span>
                     </span>
                     <span class="text-muted fw-semibold">
-                        Member Name: <span class="text-dark" id="memberName">N/A</span>
+                        @GlobalShared.Member_name: <span class="text-dark" id="memberName">N/A</span>
                     </span>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="mdi mdi-close"></i> Close
+                        <i class="mdi mdi-close"></i> @GlobalShared.Close
                     </button>
                 </div>
             </div>

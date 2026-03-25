@@ -1,4 +1,4 @@
-﻿@using CBS.FrontDesk.UI.Helper
+@using CBS.FrontDesk.UI.Helper
 @using Resources
 @model CBS.FrontDesk.Data.Entity.RequestManagement.RateLimitDashboardDto
 
@@ -20,16 +20,16 @@
         <div class="card bg-light mb-2">
             <div class="card-body text-center">
                 <h1 class="card-title text-primary">
-                    <i class="mdi mdi-shield-alert me-2"></i> @GlobalRequestMonitoting.RequestMonitoringDashboard
+                    <i class="mdi mdi-shield-alert me-2"></i> @GlobalRequestMonitoting.request_monitoring_dashboard
                 </h1>
-                <p class="card-text">@GlobalRequestMonitoting.AnalyzeRateLimitedAccessAttempts.</p>
+                <p class="card-text">@GlobalRequestMonitoting.analyze_rate_limited_access_attempts.</p>
                 <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
             </div>
         </div>
     </div>
 </div>
 <div class="text-muted text-end pe-2 small">
-    <i class="mdi mdi-timer"></i> @GlobalRequestMonitoting.AutoRefreshesEvery1Minute
+    <i class="mdi mdi-timer"></i> @GlobalRequestMonitoting.auto_refreshes_every1_minute
 </div>
 
 
@@ -37,30 +37,30 @@
     <!-- Filters Section -->
     <div class="card p-3 mb-0 bg-light">
         <h5 class="text-primary mb-3">
-            <i class="mdi mdi-filter-outline me-1"></i> @GlobalRequestMonitoting.Filters
+            <i class="mdi mdi-filter-outline me-1"></i> @GlobalShared.Filters
         </h5>
 
         <form id="filterForm" method="get" asp-action="RateLimitDashboard" class="row g-3">
             <div class="col-md-4">
-                <label class="form-label fw-bold">@GlobalRequestMonitoting.Branch</label>
+                <label class="form-label fw-bold">@GlobalShared.Branch</label>
                 @Html.DropDownList(
                     "BranchId",
                     new SelectList(ViewBag.Branches, "Id", "Name", Context.Request.QueryString["BranchId"]),
-                    "---"+ @GlobalRequestMonitoting.SelectBranch +"---",
+                    "---"+ @GlobalShared.Select_Branch +"---",
                     new { @class = "form-control shadow-sm select2", @id = "branchInput" })
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-bold">@GlobalRequestMonitoting.TopX</label>
-                <input type="number" name="QueryTopValue" value="@Context.Request.QueryString["QueryTopValue"]" class="form-control" placeholder="@GlobalRequestMonitoting.TopCount" />
+                <label class="form-label fw-bold">@GlobalRequestMonitoting.top_x</label>
+                <input type="number" name="QueryTopValue" value="@Context.Request.QueryString["QueryTopValue"]" class="form-control" placeholder="@GlobalRequestMonitoting.top_count" />
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold">@GlobalRequestMonitoting.StartDate</label>
+                <label class="form-label fw-bold">@GlobalShared.Start_Date</label>
                 <input type="date" name="StartDate"
                        value="@(Context.Request.QueryString["StartDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
                        class="form-control" />
             </div>
             <div class="col-md-3">
-                <label class="form-label fw-bold">@GlobalRequestMonitoting.EndDate</label>
+                <label class="form-label fw-bold">@GlobalShared.End_Date</label>
                 <input type="date" name="EndDate"
                        value="@(Context.Request.QueryString["EndDate"] ?? DateTime.Today.ToString("yyyy-MM-dd"))"
                        class="form-control" />
@@ -70,10 +70,10 @@
 
     <div class="mt-3 d-flex justify-content-between px-3">
         <button type="button" onclick="exportDashboard()" class="btn btn-outline-primary">
-            <i class="mdi mdi-file-excel"></i> @GlobalRequestMonitoting.ExportToExcel
+            <i class="mdi mdi-file-excel"></i> @GlobalShared.export_to_excel
         </button>
         <button type="submit" form="filterForm" class="btn btn-primary">
-            <i class="mdi mdi-magnify"></i> @GlobalRequestMonitoting.ApplyFilters
+            <i class="mdi mdi-magnify"></i> @GlobalShared.Apply_filters
         </button>
     </div>
 </div>
@@ -81,39 +81,39 @@
 <div class="row">
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopIPs</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.top_ips</h6>
             <canvas id="topIpsChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopUsers</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.top_users</h6>
             <canvas id="topUsersChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">@GlobalRequestMonitoting.TopPaths</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.top_paths</h6>
             <canvas id="topPathsChart" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
     <div class="col-md-6 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-success">@GlobalRequestMonitoting.BlockedVsNonBlocked</h6>
+            <h6 class="text-center text-success">@GlobalRequestMonitoting.blocked_vs_non_blocked</h6>
             <canvas id="blockStatusPie" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
 
     <div class="col-md-12 mb-4">
         <div class="card p-3">
-            <h6 class="text-center text-primary">@GlobalRequestMonitoting.HourlyRequestTrends</h6>
+            <h6 class="text-center text-primary">@GlobalRequestMonitoting.hourly_request_trends</h6>
             <canvas id="hourlyRequestLine" style="height: 300px;" class="chart-fixed"></canvas>
         </div>
     </div>
 </div>
 
 <div class="text-muted small text-end" id="lastRefreshLabel">
-    <i class="mdi mdi-clock-outline"></i> @GlobalRequestMonitoting.LastRefreshed: <span id="lastRefreshTime">@GlobalRequestMonitoting.never</span>
+    <i class="mdi mdi-clock-outline"></i> @GlobalShared.last_refreshed: <span id="lastRefreshTime">@GlobalShared.never</span>
 </div>
 
 <div class="modal fade" id="logDetailModal" tabindex="-1" aria-labelledby="logDetailModalLabel" aria-hidden="true">
@@ -124,7 +124,7 @@
             <div id="logDetailLoader" class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none z-3" style="z-index: 1055;">
                 <div class="d-flex flex-column justify-content-center align-items-center h-100 text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="fw-semibold text-primary">@GlobalRequestMonitoting.LoadingDetailedLogsPleaseWait...</p>
+                    <p class="fw-semibold text-primary">@GlobalRequestMonitoting.loading_detailed_logs_please_wait...</p>
                 </div>
             </div>
 
@@ -134,12 +134,12 @@
                     <div class="card bg-light mb-2">
                         <div class="card-body text-center">
                             <h1 class="card-title text-primary" id="logDetailModalTitle">
-                                <i class="mdi mdi-chart-bar me-2"></i> @GlobalRequestMonitoting.Top10IPActivities
+                                <i class="mdi mdi-chart-bar me-2"></i> @GlobalRequestMonitoting.top10_ipactivities
                             </h1>
                             <p class="card-text text-muted fw-semibold" id="logDetailModalDescription">
-                                @GlobalRequestMonitoting.FilteredByBranch: <span class="text-dark" id="modalBranch">N/A</span>,
-                                @GlobalRequestMonitoting.StartDate: <span class="text-dark" id="modalStartDate">N/A</span>,
-                                @GlobalRequestMonitoting.EndDate: <span class="text-dark" id="modalEndDate">N/A</span>
+                                @GlobalRequestMonitoting.filtered_by_branch: <span class="text-dark" id="modalBranch">N/A</span>,
+                                @GlobalShared.Start_Date: <span class="text-dark" id="modalStartDate">N/A</span>,
+                                @GlobalShared.End_Date: <span class="text-dark" id="modalEndDate">N/A</span>
                             </p>
                             <hr style="border: 2px solid rgba(128, 128, 128, 0.5);" />
                         </div>
@@ -153,18 +153,18 @@
                 <div id="logDetailTableContainer" class="px-3">
                     <div class="card p-3 shadow mb-4">
                         <h5 class="text-primary mb-3">
-                            <i class="mdi mdi-table"></i> @GlobalRequestMonitoting.RequestLogListing
+                            <i class="mdi mdi-table"></i> @GlobalRequestMonitoting.request_log_listing
                         </h5>
                         <div class="table-responsive">
                             <table id="logDataTable" class="table table-bordered table-striped table-sm align-middle w-100">
                                 <thead class="table-light">
                                     <tr>
                                         <th>IP</th>
-                                        <th>@GlobalRequestMonitoting.User</th>
+                                        <th>@GlobalShared.User</th>
                                         <th>@GlobalShared.Status</th>
-                                        <th>@GlobalRequestMonitoting.Branch</th>
-                                        <th>@GlobalRequestMonitoting.Location</th>
-                                        <th>@GlobalRequestMonitoting.Time</th>
+                                        <th>@GlobalShared.Branch</th>
+                                        <th>@GlobalShared.Location</th>
+                                        <th>@GlobalShared.Time</th>
                                         <th>@GlobalShared.Action</th> <!-- NEW COLUMN --> 
                                     </tr>
                                 </thead>

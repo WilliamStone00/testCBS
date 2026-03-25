@@ -1,15 +1,16 @@
-﻿<!-- Main table (KEEP this exact HTML) -->
+<!-- Main table (KEEP this exact HTML) -->
+@using Resources
 <div class="card p-3 shadow mb-4">
     <div class="table-responsive">
         <table id="myDataTable" class="table table-bordered table-striped" style="width:100%;">
             <thead class="table-light">
                 <tr>
                     @*<th data-col="collectorName">Collector Name</th>*@
-                    <th data-col="branchName">Branch Name</th>
-                    <th data-col="fileName">File Name</th>
-                    <th data-col="uploadedOn">Uploaded On</th>
-                    <th data-col="salaryProcessingStatus">Status</th>
-                    <th data-col="id">Actions</th>
+                    <th data-col="branchName">@GlobalShared.Branch_Name</th>
+                    <th data-col="fileName">@GlobalShared.File_Name</th>
+                    <th data-col="uploadedOn">@GlobalShared.Uploaded_On</th>
+                    <th data-col="salaryProcessingStatus">@GlobalShared.Status</th>
+                    <th data-col="id">@GlobalShared.Actions</th>
                 </tr>
             </thead>
             <tbody>
